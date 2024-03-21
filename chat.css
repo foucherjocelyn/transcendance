@@ -1,3 +1,7 @@
+:root {
+    --chat-list-width: 280px;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -29,7 +33,7 @@ body {
     padding-top: 15px;
     color: #DDD;
     height: 100%;
-    min-width: 280px;
+    min-width: var(--chat-list-width);
     overflow: auto;
     box-sizing: border-box;
 }
@@ -44,3 +48,64 @@ body {
     flex-direction: column;
     gap: 5px;
 }
+
+.chat-box {
+    position: fixed;
+    bottom:0;
+    right: var(--chat-list-width);
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+.incoming {
+    background-color: #f1f0f0;
+    float: left;
+}
+
+.outgoing {
+    background-color: #387FEE;
+    float: right;
+    color: white;
+}
+
+.chat-input {
+    padding: 10px;
+    background-color: #F0F0F0;
+}
+
+.chat-input input {
+    width: calc(100% - 60px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.chat-input button {
+    width: 50px;
+    padding: 8px;
+    border: none;
+    background-color: #387FEE;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+}
+

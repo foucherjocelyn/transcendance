@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transcendance</title>
-    <link rel="stylesheet" href="chat.css">
-</head>
-<body>
-    <div id="chat-list">
-        <div id="c-players-div">
-            <h3>Players</h3>
-            <div id="c-list-player-PlayerA#1234" class="c-player">
-                <div class="player-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
-                <div class="player-name">PlayerA</div>
-            </div>
-            <div id="c-list-player-PlayerB#1564" class="c-player">
-                <div class="player-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
-                <div class="player-name">PlayerB</div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Transcendance</title>
+        <link rel="stylesheet" href="chat.css">
+    </head>
+    <body>
+        <div id="chat-list">
+            <div id="c-players-div">
+                <h3>Players</h3>
+                <div id="c-list-player-PlayerA#1234" class="c-player">
+                    <div class="player-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
+                    <div class="player-name">PlayerA</div>
+                </div>
+                <div id="c-list-player-PlayerB#1564" class="c-player">
+                    <div class="player-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
+                    <div class="player-name">PlayerB</div>
+                </div>
             </div>
         </div>
-    </div>
-</body>
+        <div class="chat-box">
+            <div class="chat-messages">
+                <div class="message incoming"><p>Hello!</p></div>
+                <div class="message outgoing"><p>Hi !</p></div>
+                <div class="message outgoing"><p>How are you ?</p></div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Type your message...">
+                <button>Send</button>
+            </div>
+        </div>
+    </body>
+</html>
