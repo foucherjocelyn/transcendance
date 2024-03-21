@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.player-avatar img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.c-player {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.player-name {
+    padding-top: 6px;
+    font-size: 1.2em;
+}
+
+#chat-list {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #333;
+    padding: 30px;
+    padding-top: 15px;
+    color: #DDD;
+    height: 100%;
+    min-width: 240px;
+}
+
+#chat-list h3 {
+    text-align: center;
+    padding-bottom: 12px;
+}
+
+#c-players-div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
