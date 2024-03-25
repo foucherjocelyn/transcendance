@@ -4,15 +4,16 @@ const chatBoxHeaderPlayerName = document.querySelector("#c-chat-box-header h3");
 const chatMessagesDiv = document.getElementById("c-chat-messages");
 const chatInputContent = document.querySelector("#c-chat-input input");
 const sendMessageButton = document.querySelector("#c-chat-input button");
+const playersList = document.getElementById("c-players-list");
 
 const players = [
     {
         id: "PlayerA#1234",
-        name: "PlayerA"
+        name: "Jack"
     },
     {
         id: "PlayerB#1564",
-        name: "PlayerB"
+        name: "Joe"
     }
 ];
 
@@ -23,12 +24,22 @@ const messages = [
     }
 ];
 
+const renderPlayerList = () => {
+    const playersHTML = players.map((player) => {
+        return `<div id="c-list-player-${player.id}" class="c-player" onclick="openChatBox('${player.id}')">
+                    <div class="player-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
+                    <div class="player-name">${player.name}</div>
+                </div>`;
+    }).join("");
+    playersList.innerHTML = playersHTML;
+};
+
 const renderMessages = () => {
     const messagesHTML = messages.map((message) => {
         return `<div class="chat-bubble ${message.type}">${message.content}</div>`;
     }).join("");
     chatMessagesDiv.innerHTML = messagesHTML;
-}
+};
 
 const sendMessage = () => {
     const newMessage = {
@@ -51,6 +62,8 @@ const openChatBox = (receivingPlayerId) => {
 const closeChatBox = () => {
     chatBox.classList.add("hidden");
 };
+
+renderPlayerList();
 
 chatBoxCloseButton.addEventListener("click", closeChatBox);
 sendMessageButton.addEventListener("click", sendMessage);
