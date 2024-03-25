@@ -8,11 +8,11 @@ const playersList = document.getElementById("c-players-list");
 
 const players = [
     {
-        id: "PlayerA#1234",
+        id: "#1234",
         name: "Jack"
     },
     {
-        id: "PlayerB#1564",
+        id: "#1564",
         name: "Joe"
     }
 ];
