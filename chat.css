@@ -11,6 +11,39 @@ body {
     display: none;
 }
 
+#c-find-new-friend-window {
+    position: absolute;
+    right: 20%;
+    margin: 12%;
+    width: 30%;
+    height: 50%;
+    min-height: 320px;
+    background-color: #333333;
+    color: white;
+}
+
+#c-find-new-friend-window h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#c-find-new-friend-window input {
+    margin-left: 20px;
+    width: 60%;
+}
+
+#c-find-new-friend-window .c-close-button {
+    position: absolute;
+    right: 10px;
+}
+
+#c-find-new-friend-window .user-list {
+    margin-top: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 60%;
+}
+
 .user-avatar img {
     width: 36px;
     height: 36px;
@@ -55,6 +88,7 @@ body {
 }
 
 #c-friends-div {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -63,6 +97,11 @@ body {
 #c-search-friend-list {
     position: fixed;
     bottom: 20px;
+}
+
+#c-add-new-friend-button {
+    position: fixed;
+    right: 20px;
 }
 
 .chat-box {
