@@ -60,6 +60,11 @@ body {
     gap: 5px;
 }
 
+#c-search-friend-list {
+    position: fixed;
+    bottom: 20px;
+}
+
 .chat-box {
     position: fixed;
     bottom:0;
