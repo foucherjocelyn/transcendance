@@ -11,13 +11,13 @@ body {
     display: none;
 }
 
-.player-avatar img {
+.user-avatar img {
     width: 36px;
     height: 36px;
     border-radius: 50%;
 }
 
-.c-player {
+.c-user {
     display: flex;
     justify-content: flex-start;
     gap: 10px;
@@ -26,11 +26,11 @@ body {
     border-radius: 10px;
 }
 
-.c-player:hover {
+.c-user:hover {
     background-color: #46484C;
 }
 
-.player-name {
+.user-name {
     padding-top: 6px;
     font-size: 1.2em;
 }
@@ -54,7 +54,7 @@ body {
     padding-bottom: 12px;
 }
 
-#c-players-div {
+#c-friends-div {
     display: flex;
     flex-direction: column;
     gap: 5px;

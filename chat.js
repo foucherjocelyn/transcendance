@@ -1,12 +1,12 @@
 const chatBoxCloseButton = document.getElementById("c-chat-box-close-button");
 const chatBox = document.getElementById("c-chat-box");
-const chatBoxHeaderPlayerName = document.querySelector("#c-chat-box-header h3");
+const chatBoxHeaderUserName = document.querySelector("#c-chat-box-header h3");
 const chatMessagesDiv = document.getElementById("c-chat-messages");
 const chatInputContent = document.querySelector("#c-chat-input input");
 const sendMessageButton = document.querySelector("#c-chat-input button");
-const playersList = document.getElementById("c-players-list");
+const friendsList = document.getElementById("c-friends-list");
 
-const players = [
+const friends = [
     {
         id: "#1234",
         name: "Jack"
@@ -24,14 +24,14 @@ const messages = [
     }
 ];
 
-const renderPlayerList = () => {
-    const playersHTML = players.map((player) => {
-        return `<div id="c-list-player-${player.id}" class="c-player" onclick="openChatBox('${player.id}')">
-                    <div class="player-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
-                    <div class="player-name">${player.name}</div>
+const renderUserList = () => {
+    const friendsHTML = friends.map((user) => {
+        return `<div id="c-list-user-${user.id}" class="c-user" onclick="openChatBox('${user.id}')">
+                    <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
+                    <div class="user-name">${user.name}</div>
                 </div>`;
     }).join("");
-    playersList.innerHTML = playersHTML;
+    friendsList.innerHTML = friendsHTML;
 };
 
 const renderMessages = () => {
@@ -52,9 +52,9 @@ const sendMessage = () => {
     chatInputContent.value = '';
 };
 
-const openChatBox = (receivingPlayerId) => {
-    const receivingPlayer = players.find((player) => player.id === receivingPlayerId);
-    chatBoxHeaderPlayerName.textContent = receivingPlayer.name;
+const openChatBox = (receivingUserId) => {
+    const receivingUser = friends.find((user) => user.id === receivingUserId);
+    chatBoxHeaderUserName.textContent = receivingUser.name;
     renderMessages();
     chatBox.classList.remove("hidden");
 };
@@ -63,7 +63,7 @@ const closeChatBox = () => {
     chatBox.classList.add("hidden");
 };
 
-renderPlayerList();
+renderUserList();
 
 chatBoxCloseButton.addEventListener("click", closeChatBox);
 sendMessageButton.addEventListener("click", sendMessage);
