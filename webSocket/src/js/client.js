@@ -38,13 +38,13 @@ function    getDataFromServer()
             console.log('start game');
 
         // read title from server and add your function is here
-        
+
     }
 }
 
 function    buttonConnection()
 {
-    const   createMatchLayer = document.getElementById('createMatchLayer');
+    const   createMatchLayer = document.getElementById('chat');
 
     const   button = document.getElementById('buttonConnection');
     button.addEventListener('click', function() {
@@ -55,7 +55,6 @@ function    buttonConnection()
         const  sendData = new dataToServer('connection', client.inforUser, client.inforUser);
         client.socket.send(JSON.stringify(sendData));
 
-        create_match('offline');
     });
 }
 
