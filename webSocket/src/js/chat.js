@@ -1,3 +1,6 @@
+import { client } from "./client";
+import { dataToServer } from "./client";
+
 const chatBoxCloseButton = document.getElementById("c-chat-box-close-button");
 const chatBox = document.getElementById("c-chat-box");
 const chatBoxHeaderUserName = document.querySelector("#c-chat-box-header h3");
@@ -88,6 +91,9 @@ const messages = [
 ];
 
 const displayFindNewFriendWindow = () => {
+    console.log(client);
+    const sendData = new dataToServer('message', client.inforUser, client.listUser[3]);
+    client.socket.send(JSON.stringify(sendData));
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list").innerHTML = "";
     document.querySelector("#c-find-new-friend-window input").value = "";
     findNewFriendWindow.classList.remove("hidden");

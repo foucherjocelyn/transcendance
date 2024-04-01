@@ -1,6 +1,7 @@
 
 const   user = {
     id: undefined,
+    name: undefined,
     status: undefined,
     socket: undefined,
     avatar: undefined
@@ -12,6 +13,7 @@ const   client = {
     listUser: []
 };
 
+user.name = (Math.random() + 1).toString(36).substring(7);
 user.id = Math.random() * 10;
 user.status = 'connection';
 // user.avatar = './img/avatar';
@@ -38,7 +40,8 @@ function    getDataFromServer()
             console.log('start game');
 
         // read title from server and add your function is here
-
+        if (receivedData.title === 'message')
+            console.log('message');
     }
 }
 
