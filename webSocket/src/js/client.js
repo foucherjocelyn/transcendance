@@ -75,7 +75,7 @@ function    main()
     buttonConnection();
 }
 
-main()
+main();
 
 export {
     client,

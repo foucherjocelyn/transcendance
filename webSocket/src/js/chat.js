@@ -47,7 +47,6 @@ const sendMessage = () => {
         type: "outgoing",
         content: chatInputContent.value
     }
-    console.log(newMessage);
     messages.push(newMessage);
     renderMessages();
     chatInputContent.value = '';
@@ -64,8 +63,6 @@ const closeChatBox = () => {
     chatBox.classList.add("hidden");
 };
 
-console.log("test friend");
-console.log(document.querySelectorAll(".c-friend"));
 document.querySelectorAll(".c-friend").forEach((friend) => {
     const friendId = friend.id.substring(friend.id.indexOf('#'));
     friend.addEventListener("click", (e) => openChatBox(friendId));
