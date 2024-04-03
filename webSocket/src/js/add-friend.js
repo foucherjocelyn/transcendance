@@ -53,11 +53,16 @@ const users = [
 
 const displayFindNewFriendWindow = () => {
     console.log(client);
-    const sendData = new dataToServer('message', client.inforUser, client.listUser[3]);
-    client.socket.send(JSON.stringify(sendData));
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list").innerHTML = "";
     document.querySelector("#c-find-new-friend-window input").value = "";
     findNewFriendWindow.classList.remove("hidden");
+};
+
+const sendFriendInvite = (id) => {
+    const sendData = new dataToServer('send friend invite', undefined, client.listUser.find(user => user.id == id));
+    client.socket.send(JSON.stringify(sendData));
+    console.log(sendData);
+    findNewFriendWindow.classList.add("hidden");
 };
 
 const searchFindNewFriendWindow = () => {
@@ -65,14 +70,23 @@ const searchFindNewFriendWindow = () => {
     const regex = /([A-Za-z]+)/g;
     const parsedSearchInput = document.querySelector("#c-find-new-friend-window input").value.match(regex).join("");
     console.log(parsedSearchInput);
-    const matchlist = users.filter((user) => user.name.includes(parsedSearchInput));
+    const matchlist = client.listUser.filter((user) => user.name.includes(parsedSearchInput));
     const usersHTML = matchlist.map((user) => {
-        return `<div id="c-list-user-${user.id}" class="c-user")">
-                    <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
-                    <div class="user-name">${user.name}<span class="user-id">${user.id}</span></div>
-                </div>`;
+        return `<div id="c-list-user-#${user.id}" class="c-user">
+            <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
+            <div class="user-name">${user.name}<span class="user-id">${user.id}</span></div>
+            <button id="c-send-friend-invite-#${user.id}" class="c-send-friend-invite">+</button>
+            </div>`;
     }).join("");
     userListDiv.innerHTML = usersHTML;
+    document.querySelectorAll(".c-send-friend-invite").forEach((user) => {
+        const userId = user.id.substring(user.id.indexOf('#') + 1);
+        user.addEventListener("click", (e) => sendFriendInvite(userId));
+    });
+};
+
+const receiveFriendInvite = (sender) => {
+    console.log(sender);
 };
 
 document.querySelector("#c-find-new-friend-window .search").addEventListener("click", searchFindNewFriendWindow);
@@ -80,3 +94,5 @@ document.querySelector("#c-find-new-friend-window .c-close-button").addEventList
     findNewFriendWindow.classList.add("hidden");
 });
 addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
+
+export { receiveFriendInvite };

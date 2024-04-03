@@ -1,3 +1,4 @@
+import { receiveFriendInvite } from "./add-friend.js";
 
 const   user = {
     id: undefined,
@@ -40,6 +41,10 @@ function    getDataFromServer()
             console.log('start game');
 
         // read title from server and add your function is here
+        if (receivedData.title === 'send friend invite') {
+            console.log('friend invite');
+            receiveFriendInvite(receivedData.from);
+        }
         if (receivedData.title === 'message')
             console.log('message');
     }

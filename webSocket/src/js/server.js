@@ -116,9 +116,11 @@ function    get_data(data, socket)
         data_packaging(data, socket);
     else if (data.title === 'game settings')
         data_packaging(data, socket);
+    else if (data.title === 'send friend invite')
+        data_packaging(data, socket);
 
     // add your title
-    
+
 }
 
 /* ------------------------------  ------------------------------ */
@@ -127,7 +129,7 @@ function listen_connection(wsServer)
     wsServer.on('request', function(request) {
         // Accept connection from client
         const connection = request.accept(null, request.origin);
-        
+
         console.log('Client connected');
 
         // Handle message from client
