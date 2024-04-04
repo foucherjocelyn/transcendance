@@ -1,6 +1,6 @@
 const { log } = require('console');
 
-const   server = {
+const   webSocket = {
     listUser: [],
     listConnection: []
 };
@@ -24,7 +24,7 @@ class   dataToClient {
 function    find_socket(id)
 {
     let socket = undefined;
-    server.listConnection.forEach(connection => {
+    webSocket.listConnection.forEach(connection => {
         if (connection.user.id === id)
             socket = connection.socket;
     })
@@ -50,7 +50,7 @@ function    send_data(listDestination, data, title)
 function    define_user(socket)
 {
     let user = undefined;
-    server.listConnection.forEach(connection => {
+    webSocket.listConnection.forEach(connection => {
         if (connection.socket === socket)
             user = connection.user;
     })
@@ -79,14 +79,13 @@ function    data_packaging(data, socket)
 /* ------------------------------  ------------------------------ */
 function    add_new_connection(data, socket)
 {
-    console.log(data.content.id);
     const   user  = new connection(data.content, socket);
-    server.listConnection.push(user);
-    server.listUser.push(data.content);
+    webSocket.listConnection.push(user);
+    webSocket.listUser.push(data.content);
 
     // Change content of package data
-    data.content = server.listUser;
-    data.destination = server.listUser;
+    data.content = webSocket.listUser;
+    data.destination = webSocket.listUser;
 
     data_packaging(data, socket);
 }
@@ -95,11 +94,11 @@ function    delete_old_connection(socket)
 {
     let i = 0;
 
-    server.listConnection.forEach(connection => {
+    webSocket.listConnection.forEach(connection => {
         if (connection.socket === socket)
         {
-            server.listConnection.splice(i, 1);
-            server.listUser.splice(i, 1);
+            webSocket.listConnection.splice(i, 1);
+            webSocket.listUser.splice(i, 1);
         }
         i++;
     })
@@ -113,15 +112,8 @@ function    get_data(data, socket)
     // read title
     if (data.title === 'connection')
         add_new_connection(data, socket);
-    else if (data.title === 'message')
+    else
         data_packaging(data, socket);
-    else if (data.title === 'game settings')
-        data_packaging(data, socket);
-    else if (data.title === 'send friend invite')
-        data_packaging(data, socket);
-
-    // add your title
-
 }
 
 /* ------------------------------  ------------------------------ */
@@ -130,7 +122,7 @@ function listen_connection(wsServer)
     wsServer.on('request', function(request) {
         // Accept connection from client
         const connection = request.accept(null, request.origin);
-
+        
         console.log('Client connected');
 
         // Handle message from client
@@ -149,7 +141,7 @@ function listen_connection(wsServer)
     });
 }
 
-function setup_server()
+function setup_web_socket_server()
 {
     // Import module 'http' and 'websocket' integrated in Node.js
     const http = require('http');
@@ -174,4 +166,4 @@ function setup_server()
     });
 }
 
-setup_server();
+setup_web_socket_server();

@@ -1,8 +1,8 @@
 import { client } from "./client";
 import { dataToServer } from "./client";
 
-const addNewFriendButton = document.getElementById("c-add-new-friend-button");
 const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
+const friendInvitationDiv = document.getElementById("c-friend-invitation-container");
 
 const users = [
     {
@@ -85,7 +85,28 @@ const searchFindNewFriendWindow = () => {
     });
 };
 
+const removeFriendInvite = (sender) => {
+    document.getElementById(`c-friend-invitation${sender.id}`).remove();
+};
+
+const acceptFriendInvite = (sender) => {
+    console.log("accept");
+    removeFriendInvite(sender);
+};
+
+const declineFriendInvite = (sender) => {
+    console.log("decline");
+    removeFriendInvite(sender);
+};
+
 const receiveFriendInvite = (sender) => {
+    friendInvitationDiv.innerHTML += `<div id="c-friend-invitation${sender.id}" class="c-friend-invitation">
+    <p>${sender.name}${sender.id}</p>
+    <button name="accept" class="accept">accept</button>
+    <button name="decline" class="decline">decline</button>
+    </div>`
+    document.getElementById(`c-friend-invitation${sender.id}`).querySelector(".accept").addEventListener("click", () => {acceptFriendInvite(sender)});
+    document.getElementById(`c-friend-invitation${sender.id}`).querySelector(".decline").addEventListener("click", () => {declineFriendInvite(sender)});
     console.log(sender);
 };
 
@@ -93,6 +114,8 @@ document.querySelector("#c-find-new-friend-window .search").addEventListener("cl
 document.querySelector("#c-find-new-friend-window .c-close-button").addEventListener("click", () => {
     findNewFriendWindow.classList.add("hidden");
 });
-addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
 
-export { receiveFriendInvite };
+export { 
+    displayFindNewFriendWindow,
+    receiveFriendInvite,
+};

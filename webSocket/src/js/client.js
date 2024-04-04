@@ -1,11 +1,29 @@
-import { receiveFriendInvite } from "./add-friend.js";
+import { receiveFriendInvite } from "./add-friend";
+import { renderFriendList } from "./friend-list";
+
+class   userAnnouncements {
+    constructor() {
+        this.from = data.from,
+        this.type = data.content;
+    }
+};
+
+class   userMessages {
+    constructor() {
+        this.user = undefined,
+        this.listMessages = [];
+    }
+};
 
 const   user = {
     id: undefined,
     name: undefined,
     status: undefined,
     socket: undefined,
-    avatar: undefined
+    avatar: undefined,
+    listFriends: [],
+    listMessages: [],
+    listAnnouncements: []
 }
 
 const   client = {
@@ -14,10 +32,11 @@ const   client = {
     listUser: []
 };
 
-user.name = (Math.random() + 1).toString(36).substring(7);
-user.id = Math.random() * 10;
+// user.id = '#' + ((Math.floor(Math.random() * 6)) * 2);
+user.id = '#' + 10 + ((Math.floor(Math.random() * 6)) * 2);
+user.name = 'xuluu' + user.id + 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo';
 user.status = 'connection';
-// user.avatar = './img/avatar';
+user.avatar = "../../img/avatar/avatar2.jpg";
 client.inforUser = user;
 
 class   dataToServer {
@@ -39,14 +58,17 @@ function    getDataFromServer()
             update_game_settings_from_server(receivedData.content);
         if (receivedData.title === 'start game')
             console.log('start game');
-
-        // read title from server and add your function is here
-        if (receivedData.title === 'send friend invite') {
-            console.log('friend invite');
+        if (receivedData.title === 'invite play')
+            display_announcement_invitation_play(receivedData);
+        if (receivedData.title === 'decline invite play')
+            display_announcement_invitation_play(receivedData);
+        if (receivedData.title === 'accept invite play')
+            accept_invitation_play(receivedData);
+        if (receivedData.title === 'update match informations')
+            update_match_informations(receivedData);
+        if (receivedData.title === 'send friend invite')
             receiveFriendInvite(receivedData.from);
-        }
-        if (receivedData.title === 'message')
-            console.log('message');
+        // gerer ici
     }
 }
 
@@ -63,6 +85,9 @@ function    buttonConnection()
         const  sendData = new dataToServer('connection', client.inforUser, client.inforUser);
         client.socket.send(JSON.stringify(sendData));
 
+        // create_match('offline');
+        // create_match('with friends');
+        renderFriendList();
     });
 }
 
@@ -80,7 +105,7 @@ function    main()
     buttonConnection();
 }
 
-main();
+main()
 
 export {
     client,

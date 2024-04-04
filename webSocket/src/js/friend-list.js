@@ -1,9 +1,12 @@
 import { client } from "./client";
 import { dataToServer } from "./client";
+import { openChatBox } from "./chat";
+import { displayFindNewFriendWindow } from "./add-friend";
 
 const friendsList = document.getElementById("c-friends-list");
 const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
 const friendsListSearchButton = document.querySelector("#c-search-friend-list button");
+const addNewFriendButton = document.getElementById("c-add-new-friend-button");
 
 const users = [
     {
@@ -83,6 +86,10 @@ const renderFriendList = (list = friends) => {
                 </div>`;
     }).join("");
     friendsList.innerHTML = friendsHTML;
+    document.querySelectorAll(".c-friend").forEach((friend) => {
+        const friendId = friend.id.substring(friend.id.indexOf('#'));
+        friend.addEventListener("click", (e) => openChatBox(friendId));
+    });
 };
 
 const searchFriendList = () => {
@@ -96,11 +103,13 @@ const searchFriendList = () => {
     renderFriendList(matchlist);
 };
 
-renderFriendList();
-
 friendsListSearchButton.addEventListener("click", searchFriendList);
 friendsListSearchInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         searchFriendList();
     }
 });
+
+addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
+
+export { renderFriendList };

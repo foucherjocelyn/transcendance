@@ -63,10 +63,6 @@ const closeChatBox = () => {
     chatBox.classList.add("hidden");
 };
 
-document.querySelectorAll(".c-friend").forEach((friend) => {
-    const friendId = friend.id.substring(friend.id.indexOf('#'));
-    friend.addEventListener("click", (e) => openChatBox(friendId));
-});
 chatBoxCloseButton.addEventListener("click", closeChatBox);
 sendMessageButton.addEventListener("click", sendMessage);
 chatInputContent.addEventListener("keydown", (e) => {
@@ -74,3 +70,5 @@ chatInputContent.addEventListener("keydown", (e) => {
         sendMessage();
     }
 });
+
+export { openChatBox };
