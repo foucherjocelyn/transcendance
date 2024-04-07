@@ -1,32 +1,11 @@
+import { client } from "./client";
+
 const chatBoxCloseButton = document.getElementById("c-chat-box-close-button");
 const chatBox = document.getElementById("c-chat-box");
 const chatBoxHeaderFriendName = document.querySelector("#c-chat-box-header h3");
 const chatMessagesDiv = document.getElementById("c-chat-messages");
 const chatInputContent = document.querySelector("#c-chat-input input");
 const sendMessageButton = document.querySelector("#c-chat-input button");
-
-const friends = [
-    {
-        id: "#1234",
-        name: "Jack"
-    },
-    {
-        id: "#1254",
-        name: "Samantha"
-    },
-    {
-        id: "#1267",
-        name: "Arthur"
-    },
-    {
-        id: "#1289",
-        name: "Pierre"
-    },
-    {
-        id: "#1564",
-        name: "Joe"
-    }
-];
 
 const messages = [
     {
@@ -53,7 +32,7 @@ const sendMessage = () => {
 };
 
 const openChatBox = (receivingFriendId) => {
-    const receivingFriend = friends.find((friend) => friend.id === receivingFriendId);
+    const receivingFriend = client.inforUser.listFriends.find((friend) => friend.id === receivingFriendId);
     chatBoxHeaderFriendName.textContent = receivingFriend.name;
     renderMessages();
     chatBox.classList.remove("hidden");

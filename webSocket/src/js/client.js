@@ -1,4 +1,4 @@
-import { receiveFriendInvite } from "./add-friend";
+import { receiveFriendInvite, friendInviteHasBeenAccepted, friendInviteHasBeenDeclined } from "./add-friend";
 import { renderFriendList } from "./friend-list";
 
 class   userAnnouncements {
@@ -34,7 +34,7 @@ const   client = {
 
 // user.id = '#' + ((Math.floor(Math.random() * 6)) * 2);
 user.id = '#' + 10 + ((Math.floor(Math.random() * 6)) * 2);
-user.name = 'xuluu' + user.id + 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo';
+user.name = 'xuluu' + user.id + 'abc';
 user.status = 'connection';
 user.avatar = "../../img/avatar/avatar2.jpg";
 client.inforUser = user;
@@ -66,8 +66,12 @@ function    getDataFromServer()
             accept_invitation_play(receivedData);
         if (receivedData.title === 'update match informations')
             update_match_informations(receivedData);
-        if (receivedData.title === 'send friend invite')
+        if (receivedData.title === 'friend invite received')
             receiveFriendInvite(receivedData.from);
+        if (receivedData.title === 'friend invite accepted')
+            friendInviteHasBeenAccepted(receivedData.from);
+        if (receivedData.title === 'friend invite declined')
+            friendInviteHasBeenDeclined(receivedData.from);
         // gerer ici
     }
 }

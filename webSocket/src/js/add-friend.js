@@ -1,55 +1,10 @@
 import { client } from "./client";
 import { dataToServer } from "./client";
+import { renderFriendList } from "./friend-list";
 
 const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
-const friendInvitationDiv = document.getElementById("c-friend-invitation-container");
-
-const users = [
-    {
-        id: "#1234",
-        name: "Jack"
-    },
-    {
-        id: "#1254",
-        name: "Samantha"
-    },
-    {
-        id: "#1267",
-        name: "Arthur"
-    },
-    {
-        id: "#1289",
-        name: "Pierre"
-    },
-    {
-        id: "#1564",
-        name: "Joe"
-    },
-    {
-        id: "#1664",
-        name: "Zoe"
-    },
-    {
-        id: "#1598",
-        name: "Clara"
-    },
-    {
-        id: "#1978",
-        name: "Enzo"
-    },
-    {
-        id: "#4664",
-        name: "Theo"
-    },
-    {
-        id: "#3984",
-        name: "Paul"
-    },
-    {
-        id: "#1976",
-        name: "Adrien"
-    },
-];
+const announcementsDiv = document.getElementById("c-announcements-window");
+const addNewFriendButton = document.getElementById("c-add-new-friend-button");
 
 const displayFindNewFriendWindow = () => {
     console.log(client);
@@ -59,7 +14,7 @@ const displayFindNewFriendWindow = () => {
 };
 
 const sendFriendInvite = (id) => {
-    const sendData = new dataToServer('send friend invite', undefined, client.listUser.find(user => user.id == id));
+    const sendData = new dataToServer('friend invite received', undefined, client.listUser.find(user => user.id == id));
     client.socket.send(JSON.stringify(sendData));
     console.log(sendData);
     findNewFriendWindow.classList.add("hidden");
@@ -89,18 +44,34 @@ const removeFriendInvite = (sender) => {
     document.getElementById(`c-friend-invitation${sender.id}`).remove();
 };
 
+const friendInviteHasBeenAccepted = (sender) => {
+    client.inforUser.listFriends.push(sender);
+    renderFriendList(client.inforUser.listFriends);
+    console.log(`${sender.name}${sender.id} accepted your friend invite.`);
+};
+
+const friendInviteHasBeenDeclined = (sender) => {
+    console.log(`${sender.name}${sender.id} declined your friend invite.`);
+};
+
 const acceptFriendInvite = (sender) => {
     console.log("accept");
+    client.inforUser.listFriends.push(sender);
+    renderFriendList(client.inforUser.listFriends);
+    const sendData = new dataToServer('friend invite accepted', undefined, client.listUser.find(user => user.id == sender.id));
+    client.socket.send(JSON.stringify(sendData));
     removeFriendInvite(sender);
 };
 
 const declineFriendInvite = (sender) => {
     console.log("decline");
+    const sendData = new dataToServer('friend invite declined', undefined, client.listUser.find(user => user.id == sender.id));
+    client.socket.send(JSON.stringify(sendData));
     removeFriendInvite(sender);
 };
 
 const receiveFriendInvite = (sender) => {
-    friendInvitationDiv.innerHTML += `<div id="c-friend-invitation${sender.id}" class="c-friend-invitation">
+    announcementsDiv.innerHTML += `<div id="c-friend-invitation${sender.id}" class="c-friend-invitation">
     <p>${sender.name}${sender.id}</p>
     <button name="accept" class="accept">accept</button>
     <button name="decline" class="decline">decline</button>
@@ -110,12 +81,21 @@ const receiveFriendInvite = (sender) => {
     console.log(sender);
 };
 
+addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
 document.querySelector("#c-find-new-friend-window .search").addEventListener("click", searchFindNewFriendWindow);
 document.querySelector("#c-find-new-friend-window .c-close-button").addEventListener("click", () => {
     findNewFriendWindow.classList.add("hidden");
+});
+document.querySelector("#c-show-announcements-button").addEventListener("click", () => {
+    announcementsDiv.classList.remove("hidden");
+});
+document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", () => {
+    announcementsDiv.classList.add("hidden");
 });
 
 export { 
     displayFindNewFriendWindow,
     receiveFriendInvite,
+    friendInviteHasBeenAccepted,
+    friendInviteHasBeenDeclined,
 };
