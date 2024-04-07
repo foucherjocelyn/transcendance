@@ -1,4 +1,5 @@
 import { receiveFriendInvite, friendInviteHasBeenAccepted, friendInviteHasBeenDeclined } from "./add-friend";
+import { receiveMessage } from "./chat";
 import { renderFriendList } from "./friend-list";
 
 class   userAnnouncements {
@@ -66,6 +67,8 @@ function    getDataFromServer()
             accept_invitation_play(receivedData);
         if (receivedData.title === 'update match informations')
             update_match_informations(receivedData);
+        if (receivedData.title === 'message')
+            receiveMessage(receivedData);
         if (receivedData.title === 'friend invite received')
             receiveFriendInvite(receivedData.from);
         if (receivedData.title === 'friend invite accepted')
@@ -113,5 +116,6 @@ main()
 
 export {
     client,
-    dataToServer
+    dataToServer,
+    userMessages
 };

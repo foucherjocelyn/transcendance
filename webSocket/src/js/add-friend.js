@@ -1,4 +1,4 @@
-import { client } from "./client";
+import { client, userMessages } from "./client";
 import { dataToServer } from "./client";
 import { renderFriendList } from "./friend-list";
 
@@ -42,10 +42,16 @@ const searchFindNewFriendWindow = () => {
 
 const removeFriendInvite = (sender) => {
     document.getElementById(`c-friend-invitation${sender.id}`).remove();
+    document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", () => {
+        announcementsDiv.classList.add("hidden");
+    });
 };
 
 const friendInviteHasBeenAccepted = (sender) => {
     client.inforUser.listFriends.push(sender);
+    const newUserMessages = new userMessages();
+    newUserMessages.user = sender;
+    client.inforUser.listMessages.push(newUserMessages);
     renderFriendList(client.inforUser.listFriends);
     console.log(`${sender.name}${sender.id} accepted your friend invite.`);
 };
@@ -58,6 +64,9 @@ const acceptFriendInvite = (sender) => {
     console.log("accept");
     client.inforUser.listFriends.push(sender);
     renderFriendList(client.inforUser.listFriends);
+    const newUserMessages = new userMessages();
+    newUserMessages.user = sender;
+    client.inforUser.listMessages.push(newUserMessages);
     const sendData = new dataToServer('friend invite accepted', undefined, client.listUser.find(user => user.id == sender.id));
     client.socket.send(JSON.stringify(sendData));
     removeFriendInvite(sender);
