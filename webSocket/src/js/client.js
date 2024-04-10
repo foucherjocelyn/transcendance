@@ -1,6 +1,6 @@
-import { receiveFriendInvite, friendInviteHasBeenAccepted, friendInviteHasBeenDeclined } from "./add-friend";
-import { receiveMessage } from "./chat";
-import { renderFriendList } from "./friend-list";
+import { receiveAnnouncement } from "./announcements";
+import { receiveMessage } from "./chatbox";
+import { loadChat } from "./load-chat";
 
 class   userAnnouncements {
     constructor() {
@@ -23,7 +23,7 @@ const   user = {
     socket: undefined,
     avatar: undefined,
     listFriends: [],
-    listMessages: [],
+    listChat: [],
     listAnnouncements: []
 }
 
@@ -69,12 +69,8 @@ function    getDataFromServer()
             update_match_informations(receivedData);
         if (receivedData.title === 'message')
             receiveMessage(receivedData);
-        if (receivedData.title === 'friend invite received')
-            receiveFriendInvite(receivedData.from);
-        if (receivedData.title === 'friend invite accepted')
-            friendInviteHasBeenAccepted(receivedData.from);
-        if (receivedData.title === 'friend invite declined')
-            friendInviteHasBeenDeclined(receivedData.from);
+        if (receivedData.title === 'announcement')
+            receiveAnnouncement(receivedData);
         // gerer ici
     }
 }
@@ -94,7 +90,7 @@ function    buttonConnection()
 
         // create_match('offline');
         // create_match('with friends');
-        renderFriendList();
+        loadChat();
     });
 }
 

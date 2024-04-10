@@ -1,14 +1,8 @@
 import { client } from "./client";
-import { dataToServer } from "./client";
-import { openChatBox } from "./chat";
-import { displayFindNewFriendWindow } from "./add-friend";
-
-const friendsList = document.getElementById("c-friends-list");
-const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
-const friendsListSearchButton = document.querySelector("#c-search-friend-list button");
-const addNewFriendButton = document.getElementById("c-add-new-friend-button");
+import { openChatBox } from "./chatbox";
 
 const renderFriendList = (list = client.inforUser.listFriends) => {
+    const friendsList = document.getElementById("c-friends-list");
     const friendsHTML = list.map((user) => {
         return `<div id="c-list-user-${user.id}" class="c-user c-friend">
                     <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
@@ -23,6 +17,7 @@ const renderFriendList = (list = client.inforUser.listFriends) => {
 };
 
 const searchFriendList = () => {
+    const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
     if (friendsListSearchInput.value === "") {
         renderFriendList();
         return;
@@ -33,13 +28,4 @@ const searchFriendList = () => {
     renderFriendList(matchlist);
 };
 
-friendsListSearchButton.addEventListener("click", searchFriendList);
-friendsListSearchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        searchFriendList();
-    }
-});
-
-addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
-
-export { renderFriendList };
+export { renderFriendList, searchFriendList };

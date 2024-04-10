@@ -117,11 +117,7 @@ function    get_data(data, socket)
         data_packaging(data, socket);
     else if (data.title === 'game settings')
         data_packaging(data, socket);
-    else if (data.title === 'friend invite received')
-        data_packaging(data, socket);
-    else if (data.title === 'friend invite accepted')
-        data_packaging(data, socket);
-    else if (data.title === 'friend invite declined')
+    else if (data.title === 'announcement')
         data_packaging(data, socket);
 
     // add your title
