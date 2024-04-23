@@ -1,0 +1,129 @@
+/*-----Separator-----*/
+
+#r_line2 {
+	height: 1px;
+	width: 98%;
+	background-color: grey;
+	margin-top: 10px;
+}
+
+/*-----Display info-----*/
+
+.r_connect_page {
+	width: 440px;
+	background-image: url(../ressource/card2.png);
+	background-size: cover;
+	padding: 10px;
+	position: absolute;
+	top: 12%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 1px solid black;
+	border-radius: 9px;
+}
+
+#r_registration {
+	text-align: center;
+	margin-top: 30px;
+}
+
+.r_connect_form {
+	margin-top: 20px;
+}
+
+.r_regis_form {
+	margin-top: 10px;
+}
+
+.hide {
+	display: none;
+}
+
+.r_successinfo {
+	width: 500px;
+	background-image: url(../ressource/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	padding: 10px;
+	position: absolute;
+	top: 11%;
+	left: 50%;
+    transform: translateX(-50%);
+	border: 1px solid black;
+	border-radius: 9px;
+	text-align: center;
+}
+
+/*---input---*/
+
+input, textarea {
+	margin: 2px 0 0;
+	background-image: url(../ressource/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	color: white;
+}
+
+input {
+	height: 2em;
+	border-radius: 6px;
+}
+
+#rc_otp {
+	width: 20%;
+}
+
+#rc_otp_send {
+	display: inline-block;
+	height: 2em;
+}
+
+#rb_connect, #rb_submit {
+	width: 24%;
+	height: 2em;
+	font-size: 1rem;
+	background-color: #3b3b4f;
+	border-color: grey;
+	border-radius: 14px;
+	margin-top: 1em;
+}
+
+#rb_submit {
+	width: 30%;
+}
+
+#rb_connect:hover, #rb_submit:hover {
+	background-color: #545471;
+}
+
+#rb_connect:active, #rb_submit:active {
+	background-color: #1f1f24;
+	position: relative;
+	top: 1px;
+	margin-top: 1em;
+}
+
+#rb_pwreset {
+	position: relative;
+	margin-top: 2%;
+	margin-bottom: 1%;
+}
+
+.textlink {
+	cursor: default;
+	text-align: center;
+	font-size: 0.7em;
+	color: #b5b5b5;
+}
+
+.textlink:hover {
+	color: blue;
+}
+
+.textlink:active {
+	color: darkblue;
+}
+
+::placeholder {
+	color: white;
+}

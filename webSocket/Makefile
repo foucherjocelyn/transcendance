@@ -1,8 +1,8 @@
 all: start
 
 start:
-	@clear && node ./src/js/server.js &
-	@clear && parcel ./src/index.html
+	@clear && node ./src/js/webSocket/server.js &
+	@clear && node ./src/js/webServer/webServer.js
 
 install:
 	@sudo apt install -y npm

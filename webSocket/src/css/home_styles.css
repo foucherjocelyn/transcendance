@@ -1,0 +1,26 @@
+.button-img {
+	background: none;
+	border: none;
+	padding: 8px 8px;
+	background-image: url(../ressource/button.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	font-weight: bold;
+	color: #b30044;
+	position: relative;
+}
+
+.button-img:hover {
+	background-image: url(../ressource/button_hover.png);
+}
+
+.button-img:active {
+	background-image: url(../ressource/button_active.png);
+	margin-top: 1px;
+}
+
+input[readonly] {
+	color: #7eaabd;
+	background-color: #192226;
+	cursor: not-allowed;
+}

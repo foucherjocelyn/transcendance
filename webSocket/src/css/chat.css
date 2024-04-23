@@ -9,6 +9,7 @@ body {
 
 #chat {
     display: none;
+    z-index: 7;
 }
 
 .hidden {
@@ -127,10 +128,12 @@ body {
 }
 
 .chat-box {
-    position: fixed;
-    bottom:0;
-    right: var(--chat-list-width);
-    width: 300px;
+    position: relative;
+    margin-left: auto;
+    margin-right:35%;
+    /*right: var(--chat-list-width);*/
+    height: 20%;
+    width: 25vw;
 }
 
 .chat-box-header {
@@ -147,6 +150,7 @@ body {
 }
 
 .chat-box-body {
+    background-color: white;
     border: 1px solid #ccc;
 }
 

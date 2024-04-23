@@ -1,0 +1,86 @@
+#h_common_boards {
+	display: flex;
+	justify-content: space-evenly;
+	position: relative;
+}
+
+#h_player_board {
+	background-image: url(../ressource/card.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 300px;
+	min-height: 200px;
+	max-height: 600px;
+	height: auto;
+	object-fit: none;
+	margin-top: 8%;
+	position: relative;
+	left: 4%;
+}
+
+#hpb_username {
+	margin-top: 3%;
+	margin-bottom: -3%;
+}
+
+#hpb_username, #hpb_level {
+	position: relative;
+	top: 0%;
+	left: 50%;
+	transform: translateX(-10%);
+	color: white;
+	font-weight: bold;
+}
+
+#hpb_div1 {
+	position: relative;
+	background-color: black;
+	height: 1px;
+}
+
+#p_player_img {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	width: auto;
+	height: auto;
+	max-width: 220px;
+	max-height: 400px;
+}
+
+#h_scoreboard {
+	background-image: url(../ressource/card2.png);
+	background-size: cover;
+	border-radius: 4px;
+	min-width:380px;
+	width: 40%;
+	height: auto;
+	padding: 10px;
+	margin-top: 8%;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;	
+}
+
+#h_score {
+	position: relative;
+	width: 80%;
+	margin-top: 3%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#hs_filter {
+	color: gray;
+	font-weight: bold;
+	background-image: url(../ressource/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	border-radius: 2px;
+}
+
+#hs_filter th {
+	width: 25%;
+	resize: horizontal;
+	overflow: hidden;
+}

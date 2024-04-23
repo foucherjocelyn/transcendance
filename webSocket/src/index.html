@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Transcendance</title>
-        <link rel="stylesheet" href="css/chat.css">
-    </head>
-    <body>
-	<button id="buttonConnection">Connect</button>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcendance</title>
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+
+<body>
+    <main>
+        <div id="frontpage"></div>
+
+        <div class="r_successinfo hidden">
+            Your account was created
+        </div>
         <div id="chat">
             <div id="c-find-new-friend-window" class="hidden">
                 <button class="c-close-button">&times;</button>
@@ -33,9 +40,30 @@
                     </div>
                 </div>
             </div>
-            <div id="c-chat-box" class="chat-box hidden">
+            <div id="c-chat-box" class="chat-box">
             </div>
-            <script src="js/client.js" type="module"></script>
         </div>
-    </body>
+        <script src="js/client/client.js" type="module"></script>
+        <link rel="stylesheet" href="./css/html_body.css">
+        <link rel="stylesheet" href="./css/home_upperpanel.css">
+        <link rel="stylesheet" href="./css/home_homepage.css">
+        <link rel="stylesheet" href="./css/home_changeprofile.css">
+        <link rel="stylesheet" href="./css/home_tournament.css">
+        <link rel="stylesheet" href="./css/auth_styles.css">
+        <link rel="stylesheet" href="./css/home_styles.css">
+        <!-- <script src="./js/authentication/auth_main.js"></script>
+        <script src="./js/authentication/auth_cookie.js"></script>
+        <script src="./js/authentication/auth_connect.js"></script>
+        <script src="./js/authentication/auth_otp.js"></script>
+        <script src="./js/authentication/auth_get_my_info.js"></script>
+        <script src="./js/authentication/auth_register.js"></script>
+        <script src="./js/authentication/auth_reset.js"></script>
+        <script src="./js/authentication/auth_profile_picture.js"></script>
+        <script src="./js/home/home_homeboard.js"></script>
+        <script src="./js/home/home_changeprofile.js"></script>
+        <script src="./js/home/home_tournament.js"></script>
+        <script src="./js/home/home_game.js"></script> -->
+    </main>
+</body>
+
 </html>
