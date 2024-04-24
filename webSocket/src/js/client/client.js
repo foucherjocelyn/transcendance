@@ -35,7 +35,7 @@ const   client = {
 };
 
 // user.id = '#' + ((Math.floor(Math.random() * 6)) * 2);
-user.id = getCookie('id');
+user.id = '#' + getCookie('id');
 user.name = getCookie('username');
 user.status = getCookie('status');
 // user.avatar = "../../img/avatar/avatar2.jpg";
