@@ -5,53 +5,56 @@ import { getCookie } from "../authentication/auth_cookie.js";
 async function getListUsers() {
     console.log("--getListUsers starting");
     let f_token = getCookie("token");
-//    console.log(f_token);
-    try {
-        const response = await fetch("http://127.0.0.1:8000/api/v1/users", {
-            method: "GET",
-            headers: {
-				"Accept": "application/json",
-				"Content-type": "application/json",
-				"Authorization": `Bearer ${f_token}`
-            }
-        });
-        if (!response.ok)
-		{
-            console.log("getListUsers: Client/Server error");
-            return;
+    //    console.log(f_token);
+
+    const response = await fetch("http://127.0.0.1:8000/api/v1/users", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
         }
-        const data = await response.json();
-        return data;
-    }
-	catch (error)
-	{
-        console.error("getListUsers: ", error);
-	}
-	console.log("--");
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("getListUsers: Client/Server error");
+                return;
+            }
+            const data = response.json();
+            return data;
+        })
+        .catch(error => {
+            console.error("getListUsers: ", error);
+        });
+    console.log("--");
+    return response;
 }
 
 const searchFindNewFriendWindow = () => {
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list");
     const regex = /([A-Za-z]+)/g;
     const searchInput = document.querySelector("#c-find-new-friend-window input");
-    const listUsers = getListUsers();
+    const listUsersRequest = getListUsers();
 
     if (searchInput.value) {
-        const parsedSearchInput = searchInput.value.match(regex).join("");
+        listUsersRequest.then(listUsers => {
+            const parsedSearchInput = searchInput.value.match(regex).join("");
 
-        console.log(listUsers);
-        const matchlist = listUsers.filter((user) => user.username.includes(parsedSearchInput));
-        const usersHTML = matchlist.map((user) => {
-            return `<div id="c-list-user-#${user.id}" class="c-user">
+            console.log(listUsers);
+            const listUsersWithoutSelf = listUsers.filter((user) => user.username != getCookie("username"))
+            const matchlist = listUsersWithoutSelf.filter((user) => user.username.includes(parsedSearchInput));
+            const usersHTML = matchlist.map((user) => {
+                return `<div id="c-list-user-#${user.id}" class="c-user">
                 <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
                 <div class="user-name">${user.username}<span class="user-id">#${user.id}</span></div>
                 <button id="c-send-friend-invite-#${user.id}" class="c-send-friend-invite">+</button>
                 </div>`;
-        }).join("");
-        userListDiv.innerHTML = usersHTML;
-        document.querySelectorAll(".c-send-friend-invite").forEach((user) => {
-            const userId = user.id.substring(user.id.indexOf('#') + 1);
-            user.addEventListener("click", (e) => sendFriendInvite(userId));
+            }).join("");
+            userListDiv.innerHTML = usersHTML;
+            document.querySelectorAll(".c-send-friend-invite").forEach((user) => {
+                const userId = user.id.substring(user.id.indexOf('#') + 1);
+                user.addEventListener("click", (e) => sendFriendInvite(userId));
+            });
         });
     }
 };
@@ -75,6 +78,7 @@ const displayFindNewFriendWindow = () => {
 
 const sendFriendInvite = (id) => {
     const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
+    console.log(id);
     const sendData = new dataToServer("announcement", 'friend invite received', client.listUser.find(user => user.id == id));
     client.socket.send(JSON.stringify(sendData));
     console.log(sendData);
