@@ -1,9 +1,32 @@
+import { getCookie } from "../authentication/auth_cookie.js";
 import { client, dataToServer, userMessages } from "../client/client.js";
 import { renderFriendList } from "./friend-list.js";
 
-const removeFriendInvite = (sender) => {
+const getListOfFriendInvitationsReceived = async () => {
+    let f_token = getCookie("token");
+    return await fetch("http://127.0.0.1:8000/api/v1/user/friendship/received", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("getListOfFriendInvitationsReceived: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error("getListOfFriendInvitationsReceived: ", error);
+        });
+}
+
+const removeFriendInvite = (id) => {
     const announcementsDiv = document.getElementById("c-announcements-window");
-    document.getElementById(`c-friend-invitation${sender.id}`).remove();
+    document.getElementById(`c-friend-invitation${id}`).remove();
     document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", () => {
         announcementsDiv.classList.add("hidden");
     });
@@ -22,35 +45,53 @@ const friendInviteHasBeenDeclined = (sender) => {
     console.log(`${sender.name}${sender.id} declined your friend invite.`);
 };
 
-const acceptFriendInvite = (sender) => {
+const updateFriendInviteStatus = async (id, newStatus) => {
+    let f_token = getCookie("token");
+    await fetch(`http://127.0.0.1:8000/api/v1/user/friendship/${id}/status`, {
+        method: "PUT",
+        body: JSON.stringify({"status": newStatus}),
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("updateFriendInviteStatus: Client/Server error");
+                return response.json();
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error updateFriendInviteStatus: ", error);
+        });
+}
+
+const acceptFriendInvite = (id) => {
     console.log("accept");
-    client.inforUser.listFriends.push(sender);
+    updateFriendInviteStatus(id, "accepted");
     renderFriendList(client.inforUser.listFriends);
-    const newUserMessages = new userMessages();
-    newUserMessages.user = sender;
-    client.inforUser.listChat.push(newUserMessages);
-    const sendData = new dataToServer("announcement", 'friend invite accepted', client.listUser.find(user => user.id == sender.id));
-    client.socket.send(JSON.stringify(sendData));
-    removeFriendInvite(sender);
+    removeFriendInvite(id);
 };
 
-const declineFriendInvite = (sender) => {
-    console.log("decline");
-    const sendData = new dataToServer("announcement", 'friend invite declined', client.listUser.find(user => user.id == sender.id));
-    client.socket.send(JSON.stringify(sendData));
-    removeFriendInvite(sender);
+const declineFriendInvite = (id) => {
+    updateFriendInviteStatus(id, "rejected");
+    removeFriendInvite(id);
 };
 
-const receiveFriendInvite = (sender) => {
+const receiveFriendInvite = (id, sender) => {
     const announcementsDiv = document.getElementById("c-announcements-window");
-    announcementsDiv.innerHTML += `<div id="c-friend-invitation${sender.id}" class="c-friend-invitation">
-    <p>${sender.name}${sender.id}</p>
+    announcementsDiv.innerHTML += `<div id="c-friend-invitation${id}" class="c-friend-invitation">
+    <p>${sender}</p>
     <button name="accept" class="accept">accept</button>
     <button name="decline" class="decline">decline</button>
     </div>`
-    document.getElementById(`c-friend-invitation${sender.id}`).querySelector(".accept").addEventListener("click", () => {acceptFriendInvite(sender)});
-    document.getElementById(`c-friend-invitation${sender.id}`).querySelector(".decline").addEventListener("click", () => {declineFriendInvite(sender)});
-    console.log(sender);
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".accept").addEventListener("click", () => {acceptFriendInvite(id)});
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => {declineFriendInvite(id)});
 };
 
 const closeAnnouncements = () => {
@@ -63,6 +104,15 @@ const showAnnouncements = () => {
     const announcementsDiv = document.getElementById("c-announcements-window");
     announcementsDiv.classList.remove("hidden");
     document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", closeAnnouncements);
+    const listOfFriendInvitationsResponse = getListOfFriendInvitationsReceived();
+    listOfFriendInvitationsResponse.then(list => {
+        console.log(list);
+        list.forEach(invitation => {
+            if (invitation.status === "pending") {
+                receiveFriendInvite(invitation.id, invitation.sender_username);
+            }
+        })
+    });
 };
 
 const receiveAnnouncement = (receivedData) => {

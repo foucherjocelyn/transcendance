@@ -47,13 +47,13 @@ const searchFindNewFriendWindow = () => {
                 return `<div id="c-list-user-#${user.id}" class="c-user">
                 <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
                 <div class="user-name">${user.username}<span class="user-id">#${user.id}</span></div>
-                <button id="c-send-friend-invite-#${user.id}" class="c-send-friend-invite">+</button>
+                <button id="c-send-friend-invite-#${user.username}" class="c-send-friend-invite">+</button>
                 </div>`;
             }).join("");
             userListDiv.innerHTML = usersHTML;
             document.querySelectorAll(".c-send-friend-invite").forEach((user) => {
-                const userId = user.id.substring(user.id.indexOf('#') + 1);
-                user.addEventListener("click", (e) => sendFriendInvite(userId));
+                const userName = user.id.substring(user.id.indexOf('#') + 1);
+                user.addEventListener("click", (e) => sendFriendInvite(userName));
             });
         });
     }
@@ -76,13 +76,37 @@ const displayFindNewFriendWindow = () => {
     document.querySelector("#c-find-new-friend-window .c-close-button").addEventListener("click", closeFindNewFriendWindow);
 };
 
-const sendFriendInvite = (id) => {
-    const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
-    console.log(id);
-    const sendData = new dataToServer("announcement", 'friend invite received', client.listUser.find(user => user.id == id));
-    client.socket.send(JSON.stringify(sendData));
-    console.log(sendData);
-    findNewFriendWindow.classList.add("hidden");
+const sendFriendInvite = async (username) => {
+    //const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
+    console.log(username);
+    let f_token = getCookie("token");
+    await fetch("http://127.0.0.1:8000/api/v1/user/friendship/invite", {
+        method: "POST",
+        body: JSON.stringify({username}),
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("sendFriendInvite: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error send Friend Invite: ", error);
+        });
+    console.log("----");
+    //const sendData = new dataToServer("announcement", 'friend invite received', client.listUser.find(user => user.id == id));
+    //client.socket.send(JSON.stringify(sendData));
+    //console.log(sendData);
+    //findNewFriendWindow.classList.add("hidden");
 };
 
 export {
