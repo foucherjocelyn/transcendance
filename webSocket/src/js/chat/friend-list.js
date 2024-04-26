@@ -48,14 +48,18 @@ const renderFriendList = (list) => {
 
 const searchFriendList = () => {
     const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
-    if (friendsListSearchInput.value === "") {
-        renderFriendList();
-        return;
-    }
-    const regex = /([A-Za-z]+)/g;
-    const parsedSearchInput = friendsListSearchInput.value.match(regex).join("");
-    const matchlist = client.inforUser.listFriends.filter((friend) => friend.name.includes(parsedSearchInput));
-    renderFriendList(matchlist);
+    const regex = /([A-Za-z0-9]+)/g;
+    const listFriends = getListFriends();
+
+    listFriends.then(list => {
+        if (friendsListSearchInput.value === "") {
+            renderFriendList(list);
+            return;
+        }
+        const parsedSearchInput = friendsListSearchInput.value.match(regex)?.join("");
+        const matchlist = list.filter((friend) => friend.username.includes(parsedSearchInput));
+        renderFriendList(matchlist);
+    });
 };
 
 export { renderFriendList, searchFriendList };
