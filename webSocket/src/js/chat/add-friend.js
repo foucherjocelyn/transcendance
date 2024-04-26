@@ -44,9 +44,9 @@ const searchFindNewFriendWindow = () => {
             const listUsersWithoutSelf = listUsers.filter((user) => user.username != getCookie("username"))
             const matchlist = listUsersWithoutSelf.filter((user) => user.username.includes(parsedSearchInput));
             const usersHTML = matchlist.map((user) => {
-                return `<div id="c-list-user-#${user.id}" class="c-user">
+                return `<div id="c-list-user-#${user.username}" class="c-user">
                 <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
-                <div class="user-name">${user.username}<span class="user-id">#${user.id}</span></div>
+                <div class="user-name">${user.username}</div>
                 <button id="c-send-friend-invite-#${user.username}" class="c-send-friend-invite">+</button>
                 </div>`;
             }).join("");

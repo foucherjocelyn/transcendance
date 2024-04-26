@@ -2,13 +2,17 @@ import { renderFriendList } from "./friend-list.js";
 import { searchFriendList } from "./friend-list.js";
 import { displayFindNewFriendWindow } from "./add-friend.js";
 import { showAnnouncements } from "./announcements.js";
+import { getListFriends } from "./friend-list.js";
 
 const loadChat = () => {
     const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
     const friendsListSearchButton = document.querySelector("#c-search-friend-list button");
     const addNewFriendButton = document.getElementById("c-add-new-friend-button");
 
-    renderFriendList();
+    const listFriends = getListFriends();
+    listFriends.then(list => {
+        renderFriendList(list);
+    });
 
     friendsListSearchButton.addEventListener("click", searchFriendList);
     friendsListSearchInput.addEventListener("keydown", (e) => {

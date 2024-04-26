@@ -1,6 +1,7 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 import { client, dataToServer, userMessages } from "../client/client.js";
 import { renderFriendList } from "./friend-list.js";
+import { getListFriends } from "./friend-list.js";
 
 const getListOfFriendInvitationsReceived = async () => {
     let f_token = getCookie("token");
@@ -74,7 +75,10 @@ const updateFriendInviteStatus = async (id, newStatus) => {
 const acceptFriendInvite = (id) => {
     console.log("accept");
     updateFriendInviteStatus(id, "accepted");
-    renderFriendList(client.inforUser.listFriends);
+    const listFriends = getListFriends();
+    listFriends.then(list => {
+        renderFriendList(list);
+    });
     removeFriendInvite(id);
 };
 
