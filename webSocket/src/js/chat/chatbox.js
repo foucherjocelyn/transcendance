@@ -33,7 +33,7 @@ const postMessage = async (message) => {
 const renderMessages = async (friendId) => {
 
     let f_token = getCookie("token");
-    await fetch(`http://127.0.0.1:8000/api/v1/user/friend/${friendId}/message/last`, {
+    const messagesSent = await fetch(`http://127.0.0.1:8000/api/v1/user/friend/${friendId}/message/sent`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -50,18 +50,44 @@ const renderMessages = async (friendId) => {
         })
         .then(data => {
             console.log(data);
-            const chatMessagesDiv = document.getElementById("c-chat-messages");
-            const myUsername = getCookie("username");
-            chatMessagesDiv.innerHTML = '';
-            data.forEach(message => {
-                const type = message.sender_username === myUsername ? "outgoing" : "incoming";
-                const messageHTML = `<div class="chat-bubble ${type}">${message.content}</div>`;
-                chatMessagesDiv.innerHTML += messageHTML;
-            });
+            return data;
         })
         .catch(error => {
             console.error("renderMessages : ", error);
         });
+    const messagesReceived = await fetch(`http://127.0.0.1:8000/api/v1/user/friend/${friendId}/message/received`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("renderMessages : Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            return data;
+        })
+        .catch(error => {
+            console.error("renderMessages : ", error);
+        });
+
+    const messages = messagesSent.concat(messagesReceived);
+    const messagesSortedByDate = messages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    const chatMessagesDiv = document.getElementById("c-chat-messages");
+    const myUsername = getCookie("username");
+    chatMessagesDiv.innerHTML = '';
+    messagesSortedByDate.forEach(message => {
+        const type = message.sender_username === myUsername ? "outgoing" : "incoming";
+        const messageHTML = `<div class="chat-bubble ${type}">${message.content}</div>`;
+        chatMessagesDiv.innerHTML += messageHTML;
+    });
 
 };
 
