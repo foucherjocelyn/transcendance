@@ -33,16 +33,14 @@ export async function getListFriends() {
 const renderFriendList = (list) => {
     console.log(list);
     const friendsList = document.getElementById("c-friends-list");
-    const friendsHTML = list.map((user) => {
-        return `<div id="c-list-user-${user.username}" class="c-user c-friend">
+    friendsList.innerHTML = "";
+    list.forEach((user) => {
+        friendsList.innerHTML += `<div id="c-list-user-${user.username}" class="c-user c-friend">
                     <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
                 </div>`;
-    }).join("");
-    friendsList.innerHTML = friendsHTML;
-    document.querySelectorAll(".c-friend").forEach((friend) => {
-        const friendId = friend.id.substring(friend.id.indexOf('#'));
-        friend.addEventListener("click", (e) => openChatBox(friendId));
+        const friendElement = document.getElementById(`c-list-user-${user.username}`);
+        friendElement.addEventListener("click", (e) => openChatBox(user.id, user.username));
     });
 };
 
