@@ -2,32 +2,32 @@ import { client } from "../client/client.js";
 import { openChatBox } from "./chatbox.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 
-export async function getListFriends() {
+const getListFriends = async () => {
     console.log("--getListFriends starting");
     let f_token = getCookie("token");
     //    console.log(f_token);
 
-    try {
-        const response = await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
-            method: "GET",
-            headers: {
-                "Accept": "application/json",
-                "Content-type": "application/json",
-                "Authorization": `Bearer ${f_token}`
-            }
-        })
-        if (!response.ok) {
-            console.log("getListFriends: Client/Server error");
-            return;
+    return await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
         }
-        const data = await response.json();
-        return data;
-    }
-    catch(error) {
-        console.error("getListFriends: ", error);
-    };
-    console.log("--");
-    return response;
+    })
+        .then (response => {
+            if (!response.ok) {
+                console.log("getListFriends: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then (data => {
+            return data;
+        })
+        .catch(error => {
+            console.error("getListFriends: ", error);
+        });
 }
 
 const renderFriendList = (list) => {
@@ -60,4 +60,4 @@ const searchFriendList = () => {
     });
 };
 
-export { renderFriendList, searchFriendList };
+export { renderFriendList, searchFriendList, getListFriends };

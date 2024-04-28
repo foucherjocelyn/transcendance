@@ -91,8 +91,10 @@ const renderMessages = async (friendId) => {
 
 };
 
-const sendMessage = (friendUsername) => {
+const sendMessage = (friendId, friendUsername) => {
     const chatInputContent = document.querySelector("#c-chat-input input");
+    if (chatInputContent.value === '')
+        return;
     const newMessage = {
         type: "outgoing",
         content: chatInputContent.value
@@ -104,6 +106,8 @@ const sendMessage = (friendUsername) => {
     const sendData = new dataToServer('message', newMessage.content, client.listUser.find(user => user.name == friendUsername));
     client.socket.send(JSON.stringify(sendData));*/
     postMessage({username: friendUsername, content: newMessage.content});
+    chatInputContent.value = "";
+    renderMessages(friendId);
 };
 
 const receiveMessage = (receivedData) => {
@@ -141,7 +145,7 @@ const openChatBox = (friendId, friendUsername) => {
     chatBoxHeaderFriendName.textContent = friendUsername;
     renderMessages(friendId);
     chatBoxCloseButton.addEventListener("click", closeChatBox);
-    sendMessageButton.addEventListener("click", () => { sendMessage(friendUsername) });
+    sendMessageButton.addEventListener("click", () => { sendMessage(friendId, friendUsername) });
     chatInputContent.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             sendMessage(friendUsername);

@@ -88,8 +88,8 @@ const declineFriendInvite = (id) => {
 };
 
 const receiveFriendInvite = (id, sender) => {
-    const announcementsDiv = document.getElementById("c-announcements-window");
-    announcementsDiv.innerHTML += `<div id="c-friend-invitation${id}" class="c-friend-invitation">
+    const announcementsList = document.getElementById("c-announcements-list");
+    announcementsList.innerHTML += `<div id="c-friend-invitation${id}" class="c-friend-invitation">
     <p>${sender}</p>
     <button name="accept" class="accept">accept</button>
     <button name="decline" class="decline">decline</button>
@@ -105,7 +105,9 @@ const closeAnnouncements = () => {
 };
 
 const showAnnouncements = () => {
+    const announcementsList = document.getElementById("c-announcements-list");
     const announcementsDiv = document.getElementById("c-announcements-window");
+    announcementsList.innerHTML = "";
     announcementsDiv.classList.remove("hidden");
     document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", closeAnnouncements);
     const listOfFriendInvitationsResponse = getListOfFriendInvitationsReceived();
