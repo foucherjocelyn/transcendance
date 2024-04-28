@@ -85,13 +85,17 @@ const renderMessages = async (friendId) => {
     chatMessagesDiv.innerHTML = '';
     messagesSortedByDate.forEach(message => {
         const type = message.sender_username === myUsername ? "outgoing" : "incoming";
-        const messageHTML = `<div class="chat-bubble ${type}">${message.content}</div>`;
-        chatMessagesDiv.innerHTML += messageHTML;
+        const messageHTML = document.createElement("div");
+        messageHTML.classList.add("chat-bubble", type);
+        messageHTML.innerText = message.content;
+        chatMessagesDiv.appendChild(messageHTML);
+        //const messageHTML = `<div class="chat-bubble ${type}">${message.content}</div>`;
+        //chatMessagesDiv.innerHTML += messageHTML;
     });
 
 };
 
-const sendMessage = (friendId, friendUsername) => {
+const sendMessage = async (friendId, friendUsername) => {
     const chatInputContent = document.querySelector("#c-chat-input input");
     if (chatInputContent.value === '')
         return;
@@ -105,8 +109,8 @@ const sendMessage = (friendId, friendUsername) => {
     chatInputContent.value = '';
     const sendData = new dataToServer('message', newMessage.content, client.listUser.find(user => user.name == friendUsername));
     client.socket.send(JSON.stringify(sendData));*/
-    postMessage({username: friendUsername, content: newMessage.content});
     chatInputContent.value = "";
+    await postMessage({username: friendUsername, content: newMessage.content});
     renderMessages(friendId);
 };
 
@@ -148,7 +152,7 @@ const openChatBox = (friendId, friendUsername) => {
     sendMessageButton.addEventListener("click", () => { sendMessage(friendId, friendUsername) });
     chatInputContent.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
-            sendMessage(friendUsername);
+            sendMessage(friendId, friendUsername);
         }
     });
     chatBox.classList.remove("hidden");
