@@ -39,8 +39,12 @@ const renderFriendList = (list) => {
                     <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
                 </div>`;
-        const friendElement = document.getElementById(`c-list-user-${user.username}`);
-        friendElement.addEventListener("click", (e) => openChatBox(user.id, user.username));
+    });
+    document.querySelectorAll(".c-friend").forEach(friend => {
+        const friendUsername = friend.id.substring().slice(12);
+        console.log("friends");
+        console.log(friendUsername);
+        friend.addEventListener("click", (e) => openChatBox(friendUsername));
     });
 };
 
