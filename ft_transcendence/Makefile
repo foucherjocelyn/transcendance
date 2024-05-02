@@ -1,22 +1,42 @@
-all:
-	@docker compose -f ./docker-compose.yml up -d --build
+all: up
+
+up:
+	docker compose up -d --build
 
 down:
-	@docker compose -f ./docker-compose.yml down
+	docker compose down
+
+start:
+	docker compose start
+
+stop:
+	docker compose stop
+
+restart:
+	docker compose restart
+
+logs:
+	docker compose logs -f
+
+back_logs:
+	docker compose logs -f backend
+
+db_logs:
+	docker compose logs -f db
+
+socket_logs:
+	docker compose logs -f websocket
+
+web_logs:
+	docker compose logs -f webserver
 
 status:
-	@docker logs websocket
-	@docker logs webserver
-
-network:
-	@docker network inspect ft_transcendence_my_network
+	docker compose ps
 
 clean:
-	@docker stop $$(docker ps -qa)
-	@docker rm $$(docker ps -qa)
-	@docker rmi -f $$(docker images -qa)
-	@docker network rm $$(docker network ls --filter type=custom -q)
+	docker compose down --rmi all --volumes --remove-orphans
+	docker system prune -f -a --volumes
 
-re: clean all
+re : clean all
 
-.PHONY: all re down clean status network
+.PHONY: all up down start stop restart logs status clean
