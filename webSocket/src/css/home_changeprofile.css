@@ -1,5 +1,5 @@
 #h_myprofile {
-	background-image: url(../ressource/card2.png);
+	background-image: url(../img/card2.png);
 	width: 600px;
 	min-height: 400px;
 	height: 40%;
@@ -13,8 +13,26 @@
 	border-radius: 5px;
 }
 
+#h_myprofileoptions {
+	position: relative;
+	left: 50%;
+	transform: translateX(-47%);
+	text-align: center;
+}
+
+#h_myprofileoptions p {
+	color: white;
+	font-weight: bold;
+	display: inline;
+	margin-right: 2em;
+}
+
+#h_myprofileoptionsline {
+	position: relative;
+}
+
 #p_username, #p_oldpassword, #p_newpassword, #p_newpasswordconfirm, #p_firstname, #p_lastname, #p_email, #p_avatar {
-	background-image: url(../ressource/bar.png);
+	background-image: url(../img/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	position: relative;
@@ -66,21 +84,19 @@
 	max-height: 200px;
 }
 
-#p_div {
-	height: 1px;
-	background-color: black;
-	position: relative;
-	top: 40%;
-}
-
 #p_avatar {
 	position: relative;
 	top: 20%;
 	left: 30%;
 }
 
+#p_div {
+	height: 1px;
+	background-color: black;
+	position: relative;
+}
+
 #p_change {
 	position: relative;
-	top: 40%;
 	left: 44%;
 }

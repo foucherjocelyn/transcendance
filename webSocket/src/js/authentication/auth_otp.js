@@ -1,5 +1,6 @@
 import { loadSpinner } from "./spinner.js";
 import { getCookie } from "./auth_cookie.js";
+import { signIn } from "../backend_operation/authentication.js";
 import { getOtpQR } from "../backend_operation/one_time_password.js";
 import { sendOtp } from "../backend_operation/one_time_password.js";
 import { getOtpStatusToken } from "../backend_operation/one_time_password.js";

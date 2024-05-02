@@ -7,6 +7,7 @@ import { getUserList } from "../backend_operation/get_user_info.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
+import { loadChat } from "../chat/load-chat.js";
 
 export function upperPanel()
 {
@@ -67,8 +68,10 @@ async function	drawHomePage(callback)
 				</div>
       </div>
 	</div>
+	<div id="chat"></div>
+	<div class="r_successinfo hide"></div>
 </div>
-<div class="r_successinfo hide"></div>`;
+`;
 
 	//load players scoreboard
 	console.log("loading player list");
@@ -104,6 +107,7 @@ export function to_homePage(nohistory = "false")
 					getAvatar('p_player_img');
 				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById("h_homepage").classList.remove("hide");
+				loadChat();
 			}
 		});
 }

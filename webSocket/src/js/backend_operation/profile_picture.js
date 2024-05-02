@@ -49,7 +49,8 @@ export async function getAvatar(elemImageId)
 		}
 		const data = await response.blob();
 		const imageUrl = URL.createObjectURL(data);
-		document.getElementById(elemImageId).src = imageUrl;
+		if (document.getElementById(elemImageId) !== null)
+			document.getElementById(elemImageId).src = imageUrl;
 	}
 	catch(error)
 	{

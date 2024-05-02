@@ -6,7 +6,7 @@
 	top: 1%;
 	margin-left: auto;
 	margin-right: auto;
-	background-image: url(../ressource/bar.png);
+	background-image: url(../img/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 3px;
@@ -16,30 +16,30 @@
 	padding: 6px 4px;
 }
 
-#h_tohome {
+#h_to_home {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/home.png);
+	background-image: url(../img/home.png);
 	background-size: 100% 100%;
 }
 
-#h_tohome:hover {
+#h_to_home:hover {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/home_hover.png);
+	background-image: url(../img/home_hover.png);
 	background-size: 100% 100%;
 }
 
-#h_tohome:active {
+#h_to_home:active {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/home_hover.png);
+	background-image: url(../img/home_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
@@ -49,7 +49,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/profile.png);
+	background-image: url(../img/profile.png);
 	background-size: 100% 100%;
 }
 
@@ -58,7 +58,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/profile_hover.png);
+	background-image: url(../img/profile_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -67,63 +67,63 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/profile_hover.png);
+	background-image: url(../img/profile_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
 
-#h_togame {
+#h_to_game {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/game.png);
+	background-image: url(../img/game.png);
 	background-size: 100% 100%;
 }
 
-#h_togame:hover {
+#h_to_game:hover {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/game_hover.png);
+	background-image: url(../img/game_hover.png);
 	background-size: 100% 100%;
 }
 
-#h_togame:active {
+#h_to_game:active {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/game_hover.png);
+	background-image: url(../img/game_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
 
-#h_totournament {
+#h_to_tournament {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/tournament.png);
+	background-image: url(../img/tournament.png);
 	background-size: 100% 100%;
 }
 
-#h_totournament:hover {
+#h_to_tournament:hover {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/tournament_hover.png);
+	background-image: url(../img/tournament_hover.png);
 	background-size: 100% 100%;
 }
 
-#h_totournament:active {
+#h_to_tournament:active {
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/tournament_hover.png);
+	background-image: url(../img/tournament_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
@@ -133,7 +133,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/logout.png);
+	background-image: url(../img/logout.png);
 	background-size: 100% 100%;
 }
 
@@ -142,7 +142,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/logout_hover.png);
+	background-image: url(../img/logout_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -151,7 +151,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../ressource/logout_hover.png);
+	background-image: url(../img/logout_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }

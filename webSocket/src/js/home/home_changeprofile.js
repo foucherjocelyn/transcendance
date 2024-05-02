@@ -13,6 +13,8 @@ import { dataUpdate } from "../backend_operation/dataUpdate.js";
 import { uploadAvatar } from "../backend_operation/profile_picture.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getOtpStatusToken } from "../backend_operation/one_time_password.js";
+import { classy_signOut } from "../authentication/auth_connect.js";
+import { loadChat } from "../chat/load-chat.js";
 
 function	enableInputReq(event, element_name)
 {
@@ -123,6 +125,7 @@ async function	drawProfilePage(callback)
 `<div id="frontpage">
 	${loadSpinner()}
 	${upperPanel()}
+	<div id="chat"></div>
 	<div id="h_myprofile" name="myprofile" class="hide">
 		<div id="h_myprofileoptions">
 			<p id="h_changeinfo">My user info</p>
@@ -134,8 +137,10 @@ async function	drawProfilePage(callback)
 			<img style="max-width: 300px; max-height: 300px; position:relative; left: 25%; margin-top: 5%;" src="../../img/gear.png"></img>
 		</div>
 	</div>
+	<div id="chat"></div>
+	<div class="r_successinfo hide"></div>
 </div>
-<div class="r_successinfo hide"></div>`;
+`;
 
 	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
 	document.getElementById("h_to_game").addEventListener("click", () => { to_game(); });
@@ -164,6 +169,7 @@ export async function to_profilePage(nohistory = "false")
 			{
 				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById("h_myprofile").classList.remove("hide");
+				loadChat();
 			}
 		});
 }

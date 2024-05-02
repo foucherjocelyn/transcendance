@@ -3,6 +3,8 @@ import { upperPanel } from "./home_homeboard.js";
 import { to_homePage } from "./home_homeboard.js";
 import { to_game } from "./home_game.js";
 import { to_profilePage } from "./home_changeprofile.js";
+import { classy_signOut } from "../authentication/auth_connect.js";
+import { loadChat } from "../chat/load-chat.js";
 
 function drawTournament(callback)
 {
@@ -10,35 +12,38 @@ function drawTournament(callback)
 		`<div id="frontpage">
 			${loadSpinner()}
 			${upperPanel()}
+			<div id="chat"></div>
 				<div id="h_tournament_page" class="hide">
-					<div id="h_tournament_board">\
-						<div class="t_sort_head">\
-					<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">\
-		            <button type="button" id="htb_mglass" name="mglass"></button>\
-        		    <select id="htb_dropdown" name="options">\
-		              <option value="upcoming" selected>Upcoming</option>\
-        		      <option value="ongoing">Ongoing</option>\
-             		  <option value="finished">Finished</option>\
-		            </select>\
-        				</div>\
-          <hr id="htb_sep" name="t_sep" class="t_separator">\
-          <table id="t_tournament">\
-            <thead>\
-              <tr id="htb_filter">\
-                <th scope="col">Match Name</th>\
-				<th scope="col">Player</th>\
-                <th scope="col">Time</th>\
-                <th scope="col">Rating</th>\
-              </tr>\
-            </thead>\
-            <tbody id="htb_info">\
-            </tbody>\
-          </table>\
+					<div id="h_tournament_board">
+						<div class="t_sort_head">
+					<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
+		            <button type="button" id="htb_mglass" name="mglass"></button>
+        		    <select id="htb_dropdown" name="options">
+		              <option value="upcoming" selected>Upcoming</option>
+        		      <option value="ongoing">Ongoing</option>
+             		  <option value="finished">Finished</option>
+		            </select>
+        				</div>
+          <hr id="htb_sep" name="t_sep" class="t_separator">
+          <table id="t_tournament">
+            <thead>
+              <tr id="htb_filter">
+                <th scope="col">Match Name</th>
+				<th scope="col">Player</th>
+                <th scope="col">Time</th>
+                <th scope="col">Rating</th>
+              </tr>
+            </thead>
+            <tbody id="htb_info">
+            </tbody>
+          </table>
           <button class="button-img" type="button" id="htb_temp" name="temp">Add label (debug)</button>\
 				</div>
 			</div>
+			<div id="chat"></div>
+			<div class="r_successinfo hide"></div>
 		</div>
-<div class="r_successinfo hide"></div>`;
+`;
 	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
 	document.getElementById("h_to_game").addEventListener("click", to_game);
 	document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
@@ -81,6 +86,7 @@ export function to_tournament(nohistory = "false")
 		{
 			document.getElementById("loadspinner").classList.add("hide");
 			document.getElementById("h_tournament_page").classList.remove("hide");
+			loadChat();
 		}
 	});
 }

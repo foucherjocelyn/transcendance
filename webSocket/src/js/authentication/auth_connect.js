@@ -1,6 +1,7 @@
 import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
 import { to_forgotForm } from "./auth_reset.js";
+import { to_otpForm } from "./auth_otp.js";
 import { signIn } from "../backend_operation/authentication.js";
 import { signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
@@ -16,6 +17,7 @@ export async function	classy_signOut(sourcename)
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
+	
 }
 
 async function checkConnect()

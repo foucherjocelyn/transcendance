@@ -9,39 +9,13 @@
 
 /*-----Display info-----*/
 
-.r_connect_page {
-	width: 440px;
-	background-image: url(../ressource/card2.png);
-	background-size: cover;
-	padding: 10px;
-	position: absolute;
-	top: 12%;
-	left: 50%;
-	transform: translateX(-50%);
-	border: 1px solid black;
-	border-radius: 9px;
-}
-
-#r_registration {
-	text-align: center;
-	margin-top: 30px;
-}
-
-.r_connect_form {
-	margin-top: 20px;
-}
-
-.r_regis_form {
-	margin-top: 10px;
-}
-
 .hide {
 	display: none;
 }
 
 .r_successinfo {
 	width: 500px;
-	background-image: url(../ressource/bar.png);
+	background-image: url(../img/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	padding: 10px;
@@ -58,7 +32,7 @@
 
 input, textarea {
 	margin: 2px 0 0;
-	background-image: url(../ressource/bar.png);
+	background-image: url(../img/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	color: white;
@@ -67,15 +41,6 @@ input, textarea {
 input {
 	height: 2em;
 	border-radius: 6px;
-}
-
-#rc_otp {
-	width: 20%;
-}
-
-#rc_otp_send {
-	display: inline-block;
-	height: 2em;
 }
 
 #rb_connect, #rb_submit {

@@ -4,7 +4,7 @@
 	position: relative;
 }
 
-#h_player_board {
+.h_player_board {
 	background-color: #002f69;
 	height: 3.5em;
 	width: 103%;
@@ -32,7 +32,7 @@
 
 #hpb_username {
 	margin-bottom: -1%;
-	top: -30%;
+	top: -55%;
 	left: 15%;
 }
 
@@ -48,13 +48,13 @@
 }
 
 #h_scoreboard {
-	background-image: url(../ressource/card2.png);
+	background-image: url(../img/card2.png);
 	background-size: cover;
 	border-radius: 4px;
 	min-width:380px;
 	width: 90%;
 	height: 400px;
-	max-height: 700px;
+	max-weight: 700px;
 	padding: 10px;
 	position: relative;	
 	margin-top: 1%;
@@ -73,7 +73,7 @@
 #hs_filter {
 	color: gray;
 	font-weight: bold;
-	background-image: url(../ressource/bar.png);
+	background-image: url(../img/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 2px;
