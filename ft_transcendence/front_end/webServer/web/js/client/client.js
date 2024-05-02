@@ -10,6 +10,7 @@ import { receiveMessage } from "../chat/chatbox.js";
 import { loadChat } from "../chat/load-chat.js";
 import { authCheck } from "../authentication/auth_main.js";
 import { getCookie } from "../authentication/auth_cookie.js";
+import { getAvatar } from "../backend_operation/profile_picture.js";
 
 class   userAnnouncements {
     constructor() {
@@ -30,7 +31,7 @@ const   user = {
     name: undefined,
     status: undefined,
     avatar: undefined,
-    level: 0,
+    level: undefined,
     listFriends: [],
     listChat: [],
     listAnnouncements: []
@@ -41,12 +42,6 @@ const   client = {
     inforUser: undefined,
     listUser: []
 };
-
-user.id = getCookie('id');
-user.name = getCookie('username');
-user.status = getCookie('status');
-
-client.inforUser = user;
 
 class   dataToServer {
     constructor(title, content, from, to) {
@@ -143,17 +138,12 @@ function    connection()
     
     socket.onopen = function() {
         console.log('Connected to WebSocket server');
-        getDataFromServer();
+        get_data_from_server(socket);
         authCheck();
     };
 
     client.socket = socket;
 
-    // console.log(client.inforUser.id);
-    
-    // get_data_from_server(socket);
-    // get_sign_connection_button();
-    
     socket.onclose = function() {
         console.log('WebSocket connection closed');
     };
@@ -162,6 +152,7 @@ function    connection()
 connection();
 
 export {
+    user,
     client,
     dataToServer,
     userMessages

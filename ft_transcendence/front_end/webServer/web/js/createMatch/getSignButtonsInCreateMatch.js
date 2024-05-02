@@ -101,7 +101,7 @@ function    get_sign_start_create_match_button()
 {
     const   button = document.getElementById('startCreateMatchButton');
     button.onclick = () => {
-        // console.log('ready to play');
+        console.log('--> ready to play');
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
 
         const  sendData = new dataToServer('start game', match, client.inforUser, match.listUser);

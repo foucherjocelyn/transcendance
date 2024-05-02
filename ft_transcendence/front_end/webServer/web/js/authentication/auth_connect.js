@@ -84,7 +84,6 @@ export function to_connectForm(nohistory = "false")
 		{
 			if (result)
 			{
-				console.log("enleve le spinner");
 				document.getElementById("loadspinner").style.display = 'none';
 				document.getElementById("r_connect_page").classList.remove("hide");
 			}

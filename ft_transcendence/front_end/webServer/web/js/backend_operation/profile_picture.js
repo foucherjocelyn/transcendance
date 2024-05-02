@@ -51,6 +51,8 @@ export async function getAvatar(elemImageId)
 		const imageUrl = URL.createObjectURL(data);
 		if (document.getElementById(elemImageId) !== null)
 			document.getElementById(elemImageId).src = imageUrl;
+		else
+			return (imageUrl);
 	}
 	catch(error)
 	{

@@ -4,6 +4,9 @@ import { to_homePage } from "./home_homeboard.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
+import { create_match } from "../createMatch/createMatch.js";
+import { client, user } from "../client/client.js";
+import { getCookie } from "../authentication/auth_cookie.js";
 
 async function	drawGame(callback)
 {
@@ -11,9 +14,11 @@ async function	drawGame(callback)
 		`<div id="frontpage">
 		${loadSpinner()}
 		${upperPanel()}
+		<!--
 		<div id="g_game" class="hide">
 			<img src="https://miro.medium.com/v2/resize:fit:800/1*uJO86STRG1ckfuxe56PJmQ.gif" style="display: block; margin: auto; margin-top: 10%; width: 40%;">\
 		</div>
+		-->
 		<div class="r_successinfo hide"></div>
 	</div>
 `;
@@ -32,7 +37,18 @@ export async function	to_game(nohistory = "false")
 		if (result)
 		{
 			document.getElementById("loadspinner").classList.add("hide");
-			document.getElementById("g_game").classList.remove("hide");
+			//document.getElementById("g_game").classList.remove("hide");
+
+			user.id = getCookie('id');
+			user.name = getCookie('username');
+			user.level = getCookie("level");
+			user.avatar = '../../img/avatar/avatar1.jpg';
+			user.status = 'connection';
+			client.inforUser = user;
+
+			// create_match('rank');
+			create_match('with friends');
+			// create_match('offline');
 		}
 	});
 }

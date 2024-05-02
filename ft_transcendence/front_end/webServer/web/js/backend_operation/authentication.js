@@ -5,6 +5,7 @@ import { to_connectForm } from "../authentication/auth_connect.js";
 import { getMyInfo } from "./get_user_info.js";
 import { authCheck } from "../authentication/auth_main.js";
 import { to_homePage } from "../home/home_homeboard.js";
+import { client, dataToServer, user } from "../client/client.js";
 
 export async function requestToken(f_log)
 {
@@ -70,7 +71,17 @@ export async function postUser(new_user)
 	  });
 	console.log("-");
 }
+/*
+export function openSocketClient()
+{
+	const  sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
+	client.socket.send(JSON.stringify(sendData));
+}
 
+export function closeSocketClient()
+{
+}
+*/
 export async function signIn(connect_user)
 {
 	console.log("-Connecting user: ");
@@ -91,6 +102,16 @@ export async function signIn(connect_user)
 				  notice("Connection successful", 1, "#0c9605");
 				  document.cookie = `username=${connect_user.username}; SameSite=Strict`;
 				  authCheck();
+
+				  user.id = getCookie('id');
+					user.name = getCookie('username');
+					user.level = getCookie("level");
+					user.avatar = '../../img/avatar/avatar1.jpg';
+					user.status = 'connection';
+					client.inforUser = user;
+
+				  const  sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
+				  client.socket.send(JSON.stringify(sendData));
 			  }
 			  else if (!response.ok)
 			  {
@@ -106,6 +127,7 @@ export async function signIn(connect_user)
 			  document.cookie = `refresh=${data.refresh}; SameSite=Strict`;
 			  document.cookie = `token=${data.access}; SameSite=Strict`;
 			  getMyInfo();
+			  client.inforUser.status = getCookie("status"); 
 			  if (document.getElementById("loadspinner") != null)
 				  document.getElementById("loadspinner").classList.add("hide");
 			  to_homePage();
@@ -152,6 +174,7 @@ export async function signOut()
 			  console.log("Your status [" + getCookie("status") + "]");
 			  deleteAllCookie();
 			  to_connectForm();
+			  //closeSocket();
 		  })
 		  .catch(error => {
 			  console.error("Error: ", error);

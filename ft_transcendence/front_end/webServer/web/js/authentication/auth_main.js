@@ -46,7 +46,7 @@ export function	authCheck()
 //*/
 	console.log("---");
 }
-
+/*
 const urlRoutes = {
 	  connect: to_connectForm("true"),
 	  register: to_regisForm("true"),
@@ -69,7 +69,7 @@ window.onpopstate = function(event) {
 		}
 	}
 };
-
+*/
 /*
 function clearInputs(elemName) {
 	var divElem = document.querySelector(elemName);
@@ -82,4 +82,4 @@ function clearInputs(elemName) {
 }
 */
 
-addEventListener("DOMContentLoaded", authCheck);
+//addEventListener("DOMContentLoaded", authCheck);
