@@ -1,16 +1,16 @@
-import { signOut } from "../authentication/auth_connect.js";
-import { drawProfilePage } from "./home_changeprofile.js";
-import { drawGame } from "./home_game.js";
-import { drawHomePage } from "./home_homeboard.js";
+import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel } from "./home_homeboard.js";
+import { to_homePage } from "./home_homeboard.js";
+import { to_game } from "./home_game.js";
+import { to_profilePage } from "./home_changeprofile.js";
 
-export async function drawTournament()
+function drawTournament(callback)
 {
 	document.getElementById("frontpage").outerHTML =
-	`			
-		<div id="frontpage">
+		`<div id="frontpage">
+			${loadSpinner()}
 			${upperPanel()}
-				<div id="h_tournament_page">
+				<div id="h_tournament_page" class="hide">
 					<div id="h_tournament_board">\
 						<div class="t_sort_head">\
 					<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">\
@@ -25,7 +25,7 @@ export async function drawTournament()
           <table id="t_tournament">\
             <thead>\
               <tr id="htb_filter">\
-                <th scope="col">Name</th>\
+                <th scope="col">Match Name</th>\
 				<th scope="col">Player</th>\
                 <th scope="col">Time</th>\
                 <th scope="col">Rating</th>\
@@ -38,14 +38,14 @@ export async function drawTournament()
 				</div>
 			</div>
 		</div>
-`;
-	document.getElementById("h_tohome").addEventListener("click", () => { drawHomePage(); });
-	document.getElementById("h_to_myprofile").addEventListener("click", drawProfilePage);
-	document.getElementById("h_togame").addEventListener("click", drawGame);
+<div class="r_successinfo hide"></div>`;
+	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
+	document.getElementById("h_to_game").addEventListener("click", to_game);
+	document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
+	document.getElementById("h_logout").addEventListener("click", () => { classy_signOut("h_tournament_page"); });
 	document.getElementById("htb_temp").addEventListener("click", addLabel);
 	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
-	document.getElementById("h_logout").addEventListener("click", () => { signOut(); });
-
+	callback(true);
 }
 
 function	 addLabel()
@@ -53,7 +53,13 @@ function	 addLabel()
 //	label_index++;
 //	console.log(`adding new label: ${label_index}`);
 	let newLabel;
-	newLabel = `<tr class="t_tourlabel"><th scope="row">tour_name</td> <td>tour_playernb</td> <td>tour_time</td> <td>tour_rating</td><button id="t_joinbutton">Join</button></tr>`;
+	newLabel = `<tr class="t_tourlabel">
+<th scope="row">tour_name</th>
+<td>tour_playernb</td>
+<td>tour_time</td>
+<td>tour_rating</td>
+<button id="t_joinbutton">Join</button>
+</tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
 }
 
@@ -64,4 +70,17 @@ function 	searchLabel()
 		let foundLabel = "";
 		tournInfo.insertAdjacentHTML("beforeend", foundLabel);
 	}
+}
+
+export function to_tournament(nohistory = "false")
+{
+	if (nohistory === "false")
+		history.pushState( { url: "tournament" }, "", "#tournament");
+	drawTournament( (result) => {
+		if (result)
+		{
+			document.getElementById("loadspinner").classList.add("hide");
+			document.getElementById("h_tournament_page").classList.remove("hide");
+		}
+	});
 }

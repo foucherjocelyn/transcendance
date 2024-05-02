@@ -5,16 +5,10 @@ import { signIn } from "../backend_operation/authentication.js";
 import { signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 
-export async function	classy_signOut(sourcename)
+async function	classy_signOut(sourcename)
 {
-	if (document.getElementById(sourcename) !== undefined
-		&& document.getElementById("loadspinner") !== undefined
-		&& document.getElementById(sourcename) !== null
-		&& document.getElementById("loadspinner") !== null)
-	{
-		document.getElementById(sourcename).classList.add("hide");
-		document.getElementById("loadspinner").classList.remove("hide");
-	}
+	document.getElementById(sourcename).classList.add("hide");
+	document.getElementById("loadspinner").classList.remove("hide");
 	await signOut();
 }
 
@@ -45,7 +39,7 @@ async function checkConnect()
 	console.log("-=");
 }
 
-function load_connectForm(callback)
+async function load_connectForm()
 {
 	document.querySelector("#frontpage").outerHTML =
 		`<div id="frontpage">
@@ -71,21 +65,15 @@ function load_connectForm(callback)
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
 	document.getElementById("rb_forgot").addEventListener("click", to_forgotForm);
 	document.getElementById("r_registration").addEventListener("submit", function(event) { event.preventDefault(); checkConnect(); });
-	callback(true);
 }
 
-export function to_connectForm(nohistory = "false")
+export async function to_connectForm(nohistory)
 {
-	if (nohistory === "false")
+	if (nohistory === undefined)
 		history.pushState( { url: "connection" }, "", "#connection");
-	load_connectForm((result) =>
-		{
-			if (result)
-			{
-				console.log("enleve le spinner");
-				document.getElementById("loadspinner").style.display = 'none';
-				document.getElementById("r_connect_page").classList.remove("hide");
-			}
-		}
-	);
+	await load_connectForm();
+//	console.log("the following is null");
+//	console.log(document.getElementById("r_connect_page"));
+	document.getElementById("loadspinner").classList.add("hide");
+	document.getElementById("r_connect_page").classList.remove("hide");
 }

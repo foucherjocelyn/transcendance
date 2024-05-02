@@ -1,6 +1,8 @@
-async function uploadAvatar(formData)
+import { getCookie } from "../authentication/auth_cookie.js"
+
+export async function uploadAvatar(formData)
 {
-	console.log("----uploadAvatar starting");
+	console.log("-uploadAvatar starting");
 	let f_token = getCookie("token");
 
     const r = await fetch("http://127.0.0.1:8000/api/v1/profile/me/avatar", {
@@ -25,12 +27,12 @@ async function uploadAvatar(formData)
 		  .catch(error => {
 			  console.error("uploadAvatar: ", error);
 		  });
-	console.log("----");
+	console.log("-");
 }
 
 export async function getAvatar(elemImageId)
 {
-	console.log("---getAvatar starting");
+	console.log("-getAvatar starting");
 	let f_token = getCookie("token");
 
 	try {
@@ -48,11 +50,10 @@ export async function getAvatar(elemImageId)
 		const data = await response.blob();
 		const imageUrl = URL.createObjectURL(data);
 		document.getElementById(elemImageId).src = imageUrl;
-		document.getElementById(elemImageId).removeAttribute('onload');
 	}
 	catch(error)
 	{
 		console.error("getAvatar: ", error);
 	}
-	console.log("---");
+	console.log("-");
 }

@@ -1,64 +1,109 @@
-import { signOut } from "../authentication/auth_connect.js";
+import { loadSpinner } from "../authentication/spinner.js";
+import { to_game } from "./home_game.js";
+import { to_tournament } from "./home_tournament.js";
+import { to_profilePage } from "./home_changeprofile.js";
+import { getMyInfo } from "../backend_operation/get_user_info.js";
+import { getUserList } from "../backend_operation/get_user_info.js";
+import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
-import { getMyInfo } from "../authentication/auth_get_my_info.js";
-import { drawProfilePage } from "./home_changeprofile.js";
-import { drawGame } from "./home_game.js";
-import { getAvatar } from "../authentication/auth_profile_picture.js";
-import { drawTournament } from "./home_tournament.js";
-import { loadChat } from "../chat/load-chat.js";
+import { classy_signOut } from "../authentication/auth_connect.js";
 
 export function upperPanel()
 {
-	let panel_def = `<div class="h_upperpanel">
-				<button id="h_tohome" name="to_homepage"></button>
-				<button id="h_togame" name="to_game"></button>
-				<button id="h_totournament" name="to_tournament"></button>
+	let panel_def = `<nav class="h_upperpanel">
+				<button id="h_to_home" name="to_homepage"></button>
+				<button id="h_to_game" name="to_game"></button>
+				<button id="h_to_tournament" name="to_tournament"></button>
 				<button id="h_to_myprofile" name="to_myprofile"></button>
 				<button id="h_logout" name="logout"></button>
-			</div>`;
+			</nav>`;
 	return (panel_def);
 }
 
-export async function	drawHomePage()
+function	 newLabel()//
+{
+	let label;
+	label = `<tr class="h_scorelabel">
+<th scope="row">username</th>
+<td>level</td>
+<td>nb_games</td>
+<td>avg_score</td>
+</tr>`;
+	document.getElementById("hs_info").insertAdjacentHTML("beforeend", newLabel);
+	return (label);
+}
+
+async function	drawHomePage(callback)
 {
 	await getMyInfo();
-//	console.log("drawHomepage called");
+	console.log("drawHomepage called");
 	document.getElementById("frontpage").outerHTML =
 		`
 		<div id="frontpage">
+			${loadSpinner()}
 			${upperPanel()}
-		<div id="h_homepage">
+		<div id="h_homepage" class="hide">
 			<div id="h_common_boards">
-				<div id="h_player_board">
-			<img id="p_player_img" src="../../ressource/avatar_default.png">\
+				<div class="h_player_board">
+			<img id="p_player_img" src="../../img/avatar_default.png">
 			<p id="hpb_username">${getCookie("username")}</p>
 			<p id="hpb_level">Level: ${getCookie("level")}</p>
 <!--			<hr id="hpb_div1">  -->
 				<div id="h_scoreboard">
-				<table id="h_score">\
-            <thead>\
+				<table id="h_score">
+            <thead>
               <tr id="hs_filter">\<!-- display in red or blue if defeat/victory  -->
-				<th scope="col">Match name</th>\
-                <th scope="col">Players</th>\
-                <th scope="col">Score</th>\
-				<th scope="col">Playtime</th>
-                <th scope="col">Conclusion</th>\
+				<th scope="col">Player name</th>
+                <th scope="col">Level</th>
+                <th scope="col">Number of games played</th>
+				<th scope="col">Average score</th>
 <!-- Display player stats  -->
-              </tr>\
-            </thead>\
-            <tbody id="htb_info">\
-            </tbody>\
-          </table>\
+              </tr>
+            </thead>
+            <tbody id="hs_info">
+            </tbody>
+          </table>
 				</div>
-				</div>\
-      </div>\
-	</div>\
-</div>`;
-	loadChat();
+				</div>
+      </div>
+	</div>
+</div>
+<div class="r_successinfo hide"></div>`;
 
-	document.getElementById("h_to_myprofile").addEventListener("click", drawProfilePage);
-	document.getElementById("h_togame").addEventListener("click", drawGame);
-	document.getElementById("h_totournament").addEventListener("click", drawTournament);
-	document.getElementById("h_logout").addEventListener("click", () => { signOut(); });
+	//load players scoreboard
+	console.log("loading player list");
+	getUserList();
+	//
+	document.getElementById("h_to_game").addEventListener("click", to_game);
+	document.getElementById("h_to_tournament").addEventListener("click", to_tournament);
+	document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
+	document.getElementById("h_logout").addEventListener("click", () =>
+		{
+			classy_signOut("h_homepage");
+		});
+	if (document.getElementById("loadspinner") !== undefined
+		&& document.getElementById("h_homepage") !== undefined
+		&& document.getElementById("loadspinner") !== null
+		&& document.getElementById("h_homepage") !== null)
+	{
+		callback(true);
+		return ;
+	}
+	callback(false);
 }
 
+export function to_homePage(nohistory = "false")
+{
+	if (nohistory === "false")
+		history.pushState( { url: "homepage" }, "", "#homepage");
+	drawHomePage( (result) =>
+		{
+			if (result)
+			{
+				if (document.getElementById("p_player_img") != null)
+					getAvatar('p_player_img');
+				document.getElementById("loadspinner").classList.add("hide");
+				document.getElementById("h_homepage").classList.remove("hide");
+			}
+		});
+}

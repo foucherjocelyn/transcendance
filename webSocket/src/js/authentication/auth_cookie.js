@@ -15,7 +15,7 @@ export function	getCookie(search_value)
 	return (new_str);
 }
 
-function	showCookie()
+export function	showCookie()
 {
 	let	cookie = document.cookie.split(";");
 
@@ -25,15 +25,16 @@ function	showCookie()
 	}
 }
 
+
 export function	deleteAllCookie()
 {
-let cookies = document.cookie.split(";");
-
-for (let i = 0; i < cookies.length; i++)
-{
-	let cookie = cookies[i];
-	let eqPos = cookie.indexOf("=");
-	let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-	document.cookie = name + '=;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-}
+	let cookies = document.cookie.split(";");
+	
+	for (let i = 0; i < cookies.length; i++)
+	{
+		let cookie = cookies[i];
+		let eqPos = cookie.indexOf("=");
+		let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+		document.cookie = name + '=;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+	}
 }

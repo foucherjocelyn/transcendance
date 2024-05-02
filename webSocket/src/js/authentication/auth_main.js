@@ -1,9 +1,12 @@
-import { client, dataToServer } from "../client/client.js";
-import { drawHomePage } from "../home/home_homeboard.js";
+import { to_regisForm } from "./auth_register.js";
+import { to_forgotForm } from "./auth_reset.js";
+import { to_profilePage } from "../home/home_changeprofile.js";
+import { to_game } from "../home/home_game.js";
+import { to_tournament } from "../home/home_tournament.js";
+import { to_homePage } from "../home/home_homeboard.js";
 import { to_connectForm } from "./auth_connect.js";
 import { getCookie } from "./auth_cookie.js";
-import { getAvatar } from "../authentication/auth_profile_picture.js";
-import { loadChat } from "../chat/load-chat.js";
+
 
 export function notice(str, time, color)
 {
@@ -26,27 +29,46 @@ export function	authCheck()
 {
 	console.log("---authCheck(): Checking if user is connected");
 	console.log("The user is " + getCookie("status"));
-//	drawHomePage();
-//	/*
+//	to_homePage();
+	//	/*
 	if (getCookie("status") === "offline")
-		document.cookie = "token=; SameSite=Strict";
+		document.cookie = "token=; SameSite=Strict"
 	//	getMyInfo();
-//	console.log("The token is [" + getCookie("token") + "]");
+	console.log("The token is [" + getCookie("token") + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
-
-		const  sendData = new dataToServer('connection', client.inforUser, client.inforUser);
-		client.socket.send(JSON.stringify(sendData));
-
-		drawHomePage();
+		to_homePage();
 	}
 	else
 	{
 		to_connectForm();
 	}
 //*/
-//	console.log("---");
+	console.log("---");
 }
+
+const urlRoutes = {
+	  connect: to_connectForm("true"),
+	  register: to_regisForm("true"),
+	  reset: to_forgotForm("true"),
+	  homepage: to_homePage("true"),
+	  configprofile: to_profilePage("true"),
+	  game: to_game("true"),
+	  tournament: to_tournament("true")
+};
+
+window.onpopstate = function(event) {
+	console.log("popstate detected");
+	console.log(event.state);
+	if (event.state)
+	{
+		let url = event.state.url;
+		if (url)
+		{
+			urlRoutes[url];
+		}
+	}
+};
 
 /*
 function clearInputs(elemName) {
@@ -60,4 +82,4 @@ function clearInputs(elemName) {
 }
 */
 
-//addEventListener("DOMContentLoaded", authCheck);
+addEventListener("DOMContentLoaded", authCheck);
