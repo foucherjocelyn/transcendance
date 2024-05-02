@@ -93,8 +93,12 @@ const searchFindNewFriendWindow = async () => {
                     <button id="c-send-friend-invite-${user.username}" class="c-send-friend-invite">+</button>
                     </div>`;
                 userListDiv.innerHTML += userHTML;
-                document.querySelector(`#c-send-friend-invite-${user.username}`).addEventListener("click", (e) => sendFriendInvite(user.username));
             }
+        });
+        document.querySelectorAll(".c-send-friend-invite").forEach(user => {
+            const userUsername = user.id.substring().slice(21);
+            console.log(userUsername);
+            user.addEventListener("click", (e) => sendFriendInvite(userUsername));
         });
     }
 };

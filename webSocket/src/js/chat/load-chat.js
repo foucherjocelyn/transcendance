@@ -21,9 +21,7 @@ const loadChat = () => {
         }
     });
     addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
-    document.querySelector("#c-show-announcements-button").addEventListener("click", () => {
-        showAnnouncements();
-    });
+    document.querySelector("#c-show-announcements-button").addEventListener("click", showAnnouncements);
     document.getElementById("chat").style.display = "block";
     console.log("chat loaded");
 };

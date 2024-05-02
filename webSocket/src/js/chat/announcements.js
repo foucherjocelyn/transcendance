@@ -72,7 +72,35 @@ const updateFriendInviteStatus = async (id, newStatus) => {
         });
 }
 
-const acceptFriendInvite = (id) => {
+const postNotification = async (notification) => {
+    let f_token = getCookie("token");
+    console.log(notification);
+    await fetch("http://127.0.0.1:8000/api/v1/notification/create", {
+        method: "POST",
+        body: JSON.stringify(notification),
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("postNotification: Client/Server error");
+                return response.json();
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error postNotification: ", error);
+        });
+    console.log("----");
+}
+
+const acceptFriendInvite = (id, sender) => {
     console.log("accept");
     updateFriendInviteStatus(id, "accepted");
     const listFriends = getListFriends();
@@ -80,11 +108,13 @@ const acceptFriendInvite = (id) => {
         renderFriendList(list);
     });
     removeFriendInvite(id);
+    postNotification({username: sender, content: "friend invite accepted"});
 };
 
-const declineFriendInvite = (id) => {
+const declineFriendInvite = (id, sender) => {
     updateFriendInviteStatus(id, "rejected");
     removeFriendInvite(id);
+    postNotification({username: sender, content: "friend invite declined"});
 };
 
 const receiveFriendInvite = (id, sender) => {
@@ -94,8 +124,8 @@ const receiveFriendInvite = (id, sender) => {
     <button name="accept" class="accept">accept</button>
     <button name="decline" class="decline">decline</button>
     </div>`
-    document.getElementById(`c-friend-invitation${id}`).querySelector(".accept").addEventListener("click", () => {acceptFriendInvite(id)});
-    document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => {declineFriendInvite(id)});
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".accept").addEventListener("click", () => {acceptFriendInvite(id, sender)});
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => {declineFriendInvite(id, sender)});
 };
 
 const closeAnnouncements = () => {
@@ -104,12 +134,40 @@ const closeAnnouncements = () => {
     document.querySelector("#c-announcements-window > .c-close-button").removeEventListener("click", closeAnnouncements);
 };
 
+const renderNotifications = async () => {
+    let f_token = getCookie("token");
+    const listNotifications = await fetch(`http://127.0.0.1:8000/api/v1/notification/list`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("getNotifications: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            return data;
+        })
+        .catch(error => {
+            console.error("getNotifications : ", error);
+        });
+    console.log(listNotifications);
+};
+
 const showAnnouncements = () => {
     const announcementsList = document.getElementById("c-announcements-list");
     const announcementsDiv = document.getElementById("c-announcements-window");
     announcementsList.innerHTML = "";
     announcementsDiv.classList.remove("hidden");
     document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", closeAnnouncements);
+    renderNotifications();
     const listOfFriendInvitationsResponse = getListOfFriendInvitationsReceived();
     listOfFriendInvitationsResponse.then(list => {
         console.log(list);
