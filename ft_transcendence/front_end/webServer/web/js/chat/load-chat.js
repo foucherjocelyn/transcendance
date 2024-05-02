@@ -40,6 +40,7 @@ const loadChat = () => {
 
     const listFriends = getListFriends();
     listFriends.then(list => {
+        client.inforUser.listFriends = list;
         renderFriendList(list);
     });
 

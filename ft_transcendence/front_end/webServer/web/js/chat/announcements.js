@@ -106,6 +106,7 @@ const acceptFriendInvite = (id, sender) => {
     const listFriends = getListFriends();
     listFriends.then(list => {
         renderFriendList(list);
+        client.inforUser.listFriends = list;
     });
     removeFriendInvite(id);
     postNotification({username: sender, content: "friend invite accepted"});
