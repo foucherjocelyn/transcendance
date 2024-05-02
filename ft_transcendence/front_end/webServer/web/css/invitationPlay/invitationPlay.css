@@ -1,0 +1,128 @@
+#invitationPlayLayer {
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: url("../../img/font/fontAddPlayer.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-clip: content-box;
+}
+
+/* -------------------- Invitation to play panel -------------------- */
+#invitationPlayPanel {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+}
+
+#searchInvitationPlayBar {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 95%;
+    height: 70px;
+}
+
+#searchInvitationPlayBar > input {
+    flex: 1;
+    height: 50px;
+
+    border-radius: 20px;
+}
+
+#searchInvitationPlayBar > button {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+}
+
+#searchInvitationPlayBar > button > svg {
+    height: 80%;
+    width: auto;
+}
+
+/* --------------------  -------------------- */
+#resultsSearchInvitationPlayPanel {
+    width: 95%;
+    flex: 1;
+}
+
+.resultsSearchInvitationPlay {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.resultsSearchInvitationPlay:hover {
+    border-radius: 20px;
+    border: 3px solid white;
+    background-color: greenyellow;
+}
+
+.resultsSearchInvitationPlay > div {
+    display: flex;
+    flex-direction: row;
+
+    flex: 1;
+    height: 50px;
+}
+
+.avatarInvitationPlay {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+    background-color: black;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-clip: content-box;
+}
+
+.idInvitationPlay {
+    flex: 1;
+    height: 50px;
+
+    display: flex;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.invitePlayButton {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    
+    height: 50px;
+    width: 80px;
+
+    border-radius: 20px;
+    font-size: 18px;
+
+    background-color: #117ceb;
+    color: white;
+    border-color: transparent;
+}

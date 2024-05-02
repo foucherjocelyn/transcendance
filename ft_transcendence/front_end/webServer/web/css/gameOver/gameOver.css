@@ -1,0 +1,33 @@
+#gameOverLayer {
+    display: none;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: greenyellow;
+}
+
+/* --------------------  -------------------- */
+#titleGameOver {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100px;
+
+    background-color: black;
+}
+#titleGameOver > span {
+    color: white;
+    font-size: 50px;
+    font-family: monospace;
+}
+
+/* --------------------  -------------------- */
+

@@ -1,0 +1,147 @@
+
+#createMatchLayer {
+    display: none;
+    background: linear-gradient(to bottom, #a619f8, #00f2fe);
+
+    width: 100%;
+    height: 100%;
+}
+
+/* -------------------- Cancel create match button -------------------- */
+#cancelCreateMatchButton,
+#cancelInvitationPlayButton {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    background-color: rgba(255, 255, 255, 0.5);
+
+    top: 20px;
+    right: 10px;
+
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+#cancelCreateMatchButton:hover,
+#cancelInvitationPlayButton:hover {
+    background-color: white;
+    border-color: green;
+    transform: rotate(90deg);
+}
+
+#cancelCreateMatchButton > svg,
+#cancelInvitationPlayButton > svg {
+    width: 80%;
+    height: 80%;
+}
+
+/* -------------------- Start create match button -------------------- */
+#startCreateMatchButton {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    background-color: transparent;
+
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    height: 150px;
+	width: 300px;
+
+    border-color: transparent;
+
+    transition: transform 0.3s ease;
+}
+
+#startCreateMatchButton > div {
+    height: 150px;
+	width: 300px;
+
+    transform: perspective(200px) rotateX(50deg);
+
+    background-color: white;
+}
+
+#startCreateMatchButton > h1 {
+    position: absolute;
+    bottom: 5px;
+
+    font-size: 42px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+    color: #337dff;
+}
+
+#startCreateMatchButton:hover > div {
+    background-color: greenyellow
+}
+
+#startCreateMatchButton:hover > h1 {
+    color: black;
+}
+
+#startCreateMatchButton:hover {
+    transform: translateX(-50%) scale(1.2);
+}
+
+/* -------------------- Add player button -------------------- */
+#addPlayerLayer {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+
+    flex-grow: 1;
+}
+
+#addPlayerLayer > button {
+    display: flex;
+
+    background-color: black;
+    border: transparent;
+
+    background-image: url("../../img/avatar/addPlayerButton.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-clip: content-box;
+}
+
+#addPlayerLayer > button > div {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    color: greenyellow;
+
+    margin-top: 80px;
+    margin-left: 20px;
+}
+
+.idPlayer {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.namePlayer {
+    font-size: 30px;
+}
+
+/* --------------------  -------------------- */

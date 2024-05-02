@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+        websocket:
+                image: websocket
+                build: ./front_end/webSocket
+                container_name: websocket
+                env_file:
+                        - .env
+                ports:
+                        - "5555:5555"
+                networks:
+                        - my_network
+                restart: always
+
+        webserver:
+                image: webserver
+                build: ./front_end/webServer
+                container_name: webserver
+                depends_on:
+                        - websocket
+                env_file:
+                        - .env
+                ports:
+                        - "5500:5500"
+                networks:
+                        - my_network
+                restart: always
+
+networks:
+        my_network:
+                driver: bridge

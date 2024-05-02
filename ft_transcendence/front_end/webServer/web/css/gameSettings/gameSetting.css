@@ -1,0 +1,219 @@
+#gameSettingsLayer {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    right: 0;
+}
+
+/* --------------------  -------------------- */
+#gameSettingButton {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 100%;
+    height: 60px;
+}
+
+#gameSettingButton > button {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 50px;
+    height: 50px;
+
+    border: 2px solid black;
+    border-radius: 50px;
+
+    background-color: black;
+    color: white;
+
+    transition: width 0.3s;
+
+    font-size: 20px;
+}
+
+#gameSettingButton > button:hover {
+    width: 120px;
+    border-color: white;
+}
+
+#gameSettingButton > button > span {
+    display: none;
+}
+
+#gameSettingButton > button:hover > span {
+    display: inline-block;
+}
+
+/* --------------------  -------------------- */
+#gameSettingPanel {
+    display: none;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+    width: 100%;
+}
+
+#gameSettingPanel > div {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 95%;
+    height: 95%;
+
+    background-color: #101720;
+    border-radius: 20px;
+}
+
+/* --------------------  -------------------- */
+#gameSettingBar {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    height: 60px;
+}
+
+#gameSettingBar > button {
+    flex-grow: 1;
+
+    font-size: 16px;
+    color: #ffffff;
+
+    border-color: #101720;
+    border-radius: 50px;
+    background: #101720;
+    box-shadow:  5px 5px 10px #06090d,
+                -5px -5px 10px #1a2533;
+}
+
+#gameSettingBar > button:hover {
+    scale: 1.2;
+    border-color: #ffffff;
+}
+
+/* --------------------  -------------------- */
+#gameSettingContents {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+    width: 100%;
+}
+
+#gameSettingContents > div {
+    display: none;
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.gameSettingName {
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+    height: 50px;
+}
+
+.gameSettingName > span {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+
+    margin-left: 20px;
+}
+
+/* --------------------  -------------------- */
+.gameSettingInput {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+}
+
+.gameSettingInput > div {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 100%;
+    height: 50px;
+}
+
+.gameSettingInput > div > span {
+    color: white;
+}
+
+/* --------------------  -------------------- */
+#gameSaveButton {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 60px;
+}
+
+#gameSaveButton > button {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 50px;
+    width: 100px;
+
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+#gameSaveButton > button:hover {
+    background-color: #1a2533;
+    color: white;
+    transform: scale(1.2);
+}
+
+#gameSaveButton > button > span {
+    color: 1a2533;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* --------------------  -------------------- */

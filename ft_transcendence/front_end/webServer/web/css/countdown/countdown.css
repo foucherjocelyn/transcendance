@@ -1,0 +1,19 @@
+#countdownLayer {
+    display: flex;
+    position: absolute;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 500px;
+    height: 500px;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#countdownLayer > span {
+    color: white;
+    font-size: 200px;
+}

@@ -1,0 +1,102 @@
+#h_myprofile {
+	background-image: url(../img/card2.png);
+	width: 600px;
+	min-height: 400px;
+	height: 40%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	padding: 10px;
+	position: relative;
+	margin-top: 5%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 5px;
+}
+
+#h_myprofileoptions {
+	position: relative;
+	left: 50%;
+	transform: translateX(-47%);
+	text-align: center;
+}
+
+#h_myprofileoptions p {
+	color: white;
+	font-weight: bold;
+	display: inline;
+	margin-right: 2em;
+}
+
+#h_myprofileoptionsline {
+	position: relative;
+}
+
+#p_username, #p_oldpassword, #p_newpassword, #p_newpasswordconfirm, #p_firstname, #p_lastname, #p_email, #p_avatar {
+	background-image: url(../img/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	margin-top: 1%;
+	top: 20%;
+	left: 35%;
+}
+
+#p_username {
+	margin-top: 2%;
+}
+
+#p_avatarpreview {
+	display: block-inline;
+	position: relative;
+	top: 22%;
+	left: 34%;
+	background-color: white;
+	border-radius: 2px;
+	max-width: 100px;
+	max-height: 100px;
+}
+
+#p_2fa {
+	position: relative;
+	left:34%;
+}
+
+#p_2fa_info {
+	margin-top: 3%;
+	margin-bottom: -2%;
+	margin-left: -2%;
+}
+
+#p_2fa_enable, #p_2fa_disable {
+	margin-top: 0%;
+	margin-left: 8%;
+}
+
+#p_2fa_info, #p_2fa_enable_text, #p_2fa_disable_text {
+	color: #777e8c;
+}
+
+#p_qr_code {
+	position: relative;
+	left: 33%;
+	margin-top: 2%;
+	max-width: 200px;
+	max-height: 200px;
+}
+
+#p_avatar {
+	position: relative;
+	top: 20%;
+	left: 30%;
+}
+
+#p_div {
+	height: 1px;
+	background-color: black;
+	position: relative;
+}
+
+#p_change {
+	position: relative;
+	left: 44%;
+}
