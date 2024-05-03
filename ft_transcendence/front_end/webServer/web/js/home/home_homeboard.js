@@ -34,9 +34,8 @@ function	 newLabel()//
 	return (label);
 }
 
-async function	drawHomePage(callback)
+function	drawHomePage(callback)
 {
-	await getMyInfo();
 	console.log("drawHomepage called");
 	document.getElementById("frontpage").outerHTML =
 		`
@@ -74,8 +73,8 @@ async function	drawHomePage(callback)
 `;
 
 	//load players scoreboard
-	console.log("loading player list");
-	getUserList();
+//	console.log("loading player list");
+//	getUserList();
 	//
 	document.getElementById("h_to_game").addEventListener("click", to_game);
 	document.getElementById("h_to_tournament").addEventListener("click", to_tournament);
