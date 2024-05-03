@@ -7,7 +7,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 1%;
-	background-image: url(../../img/bar.png);
+	background-image: url(../../img/background/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 3px;
@@ -22,7 +22,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/home.png);
+	background-image: url(../../img/upperpanel/home.png);
 	background-size: 100% 100%;
 }
 
@@ -31,7 +31,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/home_hover.png);
+	background-image: url(../../img/upperpanel/home_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -40,7 +40,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/home_hover.png);
+	background-image: url(../../img/upperpanel/home_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
@@ -50,7 +50,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/profile.png);
+	background-image: url(../../img/upperpanel/profile.png);
 	background-size: 100% 100%;
 }
 
@@ -59,7 +59,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/profile_hover.png);
+	background-image: url(../../img/upperpanel/profile_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -68,7 +68,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/profile_hover.png);
+	background-image: url(../../img/upperpanel/profile_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
@@ -78,7 +78,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/game.png);
+	background-image: url(../../img/upperpanel/game.png);
 	background-size: 100% 100%;
 }
 
@@ -87,7 +87,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/game_hover.png);
+	background-image: url(../../img/upperpanel/game_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -96,7 +96,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/game_hover.png);
+	background-image: url(../../img/upperpanel/game_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
@@ -106,7 +106,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/tournament.png);
+	background-image: url(../../img/upperpanel/tournament.png);
 	background-size: 100% 100%;
 }
 
@@ -115,7 +115,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/tournament_hover.png);
+	background-image: url(../../img/upperpanel/tournament_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -124,7 +124,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/tournament_hover.png);
+	background-image: url(../../img/upperpanel/tournament_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }
@@ -134,7 +134,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/logout.png);
+	background-image: url(../../img/upperpanel/logout.png);
 	background-size: 100% 100%;
 }
 
@@ -143,7 +143,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/logout_hover.png);
+	background-image: url(../../img/upperpanel/logout_hover.png);
 	background-size: 100% 100%;
 }
 
@@ -152,7 +152,7 @@
 	height: 60px;
 	background-color: transparent;
 	border: none;
-	background-image: url(../../img/logout_hover.png);
+	background-image: url(../../img/upperpanel/logout_hover.png);
 	background-size: 100% 100%;
 	margin-top: 1px;
 }

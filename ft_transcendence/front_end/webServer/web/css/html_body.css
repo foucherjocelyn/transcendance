@@ -3,7 +3,7 @@ html {
 }
 
 body {
-	background-image: url(../img/Background.png);
+	background-image: url(../img/background/Background.png);
 	background-size: 100% auto;
 	font-family: sans-serif;
         width: 100%;

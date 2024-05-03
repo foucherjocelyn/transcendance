@@ -1,0 +1,239 @@
+:root {
+    --chat-list-width: 280px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#chat {
+    display: none;
+    z-index: 7;
+}
+
+.hidden {
+    display: none;
+}
+
+#c-announcements-window {
+    position: absolute;
+    right: 20%;
+    margin: 12%;
+    width: 30%;
+    height: 50%;
+    min-height: 320px;
+    background-color: #333333;
+    color: white;
+}
+
+#c-find-new-friend-window {
+    position: absolute;
+    right: 20%;
+    margin: 12%;
+    width: 30%;
+    height: 50%;
+    min-height: 320px;
+    background-color: #333333;
+    color: white;
+}
+
+#c-find-new-friend-window h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#c-find-new-friend-window input {
+    margin-left: 20px;
+    width: 60%;
+}
+
+#c-find-new-friend-window .c-close-button {
+    position: absolute;
+    right: 10px;
+}
+
+#c-find-new-friend-window .user-list {
+    margin-top: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 60%;
+}
+
+.user-avatar img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.c-user {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 4px;
+    padding-bottom: 2px;
+    border-radius: 10px;
+}
+
+.c-user:hover {
+    background-color: #46484C;
+}
+
+.user-name {
+    padding-top: 6px;
+    font-size: 1.2em;
+}
+
+#chat-list {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #333;
+    padding: 30px;
+    padding-top: 15px;
+    color: #DDD;
+    height: 100%;
+    min-width: var(--chat-list-width);
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+#chat-list h3 {
+    text-align: center;
+    padding-bottom: 12px;
+}
+
+#c-friends-div {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#c-search-friend-list {
+    position: fixed;
+    bottom: 20px;
+}
+
+#c-show-announcements-button, #c-add-new-friend-button {
+	display: inline-block;
+	position: relative;
+	margin-top: 3%;
+	width: 30px;
+	height: 30px;
+	background-color: transparent;
+	border: none;
+}
+
+#c-show-announcements-button {
+	background-image: url(../../img/chat/bell.png);
+	background-size: 100% 100%;
+	left: 0%;
+}
+
+#c-show-announcements-button:hover {
+	cursor: pointer;
+}
+
+#c-add-new-friend-button {
+	background-image: url(../../img/chat/add.png);
+	background-size: 100% 100%;
+	right 40%;
+}
+
+#c-add-new-friend-button:hover {
+	cursor: pointer;
+}
+
+.chat-box {
+    position: relative;
+    margin-left: auto;
+    margin-right:35%;
+    /*right: var(--chat-list-width);*/
+    height: 20%;
+    width: 320px;
+}
+
+.chat-box-header {
+    background-color: #387FEE;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 30px;
+}
+
+.chat-box-header h3 {
+    color: white;
+}
+
+.chat-box-body {
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+.c-close-button {
+    background-color: transparent;
+    border: none;
+    color: #888;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.c-close-button:hover {
+    color: #f00;
+}
+
+.chat-messages {
+    overflow: hidden;
+    height: 320px;
+    overflow-y: scroll;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow-wrap: break-word;
+}
+
+.incoming {
+    background-color: #f1f0f0;
+    align-self: flex-start;
+}
+
+.outgoing {
+    background-color: #387FEE;
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-input {
+    padding: 10px;
+    background-color: #F0F0F0;
+}
+
+.chat-input input {
+    width: calc(100% - 90px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.chat-input button {
+    width: 50px;
+    padding: 8px;
+    border: none;
+    background-color: #387FEE;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+}
+

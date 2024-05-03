@@ -39,19 +39,18 @@ function	drawHomePage(callback)
 	console.log("drawHomepage called");
 	document.getElementById("frontpage").outerHTML =
 		`
-		<div id="frontpage">
-			${loadSpinner()}
-			${upperPanel()}
-		<div id="h_homepage" class="hide">
-			<div id="h_common_boards">
-				<div class="h_player_board">
-			<img id="p_player_img" src="../../img/avatar_default.png">
-			<p id="hpb_username">${getCookie("username")}</p>
-			<p id="hpb_level">Level: ${getCookie("level")}</p>
-<!--			<hr id="hpb_div1">  -->
-				<div id="h_scoreboard">
-				<table id="h_score">
-            <thead>
+<div id="frontpage">
+	${loadSpinner()}
+	${upperPanel()}
+	<div id="h_homepage" class="hide">
+		<div id="h_player_bar">
+				<img id="hpb_player_img" src="../../img/avatar/avatar_default.png">
+				<p id="hpb_username">${getCookie("username")}</p>
+				<p id="hpb_level">Level: ${getCookie("level")}</p>
+      </div>
+			<div id="h_scoreboard">
+			<table id="h_score">
+    	    <thead>
               <tr id="hs_filter">\<!-- display in red or blue if defeat/victory  -->
 				<th scope="col">Player name</th>
                 <th scope="col">Level</th>
@@ -63,9 +62,7 @@ function	drawHomePage(callback)
             <tbody id="hs_info">
             </tbody>
           </table>
-				</div>
-				</div>
-      </div>
+			</div>
 	</div>
 	<div id="chat"></div>
 	<div class="r_successinfo hide"></div>

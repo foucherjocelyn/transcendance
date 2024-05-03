@@ -23,7 +23,7 @@
 
 
 #h_tournament_board {
-	background-image: url(../../img/card2.png);
+	background-image: url(../../img/background/card2.png);
 	background-size: cover;
 	border-radius: 4px;
 	min-width:380px;
@@ -39,7 +39,7 @@
 #htb_search {
 	position: relative;
 	left: 2%;
-	background-image: url(../../img/bar.png);
+	background-image: url(../../img/background/bar.png);
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	width: 30%;
@@ -60,7 +60,7 @@
 	top: -18%;
 	left: 2%;
 	background-color: white;
-	background-image: url(../../img/maglens.png);
+	background-image: url(../../img/png/maglens.png);
 	background-size: cover;
 	
 }
@@ -69,7 +69,7 @@
 	position: relative;
 	right: auto;
 	left: 35%;
-	background-image: url(../../img/bar.png);
+	background-image: url(../../img/background/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	color: gray;
@@ -85,7 +85,7 @@
 #htb_filter {
 	color: gray;
 	font-weight: bold;
-	background-image: url(../../img/bar.png);
+	background-image: url(../../img/background/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 2px;

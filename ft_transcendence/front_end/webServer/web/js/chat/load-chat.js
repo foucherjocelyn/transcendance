@@ -19,9 +19,10 @@ const loadChat = () => {
     <button class="c-close-button">&times;</button>
     <div id="c-announcements-list"></div>
 </div>
-<button id="c-show-announcements-button">Show Announcements</button>
-<button id="c-add-new-friend-button">Add new Friend</button>
 <div id="chat-list">
+<button id="c-show-announcements-button"></button>
+<button id="c-add-new-friend-button"></button>
+<button id="c-hide-friend-list"></button>
     <div id="c-friends-div">
         <h3>Friends</h3>
         <div id="c-friends-list">
@@ -37,7 +38,8 @@ const loadChat = () => {
     const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
     const friendsListSearchButton = document.querySelector("#c-search-friend-list button");
     const addNewFriendButton = document.getElementById("c-add-new-friend-button");
-
+	const hideFriendList = document.getElementById("c-hide-friend-list");
+	hideFriendList.addEventListener("click", () => { document.getElementById("c-friends-div").toggle("hide"); });
     const listFriends = getListFriends();
     listFriends.then(list => {
         client.inforUser.listFriends = list;

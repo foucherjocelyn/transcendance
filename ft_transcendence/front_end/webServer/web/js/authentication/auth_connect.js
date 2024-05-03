@@ -25,6 +25,7 @@ async function checkConnect()
 {
 	console.log("-=Attempting to connect user");
 	document.getElementById("r_connect_page").classList.add("hide");
+	console.log(document.getElementById("loadspinner"));
 	document.getElementById("loadspinner").classList.remove("hide");
 	let connect_user = {
 		username: document.getElementById("rc_username").value,
@@ -34,7 +35,6 @@ async function checkConnect()
 //	console.log("otpStatus = " + otpStatus);
 	if (otpStatus === false)
 	{
-		console.log("check connect signing in");
 		await signIn(connect_user);
 	}
 	else if (otpStatus === true)
@@ -43,7 +43,6 @@ async function checkConnect()
 	}
 	else
 	{
-		console.log("else checkconnect");
 		document.getElementById("r_connect_page").classList.remove("hide");
 		document.getElementById("loadspinner").classList.add("hide");		
 	}

@@ -1,5 +1,5 @@
 #h_myprofile {
-	background-image: url(../../img/card2.png);
+	background-image: url(../../img/background/card2.png);
 	width: 600px;
 	min-height: 400px;
 	height: 40%;
@@ -32,7 +32,7 @@
 }
 
 #p_username, #p_oldpassword, #p_newpassword, #p_newpasswordconfirm, #p_firstname, #p_lastname, #p_email, #p_avatar {
-	background-image: url(../../img/bar.png);
+	background-image: url(../../img/background/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	position: relative;
