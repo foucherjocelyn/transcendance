@@ -8,10 +8,10 @@ export function	updateMyInfo(connectFlag = false)
 	let info = getMyInfo();
 	info.then(() =>
 	{
-		user.id = getCookie('id');
+		user.id = '#' + getCookie('id');
     	user.name = getCookie('username');
     	user.level = getCookie("level");
-    	user.avatar = '../../img/avatar/avatar1.jpg';//need to update with actual path
+    	user.avatar = '../img/avatar/avatar_default.png';//need to update with actual path
     	user.status = 'connection';
 		client.inforUser = user;
 		if (connectFlag)
