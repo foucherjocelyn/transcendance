@@ -66,6 +66,7 @@ function	drawHomePage(callback)
 	</div>
 	<div id="chat"></div>
 	<div class="r_successinfo hide"></div>
+${noticeInvitePlayer()}
 </div>
 `;
 
@@ -101,8 +102,8 @@ export function to_homePage(nohistory = "false")
 		{
 			if (result)
 			{
-				if (document.getElementById("p_player_img") != null)
-					getAvatar('p_player_img');
+				if (document.getElementById("hpb_player_img") != null)
+					getAvatar('hpb_player_img');
 				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById("h_homepage").classList.remove("hide");
 				loadChat();

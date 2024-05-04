@@ -1,10 +1,8 @@
 import { getCookie } from "./auth_cookie.js";
 import { notice } from "./auth_main.js";
 import { to_profilePage } from "../home/home_changeprofile.js";
-import { getOtpStatusToken } from "../backend_operation/one_time_password.js";
-import { uploadAvatar } from "../backend_operation/profile_picture.js";
-import { getAvatar } from "../backend_operation/profile_picture.js";
-import { toggleOtpStatus } from "../backend_operation/one_time_password.js";
+import { getOtpStatusToken, toggleOtpStatus } from "../backend_operation/one_time_password.js";
+import { getAvatar, uploadAvatar } from "../backend_operation/profile_picture.js";
 import { dataUpdate } from "../backend_operation/dataUpdate.js";
 
 export function checkPasswordChange()

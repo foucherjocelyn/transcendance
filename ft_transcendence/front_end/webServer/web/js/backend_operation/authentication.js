@@ -1,6 +1,5 @@
 import { notice } from "../authentication/auth_main.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { deleteAllCookie } from "../authentication/auth_cookie.js";
+import { getCookie, deleteAllCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_homePage } from "../home/home_homeboard.js";
 import { client, dataToServer, user } from "../client/client.js";
@@ -49,26 +48,22 @@ export async function postUser(new_user)
 		}
     })
 		  .then(response =>  {
-			  console.log("status = " + response.status);
-			  notice("Your account was succesfully created", 2, "#0c9605");
-			  if (document.getElementById("loadspinner") != null)
-				  document.getElementById("loadspinner").classList.add("hide");
-			  to_connectForm();
+			  console.log("status :");
+			  console.log(response.status);
 			  if (!response.ok)
 			  {
 				  notice("Given information invalid (mail or username is already taken)", 2, "#fc2403");
 				  console.log("Client error");
-				  return ;
-		  }
-			  return response.json();
-		  })
-		  .then(data => {
-			  console.log(data);
+				  return response.status;
+			  }
+			  notice("Your account was succesfully created", 2, "#0c9605");
+			  return response.status;
 		  })
 	  .catch(error => {
 	      console.error("postUser :", error);
 	  });
 	console.log("-");
+	return (r);
 }
 
 export function openSocketClient()
@@ -107,8 +102,7 @@ export async function signIn(connect_user)
 			  {
 				  notice("One of the given information is invalid", 1, "#D20000");
 				  console.log("Your password or username is wrong");
-//				  document.getElementById("loadspinner").classList.add("hide");
-				  return ;
+				  return response.status;
 			  }
 			  return response.json();
 		  })
@@ -119,10 +113,10 @@ export async function signIn(connect_user)
 			  updateMyInfo(true);
 			// openSocketClient();
 			  //console.table(client.inforUser);
-
 			  if (document.getElementById("loadspinner") != null)
 				  document.getElementById("loadspinner").classList.add("hide");
 			  to_homePage();
+			  return (data.status);
 		  })
 		  .catch(error => {
 	      console.error("Sign in: ", error);
@@ -134,6 +128,7 @@ export async function signIn(connect_user)
 		document.getElementById("loadspinner").classList.add("hide");
 	}
 	console.log("-");
+//	return (r);
 }
 
 export async function signOut()
@@ -163,7 +158,7 @@ export async function signOut()
 			  console.log("logout status: " + response.status);
 			  notice("You are now disconnected", 1, "#0c9605");
 			  updateMyInfo();
-			  console.log("Your status [" + getCookie("status") + "]");
+//			  console.log("Your status [" + getCookie("status") + "]");
 			  deleteAllCookie();
 			  to_connectForm();
 			  closeSocketClient();

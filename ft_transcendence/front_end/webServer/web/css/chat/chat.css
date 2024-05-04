@@ -138,7 +138,7 @@ body {
 #c-add-new-friend-button {
 	background-image: url(../../img/chat/add.png);
 	background-size: 100% 100%;
-	left: 7%;
+	left: 3%;
 }
 
 #c-add-new-friend-button:hover {
@@ -148,7 +148,7 @@ body {
 #c-hide-friend-list {
 	background-image: url(../../img/chat/minimize.png);
 	background-size: 100% 100%;
-	left: 40%;
+	left: 60%;
 }
 
 #c-hide-friend-list:hover {

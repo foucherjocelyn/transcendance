@@ -108,11 +108,7 @@ export async function getOtpStatusPw(f_log) {
         if (!response.ok)
 		{
 			console.log("response status = [" + response.status) + "]";
-			if (response.status === 404)
-				notice("Wrong Username/Password combination", 0, "#D20000");
-			else
-				console.log("getOtpStatusPw: Client/Server error");
-			return;
+			return response.status;
         }
         const data = await response.json();
         return data.otpStatus;
@@ -122,6 +118,7 @@ export async function getOtpStatusPw(f_log) {
         console.error("getOtpStatusPw: ", error);
 	}
 	console.log("-");
+	return (response);
 }
 
 export async function getOtpStatusToken() {
@@ -140,7 +137,7 @@ export async function getOtpStatusToken() {
         if (!response.ok)
 		{
             console.log("getOtpStatusToken: Client/Server error");
-            return;
+            return response.status;
         }
         const data = await response.json();
         return data.otpStatus;
@@ -150,4 +147,5 @@ export async function getOtpStatusToken() {
         console.error("getOtpStatusToken: ", error);
 	}
 	console.log("-");
+	return (response);
 }
