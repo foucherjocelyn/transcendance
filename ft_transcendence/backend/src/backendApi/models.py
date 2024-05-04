@@ -13,7 +13,9 @@ class User(AbstractUser, PermissionsMixin):
     level = models.DecimalField(max_digits=4, decimal_places=2, default=1)
     statusChoices = [("online", "Online"), ("offline", "Offline")]
     status = models.CharField(max_length=100, choices=statusChoices, default="offline")
-    avatarPath = models.CharField(max_length=100, default=None, blank=True, null=True)
+    avatarPath = models.CharField(
+        max_length=100, default="avatars/default.png", blank=True, null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -283,8 +285,11 @@ class Otp(models.Model):
     def __str__(self):
         return f"Otp : {self.user.username} : {self.otpStatus}"
 
+
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notification_user")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="notification_user"
+    )
     content = models.TextField(default=None, blank=True, null=True)
     isRead = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
