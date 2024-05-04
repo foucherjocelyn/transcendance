@@ -1,4 +1,4 @@
-import { client } from "../client/client.js";
+import { client, user } from "../client/client.js";
 import { openChatBox } from "./chatbox.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 
@@ -38,13 +38,19 @@ const renderFriendList = (list) => {
         friendsList.innerHTML += `<div id="c-list-user-${user.username}" class="c-user c-friend">
                     <div class="user-avatar"><img src="../img/avatar/avatar_default.png" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
+                    <button id="c-invite-match${user.username}" class="c-invite-match-button"></button>
                 </div>`;
     });
-    document.querySelectorAll(".c-friend").forEach(friend => {
-        const friendUsername = friend.id.substring().slice(12);
+    document.querySelectorAll(".c-friend").forEach(friendDiv => {
+        const friendUsername = friendDiv.id.slice(12);
         console.log("friends");
         console.log(friendUsername);
-        friend.addEventListener("click", (e) => openChatBox(friendUsername));
+        console.log(friendDiv);
+        friendDiv.addEventListener("click", (e) => openChatBox(friendUsername));
+        friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
+            e.stopPropagation();
+            console.log(`invited ${friendUsername} to a match`);
+        })
     });
 };
 

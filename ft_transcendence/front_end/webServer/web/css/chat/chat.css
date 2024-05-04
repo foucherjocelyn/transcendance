@@ -103,6 +103,11 @@ body {
     padding-bottom: 12px;
 }
 
+.c-invite-match-button {
+    background-image: url(../../img/chat/challenge.png);
+	background-size: 100% 100%;
+}
+
 #c-friends-div {
     margin-top: 8px;
     display: flex;
@@ -115,7 +120,7 @@ body {
     bottom: 20px;
 }
 
-#c-show-announcements-button, #c-add-new-friend-button, #c-hide-friend-list {
+#c-show-announcements-button, #c-add-new-friend-button, #c-hide-friend-list, .c-invite-match-button {
 	display: inline-block;
 	position: relative;
 	margin-top: 3%;

@@ -38,7 +38,7 @@ FRONTEND_URL = app["FRONTEND_URL"]
 SSL_CERTIFICATE = app["SSL_CERTIFICATE"]
 SSL_CERTIFICATE_KEY = app["SSL_CERTIFICATE_KEY"]
 
-isDev = True
+isDev = False
 
 if isDev:
     DEBUG = app["dev"]["DEBUG"]
