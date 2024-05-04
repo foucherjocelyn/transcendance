@@ -2,7 +2,7 @@ import { to_connectForm } from "./auth_connect.js";
 import { loadSpinner } from "./spinner.js"
 import { postUser } from "../backend_operation/authentication.js"
 
-export async function sendForm()
+export function sendForm()
 {
 	console.log("=Verifying given information");
 	document.getElementById("r_connect_page").classList.add("hide");
@@ -19,7 +19,12 @@ export async function sendForm()
 		first_name: document.getElementById("r_firstname").value,
 		last_name: document.getElementById("r_lastname").value,
     };
-    await postUser(new_user);
+    let register = postUser(new_user);
+	register.then(() =>
+		{
+			console.log("The register returned: ------------- ");
+			console.log(register);
+		});
 	console.log("=");
 }
 

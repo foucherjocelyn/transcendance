@@ -13,6 +13,7 @@ function    update_user(user)
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
         const   find = webSocket.listUser[i];
+        console.log("--==================================================update user called");
         if (find.id === user.id)
         {
             webSocket.listConnection[i].user = user;
@@ -31,8 +32,8 @@ function    get_data_from_client(data, socket)
     if (data.title === 'connection')
 	{
         add_new_connection(data, socket);
-        // console.log('number clients: ' + webSocket.listConnection.length);
-        // console.log(data.content);
+        console.log('number clients: ' + webSocket.listConnection.length);
+        console.log(data.content);
     }
 	else if (data.title === 'disconnect')
 		disconnect(socket);

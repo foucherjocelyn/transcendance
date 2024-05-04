@@ -37,7 +37,6 @@ function    update_match(user, inforMatch, title)
         webSocket.listMatch.push(inforMatch);
 
     indexMatch = define_match(user);
-
     webSocket.listMatch[indexMatch] = inforMatch;
     const   match = webSocket.listMatch[indexMatch];
 

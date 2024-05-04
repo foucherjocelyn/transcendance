@@ -17,8 +17,7 @@ export async function	classy_signOut(sourcename)
 		document.getElementById(sourcename).classList.add("hide");
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
-	await signOut();
-	
+	await signOut();	
 }
 
 async function checkConnect()
@@ -46,7 +45,6 @@ async function checkConnect()
 		document.getElementById("r_connect_page").classList.remove("hide");
 		document.getElementById("loadspinner").classList.add("hide");		
 	}
-	
 	console.log("-=");
 }
 
