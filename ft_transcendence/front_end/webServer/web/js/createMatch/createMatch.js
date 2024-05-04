@@ -2,6 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { create_players, define_player, display_players, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
+import { drawGame } from "../home/home_game.js";
 
 class   pMatch {
     constructor() {
@@ -68,22 +69,29 @@ function    match_default()
     client.socket.send(JSON.stringify(sendData));
 }
 
-function    create_match(mode)
+async function    create_match(mode)
 {
-    document.getElementById('createMatchLayer').style.display = 'flex';
-    client.inforUser.status = 'creating match';
-
-    // add mode game
-    match.mode = mode;
-
-    setup_size_create_match_layer();
-    setup_size_add_player_layer();
-    display_players();
-    setup_size_add_player_button();
-    get_signe_buttons_in_create_match();
-
-    const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
-    client.socket.send(JSON.stringify(sendData));
+	await drawGame((result) =>
+		{
+			if (result)
+			{
+				document.getElementById("loadspinner").classList.add("hide");
+				document.getElementById('createMatchLayer').style.display = 'flex';
+				client.inforUser.status = 'creating match';
+				
+				// add mode game
+		        match.mode = mode;
+				
+				setup_size_create_match_layer();
+				setup_size_add_player_layer();
+				display_players();
+		        setup_size_add_player_button();
+				get_signe_buttons_in_create_match();
+				
+				const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+				client.socket.send(JSON.stringify(sendData));
+			}
+	});
 }
 
 export {

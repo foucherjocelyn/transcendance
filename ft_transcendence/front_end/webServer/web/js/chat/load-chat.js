@@ -20,6 +20,8 @@ const loadChat = () => {
     <button class="c-close-button">&times;</button>
     <div id="c-announcements-list"></div>
 </div>
+<div id="chat_upperpanel">
+</div>
 <div id="chat-list">
 <button id="c-show-announcements-button"></button>
 <button id="c-add-new-friend-button"></button>
@@ -52,7 +54,8 @@ const loadChat = () => {
         }
     });
     addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
-//	document.getElementById("c-hide-friend-list").addEventListener("click", document.getElementById("c-hide-friend-list").style = "" );
+	document.getElementById("c-hide-friend-list").addEventListener("click", () =>
+		{ document.getElementById("chat-list").classList.add("hide") });
     document.querySelector("#c-show-announcements-button").addEventListener("click", showAnnouncements);
     document.getElementById("chat").style.display = "block";
     console.log("chat loaded");
