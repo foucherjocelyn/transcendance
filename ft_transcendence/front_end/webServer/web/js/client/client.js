@@ -30,7 +30,7 @@ const   user = {
     id: undefined,
     name: undefined,
     status: undefined,
-    avatar: undefined,
+    avatar: '../img/avatar/avatar_default.png',
     level: undefined,
     listFriends: [],
     listChat: [],

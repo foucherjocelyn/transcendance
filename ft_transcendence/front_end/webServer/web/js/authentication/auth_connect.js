@@ -46,6 +46,7 @@ async function checkConnect()
 		document.getElementById("r_connect_page").classList.remove("hide");
 		document.getElementById("loadspinner").classList.add("hide");		
 	}
+	
 	console.log("-=");
 }
 
