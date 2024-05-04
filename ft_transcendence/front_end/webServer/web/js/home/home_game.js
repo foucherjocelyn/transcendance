@@ -4,9 +4,11 @@ import { to_homePage } from "./home_homeboard.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
-import { create_match } from "../createMatch/createMatch.js";
+import { create_match, match_default } from "../createMatch/createMatch.js";
 import { client, user } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
+import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { openSocketClient } from "../backend_operation/authentication.js";
 
 async function	drawGame(callback)
 {
@@ -409,18 +411,13 @@ export async function	to_game(nohistory = "false")
 {
 	if (nohistory === "false")
 		history.pushState( { url: "game" }, "", "#game");
+    updateMyInfo();
+    //openSocketClient();
 	await drawGame( (result) => {
 		if (result)
 		{
 			document.getElementById("loadspinner").classList.add("hide");
 			//document.getElementById("g_game").classList.remove("hide");
-
-			user.id = getCookie('id');
-			user.name = getCookie('username');
-			user.level = getCookie("level");
-			user.avatar = '../../img/avatar/avatar1.jpg';
-			user.status = 'connection';
-			client.inforUser = user;
 
 			// create_match('rank');
 			create_match('with friends');

@@ -63,6 +63,7 @@ function    match_default()
 
     create_players();
 
+    console.table(match);
     const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
     client.socket.send(JSON.stringify(sendData));
 }
@@ -80,6 +81,9 @@ function    create_match(mode)
     display_players();
     setup_size_add_player_button();
     get_signe_buttons_in_create_match();
+
+    const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+    client.socket.send(JSON.stringify(sendData));
 }
 
 export {

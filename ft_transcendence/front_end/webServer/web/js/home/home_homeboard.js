@@ -2,12 +2,12 @@ import { loadSpinner } from "../authentication/spinner.js";
 import { to_game } from "./home_game.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
-import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { getUserList } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/get_user_info.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
+import { openSocketClient } from "../backend_operation/authentication.js";
 
 export function upperPanel()
 {
@@ -95,6 +95,8 @@ export function to_homePage(nohistory = "false")
 {
 	if (nohistory === "false")
 		history.pushState( { url: "homepage" }, "", "#homepage");
+	updateMyInfo();
+	//openSocketClient();
 	drawHomePage( (result) =>
 		{
 			if (result)

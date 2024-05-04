@@ -1,14 +1,25 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import {user, client } from '../client/client.js';
+import { match_default } from "../createMatch/createMatch.js";
+import { openSocketClient } from "./authentication.js";
 
-export async function	updateMyInfo()
+export function	updateMyInfo(connectFlag = false)
 {
-	await getMyInfo();
-	user.id = getCookie('id');
-    user.name = getCookie('username');
-    user.level = getCookie("level");
-    user.avatar = '../../img/avatar/avatar1.jpg';//need to update with actual path
-    user.status = 'connection';
-	client.inforUser = user;
+	let info = getMyInfo();
+	info.then(() =>
+	{
+		user.id = getCookie('id');
+    	user.name = getCookie('username');
+    	user.level = getCookie("level");
+    	user.avatar = '../../img/avatar/avatar1.jpg';//need to update with actual path
+    	user.status = 'connection';
+		client.inforUser = user;
+		if (connectFlag)
+		{
+			openSocketClient();
+			match_default();
+		}
+	});
 }
 
 export async function	getMyInfo()
@@ -50,7 +61,7 @@ export async function	getMyInfo()
 				  	document.cookie = `avatar=${data.avatarPath}; SameSite=Strict`;
 				  	document.cookie = `id=${data.id}; SameSite=Strict`;
 				  	document.cookie = `is_active=${data.active}; SameSite=Strict`;
-					  document.cookie = `status=${data.status}; SameSite=Strict`;
+					document.cookie = `status=${data.status}; SameSite=Strict`;
 				  	document.cookie = `is_staff=${data.is_staff}; SameSite=Strict`;
 				  	document.cookie = `is_admin=${data.is_superuser}; SameSite=Strict`;
 				  }
