@@ -58,13 +58,12 @@ export async function postUser(new_user)
 			  {
 				  notice("Given information invalid (mail or username is already taken)", 2, "#fc2403");
 				  console.log("Client error");
-				  return response.status;
+				  return ;
 		  }
 			  return response.json();
 		  })
 		  .then(data => {
 			  console.log(data);
-			  return data;
 		  })
 	  .catch(error => {
 	      console.error("postUser :", error);
@@ -164,10 +163,11 @@ export async function signOut()
 			  console.log("logout status: " + response.status);
 			  notice("You are now disconnected", 1, "#0c9605");
 			  updateMyInfo();
-//			  console.log("Your status [" + getCookie("status") + "]");//the status will not be accurate because of async
+			  console.log("Your status [" + getCookie("status") + "]");
 			  deleteAllCookie();
 			  to_connectForm();
 			  closeSocketClient();
+			  
 		  })
 		  .catch(error => {
 			  console.error("Error: ", error);
