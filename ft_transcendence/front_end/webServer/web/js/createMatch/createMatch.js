@@ -1,6 +1,6 @@
 import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
-import { create_players, setup_content_add_player_button } from "./createPlayers.js";
+import { create_players, define_player, display_players, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
 
 class   pMatch {
@@ -54,27 +54,37 @@ function    update_match_informations(data)
     setup_content_add_player_button();
 }
 
-function    create_match(mode)
+function    match_default()
 {
-    document.getElementById('createMatchLayer').style.display = 'flex';
-    client.inforUser.status = 'creating match';
-
-    // create match
     match = new pMatch();
-    match.mode = mode;
+    match.mode = 'with friends';
+    match.admin = client.inforUser;
+    match.listUser.push(client.inforUser);
 
-    setup_size_create_match_layer();
-    setup_size_add_player_layer();
     create_players();
-    setup_size_add_player_button();
-    get_signe_buttons_in_create_match();
 
     const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
     client.socket.send(JSON.stringify(sendData));
 }
 
+function    create_match(mode)
+{
+    document.getElementById('createMatchLayer').style.display = 'flex';
+    client.inforUser.status = 'creating match';
+
+    // add mode game
+    match.mode = mode;
+
+    setup_size_create_match_layer();
+    setup_size_add_player_layer();
+    display_players();
+    setup_size_add_player_button();
+    get_signe_buttons_in_create_match();
+}
+
 export {
     match,
     create_match,
-    update_match_informations
+    update_match_informations,
+    match_default
 };

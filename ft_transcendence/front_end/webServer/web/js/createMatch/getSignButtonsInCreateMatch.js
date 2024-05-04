@@ -91,6 +91,9 @@ function    get_sign_cancel_create_match_button()
         const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));
 
+        const  sendData2 = new dataToServer('deconnection', client.inforUser, client.inforUser, client.inforUser);
+        client.socket.send(JSON.stringify(sendData2));
+
         document.getElementById('connectionButton').style.display = 'flex';
         document.getElementById('createMatchLayer').style.display = 'none';
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
@@ -101,7 +104,7 @@ function    get_sign_start_create_match_button()
 {
     const   button = document.getElementById('startCreateMatchButton');
     button.onclick = () => {
-        console.log('--> ready to play');
+        // console.log('ready to play');
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
 
         const  sendData = new dataToServer('start game', match, client.inforUser, match.listUser);

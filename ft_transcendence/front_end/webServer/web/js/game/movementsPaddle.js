@@ -74,6 +74,7 @@ function horizontal_movement(paddle, direction)
     }
 }
 
+
 function    get_sign_movement_paddle(player, keyCode)
 {
     if (keyCode === player.control.left)

@@ -99,9 +99,6 @@ function    create_players()
     match.listPlayer.push(player2);
     match.listPlayer.push(player3);
     match.listPlayer.push(player4);
-
-    match.admin = client.inforUser;
-    display_players();
 }
 
 export {
@@ -109,5 +106,6 @@ export {
     inforPlayer,
     get_user_in_list_player_cl,
     setup_content_add_player_button,
-    define_player
+    define_player,
+    display_players
 };

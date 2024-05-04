@@ -87,7 +87,7 @@ function    check_lost_point()
         if (border.name === touch.name && paddle !== undefined)
         {
             last_touch(paddle);
-            // pongGame.lostPoint = true;
+            pongGame.lostPoint = true;
         }
     }
 }
