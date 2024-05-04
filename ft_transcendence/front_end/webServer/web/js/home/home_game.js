@@ -10,23 +10,9 @@ import { getCookie } from "../authentication/auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
 
-async function	drawGame(callback)
+let	noticeInvitePlayer()
 {
-	document.querySelector("#frontpage").outerHTML =
-		`<div id="frontpage">
-		${loadSpinner()}
-		${upperPanel()}
-		    <!-------------------- Loader match making -------------------->
-    <div id="loaderMatchmakingLayer">
-        <div class="loading">
-            <div class="loading-box">
-              <div class="WH color l1"></div>
-              <div class="ball color"></div>
-              <div class="WH color l2"></div>
-            </div>
-        </div>          
-    </div>
-
+	let	notice = `
     <!-------------------- Notice invitation play -------------------->
     <div id="noticeInvitationPlayLayer">
         <div id="avatarPlayerInvite"></div>
@@ -49,7 +35,26 @@ async function	drawGame(callback)
             </div>
         </div>
     </div>
+`;
+	return (notice);
+}
 
+async function	drawGame(callback)
+{
+	document.querySelector("#frontpage").outerHTML =
+		`<div id="frontpage">
+		${loadSpinner()}
+		${upperPanel()}
+		    <!-------------------- Loader match making -------------------->
+    <div id="loaderMatchmakingLayer">
+        <div class="loading">
+            <div class="loading-box">
+              <div class="WH color l1"></div>
+              <div class="ball color"></div>
+              <div class="WH color l2"></div>
+            </div>
+        </div>          
+    </div>
     <!-------------------- Create match Layer -------------------->
     <div id="createMatchLayer">
 

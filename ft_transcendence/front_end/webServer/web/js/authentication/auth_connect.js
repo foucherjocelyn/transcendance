@@ -2,8 +2,8 @@ import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
 import { to_forgotForm } from "./auth_reset.js";
 import { to_otpForm } from "./auth_otp.js";
-import { signIn } from "../backend_operation/authentication.js";
-import { signOut } from "../backend_operation/authentication.js";
+import { notice } from "./auth_main.js";
+import { signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 
@@ -18,14 +18,12 @@ export async function	classy_signOut(sourcename)
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
-	
 }
 
 async function checkConnect()
 {
 	console.log("-=Attempting to connect user");
 	document.getElementById("r_connect_page").classList.add("hide");
-	console.log(document.getElementById("loadspinner"));
 	document.getElementById("loadspinner").classList.remove("hide");
 	let connect_user = {
 		username: document.getElementById("rc_username").value,
@@ -43,10 +41,13 @@ async function checkConnect()
 	}
 	else
 	{
+		if (otpStatus === 404)
+            notice("Wrong Username/Password combination", 0, "#D20000");
+		else if (otpStatus >= 400 && otpStatus < 500)
+			notice("Unknown client side error", 0, "#D20000");
 		document.getElementById("r_connect_page").classList.remove("hide");
 		document.getElementById("loadspinner").classList.add("hide");		
 	}
-	
 	console.log("-=");
 }
 
@@ -87,7 +88,7 @@ export function to_connectForm(nohistory = "false")
 		{
 			if (result)
 			{
-				document.getElementById("loadspinner").style.display = 'none';
+				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById("r_connect_page").classList.remove("hide");
 			}
 		}

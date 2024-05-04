@@ -19,7 +19,12 @@ export async function sendForm()
 		first_name: document.getElementById("r_firstname").value,
 		last_name: document.getElementById("r_lastname").value,
     };
-    await postUser(new_user);
+    let register_status = await postUser(new_user);
+	document.getElementById("loadspinner").classList.add("hide");
+	if (register_status >= 400 && register_status < 500)
+		document.getElementById("r_connect_page").classList.remove("hide");
+	if (register_status >= 200 && register_status < 300)
+		to_connectForm();
 	console.log("=");
 }
 
