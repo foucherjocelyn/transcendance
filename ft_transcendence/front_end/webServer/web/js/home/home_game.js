@@ -403,6 +403,7 @@ async function	drawGame(callback)
 
     <!--------------------  -------------------->
 		<div class="r_successinfo hide"></div>
+	${noticeInvitePlayer()}
 	</div>
 `;
 	document.getElementById("h_to_home").addEventListener("click", to_homePage);
