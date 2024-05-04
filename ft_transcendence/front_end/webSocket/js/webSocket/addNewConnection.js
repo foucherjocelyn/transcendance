@@ -16,7 +16,7 @@ function    add_new_connection(data, socket)
     webSocket.listUser.push(data.content);
 }
 
-function    deconnection(socket)
+function    disconnect(socket)
 {
     for (let i = 0; i < webSocket.listConnection.length; i++)
     {
@@ -36,6 +36,6 @@ function    deconnection(socket)
 
 module.exports = {
     add_new_connection,
-    deconnection
+    disconnect
 };
 
