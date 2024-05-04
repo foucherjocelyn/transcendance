@@ -74,7 +74,7 @@ function	to_changeAvatar(callback)
 	document.getElementById("h_current_parameters").innerHTML = 
 `<br>
 <input type="file" id="p_avatar" name="avatar" accept="image/*" onchange="changePreview(event)">
-<img id="p_avatarpreview" src="../img/avatar_default.png" alt="Avatar preview">
+<img id="p_avatarpreview" src="../img/avatar/avatar_default.png" alt="Avatar preview">
 <hr id="p_div">
 <button class="button-img" type="button" id="p_change">Apply</button>
 `;

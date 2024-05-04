@@ -8,7 +8,7 @@ import { getOtpStatusToken } from "../backend_operation/one_time_password.js";
 export async function	checkInput2FA()
 {
 	const OtpStatus = await getOtpStatusToken();
-	console.log("CheckInput2FA");
+//	console.log("--CheckInput2FA");
 	console.log(OtpStatus);
 	if (OtpStatus === true)
 	{

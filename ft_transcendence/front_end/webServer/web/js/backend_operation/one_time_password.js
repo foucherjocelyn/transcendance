@@ -6,7 +6,7 @@ export async function getOtpQR() {
     let f_username = {
         username: getCookie("username")
     };
-    console.log("getOtpQR starting");
+//    console.log("getOtpQR starting");
     let f_token = getCookie("token");
     console.log(f_token);
     try {
@@ -35,7 +35,7 @@ export async function toggleOtpStatus()
 	let f_username = {
 		username: getCookie("username")
 	};
-	console.log("toggleOtp starting");
+//	console.log("toggleOtp starting");
 	let f_token = getCookie("token");
 	await fetch("http://127.0.0.1:8000/api/v1/auth/otp/switch", {
 		method: "POST",
@@ -62,7 +62,7 @@ export async function toggleOtpStatus()
 
 export async function sendOtp(connect_user)
 {
-	console.log("-OTP request received");
+//	console.log("-OTP request received");
     await requestToken(connect_user);
 	if (getCookie("token") === null || getCookie("token") === "")
 		return ;
@@ -85,17 +85,17 @@ export async function sendOtp(connect_user)
 		  .then(data =>
 			  {
 			  	  notice("(debug)Your otp is displayed in the console", 3, "#37e6e6");
-				  console.log(`Your otp is: ${data.otp}`);
+				  console.log(`----------Your otp is: ${data.otp}`);
 			  })
 		  .catch(error => {
 			  console.error("sendOtp: ", error);
 		  });
-	console.log("-");
+//	console.log("-");
 }
 
 export async function getOtpStatusPw(f_log) {
-    console.log("-getOtpStatusPw starting");
-	console.log(f_log);
+//    console.log("-getOtpStatusPw starting");
+//	console.log(f_log);
     try {
         const response = await fetch("http://127.0.0.1:8000/api/v1/auth/otp/status", {
             method: "POST",
@@ -121,11 +121,11 @@ export async function getOtpStatusPw(f_log) {
 	{
         console.error("getOtpStatusPw: ", error);
 	}
-	console.log("-");
+//	console.log("-");
 }
 
 export async function getOtpStatusToken() {
-    console.log("-getOtpStatusToken starting");
+//    console.log("-getOtpStatusToken starting");
     let f_token = getCookie("token");
 //    console.log(f_token);
     try {
@@ -149,5 +149,5 @@ export async function getOtpStatusToken() {
 	{
         console.error("getOtpStatusToken: ", error);
 	}
-	console.log("-");
+//	console.log("-");
 }

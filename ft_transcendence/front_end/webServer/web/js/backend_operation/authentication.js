@@ -95,23 +95,12 @@ export async function signIn(connect_user)
 		}
     })
 		  .then(response =>  {
-			  console.log("response =");
-			  console.log(response);
+//			  console.log("Connecting response =");
+//			  console.log(response);
 			  if (response.ok)
 			  {
 				  notice("Connection successful", 1, "#0c9605");
 				  document.cookie = `username=${connect_user.username}; SameSite=Strict`;
-				  authCheck();
-
-				  user.id = getCookie('id');
-					user.name = getCookie('username');
-					user.level = getCookie("level");
-					user.avatar = '../../img/avatar/avatar1.jpg';
-					user.status = 'connection';
-					client.inforUser = user;
-
-				  const  sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
-				  client.socket.send(JSON.stringify(sendData));
 			  }
 			  else if (!response.ok)
 			  {
@@ -127,7 +116,19 @@ export async function signIn(connect_user)
 			  document.cookie = `refresh=${data.refresh}; SameSite=Strict`;
 			  document.cookie = `token=${data.access}; SameSite=Strict`;
 			  getMyInfo();
-			  client.inforUser.status = getCookie("status"); 
+			  //authCheck();
+
+			  user.id = getCookie('id');
+			  user.name = getCookie('username');
+			  user.level = getCookie("level");
+			  user.avatar = '../../img/avatar/avatar1.jpg';
+			  user.status = 'connection';
+			  client.inforUser = user;
+			  
+			  const  sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
+			  client.socket.send(JSON.stringify(sendData));
+			  client.inforUser.status = getCookie("status");
+
 			  if (document.getElementById("loadspinner") != null)
 				  document.getElementById("loadspinner").classList.add("hide");
 			  to_homePage();
@@ -170,9 +171,9 @@ export async function signOut()
 			  }
 			  console.log("logout status: " + response.status);
 			  notice("You are now disconnected", 1, "#0c9605");
-			  getMyInfo();
-			  console.log("Your status [" + getCookie("status") + "]");
 			  deleteAllCookie();
+			  document.cookie = `status="offline"; SameSite=Strict`;
+			  console.log("Your status [" + getCookie("status") + "]");
 			  to_connectForm();
 			  //closeSocket();
 		  })

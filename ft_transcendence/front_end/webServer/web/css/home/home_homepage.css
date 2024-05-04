@@ -1,0 +1,83 @@
+#h_player_bar {
+	background-color: #002f69;
+	position: relative;
+	height: 3.5em;
+	margin-bottom: 3em;
+}
+
+#hpb_player_img {
+	display: inline-block;
+	background-color: white;
+	border-radius: 60px;
+	position: relative;
+	margin-top: -2em;
+	left: 4%;
+	width: auto;
+	height: auto;
+	max-width: 80px;
+	max-height: 80px;
+}
+
+#hpb_username, #hpb_level {
+	display: inline-block;
+	position: relative;
+	margin-top: -2em;
+	color: white;
+	font-weight: bold;
+}
+
+#hpb_username {
+	margin-bottom: -1%;
+	top: -2em;
+	left: 130px;
+}
+
+#hpb_level {
+	top: -30%;
+	left: 78%;
+}
+
+/*
+#hpb_div1 {
+	position: relative;
+	background-color: black;
+	height: 1px;
+}
+*/
+
+#h_scoreboard {
+	background-image: url(../../img/background/card2.png);
+	background-size: cover;
+	border-radius: 4px;
+	min-width:380px;
+	width: 90%;
+	height: 400px;
+	max-weight: 700px;
+	padding: 10px;
+	position: relative;	
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#h_score {
+	position: relative;
+	width: 80%;
+	margin-top: 3%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#hs_filter {
+	color: gray;
+	font-weight: bold;
+	background-image: url(../../img/background/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	border-radius: 2px;
+}
+
+#hs_filter th {
+	width: 25%;
+	resize: horizontal;
+	overflow: hidden;
+}

@@ -5,6 +5,7 @@ import { to_otpForm } from "./auth_otp.js";
 import { signIn } from "../backend_operation/authentication.js";
 import { signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
+import { getMyInfo } from "../backend_operation/get_user_info.js";
 
 export async function	classy_signOut(sourcename)
 {
@@ -24,13 +25,14 @@ async function checkConnect()
 {
 	console.log("-=Attempting to connect user");
 	document.getElementById("r_connect_page").classList.add("hide");
+	console.log(document.getElementById("loadspinner"));
 	document.getElementById("loadspinner").classList.remove("hide");
 	let connect_user = {
 		username: document.getElementById("rc_username").value,
 		password: document.getElementById("rc_password").value
     };
 	const otpStatus = await getOtpStatusPw(connect_user);
-	console.log("otpStatus = " + otpStatus);
+//	console.log("otpStatus = " + otpStatus);
 	if (otpStatus === false)
 	{
 		await signIn(connect_user);
