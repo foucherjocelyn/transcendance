@@ -30,8 +30,13 @@ function    get_data_from_client(data, socket)
     // console.log('title: ' + data.title);
     if (data.title === 'connection')
         add_new_connection(data, socket);
-    else if (data.title === 'deconnection')
-        deconnection(socket);
+        console.log('number clients: ' + webSocket.listConnection.length);
+        console.log(data.content);
+    }
+	else if (data.title === "disconnect")
+	{
+		disconnect(socket);
+	}
     else if (data.title === 'update match')
         update_match(data.from, data.content, data.title);
     else if (data.title === 'accept invitation to play')
@@ -64,7 +69,7 @@ function    listen_connection(wsServer)
 
         // Handle event when client closes connection
         connection.on('close', () => {
-            deconnection(connection);
+            disconnect(connection);
             console.log('WebSocket connection closed.');
         });
     });
@@ -96,7 +101,7 @@ module.exports = {
     webSocket
 };
 
-const { add_new_connection, deconnection } = require('./addNewConnection');
+const { add_new_connection, disconnect } = require('./addNewConnection');
 const { send_data } = require('./dataToClient');
 const { update_match } = require('./updateMatch');
 const { accept_invitation_to_play, leave_match } = require('./acceptInvitationPlay');

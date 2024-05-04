@@ -1,5 +1,16 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 
+export async function	updateMyInfo()
+{
+	await getMyInfo();
+	user.id = getCookie('id');
+    user.name = getCookie('username');
+    user.level = getCookie("level");
+    user.avatar = '../../img/avatar/avatar1.jpg';//need to update with actual path
+    user.status = 'connection';
+	client.inforUser = user;
+}
+
 export async function	getMyInfo()
 {
 	console.log("-Obtaining user info");
@@ -31,17 +42,17 @@ export async function	getMyInfo()
 				  console.log(data);
 				  if (data !== undefined)
 				  {
-				  	  document.cookie = `username=${data.username}; SameSite=Strict`;
-				  	  document.cookie = `firstname=${data.first_name}; SameSite=Strict`;
-				  	  document.cookie = `lastname=${data.last_name}; SameSite=Strict`;
-				  	  document.cookie = `email=${data.email}; SameSite=Strict`;
-				  	  document.cookie = `level=${data.level}; SameSite=Strict`;
-				  	  document.cookie = `avatar=${data.avatarPath}; SameSite=Strict`;
-				  	  document.cookie = `id=${data.id}; SameSite=Strict`;
-				  	  document.cookie = `is_active=${data.active}; SameSite=Strict`;
+				  	document.cookie = `username=${data.username}; SameSite=Strict`;
+				  	document.cookie = `firstname=${data.first_name}; SameSite=Strict`;
+				  	document.cookie = `lastname=${data.last_name}; SameSite=Strict`;
+				  	document.cookie = `email=${data.email}; SameSite=Strict`;
+				  	document.cookie = `level=${data.level}; SameSite=Strict`;
+				  	document.cookie = `avatar=${data.avatarPath}; SameSite=Strict`;
+				  	document.cookie = `id=${data.id}; SameSite=Strict`;
+				  	document.cookie = `is_active=${data.active}; SameSite=Strict`;
 					  document.cookie = `status=${data.status}; SameSite=Strict`;
-				  	  document.cookie = `is_staff=${data.is_staff}; SameSite=Strict`;
-				  	  document.cookie = `is_admin=${data.is_superuser}; SameSite=Strict`;
+				  	document.cookie = `is_staff=${data.is_staff}; SameSite=Strict`;
+				  	document.cookie = `is_admin=${data.is_superuser}; SameSite=Strict`;
 				  }
 //				  showCookie();
 			  })
