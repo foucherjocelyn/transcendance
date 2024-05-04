@@ -10,7 +10,7 @@ import { getCookie } from "../authentication/auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
 
-let	noticeInvitePlayer()
+export function	noticeInvitePlayer()
 {
 	let	notice = `
     <!-------------------- Notice invitation play -------------------->
