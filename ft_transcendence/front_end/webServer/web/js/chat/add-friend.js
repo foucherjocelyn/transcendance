@@ -73,27 +73,22 @@ const searchFindNewFriendWindow = async () => {
         const parsedSearchInput = searchInput.value.match(regex).join("");
 
         console.log(listUsers);
-        let listFriendInvitationPending;
-        if (listFriendInvitationSent) {
-            listFriendInvitationPending = listFriendInvitationSent.filter(invitation => invitation.status === "pending");
-          console.log(listFriendInvitationPending);
-        } else {
-            listFriendInvitationPending = null;
-        }
+        const listFriendInvitationPending = listFriendInvitationSent.filter(invitation => invitation.status === "pending");
+        console.log(listFriendInvitationPending);
         const listUsersWithoutSelf = listUsers.filter((user) => user.username != getCookie("username"))
         const listUsersWithoutSelfAndFriends = listUsersWithoutSelf.filter((user) => !listFriends.some((friend => friend.username === user.username)));
         const matchlist = listUsersWithoutSelfAndFriends.filter((user) => user.username.includes(parsedSearchInput));
         matchlist.forEach((user) => {
-            if (listFriendInvitationSent && listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username)) {
+            if (listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username)) {
                 const userHTML = `<div id="c-list-user-${user.username}" class="c-user">
-                    <div class="user-avatar"><img src="../img/avatar/avatar_default.png" alt="profile-picture"></div>
+                    <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
                     <div>pending</div>
                     </div>`;
                 userListDiv.innerHTML += userHTML;
             } else {
                 const userHTML = `<div id="c-list-user-${user.username}" class="c-user">
-                    <div class="user-avatar"><img src="../img/avatar/avatar_default.png" alt="profile-picture"></div>
+                    <div class="user-avatar"><img src="icon/default.jpg" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
                     <button id="c-send-friend-invite-${user.username}" class="c-send-friend-invite">+</button>
                     </div>`;

@@ -47,23 +47,23 @@ function    update_match_informations(data)
 {
     Object.assign(match, data.content);
     client.inforUser.status = 'creating match';
-
+    
     if (match.admin.id !== client.inforUser.id)
         document.getElementById('startCreateMatchButton').style.display = 'none';
 
-    // if (match.mode !== 'default')
     setup_content_add_player_button();
 }
 
 function    match_default()
 {
     match = new pMatch();
-    match.mode = 'default';
+    match.mode = 'with friends';
     match.admin = client.inforUser;
     match.listUser.push(client.inforUser);
 
     create_players();
 
+    console.table(match);
     const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
     client.socket.send(JSON.stringify(sendData));
 }
