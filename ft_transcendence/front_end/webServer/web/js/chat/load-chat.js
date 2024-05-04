@@ -21,11 +21,11 @@ const loadChat = () => {
     <div id="c-announcements-list"></div>
 </div>
 <div id="chat_upperpanel">
-</div>
-<div id="chat-list">
 <button id="c-show-announcements-button"></button>
 <button id="c-add-new-friend-button"></button>
 <button id="c-hide-friend-list"></button>
+</div>
+<div id="chat-list">
     <div id="c-friends-div">
         <h3>Friends</h3>
         <div id="c-friends-list">
