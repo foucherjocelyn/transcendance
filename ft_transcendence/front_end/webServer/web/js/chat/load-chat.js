@@ -3,6 +3,7 @@ import { searchFriendList } from "./friend-list.js";
 import { displayFindNewFriendWindow } from "./add-friend.js";
 import { showAnnouncements } from "./announcements.js";
 import { getListFriends } from "./friend-list.js";
+import { client } from "../client/client.js";
 
 const loadChat = () => {
     const chatDiv = document.getElementById("chat");
@@ -42,7 +43,7 @@ const loadChat = () => {
 	hideFriendList.addEventListener("click", () => { document.getElementById("c-friends-div").toggle("hide"); });
     const listFriends = getListFriends();
     listFriends.then(list => {
-        client.inforUser.listFriends = list;
+        // client.inforUser.listFriends = list;
         renderFriendList(list);
     });
 
