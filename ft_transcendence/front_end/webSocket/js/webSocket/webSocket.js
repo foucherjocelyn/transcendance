@@ -29,11 +29,9 @@ function    get_data_from_client(data, socket)
 
     // console.log('title: ' + data.title);
     if (data.title === 'connection')
-    {
         add_new_connection(data, socket);
-        console.log('number clients: ' + webSocket.listConnection.length);
-        console.log(data.content);
-    }
+    else if (data.title === 'deconnection')
+        deconnection(socket);
     else if (data.title === 'update match')
         update_match(data.from, data.content, data.title);
     else if (data.title === 'accept invitation to play')
@@ -88,7 +86,7 @@ function    setup_web_socket()
     listen_connection(wsServer);
 
     // Run server on port 4242
-    const PORT = process.env.PORT || 5555;
+    const PORT = process.env.PORT || 4242;
     server.listen(PORT, () => console.log(`WebSocket server running on port ${PORT}`));
 }
 
