@@ -51,8 +51,8 @@ function    update_match_informations(data)
     if (match.admin.id !== client.inforUser.id)
         document.getElementById('startCreateMatchButton').style.display = 'none';
 
-    // if (match.mode !== 'default')
-    setup_content_add_player_button();
+    if (match.mode !== 'default')
+		setup_content_add_player_button();
 }
 
 function    match_default()

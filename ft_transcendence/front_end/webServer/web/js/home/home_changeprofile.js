@@ -125,7 +125,6 @@ async function	drawProfilePage(callback)
 `<div id="frontpage">
 	${loadSpinner()}
 	${upperPanel()}
-	<div id="chat"></div>
 	<div id="h_myprofile" name="myprofile" class="hide">
 		<div id="h_myprofileoptions">
 			<p id="h_changeinfo">My user info</p>
@@ -139,6 +138,7 @@ async function	drawProfilePage(callback)
 	</div>
 	<div id="chat"></div>
 	<div class="r_successinfo hide"></div>
+${noticeInvitePlayer()}
 </div>
 `;
 

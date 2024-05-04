@@ -12,20 +12,19 @@ function drawTournament(callback)
 		`<div id="frontpage">
 			${loadSpinner()}
 			${upperPanel()}
-			<div id="chat"></div>
-				<div id="h_tournament_page" class="hide">
-					<div id="h_tournament_board">
-						<div class="t_sort_head">
-					<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
-		            <button type="button" id="htb_mglass" name="mglass"></button>
-        		    <select id="htb_dropdown" name="options">
-		              <option value="upcoming" selected>Upcoming</option>
-        		      <option value="ongoing">Ongoing</option>
-             		  <option value="finished">Finished</option>
-		            </select>
-        				</div>
-          <hr id="htb_sep" name="t_sep" class="t_separator">
-          <table id="t_tournament">
+			<div id="h_tournament_page" class="hide">
+				<div id="h_tournament_board">
+					<div class="t_sort_head">
+				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
+	            <button type="button" id="htb_mglass" name="mglass"></button>
+       		    <select id="htb_dropdown" name="options">
+	              <option value="upcoming" selected>Upcoming</option>
+       		      <option value="ongoing">Ongoing</option>
+           		  <option value="finished">Finished</option>
+	            </select>
+       				</div>
+	        <hr id="htb_sep" name="t_sep" class="t_separator">
+    	    <table id="t_tournament">
             <thead>
               <tr id="htb_filter">
                 <th scope="col">Match Name</th>
@@ -42,6 +41,7 @@ function drawTournament(callback)
 			</div>
 			<div id="chat"></div>
 			<div class="r_successinfo hide"></div>
+			#{noticeInvitePlayer()}
 		</div>
 `;
 	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });

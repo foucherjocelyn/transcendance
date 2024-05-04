@@ -39,8 +39,6 @@ const loadChat = () => {
     const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
     const friendsListSearchButton = document.querySelector("#c-search-friend-list button");
     const addNewFriendButton = document.getElementById("c-add-new-friend-button");
-	const hideFriendList = document.getElementById("c-hide-friend-list");
-	hideFriendList.addEventListener("click", () => { document.getElementById("c-friends-div").toggle("hide"); });
     const listFriends = getListFriends();
     listFriends.then(list => {
         // client.inforUser.listFriends = list;
@@ -54,6 +52,7 @@ const loadChat = () => {
         }
     });
     addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
+//	document.getElementById("c-hide-friend-list").addEventListener("click", document.getElementById("c-hide-friend-list").style = "" );
     document.querySelector("#c-show-announcements-button").addEventListener("click", showAnnouncements);
     document.getElementById("chat").style.display = "block";
     console.log("chat loaded");
