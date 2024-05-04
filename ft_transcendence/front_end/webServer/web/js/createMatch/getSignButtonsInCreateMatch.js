@@ -1,5 +1,5 @@
 import { invitation_to_play } from "../invitationPlay/invitationPlay.js";
-import { match } from "./createMatch.js";
+import { match, match_default } from "./createMatch.js";
 import { inforPlayer } from "./createPlayers.js";
 import { client, dataToServer } from "../client/client.js";
 
@@ -90,9 +90,11 @@ function    get_sign_cancel_create_match_button()
     button.onclick = () => {
         const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));
-        document.getElementById('connectionButton').style.display = 'flex';
+
         document.getElementById('createMatchLayer').style.display = 'none';
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
+
+        match_default();
     }
 }
 
