@@ -49,11 +49,15 @@ function    update_match_informations(data)
     Object.assign(match, data.content);
     client.inforUser.status = 'creating match';
 
-    if (match.admin.id !== client.inforUser.id)
-        document.getElementById('startCreateMatchButton').style.display = 'none';
+    console.log('-----------------> ' + match.mode);
+    const   startButton = document.getElementById('startCreateMatchButton');
+    if (startButton === null)
+        return ;
 
-    if (match.mode !== 'default')
-        setup_content_add_player_button();
+    if (match.admin.id !== client.inforUser.id)
+        startButton.style.display = 'none';
+    
+    setup_content_add_player_button();
 }
 
 function    match_default()
