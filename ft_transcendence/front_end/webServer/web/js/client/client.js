@@ -93,6 +93,8 @@ function    get_data_from_server(socket)
             accept_invite_to_play();
         if (receivedData.title === 'reject invitation to play')
             notice_invitation_play(receivedData);
+        if (receivedData.title === 'load create match layer')
+            create_match('with friends');
         if (receivedData.title === 'warning')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'update match')

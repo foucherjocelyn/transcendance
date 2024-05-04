@@ -77,8 +77,9 @@ function    accept_invitation_to_play(data)
         return ;
     }
 
-    if (data.from.status === 'creating match')
-        leave_match(data.from);
+    send_data('load create match layer', '', data.to, data.from);
+    // if (data.from.status === 'creating match')
+    leave_match(data.from);
     add_user_in_a_match(data.to, data.from);
 }
 

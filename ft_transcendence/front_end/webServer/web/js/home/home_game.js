@@ -39,7 +39,7 @@ export function	noticeInvitePlayer()
 	return (notice);
 }
 
-async function	drawGame(callback)
+export async function	drawGame(callback)
 {
 	document.querySelector("#frontpage").outerHTML =
 		`<div id="frontpage">
@@ -419,6 +419,8 @@ export async function	to_game(nohistory = "false")
 		history.pushState( { url: "game" }, "", "#game");
     updateMyInfo();
     //openSocketClient();
+	create_match("with friends");
+	/*
 	await drawGame( (result) => {
 		if (result)
 		{
@@ -430,4 +432,5 @@ export async function	to_game(nohistory = "false")
 			// create_match('offline');
 		}
 	});
+*/
 }
