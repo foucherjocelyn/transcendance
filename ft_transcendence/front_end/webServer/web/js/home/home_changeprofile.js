@@ -6,13 +6,10 @@ import { updateMyAvatar } from "../authentication/auth_change_info.js";
 import { updateMyAccount } from "../authentication/auth_change_info.js";
 import { upperPanel } from "./home_homeboard.js";
 import { to_homePage } from "./home_homeboard.js";
-import { to_game } from "./home_game.js";
+import { noticeInvitePlayer, to_game } from "./home_game.js";
 import { to_tournament } from "./home_tournament.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { dataUpdate } from "../backend_operation/dataUpdate.js";
-import { uploadAvatar } from "../backend_operation/profile_picture.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
-import { getOtpStatusToken } from "../backend_operation/one_time_password.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
 

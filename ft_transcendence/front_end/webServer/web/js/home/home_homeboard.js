@@ -1,5 +1,5 @@
 import { loadSpinner } from "../authentication/spinner.js";
-import { to_game } from "./home_game.js";
+import { noticeInvitePlayer, to_game } from "./home_game.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
