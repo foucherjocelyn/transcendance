@@ -79,7 +79,6 @@ function    accept_invitation_to_play(data)
 
     leave_match(data.from);
     add_user_in_a_match(data.to, data.from);
-    send_data('load create match layer', '', data.to, data.from);
 }
 
 module.exports = {

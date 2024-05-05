@@ -1,4 +1,4 @@
-import { client } from "../client/client.js";
+import { client, dataToServer } from "../client/client.js";
 import { match } from "./createMatch.js";
 
 class   inforPlayer {
@@ -33,9 +33,50 @@ function    create_add_player_button()
     document.getElementById('addPlayerLayer').appendChild(button);
 }
 
+function    get_user_in_list_player_cl()
+{
+    match.listUser = [];
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
+        if (player.id[0] === '#')
+        {
+            match.listUser.push(match.listPlayer[i]);
+        }
+    }
+}
+
+function    change_match_admin()
+{
+    const   tmp = match.listPlayer[0];
+    match.listPlayer[0] = match.listUser[0];
+    match.admin = match.listUser[0];
+
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
+        if (i > 0 && player.id === match.listUser[0].id)
+        {
+            match.listPlayer[i] = tmp;
+
+            const  sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+			client.socket.send(JSON.stringify(sendData));
+            return ;
+        }
+    }
+}
+
 function    setup_content_add_player_button()
 {
-    get_user_in_list_player_cl();
+    // get_user_in_list_player_cl();
+
+    if (match.listPlayer[0].type === 'none')
+        change_match_admin();
+
+    if (match.admin.id === client.inforUser.id)
+        document.getElementById('startCreateMatchButton').style.display = 'flex';
+    else
+        document.getElementById('startCreateMatchButton').style.display = 'none';
 
     const   buttons = document.querySelectorAll('#addPlayerLayer > button');
     const   spanID = document.querySelectorAll('.idPlayer');
@@ -50,30 +91,16 @@ function    setup_content_add_player_button()
     }
 }
 
-function    get_user_in_list_player_cl()
-{
-    match.listUser = [];
-    for (let i = 0; i < match.listPlayer.length; i++)
-    {
-        const   player = match.listPlayer[i];
-        if (player.id[0] === '#')
-        {
-            match.listUser.push(match.listPlayer[i]);
-        }
-    }
-}
-
-function    display_players()
+function    display_add_player_buttons()
 {
     document.querySelectorAll('#addPlayerLayer > button').forEach(button => {
         button.remove();
     })
 
-    for (let i = 0; i < match.listPlayer.length; i++)
-    {
-        const player = match.listPlayer[i];
+    match.listPlayer.forEach(button => {
         create_add_player_button();
-    }
+    })
+
     setup_content_add_player_button();
 }
 
@@ -88,24 +115,10 @@ function    define_player(id)
     return undefined;
 }
 
-function    create_players()
-{
-    const   player1 = new inforPlayer(client.inforUser.id, client.inforUser.name, client.inforUser.avatar, client.inforUser.level, 'player');
-    const   player2 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
-    const   player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
-    const   player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
-
-    match.listPlayer.push(player1);
-    match.listPlayer.push(player2);
-    match.listPlayer.push(player3);
-    match.listPlayer.push(player4);
-}
-
 export {
-    create_players,
     inforPlayer,
     get_user_in_list_player_cl,
     setup_content_add_player_button,
     define_player,
-    display_players
+    display_add_player_buttons
 };

@@ -52,31 +52,6 @@ class   dataToServer {
     }
 }
 
-function    informations_match_in_client(match)
-{
-    console.log('--> match admin: ' + match.admin.id);
-    console.log('--> match mode: ' + match.mode);
-
-    console.log('--> match list User:');
-    match.listUser.forEach(user => {
-        console.log('[ ' + user.id + ' ]');
-    });
-
-    console.log('--> match list Players:');
-    match.listPlayer.forEach(player => {
-        console.log('[ ' + player.type + ' ]');
-    });
-
-    console.log('--> match time start: ' + match.timeStart.hour + ':' + match.timeStart.minute + ':' + match.timeStart.second);
-    // console.log('--> match time end: ');
-    
-    console.log('--> match date start: ' + match.dateStart.day + '/' + match.dateStart.month + '/' + match.dateStart.year);
-    
-    // console.log('--> match : ');
-    // this.lostPoint = false,
-    // this.gameOver = false
-}
-
 function    get_data_from_server(socket)
 {
     socket.onmessage = function(event) {
@@ -93,8 +68,6 @@ function    get_data_from_server(socket)
             accept_invite_to_play();
         if (receivedData.title === 'reject invitation to play')
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'load create match layer')
-            create_match('with friends');
         if (receivedData.title === 'warning')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'update match')
