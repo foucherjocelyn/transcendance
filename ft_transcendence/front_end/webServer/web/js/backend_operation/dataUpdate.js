@@ -2,7 +2,7 @@ import { getCookie } from "../authentication/auth_cookie.js";
 
 export async function dataUpdate(newInfo)
 {
-	console.log("-dataUpdate starting");
+//	console.log("-dataUpdate starting");
 	let f_token = getCookie("token");
 	await fetch("http://127.0.0.1:8000/api/v1/profile/me", {
 		method: "PUT",
@@ -30,5 +30,5 @@ export async function dataUpdate(newInfo)
 		  .catch(error => {
 			  console.error("updateMyInfo: ", error);
 		  });
-	console.log("-");
+//	console.log("-");
 }
