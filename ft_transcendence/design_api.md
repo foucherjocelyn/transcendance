@@ -87,6 +87,8 @@
     -   [Remove a player from a game](#remove-a-player-from-a-game)
     -   [End a game](#end-a-game)
     -   [Add score of a player](#add-score-of-a-player)
+    -   [List all my games](#list-all-my-games)
+    -   [List all my scores](#list-all-my-scores)
 
 -   **Tournaments**
 
@@ -907,8 +909,8 @@ The game will be created as visibility: 'public', mode: 'classic', status: 'prog
 POST /api/v1/game
 authorization Bearer <token>
 {
-	visibility: "public" | "private";// optional
-	mode: "classic" | "ranked" | "tournament";// optional
+	visibility: "public" | "private";// optional,default: 'public'
+	mode: "classic" | "ranked" | "tournament";// optional, default: 'classic'
 	tournament_name: string;// optional
 	maxScore: number;// optional
 	status: "progressing" | "end";// optional
@@ -995,6 +997,25 @@ authorization Bearer <token>
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
 
+
+## List all my games
+
+Return a list of all games that the user is a player of. Only the player can see their games.
+
+```typescript
+GET /api/v1/game/me
+authorization Bearer <token>
+```
+
+### Return
+
+-   A list of game objects ([Game](#game))
+
+
+## List all my scores
+
+Return a list of all scores that the user obtained. Only the player can see their scores.
+
 # Tournaments
 
 ## Create a new tournament
@@ -1009,7 +1030,6 @@ authorization Bearer <token>
 	description: string, // optional
 	start_date: Date, // Format: YYYY-MM-DD
 	end_date: Date, // Format: YYYY-MM-DD
-	status: "upcoming" | "ongoing" | "completed", // optional
 }
 ```
 

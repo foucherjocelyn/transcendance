@@ -1,6 +1,5 @@
+from backendApi.invalid_input import InputValidationError
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from backendApi.custom_validator_error import CustomValidationError
 
 from ..models import Game, Tournament, User
 
@@ -46,16 +45,16 @@ class GameSerializer(serializers.ModelSerializer):
         tournament_name = data.get("tournament_name", None)
         if mode == "tournament":
             if not "tournament_name":
-                raise CustomValidationError(detail="Tournament name is required")
+                raise InputValidationError(detail="Tournament name is required")
             try:
                 tournament = Tournament.objects.get(name=tournament_name)
             except Tournament.DoesNotExist:
-                raise CustomValidationError(detail="Tournament not found")
+                raise InputValidationError(detail="Tournament not found")
             if tournament.status != "ongoing":
-                raise CustomValidationError(detail="Tournament is not ongoing")
+                raise InputValidationError(detail="Tournament is not ongoing")
         else:
             if tournament_name:
-                raise CustomValidationError(
+                raise InputValidationError(
                     detail="Cannot set tournament name when mode is not tournament"
                 )
         return data
@@ -65,7 +64,8 @@ class GameSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation["tournament_name"] = instance.tournament.name
+        if instance.tournament:
+            representation["tournament_name"] = instance.tournament.name
         representation["player_usernames"] = self.get_player_usernames(instance)
         return representation
 
@@ -79,11 +79,11 @@ class GameSerializer(serializers.ModelSerializer):
             try:
                 tournament = Tournament.objects.get(name=tournament_name)
             except Tournament.DoesNotExist:
-                raise CustomValidationError(detail="Tournament not found")
+                raise InputValidationError(detail="Tournament not found")
             game.tournament = tournament
             # Check if the owner is part of the tournament
             if not tournament.players.filter(id=owner.id).exists():
-                raise CustomValidationError(detail="Owner is not part of the tournament")
+                raise InputValidationError(detail="Owner is not part of the tournament")
         game.save()
         return game
 

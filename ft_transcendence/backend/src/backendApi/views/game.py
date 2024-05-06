@@ -1,7 +1,7 @@
 from backendApi.serializers.game import GameSerializer
+from backendApi.serializers.game_score import GameScoreSerializer
 from backendApi.models import Game, User, GameScore
 
-from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.response import Response
@@ -150,6 +150,22 @@ class GameViewSet(viewsets.ModelViewSet):
             status=200,
         )
 
+    # List all my games
+    @action(detail=True, methods=["get"])
+    def listMyGames(self, request):
+        user = request.user
+        games = Game.objects.filter(players=user)
+        serializer = self.get_serializer(games, many=True)
+        return Response(serializer.data, status=200)
+
+    # List all my scores
+    @action(detail=True, methods=["get"])
+    def listMyScores(self, request):
+        user = request.user
+        scores = GameScore.objects.filter(player=user)
+        serializer = GameScoreSerializer(scores, many=True)
+        return Response(serializer.data, status=200)
+
     def get_permissions(self):
         if self.action in [
             "createGame",
@@ -158,6 +174,8 @@ class GameViewSet(viewsets.ModelViewSet):
             "removePlayerFromGame",
             "endGame",
             "addScore",
+            "listMyGames",
+            "listMyScores",
         ]:
             self.permission_classes = [IsAuthenticated]
         else:

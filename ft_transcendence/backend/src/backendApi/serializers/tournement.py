@@ -1,7 +1,7 @@
+from backendApi.invalid_input import InputValidationError
 from backendApi.models import Tournament
-from rest_framework import serializers
 from django.utils import timezone
-from backendApi.custom_validator_error import CustomValidationError
+from rest_framework import serializers
 
 
 class TournamentSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class TournamentSerializer(serializers.ModelSerializer):
     def validate(self, data):
         super().validate(data)
         if data["start_date"] > data["end_date"]:
-            raise CustomValidationError(detail="Start time must be before end time")
+            raise InputValidationError(detail="Start time must be before end time")
         return data
 
     def get_player_usernames(self, obj):
