@@ -3,7 +3,7 @@ import { client, dataToServer, userMessages } from "../client/client.js";
 import { renderFriendList } from "./friend-list.js";
 import { getListFriends } from "./friend-list.js";
 
-const getListOfFriendInvitationsReceived = async () => {
+const getListFriendInvitationsReceived = async () => {
     let f_token = getCookie("token");
     return await fetch("http://127.0.0.1:8000/api/v1/user/friendship/received", {
         method: "GET",
@@ -20,16 +20,19 @@ const getListOfFriendInvitationsReceived = async () => {
             }
             return response.json();
         })
+        .then(data => {
+            return data;
+        })
         .catch(error => {
             console.error("getListOfFriendInvitationsReceived: ", error);
         });
 }
 
 const removeFriendInvite = (id) => {
-    const announcementsDiv = document.getElementById("c-announcements-window");
+    const notificationsDiv = document.getElementById("c-notifications-window");
     document.getElementById(`c-friend-invitation${id}`).remove();
-    document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", () => {
-        announcementsDiv.classList.add("hidden");
+    document.querySelector("#c-notifications-window > .c-close-button").addEventListener("click", () => {
+        notificationsDiv.classList.add("hidden");
     });
 };
 
@@ -50,7 +53,7 @@ const updateFriendInviteStatus = async (id, newStatus) => {
     let f_token = getCookie("token");
     await fetch(`http://127.0.0.1:8000/api/v1/user/friendship/${id}/status`, {
         method: "PUT",
-        body: JSON.stringify({"status": newStatus}),
+        body: JSON.stringify({ "status": newStatus }),
         headers: {
             "Accept": "application/json",
             "Content-type": "application/json",
@@ -109,35 +112,61 @@ const acceptFriendInvite = (id, sender) => {
         client.inforUser.listFriends = list;
     });
     removeFriendInvite(id);
-    postNotification({username: sender, content: "friend invite accepted"});
+    postNotification({ username: sender, content: `${client.inforUser.name} accepted friend invite` });
 };
 
 const declineFriendInvite = (id, sender) => {
     updateFriendInviteStatus(id, "rejected");
     removeFriendInvite(id);
-    postNotification({username: sender, content: "friend invite declined"});
+    postNotification({ username: sender, content: `${client.inforUser.name} declined friend invite` });
 };
 
 const receiveFriendInvite = (id, sender) => {
-    const announcementsList = document.getElementById("c-announcements-list");
-    announcementsList.insertAdjacentHTML("beforeend", `<div id="c-friend-invitation${id}" class="c-friend-invitation">
+    const notificationsList = document.getElementById("c-notifications-list");
+    notificationsList.insertAdjacentHTML("beforeend", `<div id="c-friend-invitation${id}" class="notification c-friend-invitation">
     <p>${sender}</p>
     <button name="accept" class="accept">accept</button>
     <button name="decline" class="decline">decline</button>
     </div>`);
-    document.getElementById(`c-friend-invitation${id}`).querySelector(".accept").addEventListener("click", () => {acceptFriendInvite(id, sender)});
-    document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => {declineFriendInvite(id, sender)});
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".accept").addEventListener("click", () => { acceptFriendInvite(id, sender) });
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => { declineFriendInvite(id, sender) });
 };
 
-const closeAnnouncements = () => {
-    const announcementsDiv = document.getElementById("c-announcements-window");
-    announcementsDiv.classList.add("hidden");
-    document.querySelector("#c-announcements-window > .c-close-button").removeEventListener("click", closeAnnouncements);
+const closeNotifications = () => {
+    const notificationsDiv = document.getElementById("c-notifications-window");
+    notificationsDiv.classList.add("hidden");
+    document.querySelector("#c-notifications-window > .c-close-button").removeEventListener("click", closeNotifications);
 };
 
-const renderNotifications = async () => {
+const markNotificationAsRead = async (notificationId) => {
     let f_token = getCookie("token");
-    const listNotifications = await fetch(`http://127.0.0.1:8000/api/v1/notification/list`, {
+    await fetch(`http://127.0.0.1:8000/api/v1/notification/${notificationId}/read`, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("postNotification: Client/Server error");
+                return response.json();
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            renderNotifications();
+        })
+        .catch(error => {
+            console.error("Error postNotification: ", error);
+        });
+};
+
+const getListNotifications = async () => {
+    let f_token = getCookie("token");
+    return await fetch(`http://127.0.0.1:8000/api/v1/notification/list`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -159,28 +188,44 @@ const renderNotifications = async () => {
         .catch(error => {
             console.error("getNotifications : ", error);
         });
-    console.log(listNotifications);
-};
 
-const showAnnouncements = () => {
-    const announcementsList = document.getElementById("c-announcements-list");
-    const announcementsDiv = document.getElementById("c-announcements-window");
-    announcementsList.innerHTML = "";
-    announcementsDiv.classList.remove("hidden");
-    document.querySelector("#c-announcements-window > .c-close-button").addEventListener("click", closeAnnouncements);
-    renderNotifications();
-    const listOfFriendInvitationsResponse = getListOfFriendInvitationsReceived();
-    listOfFriendInvitationsResponse.then(list => {
-        console.log(list);
-        list.forEach(invitation => {
-            if (invitation.status === "pending") {
-                receiveFriendInvite(invitation.id, invitation.sender_username);
-            }
-        })
+}
+
+const renderNotifications = async () => {
+    const notificationsList = document.getElementById("c-notifications-list");
+    notificationsList.innerHTML = "";
+    const listNotifications = await getListNotifications();
+    const notificationsListElem = document.getElementById("c-notifications-list");
+    const listUnreadNotifications = listNotifications.filter(notification => !notification.isRead);
+    listUnreadNotifications.forEach(notification => {
+        notificationsListElem.insertAdjacentHTML("beforeend", `<div id="notification-${notification.id}" class="notification">
+                    <p class="notification-content">${notification.content}</p>
+                <div>
+                    <button name="close" class="close">&times</button>
+                <div>
+            </div>`);
+        const notificationElem = document.getElementById(`notification-${notification.id}`);
+        notificationElem.querySelector(".close").addEventListener("click", () => {
+            markNotificationAsRead(notification.id);
+        });
+    })
+    const listOfFriendInvitations = await getListFriendInvitationsReceived();
+    console.log(listOfFriendInvitations);
+    listOfFriendInvitations.forEach(invitation => {
+        if (invitation.status === "pending") {
+            receiveFriendInvite(invitation.id, invitation.sender_username);
+        }
     });
 };
 
-const receiveAnnouncement = (receivedData) => {
+const showNotifications = async () => {
+    const notificationsDiv = document.getElementById("c-notifications-window");
+    notificationsDiv.classList.remove("hidden");
+    document.querySelector("#c-notifications-window > .c-close-button").addEventListener("click", closeNotifications);
+    renderNotifications();
+};
+
+const receiveNotification = (receivedData) => {
     switch (receivedData.content) {
         case "friend invite received":
             receiveFriendInvite(receivedData.from);
@@ -191,8 +236,8 @@ const receiveAnnouncement = (receivedData) => {
         case "friend invite declined":
             friendInviteHasBeenDeclined(receivedData.from);
         default:
-            console.log("Error: Invalid announcement : ", receivedData.content);
+            console.log("Error: Invalid notification : ", receivedData.content);
     }
 };
 
-export { showAnnouncements, receiveAnnouncement };
+export { showNotifications, receiveNotification, getListFriendInvitationsReceived };

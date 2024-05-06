@@ -2,6 +2,7 @@ import { client } from "../client/client.js";
 import { dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { getListFriends } from "./friend-list.js";
+import { getListFriendInvitationsReceived } from "./notifications.js";
 
 async function getListUsers() {
     console.log("--getListUsers starting");
@@ -66,25 +67,26 @@ const searchFindNewFriendWindow = async () => {
     const listUsers = await getListUsers();
     const listFriends = await getListFriends();
     const listFriendInvitationSent = await getListFriendInvitationSent();
-    console.log(listFriends);
+    const listFriendInvitationReceived = await getListFriendInvitationsReceived();
 
     userListDiv.innerHTML = "";
     if (searchInput.value) {
         const parsedSearchInput = searchInput.value.match(regex).join("");
 
         console.log(listUsers);
-        let listFriendInvitationPending;
+        let listFriendInvitationPending = [{}];
         if (listFriendInvitationSent) {
             listFriendInvitationPending = listFriendInvitationSent.filter(invitation => invitation.status === "pending");
-          console.log(listFriendInvitationPending);
-        } else {
-            listFriendInvitationPending = null;
+        }
+        if (listFriendInvitationReceived) {
+            const listFriendInvitationReceivedAndPending = listFriendInvitationReceived.filter(invitation => invitation.status === "pending");
+            listFriendInvitationPending = listFriendInvitationPending.concat(listFriendInvitationReceivedAndPending);
         }
         const listUsersWithoutSelf = listUsers.filter((user) => user.username != getCookie("username"))
         const listUsersWithoutSelfAndFriends = listUsersWithoutSelf.filter((user) => !listFriends.some((friend => friend.username === user.username)));
         const matchlist = listUsersWithoutSelfAndFriends.filter((user) => user.username.includes(parsedSearchInput));
         matchlist.forEach((user) => {
-            if (listFriendInvitationSent && listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username)) {
+            if (listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username || invitation.sender_username === user.username)) {
                 const userHTML = `<div id="c-list-user-${user.username}" class="c-user">
                     <div class="user-avatar"><img src="../img/avatar/avatar_default.png" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
@@ -151,7 +153,7 @@ const sendFriendInvite = async (username) => {
             console.error("Error send Friend Invite: ", error);
         });
     console.log("----");
-    //const sendData = new dataToServer("announcement", 'friend invite received', client.listUser.find(user => user.id == id));
+    //const sendData = new dataToServer("notification", 'friend invite received', client.listUser.find(user => user.id == id));
     //client.socket.send(JSON.stringify(sendData));
     //console.log(sendData);
     //findNewFriendWindow.classList.add("hidden");
