@@ -72,6 +72,9 @@ function update_match_informations(data) {
 }
 
 async function create_match(mode) {
+
+    if (document.getElementById("g_match_html") === undefined || document.getElementById("g_match_html") === null )
+        return;
     if (match === undefined)
         match_default();
     

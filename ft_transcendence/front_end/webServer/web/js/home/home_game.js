@@ -36,11 +36,6 @@ export function	noticeInvitePlayer()
 	return (notice);
 }
 
-function test(value)
-{
-
-}
-
 export async function	drawGame(callback)
 {
 	document.querySelector("#frontpage").outerHTML =
@@ -78,13 +73,6 @@ export async function	drawGame(callback)
             </svg>
         </button>
 
-        <!--------------------  -------------------->
-        <button id="startCreateMatchButton">
-            <div></div>
-            <h1>Start</h1>
-        </button>
-
-        <!--------------------  -------------------->
         <div id="addPlayerLayer"></div>
     </div>
 
@@ -431,7 +419,6 @@ export async function	to_game(nohistory = "false")
 	if (nohistory === "false")
 		history.pushState( { url: "game" }, "", "#game");
     updateMyInfo();
-
 	await drawGame((result) =>
 		{
 			if (result)

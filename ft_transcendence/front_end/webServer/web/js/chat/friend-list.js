@@ -1,4 +1,5 @@
 import { getListFriends } from "../backend_operation/get_user_info.js";
+import { client, dataToServer } from "../client/client.js";
 import { openChatBox } from "./chatbox.js";
 
 const renderFriendList = (list) => {
@@ -21,6 +22,9 @@ const renderFriendList = (list) => {
         friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
             console.log(`invited ${friendUsername} to a match`);
+            const currentUser = client.listUser.filter(user => user.name === friendUsername)[0];
+            const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, currentUser);              
+            client.socket.send(JSON.stringify(sendData));
         })
     });
 };
