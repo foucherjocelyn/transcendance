@@ -8,7 +8,7 @@ import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitation
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
 
-class   userAnnouncements {
+class   userNotifications {
     constructor() {
         this.from = data.from,
         this.type = data.content;
@@ -30,7 +30,7 @@ const   user = {
     level: undefined,
     listFriends: [],
     listChat: [],
-    listAnnouncements: []
+    listNotifications: []
 }
 
 const   client = {

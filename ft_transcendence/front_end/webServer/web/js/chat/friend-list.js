@@ -1,34 +1,5 @@
-import { client, user } from "../client/client.js";
+import { getListFriends } from "../backend_operation/get_user_info.js";
 import { openChatBox } from "./chatbox.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-
-const getListFriends = async () => {
-    console.log("--getListFriends starting");
-    let f_token = getCookie("token");
-    //    console.log(f_token);
-
-    return await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then (response => {
-            if (!response.ok) {
-                console.log("getListFriends: Client/Server error");
-                return;
-            }
-            return response.json();
-        })
-        .then (data => {
-            return data;
-        })
-        .catch(error => {
-            console.error("getListFriends: ", error);
-        });
-}
 
 const renderFriendList = (list) => {
     console.log(list);

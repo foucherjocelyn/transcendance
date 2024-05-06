@@ -1,34 +1,6 @@
 import { client, dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
-
-const postMessage = async (message) => {
-    console.log("postMessage");
-    let f_token = getCookie("token");
-    await fetch("http://127.0.0.1:8000/api/v1/user/friend/message", {
-        method: "POST",
-        body: JSON.stringify(message),
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("postMessage: Client/Server error");
-                return;
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error("Error postMessage: ", error);
-        });
-    console.log("----");
-};
-
+import { postNewMessage } from "../backend_operation/messages.js";
 
 const renderMessages = async (friendUsername) => {
     let f_token = getCookie("token");
@@ -128,7 +100,7 @@ const sendMessage = async (friendUsername) => {
         content: chatInputContent.value
     }
     chatInputContent.value = "";
-    await postMessage({username: friendUsername, content: newMessage.content});
+    await postNewMessage({username: friendUsername, content: newMessage.content});
     renderMessages(friendUsername);
 
     const connectedReceiver = client.listUser.find(user => user.name == friendUsername)

@@ -1,9 +1,8 @@
 import { renderFriendList } from "./friend-list.js";
 import { searchFriendList } from "./friend-list.js";
 import { displayFindNewFriendWindow } from "./add-friend.js";
-import { showAnnouncements } from "./announcements.js";
+import { showNotifications } from "./notifications.js";
 import { getListFriends } from "./friend-list.js";
-import { client } from "../client/client.js";
 
 const loadChat = () => {
     const chatDiv = document.getElementById("chat");
@@ -16,14 +15,14 @@ const loadChat = () => {
     <button class="search">Search</button>
     <div class="user-list"></div>
 </div>
-<div id="c-announcements-window" class="hidden">
+<div id="c-notifications-window" class="hidden">
     <button class="c-close-button">&times;</button>
-    <div id="c-announcements-list"></div>
+    <div id="c-notifications-list"></div>
 </div>
 <br>
 <div id="chat-list">
 	<div id="chat_upperpanel">
-	<button id="c-show-announcements-button"></button>
+	<button id="c-show-notifications-button"></button>
 	<button id="c-add-new-friend-button"></button>
 	<button id="c-hide-friend-list"></button>
 	</div>
@@ -57,7 +56,7 @@ const loadChat = () => {
     addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
 	document.getElementById("c-hide-friend-list").addEventListener("click", () =>
 		{ document.getElementById("c-friends-div").classList.add("hide"); });
-    document.querySelector("#c-show-announcements-button").addEventListener("click", showAnnouncements);
+    document.querySelector("#c-show-notifications-button").addEventListener("click", showNotifications);
     document.getElementById("chat").style.display = "block";
     console.log("chat loaded");
 };
