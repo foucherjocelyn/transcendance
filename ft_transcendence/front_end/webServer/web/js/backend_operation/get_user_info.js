@@ -2,16 +2,21 @@ import { getCookie } from "../authentication/auth_cookie.js";
 import { user, client } from '../client/client.js';
 import { match_default } from "../createMatch/createMatch.js";
 import { openSocketClient } from "./authentication.js";
+import { getAvatar } from "./profile_picture.js";
 
-export function	updateMyInfo(connectFlag = false)
+export async function	updateMyInfo(connectFlag = false)
 {
+	let avatar_path = await getAvatar();
+	if (avatar_path === null || avatar_path === undefined)
+		avatar_path = '../img/avatar/avatar_default.png';
+
 	let info = getMyInfo();
 	info.then(() =>
 	{
 		user.id = '#' + getCookie('id');
     	user.name = getCookie('username');
     	user.level = getCookie("level");
-    	user.avatar = '../img/avatar/avatar_default.png';//need to update with actual path
+    	user.avatar = avatar_path;
     	user.status = 'connection';
 		client.inforUser = user;
 		if (connectFlag)
@@ -50,7 +55,7 @@ export async function	getMyInfo()
 		  .then(data =>
 			  {
 				  console.log("getMyInfo data:");
-				  console.log(data);
+				  console.table(data);
 				  if (data !== undefined)
 				  {
 				  	document.cookie = `username=${data.username}; SameSite=Strict`;

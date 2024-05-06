@@ -131,6 +131,7 @@ body {
 }
 
 #chat_upperpanel {
+/*
 	position: fixed;
     top: 0;
     right: 0;
@@ -142,6 +143,7 @@ body {
     min-width: var(--chat-list-width);
     overflow: auto;
     box-sizing: border-box;
+*/
 }
 
 #c-show-announcements-button {
