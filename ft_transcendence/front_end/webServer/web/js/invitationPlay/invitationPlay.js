@@ -17,6 +17,9 @@ function    setup_size_invitation_play_panel()
 
 function    accept_invite_to_play()
 {
+    if (document.getElementById('createMatchLayer') === null)
+        return ;
+    
     document.getElementById('invitationPlayLayer').style.display = 'none';
     document.getElementById('createMatchLayer').style.display = 'flex';
 }

@@ -5,7 +5,7 @@ import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 import { create_match, match_default } from "../createMatch/createMatch.js";
-import { client, user } from "../client/client.js";
+import { client, dataToServer, user } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
@@ -45,6 +45,8 @@ export async function	drawGame(callback)
 		`<div id="frontpage">
 		${loadSpinner()}
 		${upperPanel()}
+    	${noticeInvitePlayer()}
+        
 		    <!-------------------- Loader match making -------------------->
     <div id="loaderMatchmakingLayer">
         <div class="loading">
@@ -403,7 +405,6 @@ export async function	drawGame(callback)
 
     <!--------------------  -------------------->
 		<div class="r_successinfo hide"></div>
-	${noticeInvitePlayer()}
 	</div>
 `;
 	document.getElementById("h_to_home").addEventListener("click", to_homePage);
@@ -418,18 +419,8 @@ export async function	to_game(nohistory = "false")
 	if (nohistory === "false")
 		history.pushState( { url: "game" }, "", "#game");
     updateMyInfo();
-	create_match("with friends");
-	/* replaced/ is now called in create_match
-	await drawGame( (result) => {
-		if (result)
-		{
-			document.getElementById("loadspinner").classList.add("hide");
-			//document.getElementById("g_game").classList.remove("hide");
 
-			// create_match('rank');
-//			create_match('with friends');
-			// create_match('offline');
-		}
-	});
-*/
+	create_match("with friends");
+    // const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, client.listUser[1]);
+    // client.socket.send(JSON.stringify(sendData));
 }

@@ -94,7 +94,7 @@ function    get_sign_cancel_create_match_button()
         document.getElementById('createMatchLayer').style.display = 'none';
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
 
-        match_default();
+        // match_default();
     }
 }
 

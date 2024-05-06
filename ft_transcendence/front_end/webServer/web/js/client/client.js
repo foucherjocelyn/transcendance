@@ -1,16 +1,12 @@
-import { create_match, match, update_match_informations } from "../createMatch/createMatch.js";
+import { create_match, match, match_default, update_match_informations } from "../createMatch/createMatch.js";
 import { update_position_ball } from "../game/movementsBall.js";
 import { update_position_paddle } from "../game/movementsPaddle.js";
 import { pongGame, setup_game_layer } from "../game/startGame.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { accept_invite_to_play } from "../invitationPlay/invitationPlay.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
-import { receiveAnnouncement } from "../chat/announcements.js";
 import { receiveMessage } from "../chat/chatbox.js";
-import { loadChat } from "../chat/load-chat.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { getAvatar } from "../backend_operation/profile_picture.js";
 
 class   userAnnouncements {
     constructor() {
@@ -52,31 +48,6 @@ class   dataToServer {
     }
 }
 
-function    informations_match_in_client(match)
-{
-    console.log('--> match admin: ' + match.admin.id);
-    console.log('--> match mode: ' + match.mode);
-
-    console.log('--> match list User:');
-    match.listUser.forEach(user => {
-        console.log('[ ' + user.id + ' ]');
-    });
-
-    console.log('--> match list Players:');
-    match.listPlayer.forEach(player => {
-        console.log('[ ' + player.type + ' ]');
-    });
-
-    console.log('--> match time start: ' + match.timeStart.hour + ':' + match.timeStart.minute + ':' + match.timeStart.second);
-    // console.log('--> match time end: ');
-    
-    console.log('--> match date start: ' + match.dateStart.day + '/' + match.dateStart.month + '/' + match.dateStart.year);
-    
-    // console.log('--> match : ');
-    // this.lostPoint = false,
-    // this.gameOver = false
-}
-
 function    get_data_from_server(socket)
 {
     socket.onmessage = function(event) {
@@ -93,14 +64,15 @@ function    get_data_from_server(socket)
             accept_invite_to_play();
         if (receivedData.title === 'reject invitation to play')
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'load create match layer')
-            create_match('with friends');
         if (receivedData.title === 'warning')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'update match')
             update_match_informations(receivedData);
         if (receivedData.title === 'create match')
+        {
+            match_default();
             create_match('with friends');
+        }
         if (receivedData.title === 'display loader')
             document.getElementById('loaderMatchmakingLayer').style.display = 'flex';
         if (receivedData.title === 'hide loader')
