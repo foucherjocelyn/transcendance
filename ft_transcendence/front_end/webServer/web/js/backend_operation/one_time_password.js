@@ -6,7 +6,7 @@ export async function getOtpQR() {
     let f_username = {
         username: getCookie("username")
     };
-    console.log("getOtpQR starting");
+
     let f_token = getCookie("token");
     console.log(f_token);
     try {
@@ -35,7 +35,7 @@ export async function toggleOtpStatus()
 	let f_username = {
 		username: getCookie("username")
 	};
-	console.log("toggleOtp starting");
+
 	let f_token = getCookie("token");
 	await fetch("http://127.0.0.1:8000/api/v1/auth/otp/switch", {
 		method: "POST",
@@ -94,8 +94,8 @@ export async function sendOtp(connect_user)
 }
 
 export async function getOtpStatusPw(f_log) {
-    console.log("-getOtpStatusPw starting");
-	console.log(f_log);
+//    console.log("-getOtpStatusPw starting");
+//	console.log(f_log);
     try {
         const response = await fetch("http://127.0.0.1:8000/api/v1/auth/otp/status", {
             method: "POST",
@@ -117,12 +117,12 @@ export async function getOtpStatusPw(f_log) {
 	{
         console.error("getOtpStatusPw: ", error);
 	}
-	console.log("-");
+//	console.log("-");
 	return (response);
 }
 
 export async function getOtpStatusToken() {
-    console.log("-getOtpStatusToken starting");
+ //   console.log("-getOtpStatusToken starting");
     let f_token = getCookie("token");
 //    console.log(f_token);
     try {
@@ -146,6 +146,6 @@ export async function getOtpStatusToken() {
 	{
         console.error("getOtpStatusToken: ", error);
 	}
-	console.log("-");
+//	console.log("-");
 	return (response);
 }

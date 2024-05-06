@@ -423,18 +423,4 @@ export async function	to_game(nohistory = "false")
 	create_match("with friends");
     // const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, client.listUser[1]);
     // client.socket.send(JSON.stringify(sendData));
-
-	/*
-	await drawGame( (result) => {
-		if (result)
-		{
-			document.getElementById("loadspinner").classList.add("hide");
-			//document.getElementById("g_game").classList.remove("hide");
-
-			// create_match('rank');
-			create_match('with friends');
-			// create_match('offline');
-		}
-	});
-*/
 }

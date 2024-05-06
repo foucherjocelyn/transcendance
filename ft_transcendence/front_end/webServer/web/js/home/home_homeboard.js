@@ -52,10 +52,10 @@ function	drawHomePage(callback)
 			<table id="h_score">
     	    <thead>
               <tr id="hs_filter">\<!-- display in red or blue if defeat/victory  -->
-				<th scope="col">Player name</th>
-                <th scope="col">Level</th>
-                <th scope="col">Number of games played</th>
-				<th scope="col">Average score</th>
+				<th scope="col">Tournament name</th>
+                <th scope="col">Number of players</th>
+                <th scope="col">Date</th>
+				<th scope="col">Outcome</th>
 <!-- Display player stats  -->
               </tr>
             </thead>

@@ -129,8 +129,9 @@ body {
 	background-color: transparent;
 	border: none;
 }
-/*
+
 #chat_upperpanel {
+/*
 	position: fixed;
     top: 0;
     right: 0;
@@ -142,8 +143,9 @@ body {
     min-width: var(--chat-list-width);
     overflow: auto;
     box-sizing: border-box;
-}
 */
+}
+
 #c-show-announcements-button {
 	background-image: url(../../img/chat/bell.png);
 	background-size: 100% 100%;
