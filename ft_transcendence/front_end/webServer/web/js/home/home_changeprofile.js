@@ -93,7 +93,7 @@ function	to_changeInfo()
 <br>
 <input type="password" id="p_oldpassword" placeholder="Old password")" oninput="enableInputReq(event, 'p_newpassword')">
 <br>
-<input type="password" id="p_newpassword" placeholder="New password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,12}$" title="Need minimum of one lowercase + uppercase + digit and must be 6 to 12 characters long" oninput="enableInputReq(event, 'p_newpasswordconfirm')" disabled>
+<input type="password" id="p_newpassword" placeholder="New password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,12}$" title="Need minimum of one lowercase + uppercase + digit and must be 6 to 12 characters long" oninput="enableInputReq(event, 'p_newpasswordconfirm')" disabled>
 <br>
 <input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" oninput="enableInputReq(event, 'p_newpasswordconfirm')" disabled>
 <br>
@@ -101,7 +101,7 @@ function	to_changeInfo()
 <br>
 <input type="text" id="p_lastname" placeholder="${getCookie("lastname")}">
 <br>
-<input type="text" id="p_email" title="This is your mail" value="${getCookie("email")}" readonly>
+<input type="text" id="p_email" title="This cannot be changed" value="${getCookie("email")}" readonly>
 <hr id="p_div">
 <button class="button-img" type="button" id="p_change">Apply</button>
 `;

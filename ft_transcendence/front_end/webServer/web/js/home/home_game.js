@@ -418,9 +418,8 @@ export async function	to_game(nohistory = "false")
 	if (nohistory === "false")
 		history.pushState( { url: "game" }, "", "#game");
     updateMyInfo();
-    //openSocketClient();
 	create_match("with friends");
-	/*
+	/* replaced/ is now called in create_match
 	await drawGame( (result) => {
 		if (result)
 		{
@@ -428,7 +427,7 @@ export async function	to_game(nohistory = "false")
 			//document.getElementById("g_game").classList.remove("hide");
 
 			// create_match('rank');
-			create_match('with friends');
+//			create_match('with friends');
 			// create_match('offline');
 		}
 	});
