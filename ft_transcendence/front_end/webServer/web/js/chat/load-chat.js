@@ -3,7 +3,6 @@ import { searchFriendList } from "./friend-list.js";
 import { displayFindNewFriendWindow } from "./add-friend.js";
 import { showNotifications } from "./notifications.js";
 import { getListFriends } from "./friend-list.js";
-import { client } from "../client/client.js";
 
 const loadChat = () => {
     const chatDiv = document.getElementById("chat");

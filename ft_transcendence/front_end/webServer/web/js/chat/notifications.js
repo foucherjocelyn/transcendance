@@ -1,32 +1,9 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import { getListFriendInvitationsReceived, updateFriendInviteStatus } from "../backend_operation/friend_invite.js";
+import { getListNotifications, markNotificationAsRead, postNotification } from "../backend_operation/notification.js";
 import { client, dataToServer, userMessages } from "../client/client.js";
 import { renderFriendList } from "./friend-list.js";
 import { getListFriends } from "./friend-list.js";
-
-const getListFriendInvitationsReceived = async () => {
-    let f_token = getCookie("token");
-    return await fetch("http://127.0.0.1:8000/api/v1/user/friendship/received", {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("getListOfFriendInvitationsReceived: Client/Server error");
-                return;
-            }
-            return response.json();
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error("getListOfFriendInvitationsReceived: ", error);
-        });
-}
 
 const removeFriendInvite = (id) => {
     const notificationsDiv = document.getElementById("c-notifications-window");
@@ -49,63 +26,9 @@ const friendInviteHasBeenDeclined = (sender) => {
     console.log(`${sender.name}${sender.id} declined your friend invite.`);
 };
 
-const updateFriendInviteStatus = async (id, newStatus) => {
-    let f_token = getCookie("token");
-    await fetch(`http://127.0.0.1:8000/api/v1/user/friendship/${id}/status`, {
-        method: "PUT",
-        body: JSON.stringify({ "status": newStatus }),
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("updateFriendInviteStatus: Client/Server error");
-                return response.json();
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error("Error updateFriendInviteStatus: ", error);
-        });
-}
-
-const postNotification = async (notification) => {
-    let f_token = getCookie("token");
-    console.log(notification);
-    await fetch("http://127.0.0.1:8000/api/v1/notification/create", {
-        method: "POST",
-        body: JSON.stringify(notification),
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("postNotification: Client/Server error");
-                return response.json();
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error("Error postNotification: ", error);
-        });
-    console.log("----");
-}
-
-const acceptFriendInvite = (id, sender) => {
+const acceptFriendInvite = async (id, sender) => {
     console.log("accept");
-    updateFriendInviteStatus(id, "accepted");
+    await updateFriendInviteStatus(id, "accepted");
     const listFriends = getListFriends();
     listFriends.then(list => {
         renderFriendList(list);
@@ -132,64 +55,11 @@ const receiveFriendInvite = (id, sender) => {
     document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => { declineFriendInvite(id, sender) });
 };
 
-const closeNotifications = () => {
+const closeNotificationWindow = () => {
     const notificationsDiv = document.getElementById("c-notifications-window");
     notificationsDiv.classList.add("hidden");
-    document.querySelector("#c-notifications-window > .c-close-button").removeEventListener("click", closeNotifications);
+    document.querySelector("#c-notifications-window > .c-close-button").removeEventListener("click", closeNotificationWindow);
 };
-
-const markNotificationAsRead = async (notificationId) => {
-    let f_token = getCookie("token");
-    await fetch(`http://127.0.0.1:8000/api/v1/notification/${notificationId}/read`, {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("postNotification: Client/Server error");
-                return response.json();
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            renderNotifications();
-        })
-        .catch(error => {
-            console.error("Error postNotification: ", error);
-        });
-};
-
-const getListNotifications = async () => {
-    let f_token = getCookie("token");
-    return await fetch(`http://127.0.0.1:8000/api/v1/notification/list`, {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("getNotifications: Client/Server error");
-                return;
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            return data;
-        })
-        .catch(error => {
-            console.error("getNotifications : ", error);
-        });
-
-}
 
 const renderNotifications = async () => {
     const notificationsList = document.getElementById("c-notifications-list");
@@ -206,7 +76,10 @@ const renderNotifications = async () => {
             </div>`);
         const notificationElem = document.getElementById(`notification-${notification.id}`);
         notificationElem.querySelector(".close").addEventListener("click", () => {
-            markNotificationAsRead(notification.id);
+            const r = markNotificationAsRead(notification.id);
+            r.then(() => {
+                renderNotifications();
+            });
         });
     })
     const listOfFriendInvitations = await getListFriendInvitationsReceived();
@@ -221,7 +94,7 @@ const renderNotifications = async () => {
 const showNotifications = async () => {
     const notificationsDiv = document.getElementById("c-notifications-window");
     notificationsDiv.classList.remove("hidden");
-    document.querySelector("#c-notifications-window > .c-close-button").addEventListener("click", closeNotifications);
+    document.querySelector("#c-notifications-window > .c-close-button").addEventListener("click", closeNotificationWindow);
     renderNotifications();
 };
 
@@ -240,4 +113,4 @@ const receiveNotification = (receivedData) => {
     }
 };
 
-export { showNotifications, receiveNotification, getListFriendInvitationsReceived };
+export { showNotifications, receiveNotification };
