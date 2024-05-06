@@ -66,6 +66,9 @@ class GameViewSet(viewsets.ModelViewSet):
                 return Response(
                     {"error": "User is not part of the tournament"}, status=400
                 )
+        # Verify is the number of players is 4, so cant add more players
+        if len(game.players.all()) >= 4:
+            return Response({"error": "Game is full, cannot add more players"}, status=400)
         game.players.add(player)
         serializer = self.get_serializer(game)
         return Response(serializer.data, status=200)
