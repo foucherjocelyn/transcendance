@@ -1,4 +1,6 @@
-export function	inspectProfile(username)
+import { getUserById, getUserIdByUsername } from "../backend_operation/get_user_info.js";
+
+export async function	inspectProfile(username)
 {
 	let	user_id = await getUserIdByUsername(username);
 	let user_info = await getUserById(user_id);
