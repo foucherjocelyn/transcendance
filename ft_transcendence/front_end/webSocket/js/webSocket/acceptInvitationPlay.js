@@ -51,33 +51,39 @@ function    leave_match(user)
 
 function    add_user_in_a_match(user, newPlayer)
 {
-    let indexMatch = define_match(user);
-    if (indexMatch === undefined)
-        return ;
-
-    const   match = webSocket.listMatch[indexMatch];
-    for (let i = 0; i < match.listPlayer.length; i++)
-    {
-        const   player = match.listPlayer[i];
-        if (player.type === 'none')
-        {
-            match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.name, newPlayer.avatar, newPlayer.level, 'player');
-            update_match(user, match, 'update match');
-            send_data('accept invitation to play', '', user, match.listUser);
-            return ;
+    const intervalId = setInterval(function() {
+        let indexMatch = define_match(user);
+        if (indexMatch !== undefined) {
+            clearInterval(intervalId);
+            const   match = webSocket.listMatch[indexMatch];
+            for (let i = 0; i < match.listPlayer.length; i++)
+            {
+                const   player = match.listPlayer[i];
+                if (player.type === 'none')
+                {
+                    match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.name, newPlayer.avatar, newPlayer.level, 'player');
+                    update_match(user, match, 'update match');
+                    send_data('accept invitation to play', '', user, match.listUser);
+                    return ;
+                }
+            }
         }
-    }
+    }, 1);
 }
 
 function    accept_invitation_to_play(data)
 {
-    if (!check_place_in_match(data.to))
+    if (define_match(data.to) === undefined)
+        send_data('create match', '', data.to, data.to);
+    else if (!check_place_in_match(data.to))
     {
         send_data('reject invitation to play', 'Sorry guy, the match is full!', data.to, data.from);
         return ;
     }
 
-    leave_match(data.from);
+    if (define_match(data.from) !== undefined)
+        leave_match(data.from);
+    
     add_user_in_a_match(data.to, data.from);
 }
 

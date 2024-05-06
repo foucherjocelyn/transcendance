@@ -17,7 +17,7 @@ export function	updateMyInfo(connectFlag = false)
 		if (connectFlag)
 		{
 			openSocketClient();
-			match_default();
+			// match_default();
 		}
 	});
 }

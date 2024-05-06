@@ -44,23 +44,6 @@ function    setup_size_create_match_layer()
     createMatchLayer.style.width = `${screen.width}px`;
 }
 
-function    update_match_informations(data)
-{
-    Object.assign(match, data.content);
-    client.inforUser.status = 'creating match';
-
-    console.log('-----------------> ' + match.mode);
-
-    if (match.mode === 'default')
-        return ;
-
-    const   createMatchLayer = document.getElementById('createMatchLayer');
-    if (createMatchLayer === null)
-        create_match(match.mode);
-    else if (createMatchLayer.style.display === 'flex');
-        setup_content_add_player_button();
-}
-
 function    match_default()
 {
     match = new pMatch();
@@ -76,9 +59,21 @@ function    match_default()
     match.listPlayer.push(player2);
     match.listPlayer.push(player3);
     match.listPlayer.push(player4);
+}
 
-    const  sendData = new dataToServer('update match', match, client.inforUser, client.inforUser);
-    client.socket.send(JSON.stringify(sendData));
+function    update_match_informations(data)
+{
+    match = data.content;
+    client.inforUser.status = 'creating match';
+
+    console.log('-----------------> ' + match.mode);
+    console.table(match.listPlayer);
+
+    const   createMatchLayer = document.getElementById('createMatchLayer');
+    if (createMatchLayer === null)
+        create_match(match.mode);
+    else if (createMatchLayer.style.display === 'flex');
+        setup_content_add_player_button();
 }
 
 async function    create_match(mode)
@@ -87,6 +82,9 @@ async function    create_match(mode)
 		{
 			if (result)
 			{
+                if (match === undefined)
+                    match_default();
+
 				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById('createMatchLayer').style.display = 'flex';
 				client.inforUser.status = 'creating match';

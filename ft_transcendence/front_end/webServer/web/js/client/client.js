@@ -1,16 +1,12 @@
-import { create_match, match, update_match_informations } from "../createMatch/createMatch.js";
+import { create_match, match, match_default, update_match_informations } from "../createMatch/createMatch.js";
 import { update_position_ball } from "../game/movementsBall.js";
 import { update_position_paddle } from "../game/movementsPaddle.js";
 import { pongGame, setup_game_layer } from "../game/startGame.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { accept_invite_to_play } from "../invitationPlay/invitationPlay.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
-import { receiveAnnouncement } from "../chat/announcements.js";
 import { receiveMessage } from "../chat/chatbox.js";
-import { loadChat } from "../chat/load-chat.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { getAvatar } from "../backend_operation/profile_picture.js";
 
 class   userAnnouncements {
     constructor() {
@@ -73,7 +69,10 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'update match')
             update_match_informations(receivedData);
         if (receivedData.title === 'create match')
+        {
+            match_default();
             create_match('with friends');
+        }
         if (receivedData.title === 'display loader')
             document.getElementById('loaderMatchmakingLayer').style.display = 'flex';
         if (receivedData.title === 'hide loader')
