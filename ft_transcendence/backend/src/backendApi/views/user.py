@@ -51,7 +51,14 @@ class UserViewSet(viewsets.ModelViewSet):
         user.save()
         jwtToken = JwtTokenGenerator.generateJwtToken(user.id)
         # Save key in session
-        request.session["jwtToken"] = jwtToken.key
+        if "jwtToken" not in request.session:
+            request.session["jwtToken"] = {}
+        if username not in request.session["jwtToken"]:
+                request.session["jwtToken"][username] = [jwtToken.key]
+        else:
+            if jwtToken.key not in request.session["jwtToken"][username]:
+                request.session["jwtToken"][username].append(jwtToken.key)
+        request.session.save()
         return Response(
             {
                 "message": f"User {username} login",
@@ -67,11 +74,10 @@ class UserViewSet(viewsets.ModelViewSet):
         user.status = "offline"
         user.save()
         # Get key from session
-        jwtTokenKey = request.session.get("jwtToken", None)
-        if jwtTokenKey:
-            JwtTokenGenerator.blackList.append(jwtTokenKey)
-        request.session.flush()
-        logout(request)
+        jwtTokenKeys = request.session.get("jwtToken", None).get(user.username, None)
+        if jwtTokenKeys:
+            JwtTokenGenerator.blackList.extend(jwtTokenKeys)
+            del request.session["jwtToken"][user.username]
         return Response({"message": f"User {user.username} logout"}, status=200)
 
     @action(detail=True, methods=["get"])

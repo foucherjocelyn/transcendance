@@ -2,7 +2,7 @@ import jwt
 from backendApi.models import User
 from cryptography.hazmat.primitives import serialization
 from django.utils import timezone
-
+from backend.settings import JWT
 
 class JwtTokenGenerator:
     blackList= []
@@ -22,7 +22,7 @@ class JwtTokenGenerator:
                 "sub": "transcendence",
                 "userId": userId,
                 "iat": timezone.now(),
-                "exp": timezone.now() + timezone.timedelta(hours=2),
+                "exp": timezone.now() + JWT["ACCESS_TOKEN_LIFETIME"],
             }
 
             # Sign the JWT

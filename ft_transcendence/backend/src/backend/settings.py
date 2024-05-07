@@ -39,7 +39,7 @@ FRONTEND_URL = app["FRONTEND_URL"]
 SSL_CERTIFICATE = app["SSL_CERTIFICATE"]
 SSL_CERTIFICATE_KEY = app["SSL_CERTIFICATE_KEY"]
 
-isDev = False
+isDev = True
 
 if isDev:
     DEBUG = app["dev"]["DEBUG"]
@@ -184,9 +184,8 @@ REST_FRAMEWORK = {
     ]
 }
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1)
 }
 
 CORS_ALLOWED_ORIGINS = [
