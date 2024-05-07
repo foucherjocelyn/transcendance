@@ -38,7 +38,6 @@ export function	noticeInvitePlayer()
 
 export function   drawCreateMatch()
 {
-    // body.insertAdjacentHTML("beforeend", 
     document.getElementById("g_match_html").insertAdjacentHTML("beforeend", `
     <div id="invitationPlayPanel">
 
@@ -134,7 +133,7 @@ export function   drawCreateMatch()
     });
 }
 
-export async function	drawGame(callback)
+export function	drawGame(callback)
 {
 	document.querySelector("#frontpage").outerHTML =
 		`
@@ -464,35 +463,33 @@ export async function	drawGame(callback)
 	callback(true);
 }
 
-export async function	to_game(nohistory = "false")
+export function	to_game(nohistory = "false")
 {
 	if (nohistory === "false")
 		history.pushState( { url: "game" }, "", "#game");
     updateMyInfo();
-	await drawGame((result) =>
+	drawGame((result) =>
 		{
 			if (result)
-			{
+			{//hide search bar
 				document.getElementById("loadspinner").classList.add("hide");
+                document.getElementById("g_match_html").classList.remove("hide");
 				document.getElementById("g_rankedmatch").addEventListener("click", () =>
 					{
 						document.getElementById("h_upperpanel").classList.add("hide");
 						document.getElementById("g_choose_mode").classList.add("hide");
-						document.getElementById("g_match_html").classList.remove("hide");
 						create_match('rank');
 					});
 				document.getElementById("g_creatematch").addEventListener("click", () =>
 					{
 						document.getElementById("h_upperpanel").classList.add("hide");
 						document.getElementById("g_choose_mode").classList.add("hide");
-						document.getElementById("g_match_html").classList.remove("hide");
 						create_match('with friends');
 					});
 				document.getElementById("g_localmatch").addEventListener("click", () =>
 					{
 						document.getElementById("h_upperpanel").classList.add("hide");
 						document.getElementById("g_choose_mode").classList.add("hide");
-						document.getElementById("g_match_html").classList.remove("hide");
 						create_match('offline');
 					});
 			}
