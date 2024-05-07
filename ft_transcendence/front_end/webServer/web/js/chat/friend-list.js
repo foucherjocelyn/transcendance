@@ -18,9 +18,9 @@ const renderFriendList = (list) => {
     });
     document.querySelectorAll(".c-friend").forEach(friendDiv => {
         const friendUsername = friendDiv.id.slice(12);
-        console.log("friends");
-        console.log(friendUsername);
-        console.log(friendDiv);
+        //console.log("friends");
+        //console.log(friendUsername);
+        //console.log(friendDiv);
         friendDiv.addEventListener("click", (e) => openChatBox(friendUsername));
         friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();

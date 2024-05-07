@@ -7,7 +7,7 @@ import { accept_invite_to_play } from "../invitationPlay/invitationPlay.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { drawGame } from "../home/home_game.js";
+import { to_game } from "../home/home_game.js";
 
 class   userNotifications {
     constructor() {
@@ -74,14 +74,18 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'create match')
         {
             match_default();
-            let gameHTML = drawGame( (result) =>
+			to_game();
+			create_match("with friends");
+			/*
+            drawGame( (result) =>
             {
                 if (result)
                 {
                     create_match('with friends');
                 }
             });
-            console.table(match.listPlayer);
+*/
+            //console.table(match.listPlayer);
         }
         if (receivedData.title === 'display loader')
             document.getElementById('loaderMatchmakingLayer').style.display = 'flex';

@@ -2,7 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, inforPlayer, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
-import { drawCreateMatch, drawGame } from "../home/home_game.js";
+import { drawCreateMatch, to_game } from "../home/home_game.js";
 
 class pMatch {
     constructor() {
@@ -62,27 +62,32 @@ function update_match_informations(data) {
     client.inforUser.status = 'creating match';
 
     console.log('-----------------> ' + match.mode);
-    console.table(match.listPlayer);
+    //console.table(match.listPlayer);
 
     const createMatchLayer = document.getElementById('createMatchLayer');
     if (createMatchLayer === null)
         create_match(match.mode);
-    else if (createMatchLayer.style.display === 'flex');
-    setup_content_add_player_button();
+    else if (createMatchLayer.style.display === 'flex')
+    {
+        setup_content_add_player_button();
+    }
 }
 
 async function create_match(mode) {
+    to_game();
+    /*
     if (document.getElementById("g_match_html") === undefined || document.getElementById("g_match_html") === null)
     {
         console.trace();
         console.log("Error: g_match_html not found");
         return;
     }
-    await drawCreateMatch((result) => {
-        if (result) {
+    */
+//    await drawGame((result) => {
+  //      if (result) {
             if (match === undefined)
                 match_default();
-
+            drawCreateMatch();
             document.getElementById("loadspinner").classList.add("hide");
             document.getElementById('createMatchLayer').style.display = 'flex';
             client.inforUser.status = 'creating match';
@@ -98,8 +103,8 @@ async function create_match(mode) {
 
             const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
             client.socket.send(JSON.stringify(sendData));
-        }
-    });
+//        }
+//    });
 }
 
 export {
