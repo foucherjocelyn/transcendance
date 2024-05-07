@@ -7,7 +7,10 @@ const renderFriendList = (list) => {
     friendsList.innerHTML = "";
     list.forEach((user) => {
         friendsList.innerHTML += `<div id="c-list-user-${user.username}" class="c-user c-friend">
-                    <div class="user-avatar"><img src="../img/avatar/avatar_default.png" alt="profile-picture"></div>
+                    <div class="user-avatar">
+                        <img src="../img/avatar/avatar_default.png" alt="profile-picture">
+                        <div id="c-list-friend-status-${user.username}" class="c-list-friend-status ${user.status}"></div>
+                    </div>
                     <div class="user-name">${user.username}</div>
                     <button id="c-invite-match${user.username}" class="c-invite-match-button"></button>
                 </div>`;

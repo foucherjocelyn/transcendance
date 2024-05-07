@@ -126,6 +126,24 @@ body {
     gap: 5px;
 }
 
+.c-list-friend-status {
+    height: 7px;
+    width: 7px;
+    border-radius: 50%;
+    border: solid black 1px;
+    position: relative;
+    bottom: 17px;
+    left: 23px;
+}
+
+.c-list-friend-status.offline {
+    background-color: red;
+}
+
+.c-list-friend-status.online {
+    background-color: green;
+}
+
 #c-search-friend-list {
     position: fixed;
     bottom: 20px;
