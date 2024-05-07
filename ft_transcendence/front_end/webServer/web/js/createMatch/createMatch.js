@@ -2,7 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, inforPlayer, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
-import { drawCreateMatch, to_game } from "../home/home_game.js";
+import { to_game } from "../home/home_game.js";
 
 class pMatch {
     constructor() {
@@ -86,7 +86,7 @@ async function create_match(mode) {
     //      if (result) {
     if (match === undefined)
         match_default();
-    drawCreateMatch();
+   // drawCreateMatch();
     document.getElementById("loadspinner").classList.add("hide");
     document.getElementById('createMatchLayer').style.display = 'flex';
     client.inforUser.status = 'creating match';
