@@ -4,8 +4,8 @@ import pyotp
 
 
 class UserSerializer(serializers.ModelSerializer):
-    nb_games = serializers.IntegerField(read_only=True)
-    avg_score = serializers.FloatField(read_only=True)
+    nb_games = serializers.IntegerField()
+    avg_score = serializers.FloatField()
 
     class Meta:
         model = User
@@ -29,6 +29,9 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "is_staff",
             "is_superuser",
+            "level",
+            "nb_games",
+            "avg_score",
             "created_at",
             "updated_at",
         ]

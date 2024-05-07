@@ -134,6 +134,26 @@ class GameViewSet(viewsets.ModelViewSet):
             status=200,
         )
 
+    @action(detail=True, methods=["post"])
+    def levelUpWinner(self, request, game_id):
+        # Get the winner of the game
+        try:
+            game = Game.objects.get(id=game_id)
+        except Game.DoesNotExist:
+            return Response({"error": "Game not found"}, status=404)
+        if game.status != "end":
+            return Response({"error": "Game is not ended"}, status=400)
+        winner = game.winner
+        if not winner:
+            return Response({"error": "No winner found"}, status=400)
+        # Update the level of the winner
+        if game.mode == "tournament":
+            winner.level += 0.5
+        elif game.mode == "ranked":
+            winner.level += 0.25
+        winner.save()
+        return Response({"message": "Winner level up successfully"}, status=200)
+
     # List all my games
     @action(detail=True, methods=["get"])
     def listMyGames(self, request):
@@ -158,6 +178,7 @@ class GameViewSet(viewsets.ModelViewSet):
             "removePlayerFromGame",
             "endGame",
             "addScore",
+            "levelUpWinner",
         ]:
             self.permission_classes = [IsWebSocketServer]
         elif self.action in ["listMyGames", "listMyScores"]:

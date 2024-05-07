@@ -15,4 +15,4 @@ def generate_random_string(length=64):
     return "".join(secrets.choice(characters) for _ in range(length))
 
 
-print(generate_random_string(64))
+print(generate_random_string(200))

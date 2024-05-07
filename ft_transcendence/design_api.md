@@ -364,7 +364,7 @@ authorization Bearer <token>
 PUT /api/v1/profile/me
 authorization Bearer <token>
 {
-	... new data ...
+	... new data ...(not include level)
 }
 ```
 
@@ -903,6 +903,7 @@ authorization Bearer <token>
 ## Create a new game
 
 Create a new game. The game will be created as visibility: 'public', mode: 'classic', status: 'progressing' and maxScore: 5.
+Only the websocket server is allowed access.
 
 ```typescript
 POST /api/v1/game
@@ -923,7 +924,7 @@ authorization Bearer <token>
 
 ## Get a game by game id
 
-Provide game information based on the provided game ID. Only the user who is the player of the game is allowed access.
+Provide game information based on the provided game ID. Only the websocket server is allowed access.
 
 ```typescript
 GET /api/v1/game/<game_id>
@@ -936,7 +937,7 @@ authorization Bearer <token>
 
 ## Add a new player to a game
 
-Add a new player to a game. Only the owner of the game can add a new player.
+Add a new player to a game. Only the websocket server is allowed access.
 
 ```typescript
 POST /api/v1/game/<game_id>/player/add
@@ -968,7 +969,7 @@ authorization Bearer <token>
 
 ## End a game
 
-End a game. Only the player of the game can end it. It will change the status of the game to 'end'.
+End a game. Only the websocket server is allowed access.
 
 ```typescript
 POST /api/v1/game/<game_id>/end
@@ -981,7 +982,7 @@ authorization Bearer <token>
 
 ## Add score of a player
 
-Add a player's score. Only the player of the game can add a score. The AI's score will be disregarded. The winner's
+Add a player's score. Only the websocket server is allowed access. The AI's score will be disregarded. The winner's
 score will be automatically updated.
 
 ```typescript
@@ -991,6 +992,19 @@ authorization Bearer <token>
 	username: string,
 	score: number
 }
+```
+
+### Return
+
+-   The ([Message](#message)) if success or ([Error](#error)) if error raised
+
+## Level up the winner
+
+Level up the winner. Only the websocket server is allowed access.
+
+```typescript
+POST /api/v1/game/<game_id>/winner/levelup
+authorization Bearer <token>
 ```
 
 ### Return

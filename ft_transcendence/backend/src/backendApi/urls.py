@@ -249,6 +249,7 @@ urlpatterns = [
     path("game/<int:game_id>/score", GameViewSet.as_view({"post": "addScore"})),
     path("game/me", GameViewSet.as_view({"get": "listMyGames"})),
     path("game/me/score", GameViewSet.as_view({"get": "listMyScores"})),
+    path("game/<int:game_id>/winner/levelup", GameViewSet.as_view({"post": "levelUpWinner"})),
     # Tournament
     path("tournaments", TournamentViewSet.as_view({"get": "list", "post": "create"})),
     path(
