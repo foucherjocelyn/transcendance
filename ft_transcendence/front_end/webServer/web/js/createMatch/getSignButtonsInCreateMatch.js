@@ -2,6 +2,7 @@ import { invitation_to_play } from "../invitationPlay/invitationPlay.js";
 import { match, match_default } from "./createMatch.js";
 import { inforPlayer } from "./createPlayers.js";
 import { client, dataToServer } from "../client/client.js";
+import { to_game } from "../home/home_game.js";
 
 function    add_player_mode_offline_random(button, clickCount, index)
 {
@@ -10,11 +11,11 @@ function    add_player_mode_offline_random(button, clickCount, index)
 
     let player = undefined;
     if (clickCount === 1)
-        player = new inforPlayer(42, 'AI ' + (index + 1), "../../img/avatar/AI.jpg", 42, 'AI');
+        player = new inforPlayer(42, 'AI ' + (index + 1), "../../img/avatar/AI.png", 42, 'AI');
     else if (clickCount === 2)
-        player = new inforPlayer(42, 'Player ' + (index + 1), "../../img/avatar/avatar2.jpg", 42, 'player');
+        player = new inforPlayer(42, 'Player ' + (index + 1), "../../img/avatar/avatar2.png", 42, 'player');
     else
-        player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
+        player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
 
     match.listPlayer[index] = player;
 
@@ -43,13 +44,13 @@ function    add_player_mode_friends(button, clickCount, index)
     let player = undefined;
     if (clickCount === 1)
     {
-        player = new inforPlayer(42, 'AI ' + (index + 1), "../../img/avatar/AI.jpg", 42, 'AI');
+        player = new inforPlayer(42, 'AI ' + (index + 1), "../../img/avatar/AI.png", 42, 'AI');
     }
     else
     {
         document.getElementById('createMatchLayer').style.display = 'none';
         invitation_to_play();
-        player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
+        player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     }
     match.listPlayer[index] = player;
 
@@ -93,6 +94,7 @@ function    get_sign_cancel_create_match_button()
 
         document.getElementById('createMatchLayer').style.display = 'none';
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
+        to_game();
 
         // match_default();
     }

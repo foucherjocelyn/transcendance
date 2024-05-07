@@ -88,7 +88,7 @@ function    search_match_in_one_minute(match, indexMatch, callback)
         callback(false);
 
         send_data('hide loader', '', '', match.listUser);
-        send_data('warning', 'Sorry guy, no matches found right now !!!', '../../img/avatar/informationsSign.jpg', match.listUser);
+        send_data('warning', 'Sorry guy, no matches found right now !!!', '../../img/avatar/informationsSign.png', match.listUser);
     }, 60000);
     webSocket.listFindMatch[indexMatch].timeoutId = timeoutId;
 }
@@ -97,7 +97,7 @@ function    matchmaking(match, callback)
 {
     if (count_players(match) === 1)
     {
-        send_data('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.jpg', match.listUser);
+        send_data('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', match.listUser);
         callback(false);
         return ;
     }
