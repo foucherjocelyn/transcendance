@@ -15,7 +15,6 @@
 -   **Tokens**
 
     -   [Create new Bearer token](#create-new-bearer-token)
-    -   [Refresh access token](#refresh-access-token)
 
 -   **Auth**
 
@@ -127,27 +126,7 @@ POST /api/v1/token
 
 ```typescript
 {
-	refresh: string,
 	access: string
-}
-```
-
-## Refresh access token
-
-When the access token expires, you can use the refresh token to get a new access token.
-
-```typescript
-POST / api / v1 / token / refresh;
-{
-    refresh: string;
-}
-```
-
-### Return
-
-```typescript
-{
-    access: string;
 }
 ```
 

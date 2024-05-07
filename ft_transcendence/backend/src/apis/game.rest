@@ -1,0 +1,11 @@
+@url=http://127.0.0.1:8000/api/v1
+
+POST {{url}}/game HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer sCzKMq0w6LMs\hcn[QzTc3$;<YTvR!\O4;,u:D,E#\z=Vkw~Nk%Wa-V7@H\<9jDllr+4j%vX:@[}@F,x4VA819zyQ~s<NB~JTNl|=wrqNdUG-\Q?UXpTP}cBywFEFAJ<?o\+D\cF97<_6u<vuw#B*MtueuDrbe$=G~Nga}&+o+e:<dD]{;^6Zw<l\y-x8olk4j~V-h(l
+
+{
+    "owner_username": "anna",
+    "visibility": "public",
+    "mode": "ranked"
+}

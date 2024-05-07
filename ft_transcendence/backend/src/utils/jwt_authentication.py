@@ -29,12 +29,12 @@ class JwtAuthentication(BaseAuthentication):
                 decoded_token.get("exp"), tz=timezone.get_current_timezone()
             )
             if sub != "transcendence":
-                raise ValueError("Invalid token")
+                raise AuthenticationFailed("Invalid token")
             if iat > timezone.now():
-                raise ValueError("Invalid token")
+                raise AuthenticationFailed("Invalid token")
             if exp < timezone.now():
                 JwtTokenGenerator.blackList.append(key)
-                raise ValueError("Expired token")
+                raise AuthenticationFailed("Expired token")
             user = User.objects.get(id=userId)
             return (user, None)
         except:
