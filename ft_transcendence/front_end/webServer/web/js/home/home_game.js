@@ -36,6 +36,35 @@ export function	noticeInvitePlayer()
 	return (notice);
 }
 
+export async function   drawCreateMatch(callback)
+{
+    document.getElementById("g_match_html").insertAdjacentHTML("beforeend", `
+    <!-------------------- Create match Layer -------------------->
+    <div id="createMatchLayer">
+
+        <!--------------------  -------------------->
+        <button id="cancelCreateMatchButton">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256" style="fill:#40C057;">
+                <g fill="#40c057" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M4.70703,3.29297l-1.41406,1.41406l7.29297,7.29297l-7.29297,7.29297l1.41406,1.41406l7.29297,-7.29297l7.29297,7.29297l1.41406,-1.41406l-7.29297,-7.29297l7.29297,-7.29297l-1.41406,-1.41406l-7.29297,7.29297z"></path></g></g>
+            </svg>
+        </button>
+        
+        <!--------------------  -------------------->
+        <button id="startCreateMatchButton">
+            <div></div>
+            <h1>Start</h1>
+        </button>
+
+        <!--------------------  -------------------->
+        <div id="addPlayerLayer"></div>
+    </div>
+    `);
+    document.getElementById("cancelCreateMatchButton").addEventListener("click", () =>
+    { document.getElementById("h_upperpanel").classList.remove("hide");
+    });
+    callback(true);
+}
+
 export async function	drawGame(callback)
 {
 	document.querySelector("#frontpage").outerHTML =
@@ -62,18 +91,6 @@ export async function	drawGame(callback)
               <div class="WH color l2"></div>
             </div>
         </div>          
-    </div>
-    <!-------------------- Create match Layer -------------------->
-    <div id="createMatchLayer">
-
-        <!--------------------  -------------------->
-        <button id="cancelCreateMatchButton">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256" style="fill:#40C057;">
-                <g fill="#40c057" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M4.70703,3.29297l-1.41406,1.41406l7.29297,7.29297l-7.29297,7.29297l1.41406,1.41406l7.29297,-7.29297l7.29297,7.29297l1.41406,-1.41406l-7.29297,-7.29297l7.29297,-7.29297l-1.41406,-1.41406l-7.29297,7.29297z"></path></g></g>
-            </svg>
-        </button>
-
-        <div id="addPlayerLayer"></div>
     </div>
 
     <!-------------------- Invitation play Layer -------------------->
@@ -443,9 +460,6 @@ export async function	to_game(nohistory = "false")
 						document.getElementById("g_choose_mode").classList.add("hide");
 						document.getElementById("g_match_html").classList.remove("hide");
 						create_match('offline');
-					});
-				document.getElementById("cancelCreateMatchButton").addEventListener("click", () =>
-					{ document.getElementById("h_upperpanel").classList.remove("hide");
 					});
 			}
 		});

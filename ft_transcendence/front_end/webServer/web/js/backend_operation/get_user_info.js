@@ -66,6 +66,7 @@ export async function	getUserIdByUsername(username)
 			  {
 				  console.log("getUserIdByUsername:");
 				  console.log(data);
+				  return (data);
 			  })
 		  .catch(error => {
 			  console.error("getUserIdByUsername: ", error);
@@ -77,7 +78,7 @@ export async function	updateMyInfo(connectFlag = false)
 	let avatar_path = await getAvatar();
 	if (avatar_path === null || avatar_path === undefined)
 		avatar_path = '../img/avatar/avatar_default.png';
-
+	avatar_path = '../img/avatar/avatar_default.png';
 	let info = getMyInfo();
 	info.then(() =>
 	{
