@@ -1,12 +1,6 @@
-import { to_regisForm } from "./auth_register.js";
-import { to_forgotForm } from "./auth_reset.js";
-import { to_profilePage } from "../home/home_changeprofile.js";
-import { to_game } from "../home/home_game.js";
-import { to_tournament } from "../home/home_tournament.js";
 import { to_homePage } from "../home/home_homeboard.js";
 import { to_connectForm } from "./auth_connect.js";
 import { getCookie } from "./auth_cookie.js";
-import { openSocketClient } from "../backend_operation/authentication.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
 
 

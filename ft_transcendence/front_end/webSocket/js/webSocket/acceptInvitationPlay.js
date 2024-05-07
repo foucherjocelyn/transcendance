@@ -42,7 +42,7 @@ function    leave_match(user)
         const   player = match.listPlayer[i];
         if (player.id === user.id)
         {
-            match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
+            match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
             update_match(user, match, 'update match');
             return ;
         }
@@ -69,7 +69,7 @@ function    add_user_in_a_match(user, newPlayer)
                 }
             }
         }
-    }, 1000);
+    }, 1);
 }
 
 function    accept_invitation_to_play(data)

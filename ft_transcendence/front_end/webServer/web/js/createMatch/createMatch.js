@@ -2,7 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, inforPlayer, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
-import { to_game } from "../home/home_game.js";
+import { gameEventListener, to_game } from "../home/home_game.js";
 
 class pMatch {
     constructor() {
@@ -47,9 +47,9 @@ function match_default() {
     match.admin = client.inforUser;
 
     const player1 = new inforPlayer(client.inforUser.id, client.inforUser.name, client.inforUser.avatar, client.inforUser.level, 'player');
-    const player2 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
-    const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
-    const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.jpg", 42, 'none');
+    const player2 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+    const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+    const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
 
     match.listPlayer.push(player1);
     match.listPlayer.push(player2);
@@ -74,20 +74,10 @@ function update_match_informations(data) {
 
 async function create_match(mode) {
     to_game();
-    /*
-    if (document.getElementById("g_match_html") === undefined || document.getElementById("g_match_html") === null)
-    {
-        console.trace();
-        console.log("Error: g_match_html not found");
-        return;
-    }
-    */
-    //    await drawGame((result) => {
-    //      if (result) {
+    gameEventListener();
     if (match === undefined)
         match_default();
-   // drawCreateMatch();
-    document.getElementById("loadspinner").classList.add("hide");
+
     document.getElementById('createMatchLayer').style.display = 'flex';
     client.inforUser.status = 'creating match';
 
@@ -102,8 +92,8 @@ async function create_match(mode) {
 
     const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
     client.socket.send(JSON.stringify(sendData));
-    //        }
-    //    });
+    document.getElementById("h_upperpanel").classList.add("hide");
+    document.getElementById("g_choose_mode").classList.add("hide");
 }
 
 export {

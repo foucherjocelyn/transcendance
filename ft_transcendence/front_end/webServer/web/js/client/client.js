@@ -7,7 +7,7 @@ import { accept_invite_to_play } from "../invitationPlay/invitationPlay.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { to_game } from "../home/home_game.js";
+import { gameEventListener, to_game } from "../home/home_game.js";
 
 class   userNotifications {
     constructor() {
@@ -75,6 +75,7 @@ function    get_data_from_server(socket)
         {
             match_default();
 			to_game();
+            gameEventListener();
 			create_match("with friends");
 			/*
             drawGame( (result) =>
