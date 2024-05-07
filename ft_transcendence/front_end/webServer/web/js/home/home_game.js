@@ -4,11 +4,8 @@ import { to_homePage } from "./home_homeboard.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
-import { create_match, match_default } from "../createMatch/createMatch.js";
-import { client, dataToServer, user } from "../client/client.js";
-import { getCookie } from "../authentication/auth_cookie.js";
+import { create_match } from "../createMatch/createMatch.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
-import { openSocketClient } from "../backend_operation/authentication.js";
 
 export function	noticeInvitePlayer()
 {
@@ -39,6 +36,11 @@ export function	noticeInvitePlayer()
 	return (notice);
 }
 
+function test(value)
+{
+
+}
+
 export async function	drawGame(callback)
 {
 	document.querySelector("#frontpage").outerHTML =
@@ -46,8 +48,17 @@ export async function	drawGame(callback)
 		${loadSpinner()}
 		${upperPanel()}
     	${noticeInvitePlayer()}
-        
-		    <!-------------------- Loader match making -------------------->
+
+<!--	Choose game mode		-->
+
+		<div id="g_choose_mode">
+		<button id="g_rankedmatch">Ranked Match</button>
+		<button id="g_creatematch">Create a match</button>
+		<button id="g_localmatch">Local game</button>
+		</div>
+
+<!-------------------- Loader match making -------------------->
+<div id="g_match_html" class="hide">
     <div id="loaderMatchmakingLayer">
         <div class="loading">
             <div class="loading-box">
@@ -404,6 +415,7 @@ export async function	drawGame(callback)
     </div>
 
     <!--------------------  -------------------->
+<div>
 		<div class="r_successinfo hide"></div>
 	</div>
 `;
@@ -420,7 +432,36 @@ export async function	to_game(nohistory = "false")
 		history.pushState( { url: "game" }, "", "#game");
     updateMyInfo();
 
-	create_match("with friends");
+	await drawGame((result) =>
+		{
+			if (result)
+			{
+				document.getElementById("g_rankedmatch").addEventListener("click", () =>
+					{
+						document.getElementById("h_upperpanel").classList.add("hide");
+						document.getElementById("g_choose_mode").classList.add("hide");
+						document.getElementById("g_match_html").classList.remove("hide");
+						create_match('rank');
+					});
+				document.getElementById("g_creatematch").addEventListener("click", () =>
+					{
+						document.getElementById("h_upperpanel").classList.add("hide");
+						document.getElementById("g_choose_mode").classList.add("hide");
+						document.getElementById("g_match_html").classList.remove("hide");
+						create_match('with friends');
+					});
+				document.getElementById("g_localmatch").addEventListener("click", () =>
+					{
+						document.getElementById("h_upperpanel").classList.add("hide");
+						document.getElementById("g_choose_mode").classList.add("hide");
+						document.getElementById("g_match_html").classList.remove("hide");
+						create_match('offline');
+					});
+				document.getElementById("cancelCreateMatchButton").addEventListener("click", () =>
+					{ document.getElementById("h_upperpanel").classList.remove("hide");
+					});
+			}
+		});
     // const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, client.listUser[1]);
     // client.socket.send(JSON.stringify(sendData));
 }

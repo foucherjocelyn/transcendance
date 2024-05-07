@@ -1,3 +1,8 @@
+#g_choose_mode {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 #gameLayer {
     display: none;

@@ -1,63 +1,8 @@
 import { client } from "../client/client.js";
-import { dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { getListFriends } from "./friend-list.js";
-
-async function getListUsers() {
-    console.log("--getListUsers starting");
-    let f_token = getCookie("token");
-    //    console.log(f_token);
-
-    const response = await fetch("http://127.0.0.1:8000/api/v1/users", {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("getListUsers: Client/Server error");
-                return;
-            }
-            const data = response.json();
-            return data;
-        })
-        .catch(error => {
-            console.error("getListUsers: ", error);
-        });
-    console.log("--");
-    return response;
-}
-
-async function getListFriendInvitationSent() {
-    console.log("--getListFriendInvitationSent starting");
-    let f_token = getCookie("token");
-    //    console.log(f_token);
-
-    const response = await fetch("http://127.0.0.1:8000/api/v1/user/friendship/sent", {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("getListFriendInvitationSent Client/Server error");
-                return;
-            }
-            const data = response.json();
-            return data;
-        })
-        .catch(error => {
-            console.error("getListFriendInvitationSent ", error);
-        });
-    console.log("--");
-    return response;
-}
+import { getListUsers } from "../backend_operation/get_user_info.js";
+import { getListFriendInvitationSent, getListFriendInvitationsReceived, sendFriendInvite } from "../backend_operation/friend_invite.js";
 
 const searchFindNewFriendWindow = async () => {
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list");
@@ -66,25 +11,26 @@ const searchFindNewFriendWindow = async () => {
     const listUsers = await getListUsers();
     const listFriends = await getListFriends();
     const listFriendInvitationSent = await getListFriendInvitationSent();
-    console.log(listFriends);
+    const listFriendInvitationReceived = await getListFriendInvitationsReceived();
 
     userListDiv.innerHTML = "";
     if (searchInput.value) {
         const parsedSearchInput = searchInput.value.match(regex).join("");
 
         console.log(listUsers);
-        let listFriendInvitationPending;
+        let listFriendInvitationPending = [{}];
         if (listFriendInvitationSent) {
             listFriendInvitationPending = listFriendInvitationSent.filter(invitation => invitation.status === "pending");
-          console.log(listFriendInvitationPending);
-        } else {
-            listFriendInvitationPending = null;
+        }
+        if (listFriendInvitationReceived) {
+            const listFriendInvitationReceivedAndPending = listFriendInvitationReceived.filter(invitation => invitation.status === "pending");
+            listFriendInvitationPending = listFriendInvitationPending.concat(listFriendInvitationReceivedAndPending);
         }
         const listUsersWithoutSelf = listUsers.filter((user) => user.username != getCookie("username"))
         const listUsersWithoutSelfAndFriends = listUsersWithoutSelf.filter((user) => !listFriends.some((friend => friend.username === user.username)));
         const matchlist = listUsersWithoutSelfAndFriends.filter((user) => user.username.includes(parsedSearchInput));
         matchlist.forEach((user) => {
-            if (listFriendInvitationSent && listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username)) {
+            if (listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username || invitation.sender_username === user.username)) {
                 const userHTML = `<div id="c-list-user-${user.username}" class="c-user">
                     <div class="user-avatar"><img src="../img/avatar/avatar_default.png" alt="profile-picture"></div>
                     <div class="user-name">${user.username}</div>
@@ -103,7 +49,10 @@ const searchFindNewFriendWindow = async () => {
         document.querySelectorAll(".c-send-friend-invite").forEach(user => {
             const userUsername = user.id.substring().slice(21);
             console.log(userUsername);
-            user.addEventListener("click", (e) => sendFriendInvite(userUsername));
+            user.addEventListener("click", (e) => {
+                sendFriendInvite(userUsername);
+                searchFindNewFriendWindow();
+            });
         });
     }
 };
@@ -123,39 +72,6 @@ const displayFindNewFriendWindow = () => {
     findNewFriendWindow.classList.remove("hidden");
     document.querySelector("#c-find-new-friend-window .search").addEventListener("click", searchFindNewFriendWindow);
     document.querySelector("#c-find-new-friend-window .c-close-button").addEventListener("click", closeFindNewFriendWindow);
-};
-
-const sendFriendInvite = async (username) => {
-    console.log(username);
-    let f_token = getCookie("token");
-    await fetch("http://127.0.0.1:8000/api/v1/user/friendship/invite", {
-        method: "POST",
-        body: JSON.stringify({username}),
-        headers: {
-            "Accept": "application/json",
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${f_token}`
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                console.log("sendFriendInvite: Client/Server error");
-                return;
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error("Error send Friend Invite: ", error);
-        });
-    console.log("----");
-    //const sendData = new dataToServer("announcement", 'friend invite received', client.listUser.find(user => user.id == id));
-    //client.socket.send(JSON.stringify(sendData));
-    //console.log(sendData);
-    //findNewFriendWindow.classList.add("hidden");
-    searchFindNewFriendWindow();
 };
 
 export {

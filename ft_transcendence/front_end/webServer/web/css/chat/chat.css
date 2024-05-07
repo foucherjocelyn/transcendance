@@ -16,9 +16,10 @@ body {
     display: none;
 }
 
-#c-announcements-window {
+#c-notifications-window {
     position: absolute;
     right: 20%;
+    top: 20%;
     margin: 12%;
     width: 30%;
     height: 50%;
@@ -27,8 +28,18 @@ body {
     color: white;
 }
 
+#c-notifications-window .c-close-button {
+    margin-left: 92%;
+}
+
+.notification {
+    display: flex;
+    justify-content: space-between;
+}
+
 #c-find-new-friend-window {
     position: absolute;
+    top: 20%;
     right: 20%;
     margin: 12%;
     width: 30%;
@@ -120,7 +131,7 @@ body {
     bottom: 20px;
 }
 
-#c-show-announcements-button, #c-add-new-friend-button, #c-hide-friend-list, .c-invite-match-button {
+#c-show-notifications-button, #c-add-new-friend-button, #c-hide-friend-list, .c-invite-match-button {
 	display: inline-block;
 	position: relative;
 	margin-top: 3%;
@@ -146,13 +157,13 @@ body {
 */
 }
 
-#c-show-announcements-button {
+#c-show-notifications-button {
 	background-image: url(../../img/chat/bell.png);
 	background-size: 100% 100%;
 	left: 0%;
 }
 
-#c-show-announcements-button:hover {
+#c-show-notifications-button:hover {
 	cursor: pointer;
 }
 

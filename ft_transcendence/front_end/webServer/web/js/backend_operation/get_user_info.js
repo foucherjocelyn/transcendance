@@ -146,38 +146,55 @@ export async function	getMyInfo()
 //	console.log("-");
 }
 
-export async function	getUserList()
-{
-//	console.log("-Obtaining user list");
-	let f_token = getCookie("token");
+export async function getListUsers() {
+    console.log("--getListUsers starting");
+    let f_token = getCookie("token");
 
-	if (f_token === null || f_token === "")
-	{
-		console.log("Token is null");
-		return;
-	}
-    const r = await fetch("http://127.0.0.1:8000/api/v1/users", {
-		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${f_token}`
-		}
+    const response = await fetch("http://127.0.0.1:8000/api/v1/users", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
     })
-		  .then(response =>  {
-			  if (!response.ok)
-			  {
-				  console.log("getUserList: Client/Server error");
-				  return;
-				  //throw new Error("fetch POST op failed");
-			  }
-			  return response.json();
-		  })
-		  .then(data =>
-			  {
-//				  console.log("getUserList:");
-//				  console.log(data);
-			  })
-		  .catch(error => {
-			  console.error("getUserList: ", error);
-		  });
-//	console.log("-");
+        .then(response => {
+            if (!response.ok) {
+                console.log("getListUsers: Client/Server error");
+                return;
+            }
+            const data = response.json();
+            return data;
+        })
+        .catch(error => {
+            console.error("getListUsers: ", error);
+        });
+    console.log("--");
+    return response;
+}
+
+export const getListFriends = async () => {
+    let f_token = getCookie("token");
+
+    return await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then (response => {
+            if (!response.ok) {
+                console.log("getListFriends: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then (data => {
+            return data;
+        })
+        .catch(error => {
+            console.error("getListFriends: ", error);
+        });
 }

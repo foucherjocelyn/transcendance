@@ -7,17 +7,20 @@ import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
-import { openSocketClient } from "../backend_operation/authentication.js";
 
 export function upperPanel()
 {
-	let panel_def = `<nav class="h_upperpanel">
+	let panel_def = `
+<div id="h_upperpanel">
+<nav class="h_upperpanel">
 				<button id="h_to_home" name="to_homepage"></button>
 				<button id="h_to_game" name="to_game"></button>
 				<button id="h_to_tournament" name="to_tournament"></button>
 				<button id="h_to_myprofile" name="to_myprofile"></button>
 				<button id="h_logout" name="logout"></button>
-			</nav>`;
+			</nav>
+</div>
+`;
 	return (panel_def);
 }
 
