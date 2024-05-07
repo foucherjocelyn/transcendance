@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 
 import pyotp
-from backendApi.hash import hash_password, verify_password
+from utils.hash import hash_password, verify_password
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
 

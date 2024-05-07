@@ -902,13 +902,13 @@ authorization Bearer <token>
 
 ## Create a new game
 
-Create a new game. Add the current user as the only player.
-The game will be created as visibility: 'public', mode: 'classic', status: 'progressing' and maxScore: 5.
+Create a new game. The game will be created as visibility: 'public', mode: 'classic', status: 'progressing' and maxScore: 5.
 
 ```typescript
 POST /api/v1/game
 authorization Bearer <token>
 {
+	owner_username: string,
 	visibility: "public" | "private";// optional,default: 'public'
 	mode: "classic" | "ranked" | "tournament";// optional, default: 'classic'
 	tournament_name: string;// optional

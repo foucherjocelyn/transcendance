@@ -5,7 +5,7 @@ from ..models import Game, Tournament, User
 
 
 class GameSerializer(serializers.ModelSerializer):
-    owner_username = serializers.CharField(source="owner.username", read_only=True)
+    owner_username = serializers.CharField()
     player_usernames = serializers.ListField(
         child=serializers.CharField(), read_only=True, required=False
     )
@@ -24,16 +24,6 @@ class GameSerializer(serializers.ModelSerializer):
             "owner_username",
             "player_usernames",
             "winner_username",
-            "winnerScore",
-            "created_at",
-            "updated_at",
-        ]
-
-        reads_only_fields = [
-            "id",
-            "owner_username",
-            "users_username",
-            "winner",
             "winnerScore",
             "created_at",
             "updated_at",
@@ -59,20 +49,29 @@ class GameSerializer(serializers.ModelSerializer):
                 )
         return data
 
+    def get_owner_username(self, obj):
+        return obj.owner.username
+
     def get_player_usernames(self, obj):
         return [player.username for player in obj.players.all()]
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
+        instance.owner_username = self.get_owner_username(instance)
+        instance.player_usernames = self.get_player_usernames(instance)
         if instance.tournament:
-            representation["tournament_name"] = instance.tournament.name
-        representation["player_usernames"] = self.get_player_usernames(instance)
-        return representation
+            instance.tournament_name = instance.tournament.name
+        return super().to_representation(instance)
 
     def create(self, validated_data):
-        owner = self.context["request"].user
+        owner_username = validated_data.pop("owner_username", None)
+        if not owner_username:
+            raise InputValidationError(detail="Owner username is required")
         tournament_name = validated_data.pop("tournament_name", None)
         game = Game.objects.create(**validated_data)
+        try:
+            owner = User.objects.get(username=owner_username)
+        except User.DoesNotExist:
+            raise InputValidationError(detail="Owner not found")
         game.owner = owner
         game.players.add(owner)
         if tournament_name:
@@ -88,6 +87,9 @@ class GameSerializer(serializers.ModelSerializer):
         return game
 
     def update(self, instance, validated_data):
+        owner_username = validated_data.pop("owner_username", None)
+        if owner_username:
+            raise InputValidationError(detail="Cannot update owner username")
         for key, value in validated_data.items():
             setattr(instance, key, value)
         instance.save()

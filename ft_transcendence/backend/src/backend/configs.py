@@ -2,6 +2,7 @@ import os
 
 app = {
     "SECRET_KEY": os.getenv("SECRET_KEY"),
+    "WEBSOCKET_TOKEN": os.getenv("WEBSOCKET_TOKEN"),
     "POSTGRES_DB": os.getenv("POSTGRES_DB"),
     "POSTGRES_USER": os.getenv("POSTGRES_USER"),
     "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD"),

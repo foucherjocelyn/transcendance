@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from backendApi.hash import verify_password
+from utils.hash import verify_password
 from datetime import datetime
 from django.utils.dateparse import parse_date
 

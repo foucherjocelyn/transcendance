@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from .models import Channel, ChannelInvitedUser
+from backend.settings import WEBSOCKET_TOKEN
 
 
 class IsChannelAdmin(permissions.BasePermission):
@@ -86,3 +87,14 @@ class IsChannelMember(permissions.BasePermission):
                 return False
         else:
             return False
+
+
+# If Bearer token in header is WEBSOCKET_TOKEN in .env, return true.
+class IsWebSocketServer(permissions.BasePermission):
+    def has_permission(self, request, view):
+        bearerToken = request.headers.get("Authorization", "").split(" ")[-1]
+        if not bearerToken:
+            return False
+        if bearerToken == WEBSOCKET_TOKEN:
+            return True
+        return False

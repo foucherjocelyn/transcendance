@@ -6,12 +6,13 @@ name = "pypi"
 [packages]
 django = "*"
 djangorestframework = "*"
-djangorestframework-simplejwt = "*"
 psycopg2 = "*"
 pyotp = "*"
 django-cors-headers = "*"
 qrcode = "*"
 python-dotenv = "*"
+cryptography = "*"
+pyjwt = "*"
 
 [dev-packages]
 

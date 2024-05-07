@@ -1,14 +1,15 @@
-from backendApi.hash import verify_password
+from django.contrib.auth import authenticate
 from django.core.files.storage import default_storage
 from django.http import FileResponse
 from django.shortcuts import render
 from django.utils import timezone
-from django.contrib.auth import authenticate
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
+from utils.hash import verify_password
+from utils.jwt_token import JwtTokenGenerator
+from django.contrib.auth import logout
 
 from ..models import Otp, User
 from ..serializers.user import UserSerializer
@@ -32,9 +33,12 @@ class UserViewSet(viewsets.ModelViewSet):
     def logIn(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is None:
-            return Response({"error": "Invalid username or password"}, status=400)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            Response({"error": "Invalid username"}, status=400)
+        if not verify_password(password, user.password):
+            return Response({"error": "Invalid password"}, status=400)
         instance = Otp.objects.get(user=user)
         if instance.otpStatus:
             if "otp" not in request.data:
@@ -45,12 +49,13 @@ class UserViewSet(viewsets.ModelViewSet):
         user.status = "online"
         user.last_login = timezone.now()
         user.save()
-        refresh = RefreshToken.for_user(user)
+        jwtToken = JwtTokenGenerator.generateJwtToken(user.id)
+        # Save key in session
+        request.session["jwtToken"] = jwtToken.key
         return Response(
             {
                 "message": f"User {username} login",
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
+                "access": jwtToken.key,
             },
             status=200,
         )
@@ -61,6 +66,12 @@ class UserViewSet(viewsets.ModelViewSet):
         # Update user status to 'offline'
         user.status = "offline"
         user.save()
+        # Get key from session
+        jwtTokenKey = request.session.get("jwtToken", None)
+        if jwtTokenKey:
+            JwtTokenGenerator.blackList.append(jwtTokenKey)
+        request.session.flush()
+        logout(request)
         return Response({"message": f"User {user.username} logout"}, status=200)
 
     @action(detail=True, methods=["get"])

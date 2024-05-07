@@ -40,9 +40,8 @@ class TournamentSerializer(serializers.ModelSerializer):
         return [player.username for player in obj.players.all()]
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["player_usernames"] = self.get_player_usernames(instance)
-        return representation
+        instance.player_usernames = self.get_player_usernames(instance)
+        return super().to_representation(instance)
 
     def create(self, validated_data):
         tournement = super().create(validated_data)

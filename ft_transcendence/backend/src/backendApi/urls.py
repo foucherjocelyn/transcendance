@@ -1,7 +1,7 @@
 # Import dependencies
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from .views.token import TokenViewSet
 from .views.channel import ChannelViewSet
 from .views.channel_message import ChannelMessageViewSet
 from .views.friendship import FriendshipViewSet
@@ -14,8 +14,7 @@ from .views.notification import NotificationViewSet
 
 urlpatterns = [
     # Tokens
-    path("token", TokenObtainPairView.as_view()),
-    path("token/refresh", TokenRefreshView.as_view()),
+    path("token", TokenViewSet.as_view({"post": "generateToken"})),
     # Users
     path("users", UserViewSet.as_view({"get": "list", "post": "create"})),
     path(
@@ -290,7 +289,15 @@ urlpatterns = [
             }
         ),
     ),
-    path("notification/create", NotificationViewSet.as_view({"post": "createNotification"})),
-    path("notification/list", NotificationViewSet.as_view({"get": "getAllNotifications"})),
-    path("notification/<int:notification_id>/read", NotificationViewSet.as_view({"post": "readNotification"})),
+    path(
+        "notification/create",
+        NotificationViewSet.as_view({"post": "createNotification"}),
+    ),
+    path(
+        "notification/list", NotificationViewSet.as_view({"get": "getAllNotifications"})
+    ),
+    path(
+        "notification/<int:notification_id>/read",
+        NotificationViewSet.as_view({"post": "readNotification"}),
+    ),
 ]

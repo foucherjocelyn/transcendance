@@ -27,6 +27,7 @@ from .configs import app
 
 # Load config file
 SECRET_KEY = app["SECRET_KEY"]
+WEBSOCKET_TOKEN = app["WEBSOCKET_TOKEN"]
 POSTGRES_DB = app["POSTGRES_DB"]
 POSTGRES_USER = app["POSTGRES_USER"]
 POSTGRES_PASSWORD = app["POSTGRES_PASSWORD"]
@@ -81,7 +82,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "backendApi",
     "rest_framework",
-    "rest_framework_simplejwt",
     "corsheaders",
 ]
 
@@ -180,7 +180,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Config use rest_framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "utils.jwt_authentication.JwtAuthentication",
     ]
 }
 

@@ -1,6 +1,7 @@
 from backendApi.serializers.game import GameSerializer
 from backendApi.serializers.game_score import GameScoreSerializer
 from backendApi.models import Game, User, GameScore
+from backendApi.permissions import IsWebSocketServer
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -15,7 +16,6 @@ class GameViewSet(viewsets.ModelViewSet):
     # Create game view
     @action(detail=False, methods=["post"])
     def createGame(self, request):
-        user = request.user
         data = request.data
         serializer = self.get_serializer(data=data)
         if serializer.is_valid(raise_exception=True):
@@ -31,10 +31,6 @@ class GameViewSet(viewsets.ModelViewSet):
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:
             return Response({"error": "Game not found"}, status=404)
-        # Check if user is part of the game
-        user = request.user
-        if not game.players.filter(id=user.id).exists():
-            return Response({"error": "You are not part of this game"}, status=403)
         serializer = self.get_serializer(game)
         return Response(serializer.data, status=200)
 
@@ -45,11 +41,6 @@ class GameViewSet(viewsets.ModelViewSet):
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:
             return Response({"error": "Game not found"}, status=404)
-        user = request.user
-        if game.owner != user:
-            return Response(
-                {"error": "Only the owner can add players to the game"}, status=403
-            )
         player_username = request.data.get("username", None)
         if not player_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -66,9 +57,11 @@ class GameViewSet(viewsets.ModelViewSet):
                 return Response(
                     {"error": "User is not part of the tournament"}, status=400
                 )
-        # Verify is the number of players is 4, so cant add more players
+        # Verify if the number of players is 4, so cant add more players
         if len(game.players.all()) >= 4:
-            return Response({"error": "Game is full, cannot add more players"}, status=400)
+            return Response(
+                {"error": "Game is full, cannot add more players"}, status=400
+            )
         game.players.add(player)
         serializer = self.get_serializer(game)
         return Response(serializer.data, status=200)
@@ -80,12 +73,6 @@ class GameViewSet(viewsets.ModelViewSet):
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:
             return Response({"error": "Game not found"}, status=404)
-        user = request.user
-        if game.owner != user:
-            return Response(
-                {"error": "Only the owner can remove players from the game"},
-                status=403,
-            )
         player_username = request.data.get("username", None)
         if not player_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -95,8 +82,6 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response({"error": "User not found"}, status=404)
         if not game.players.filter(id=player.id).exists():
             return Response({"error": "User is not part of the game"}, status=400)
-        if player == game.owner:
-            return Response({"error": "Cannot remove the owner"}, status=400)
         game.players.remove(player)
         serializer = self.get_serializer(game)
         return Response(serializer.data, status=200)
@@ -108,10 +93,6 @@ class GameViewSet(viewsets.ModelViewSet):
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:
             return Response({"error": "Game not found"}, status=404)
-        user = request.user
-        # Check if user is part of the game
-        if not game.players.filter(id=user.id).exists():
-            return Response({"error": "You are not part of this game"}, status=403)
         if game.status != "end":
             game.status = "end"
             game.save()
@@ -177,9 +158,9 @@ class GameViewSet(viewsets.ModelViewSet):
             "removePlayerFromGame",
             "endGame",
             "addScore",
-            "listMyGames",
-            "listMyScores",
         ]:
+            self.permission_classes = [IsWebSocketServer]
+        elif self.action in ["listMyGames", "listMyScores"]:
             self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]

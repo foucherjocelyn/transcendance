@@ -58,11 +58,10 @@ class ChannelSerializer(serializers.ModelSerializer):
         return [member.username for member in obj.members.all()]
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["owner_username"] = self.get_owner_username(instance)
-        representation["admin_usernames"] = self.get_admin_usernames(instance)
-        representation["member_usernames"] = self.get_member_usernames(instance)
-        return representation
+        instance.owner_username = self.get_owner_username(instance)
+        instance.admin_usernames = self.get_admin_usernames(instance)
+        instance.member_usernames = self.get_member_usernames(instance)
+        return super().to_representation(instance)
 
     def create(self, validated_data):
         # Get the current user from the request
