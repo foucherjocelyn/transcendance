@@ -69,7 +69,6 @@ function    change_match_admin()
 function    setup_content_add_player_button()
 {
     // get_user_in_list_player_cl();
-
     if (match.listPlayer[0].type === 'none')
         change_match_admin();
 
