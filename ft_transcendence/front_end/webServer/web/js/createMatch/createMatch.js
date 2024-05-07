@@ -2,7 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, inforPlayer, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
-import { drawGame } from "../home/home_game.js";
+import { drawCreateMatch, drawGame } from "../home/home_game.js";
 
 class pMatch {
     constructor() {
@@ -72,24 +72,34 @@ function update_match_informations(data) {
 }
 
 async function create_match(mode) {
-    if (match === undefined)
-        match_default();
-    
-    document.getElementById("loadspinner").classList.add("hide");
-    document.getElementById('createMatchLayer').style.display = 'flex';
-    client.inforUser.status = 'creating match';
+    if (document.getElementById("g_match_html") === undefined || document.getElementById("g_match_html") === null)
+    {
+        console.trace();
+        console.log("Error: g_match_html not found");
+        return;
+    }
+    await drawCreateMatch((result) => {
+        if (result) {
+            if (match === undefined)
+                match_default();
 
-    // add mode game
-    match.mode = mode;
+            document.getElementById("loadspinner").classList.add("hide");
+            document.getElementById('createMatchLayer').style.display = 'flex';
+            client.inforUser.status = 'creating match';
 
-    setup_size_create_match_layer();
-    setup_size_add_player_layer();
-    display_add_player_buttons();
-    setup_size_add_player_button();
-    get_signe_buttons_in_create_match();
+            // add mode game
+            match.mode = mode;
 
-    const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
-    client.socket.send(JSON.stringify(sendData));
+            setup_size_create_match_layer();
+            setup_size_add_player_layer();
+            display_add_player_buttons();
+            setup_size_add_player_button();
+            get_signe_buttons_in_create_match();
+
+            const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+            client.socket.send(JSON.stringify(sendData));
+        }
+    });
 }
 
 export {

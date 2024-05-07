@@ -1,6 +1,5 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 import { user, client } from '../client/client.js';
-import { match_default } from "../createMatch/createMatch.js";
 import { openSocketClient } from "./authentication.js";
 import { getAvatar } from "./profile_picture.js";
 
@@ -66,6 +65,7 @@ export async function	getUserIdByUsername(username)
 			  {
 				  console.log("getUserIdByUsername:");
 				  console.log(data);
+				  return (data);
 			  })
 		  .catch(error => {
 			  console.error("getUserIdByUsername: ", error);
@@ -77,7 +77,7 @@ export async function	updateMyInfo(connectFlag = false)
 	let avatar_path = await getAvatar();
 	if (avatar_path === null || avatar_path === undefined)
 		avatar_path = '../img/avatar/avatar_default.png';
-
+	avatar_path = '../img/avatar/avatar_default.png';
 	let info = getMyInfo();
 	info.then(() =>
 	{

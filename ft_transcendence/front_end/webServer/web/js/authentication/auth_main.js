@@ -39,8 +39,7 @@ export function	authCheck()
 	console.log("The token is [" + getCookie("token") + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
-		updateMyInfo();
-		openSocketClient();
+		updateMyInfo(true);
 		to_homePage();
 	}
 	else

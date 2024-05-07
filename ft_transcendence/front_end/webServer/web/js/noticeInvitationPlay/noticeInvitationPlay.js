@@ -5,10 +5,12 @@ function    get_sign_accept_invitation_play(user, title)
 {
     const   button = document.getElementById('acceptInvitationPlayButton');
     button.onclick = () => {
-        // console.log('click accept invitation to play');
+        console.log('click accept invitation to play');
         
+        console.log(title);
         if (title === 'invite to play')
         {
+            console.log(user);
             const  sendData = new dataToServer('accept invitation to play', client.inforUser, client.inforUser, user);
             client.socket.send(JSON.stringify(sendData));
         }

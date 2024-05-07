@@ -10,6 +10,7 @@ const   webSocket = {
 
 function    update_user(user)
 {
+    console.log(user);
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
         const   find = webSocket.listUser[i];
