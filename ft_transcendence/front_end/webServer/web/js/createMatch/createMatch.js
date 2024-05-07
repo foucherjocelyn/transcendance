@@ -67,8 +67,7 @@ function update_match_informations(data) {
     const createMatchLayer = document.getElementById('createMatchLayer');
     if (createMatchLayer === null)
         create_match(match.mode);
-    else if (createMatchLayer.style.display === 'flex')
-    {
+    else if (createMatchLayer.style.display === 'flex') {
         setup_content_add_player_button();
     }
 }
@@ -83,28 +82,28 @@ async function create_match(mode) {
         return;
     }
     */
-//    await drawGame((result) => {
-  //      if (result) {
-            if (match === undefined)
-                match_default();
-            drawCreateMatch();
-            document.getElementById("loadspinner").classList.add("hide");
-            document.getElementById('createMatchLayer').style.display = 'flex';
-            client.inforUser.status = 'creating match';
+    //    await drawGame((result) => {
+    //      if (result) {
+    if (match === undefined)
+        match_default();
+    drawCreateMatch();
+    document.getElementById("loadspinner").classList.add("hide");
+    document.getElementById('createMatchLayer').style.display = 'flex';
+    client.inforUser.status = 'creating match';
 
-            // add mode game
-            match.mode = mode;
+    // add mode game
+    match.mode = mode;
 
-            setup_size_create_match_layer();
-            setup_size_add_player_layer();
-            display_add_player_buttons();
-            setup_size_add_player_button();
-            get_signe_buttons_in_create_match();
+    setup_size_create_match_layer();
+    setup_size_add_player_layer();
+    display_add_player_buttons();
+    setup_size_add_player_button();
+    get_signe_buttons_in_create_match();
 
-            const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
-            client.socket.send(JSON.stringify(sendData));
-//        }
-//    });
+    const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+    client.socket.send(JSON.stringify(sendData));
+    //        }
+    //    });
 }
 
 export {
