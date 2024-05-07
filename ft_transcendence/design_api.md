@@ -87,6 +87,7 @@
     -   [Remove a player from a game](#remove-a-player-from-a-game)
     -   [End a game](#end-a-game)
     -   [Add score of a player](#add-score-of-a-player)
+    -   [Level up the winner](#level-up-the-winner)
     -   [List all my games](#list-all-my-games)
     -   [List all my scores](#list-all-my-scores)
 
