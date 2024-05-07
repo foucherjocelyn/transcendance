@@ -65,10 +65,11 @@ export async function   drawCreateMatch(callback)
     callback(true);
 }
 
-export async function	drawGame(callback)
+export function	drawGame(callback)
 {
 	document.querySelector("#frontpage").outerHTML =
-		`<div id="frontpage">
+		`
+        <div id="frontpage">
 		${loadSpinner()}
 		${upperPanel()}
     	${noticeInvitePlayer()}
@@ -440,6 +441,7 @@ export async function	to_game(nohistory = "false")
 		{
 			if (result)
 			{
+				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById("g_rankedmatch").addEventListener("click", () =>
 					{
 						document.getElementById("h_upperpanel").classList.add("hide");

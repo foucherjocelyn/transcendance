@@ -74,13 +74,17 @@ function    add_user_in_a_match(user, newPlayer)
 
 function    accept_invitation_to_play(data)
 {
+    console.log("accept invitation to play webSocket");
+    console.log(data);
     if (define_match(data.to) === undefined)
     {
+        console.log("if 1");
         send_data('create match', '', data.to, data.to);
         console.log('create');
     }
     else if (!check_place_in_match(data.to))
     {
+        console.log("else if");
         send_data('reject invitation to play', 'Sorry guy, the match is full!', data.to, data.from);
         return ;
     }

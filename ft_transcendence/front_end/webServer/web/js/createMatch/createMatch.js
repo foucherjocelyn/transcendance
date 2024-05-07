@@ -73,7 +73,11 @@ function update_match_informations(data) {
 
 async function create_match(mode) {
     if (document.getElementById("g_match_html") === undefined || document.getElementById("g_match_html") === null)
-    return;
+    {
+        console.trace();
+        console.log("Error: g_match_html not found");
+        return;
+    }
     await drawCreateMatch((result) => {
         if (result) {
             if (match === undefined)

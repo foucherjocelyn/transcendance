@@ -22,9 +22,8 @@ const renderFriendList = (list) => {
         friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
             console.log(`invited ${friendUsername} to a match`);
-            const currentUser = client.listUser.filter(user => user.name === friendUsername)[0];
-            console.table(currentUser);
-            const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, currentUser);              
+            const receiverUser = client.listUser.filter(user => user.name === friendUsername)[0];
+            const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, receiverUser);              
             client.socket.send(JSON.stringify(sendData));
         })
     });

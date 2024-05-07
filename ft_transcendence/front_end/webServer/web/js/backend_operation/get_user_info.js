@@ -1,6 +1,5 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 import { user, client } from '../client/client.js';
-import { match_default } from "../createMatch/createMatch.js";
 import { openSocketClient } from "./authentication.js";
 import { getAvatar } from "./profile_picture.js";
 

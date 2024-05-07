@@ -7,6 +7,7 @@ import { accept_invite_to_play } from "../invitationPlay/invitationPlay.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
+import { drawGame } from "../home/home_game.js";
 
 class   userNotifications {
     constructor() {
@@ -60,8 +61,10 @@ function    get_data_from_server(socket)
             client.listUser = receivedData.content;
         if (receivedData.title === 'invite to play')
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'accept invitation to play')
+        if (receivedData.title === 'accept invitation to play') {
+            console.log('accept invitation to play from socket client');
             accept_invite_to_play();
+        }
         if (receivedData.title === 'reject invitation to play')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'warning')
@@ -71,7 +74,14 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'create match')
         {
             match_default();
-            create_match('with friends');
+            let gameHTML = drawGame( (result) =>
+            {
+                if (result)
+                {
+                    create_match('with friends');
+                }
+            });
+            console.table(match.listPlayer);
         }
         if (receivedData.title === 'display loader')
             document.getElementById('loaderMatchmakingLayer').style.display = 'flex';
