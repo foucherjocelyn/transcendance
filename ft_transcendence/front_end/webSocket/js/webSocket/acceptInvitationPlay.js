@@ -64,7 +64,7 @@ function    add_user_in_a_match(user, newPlayer)
                     match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.name, newPlayer.avatar, newPlayer.level, 'player');
                     update_match(user, match, 'update match');
                     send_data('accept invitation to play', '', user, match.listUser);
-                    console.log('add');
+                    console.log('add\n------------------');
                     return ;
                 }
             }
@@ -74,23 +74,21 @@ function    add_user_in_a_match(user, newPlayer)
 
 function    accept_invitation_to_play(data)
 {
-    console.log("accept invitation to play webSocket");
-    console.log(data);
     if (define_match(data.to) === undefined)
     {
-        console.log("if 1");
         send_data('create match', '', data.to, data.to);
         console.log('create');
     }
     else if (!check_place_in_match(data.to))
     {
-        console.log("else if");
         send_data('reject invitation to play', 'Sorry guy, the match is full!', data.to, data.from);
         return ;
     }
 
-    if (define_match(data.from) !== undefined)
+    if (define_match(data.from) !== undefined) {
         leave_match(data.from);
+        console.log('leave');
+    }
     
     add_user_in_a_match(data.to, data.from);
 }

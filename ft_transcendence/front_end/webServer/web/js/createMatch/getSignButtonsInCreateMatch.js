@@ -1,8 +1,9 @@
 import { invitation_to_play } from "../invitationPlay/invitationPlay.js";
-import { match, match_default } from "./createMatch.js";
+import { match } from "./createMatch.js";
 import { inforPlayer } from "./createPlayers.js";
 import { client, dataToServer } from "../client/client.js";
 import { to_game } from "../home/home_game.js";
+import { invitationPlayLayerHTML } from "../home/home_creatematch.js";
 
 function    add_player_mode_offline_random(button, clickCount, index)
 {
@@ -48,7 +49,7 @@ function    add_player_mode_friends(button, clickCount, index)
     }
     else
     {
-        document.getElementById('createMatchLayer').style.display = 'none';
+        invitationPlayLayerHTML();
         invitation_to_play();
         player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     }
@@ -92,11 +93,7 @@ function    get_sign_cancel_create_match_button()
         const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));
 
-        document.getElementById('createMatchLayer').style.display = 'none';
-        document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
         to_game();
-
-        // match_default();
     }
 }
 

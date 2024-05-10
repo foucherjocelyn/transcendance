@@ -1,3 +1,4 @@
+import { gameOverHTML } from "../home/home_gamewindows.js";
 import { screen } from "../screen/screen.js";
 
 function    setup_size_game_over_layer()
@@ -9,9 +10,7 @@ function    setup_size_game_over_layer()
 
 function    setup_game_over()
 {
-    document.getElementById('gameLayer').style.display = 'none';
-    document.getElementById('gameOverLayer').style.display = 'flex';
-
+    gameOverHTML();
     setup_size_game_over_layer();
 }
 

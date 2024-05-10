@@ -1,4 +1,4 @@
-import { create_match, match, match_default, update_match_informations } from "../createMatch/createMatch.js";
+import { create_match, display_create_match_layer, match, update_match_informations } from "../createMatch/createMatch.js";
 import { update_position_ball } from "../game/movementsBall.js";
 import { update_position_paddle } from "../game/movementsPaddle.js";
 import { pongGame, setup_game_layer } from "../game/startGame.js";
@@ -61,10 +61,8 @@ function    get_data_from_server(socket)
             client.listUser = receivedData.content;
         if (receivedData.title === 'invite to play')
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'accept invitation to play') {
-            console.log('accept invitation to play from socket client');
-            accept_invite_to_play();
-        }
+        if (receivedData.title === 'accept invitation to play')
+            display_create_match_layer();
         if (receivedData.title === 'reject invitation to play')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'warning')
@@ -72,22 +70,7 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'update match')
             update_match_informations(receivedData);
         if (receivedData.title === 'create match')
-        {
-            match_default();
-			to_game();
-            gameEventListener();
 			create_match("with friends");
-			/*
-            drawGame( (result) =>
-            {
-                if (result)
-                {
-                    create_match('with friends');
-                }
-            });
-*/
-            //console.table(match.listPlayer);
-        }
         if (receivedData.title === 'display loader')
             document.getElementById('loaderMatchmakingLayer').style.display = 'flex';
         if (receivedData.title === 'hide loader')
@@ -103,21 +86,6 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'update movement ball')
             update_position_ball(receivedData.content);
     };
-}
-
-function    get_sign_connection_button()
-{
-    const   button = document.getElementById('connectionButton');
-    button.onclick = () => {
-        button.style.display = 'none';
-
-        const  sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
-        client.socket.send(JSON.stringify(sendData));
-
-        // create_match('rank');
-        create_match('with friends');
-        // create_match('offline');
-    }
 }
 
 function    connection()

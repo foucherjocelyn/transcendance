@@ -1,6 +1,6 @@
 
 #createMatchLayer {
-    display: none;
+    display: flex;
     background: linear-gradient(to bottom, #a619f8, #00f2fe);
 
     width: 100%;

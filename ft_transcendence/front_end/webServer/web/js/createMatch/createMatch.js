@@ -3,6 +3,7 @@ import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, inforPlayer, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
 import { gameEventListener, to_game } from "../home/home_game.js";
+import { createMatchHTML } from "../home/home_creatematch.js";
 
 class pMatch {
     constructor() {
@@ -41,9 +42,41 @@ function setup_size_create_match_layer() {
     createMatchLayer.style.width = `${screen.width}px`;
 }
 
-function match_default() {
+export function    display_create_match_layer()
+{
+    if (document.getElementById('createMatchLayer') === null)
+        createMatchHTML();
+    client.inforUser.status = 'creating match';
+
+    setup_size_create_match_layer();
+    setup_size_add_player_layer();
+    display_add_player_buttons();
+    setup_size_add_player_button();
+    get_signe_buttons_in_create_match();
+
+    const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+    client.socket.send(JSON.stringify(sendData));
+}
+
+export function update_match_informations(data) {
+    match = data.content;
+    client.inforUser.status = 'creating match';
+
+    console.log('-----------------> ' + match.mode);
+
+    if (document.getElementById('invitationPlayLayer') !== null)
+        return ;
+
+    // console.table(match.listPlayer);
+
+    document.getElementById('createMatchLayer') === null ?
+    display_create_match_layer() : setup_content_add_player_button();
+}
+
+function    create_match(mode)
+{
     match = new pMatch();
-    match.mode = 'default';
+    match.mode = mode;
     match.admin = client.inforUser;
 
     const player1 = new inforPlayer(client.inforUser.id, client.inforUser.name, client.inforUser.avatar, client.inforUser.level, 'player');
@@ -55,50 +88,11 @@ function match_default() {
     match.listPlayer.push(player2);
     match.listPlayer.push(player3);
     match.listPlayer.push(player4);
-}
 
-function update_match_informations(data) {
-    match = data.content;
-    client.inforUser.status = 'creating match';
-
-    console.log('-----------------> ' + match.mode);
-    //console.table(match.listPlayer);
-
-    const createMatchLayer = document.getElementById('createMatchLayer');
-    if (createMatchLayer === null)
-        create_match(match.mode);
-    else if (createMatchLayer.style.display === 'flex') {
-        setup_content_add_player_button();
-    }
-}
-
-async function create_match(mode) {
-    to_game();
-    gameEventListener();
-    if (match === undefined)
-        match_default();
-
-    document.getElementById('createMatchLayer').style.display = 'flex';
-    client.inforUser.status = 'creating match';
-
-    // add mode game
-    match.mode = mode;
-
-    setup_size_create_match_layer();
-    setup_size_add_player_layer();
-    display_add_player_buttons();
-    setup_size_add_player_button();
-    get_signe_buttons_in_create_match();
-
-    const sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
-    client.socket.send(JSON.stringify(sendData));
-    document.getElementById("h_upperpanel").classList.add("hide");
-    document.getElementById("g_choose_mode").classList.add("hide");
+    display_create_match_layer();
 }
 
 export {
     match,
-    create_match,
-    update_match_informations,
-    match_default
+    create_match
 };

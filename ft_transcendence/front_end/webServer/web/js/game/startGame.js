@@ -3,6 +3,7 @@ import { setup_game_instructions } from "../gameInstructions/gameInstructions.js
 import { setup_game_settings } from "../gameSettings/gameSetting.js";
 import { setup_game_windows } from "./gameWindows.js";
 import { match } from "../createMatch/createMatch.js";
+import { gameLayerHTML } from "../home/home_gamewindows.js";
 
 class   formPongGame {
     constructor() {
@@ -49,9 +50,7 @@ function    setup_size_game_layer()
 
 function    setup_game_layer()
 {
-    document.getElementById('gameLayer').style.display = 'flex';
-    document.getElementById('createMatchLayer').style.display = 'none';
-
+    gameLayerHTML();
     pongGame = new formPongGame();
     pongGame.maxPoint = 5;
     pongGame.listPlayer = match.listPlayer;

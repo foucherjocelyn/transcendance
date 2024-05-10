@@ -88,10 +88,7 @@ export async function	updateMyInfo(connectFlag = false)
     	user.status = 'connection';
 		client.inforUser = user;
 		if (connectFlag)
-		{
 			openSocketClient();
-			// match_default();
-		}
 	});
 }
 

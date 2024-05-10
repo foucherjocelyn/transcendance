@@ -1,5 +1,5 @@
 #gameOverLayer {
-    display: none;
+    display: flex;
     flex-direction: column;
 
     justify-content: center;
@@ -23,6 +23,7 @@
 
     background-color: black;
 }
+
 #titleGameOver > span {
     color: white;
     font-size: 50px;
