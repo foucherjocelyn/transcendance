@@ -1,0 +1,23 @@
+#g_choose_mode {
+	position: relative;
+	left: 40%;
+	margin-top: 5%;
+}
+
+#g_rankedmatch, #g_creatematch, #g_localmatch {
+	background-image: url(../../img/background/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	padding: 10px;
+	color: white;
+	font-weight: bold;
+}
+
+#g_rankedmatch {
+}
+
+#g_creatematch {
+}
+
+#g_localmatch {
+}

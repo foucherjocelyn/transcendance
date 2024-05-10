@@ -9,9 +9,18 @@ import { updateMyInfo } from "../backend_operation/get_user_info.js";
 
 export async function	classy_signOut(sourcename)
 {
-	if (document.getElementById(sourcename) !== undefined
+	let	source;
+	if (sourcename === "game")
+		source = "g_game";
+	else if (sourcename === "tournament")
+		source = "h_tournament_page";
+	else if (sourcename === "home")
+		source = "h_homepage";
+	else if (sourcename === "myprofile")
+		source = "h_myprofile";
+	if (document.getElementById(source) !== undefined
 		&& document.getElementById("loadspinner") !== undefined
-		&& document.getElementById(sourcename) !== null
+		&& document.getElementById(source) !== null
 		&& document.getElementById("loadspinner") !== null)
 	{
 		document.getElementById(sourcename).classList.add("hide");
