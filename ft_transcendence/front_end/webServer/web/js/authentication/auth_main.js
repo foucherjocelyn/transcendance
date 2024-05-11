@@ -1,7 +1,7 @@
 import { to_homePage } from "../home/home_homeboard.js";
 import { to_connectForm } from "./auth_connect.js";
 import { getCookie } from "./auth_cookie.js";
-import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/data_update.js";
 
 
 export function notice(str, time, color)

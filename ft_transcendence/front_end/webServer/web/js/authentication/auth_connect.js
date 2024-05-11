@@ -5,7 +5,7 @@ import { to_otpForm } from "./auth_otp.js";
 import { notice } from "./auth_main.js";
 import { signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
-import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/data_update.js";
 
 export async function	classy_signOut(sourcename)
 {

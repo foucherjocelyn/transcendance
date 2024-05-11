@@ -3,7 +3,7 @@ import { getCookie, deleteAllCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_homePage } from "../home/home_homeboard.js";
 import { client, dataToServer, user } from "../client/client.js";
-import { updateMyInfo } from "./get_user_info.js";
+import { updateMyInfo } from "./data_update.js";
 
 export async function requestToken(f_log)
 {

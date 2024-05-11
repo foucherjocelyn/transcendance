@@ -5,7 +5,7 @@ import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 import { create_match } from "../createMatch/createMatch.js";
-import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/data_update.js";
 
 export function noticeInvitePlayer() {
     return (
