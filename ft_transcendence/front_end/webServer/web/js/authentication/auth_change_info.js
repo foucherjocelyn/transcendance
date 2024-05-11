@@ -3,7 +3,7 @@ import { notice } from "./auth_main.js";
 import { to_profilePage } from "../home/home_changeprofile.js";
 import { getOtpStatusToken, toggleOtpStatus } from "../backend_operation/one_time_password.js";
 import { getAvatar, uploadAvatar } from "../backend_operation/profile_picture.js";
-import { dataUpdate } from "../backend_operation/dataUpdate.js";
+import { dataUpdate } from "../backend_operation/data_update.js";
 
 export function checkPasswordChange()
 {

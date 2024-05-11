@@ -1,5 +1,4 @@
-import { getCookie } from "../authentication/auth_cookie.js";
-import { getAvatar } from "./profile_picture.js";
+import { getCookie, deleteAllCookie } from "../authentication/auth_cookie.js";
 
 export async function	getUserById(user_id)
 {
@@ -90,6 +89,7 @@ export async function	getMyInfo()
 			  if (!response.ok)
 			  {
 				  console.log("getMyInfo: Client/Server error");
+				  deleteAllCookie();
 				  return;
 				  //throw new Error("fetch POST op failed");
 			  }

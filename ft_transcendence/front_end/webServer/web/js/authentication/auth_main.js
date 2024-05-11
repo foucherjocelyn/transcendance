@@ -27,6 +27,7 @@ export function	authCheck()
 	console.log("The user is " + getCookie("status"));
 //	to_homePage();
 	//	/*
+	updateMyInfo();
 	if (getCookie("status") === "offline" || getCookie("status") == undefined)
 		document.cookie = "token=; SameSite=Strict"
 	//	getMyInfo();
