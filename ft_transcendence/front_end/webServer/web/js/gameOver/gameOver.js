@@ -1,5 +1,6 @@
 import { client } from '../client/client.js';
 import { match } from '../createMatch/createMatch.js';
+import { count_empty_place } from '../createMatch/getSignButtonsInCreateMatch.js';
 import { create_score } from '../game/createScore.js'
 import { get_date, get_time, pongGame } from '../game/startGame.js';
 import { setup_game_over } from './gameOverLayer.js';
@@ -39,7 +40,7 @@ function    check_game_over()
         if (player.score !== 0)
             create_score();
 
-        if (player.score === pongGame.maxPoint)
+        if (player.score === pongGame.maxPoint || count_empty_place() === 3)
         {
             pongGame.gameOver = true;
             create_result();

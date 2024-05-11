@@ -26,7 +26,7 @@ const renderFriendList = (list) => {
             e.stopPropagation();
             // console.log(`invited ${friendUsername} to a match`);
             const receiverUser = client.listUser.filter(user => user.name === friendUsername)[0];
-            if (receiverUser.status === 'playing game')
+            if (receiverUser === undefined || receiverUser.status === 'playing game')
                 return ;
             
             const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, receiverUser);              

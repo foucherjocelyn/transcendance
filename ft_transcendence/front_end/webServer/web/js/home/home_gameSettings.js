@@ -13,11 +13,11 @@ function gameSettingsSizePanelHTML()
             <div class="gameSettingInput" id="gameSettingSizeTable">
                 <div>
                     <span>width:</span>
-                    <input type="range" value="20" min="20" max="100" step="1">
+                    <input type="range" value="30" min="20" max="100" step="1">
                 </div>
                 <div>
                     <span>height:</span>
-                    <input type="range" value="20" min="20" max="100" step="1">
+                    <input type="range" value="30" min="20" max="100" step="1">
                 </div>
             </div>
 

@@ -82,6 +82,8 @@ function    get_data_from_server(socket)
             update_game_settings(receivedData);
         if (receivedData.title === 'update vector ball')
             Object.assign(pongGame.ball.vector, receivedData.content);
+        if (receivedData.title === 'update movement ball')
+            Object.assign(pongGame.ball.position, receivedData.content);
         if (receivedData.title === 'update movement paddle')
             update_position_paddle(receivedData.content);
         if (receivedData.title === 'update movement ball')

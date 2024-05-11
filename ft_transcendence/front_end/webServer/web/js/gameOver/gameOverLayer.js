@@ -62,17 +62,24 @@ function    setup_size_game_over_layer()
     gameOverLayer.style.width = `${screen.width}px`;
 }
 
-function    get_sign_buttons_game_over_layer(mode)
+function    get_sign_buttons_game_over_layer()
 {
     const   button = document.querySelectorAll('#buttonsGameOver > div > button');
 
     // exit button
     button[0].onclick = () => {
+        client.inforUser.status = 'connection';
+        const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
+        client.socket.send(JSON.stringify(sendData));
         to_game();
     }
     
     // play again button
     button[1].onclick = () => {
+        const   mode = match.mode;
+        client.inforUser.status = 'connection';
+        const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
+        client.socket.send(JSON.stringify(sendData));
         create_match(mode);
     }
 }
@@ -82,10 +89,7 @@ function    setup_game_over()
     gameOverHTML();
     setup_size_game_over_layer();
     display_results_match();
-    get_sign_buttons_game_over_layer(match.mode);
-
-    const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
-    client.socket.send(JSON.stringify(sendData));
+    get_sign_buttons_game_over_layer();
 }
 
 export {

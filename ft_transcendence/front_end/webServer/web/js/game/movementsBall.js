@@ -119,8 +119,8 @@ function    movements_ball()
                 ball.vector.y = -ball.vector.y;
             }
 
-            // const  sendData = new dataToServer('update movement ball', ball, client.inforUser, match.listPlayer);
-            // client.socket.send(JSON.stringify(sendData));
+            const  sendData = new dataToServer('update movement ball', ball.position, client.inforUser, match.listPlayer);
+            client.socket.send(JSON.stringify(sendData));
         }
     })
 

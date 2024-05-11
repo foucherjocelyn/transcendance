@@ -110,22 +110,41 @@ function    count_players(match)
     return nbrPlayer;
 }
 
+export function count_empty_place()
+{
+    let nbrPlace = 0;
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
+        if (player.type === 'none')
+            nbrPlace++;
+    }
+    return nbrPlace;
+}
+
 function    get_sign_start_create_match_button()
 {
     const   button = document.getElementById('startCreateMatchButton');
     let clickCount = 0;
 
     button.onclick = () => {
-        // console.log('ready to play');
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
-
         clickCount++;
+
+        // Check if there are more than 2 players in the match
+        if (count_empty_place() === 3)
+        {
+            const  sendData = new dataToServer('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', '');
+            notice_invitation_play(sendData);
+            clickCount = 0;
+            return ;
+        }
 
         if (match.mode === 'rank' || match.mode === 'tournament')
         {
             if (count_players(match) === 1)
             {
-                const  sendData = new dataToServer('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', '');
+                const  sendData = new dataToServer('warning', 'You need at least 2 players ( not AI ) to start', '../../img/avatar/informationsSign.png', '');
                 notice_invitation_play(sendData);
                 clickCount = 0;
                 return ;
