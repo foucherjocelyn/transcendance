@@ -72,8 +72,8 @@ export function    createMatchHTML()
     `
     <div id="frontpage">
 
-        ${noticeInvitePlayer()}
         ${loadMatchMakingHTML()}
+        ${noticeInvitePlayer()}
 
         <!-------------------- Create match Layer -------------------->
         <div id="createMatchLayer">

@@ -23,7 +23,7 @@ function    disconnect(socket)
         const   connection = webSocket.listConnection[i];
         if (connection.socket === socket)
         {
-            if (connection.user.status === 'creating match')
+            if (connection.user.status === 'creating match' || connection.user.status === 'playing game')
                 leave_match(connection.user);
 
             webSocket.listConnection.splice(i, 1);

@@ -64,7 +64,7 @@ function    add_user_in_a_match(user, newPlayer)
                     match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.name, newPlayer.avatar, newPlayer.level, 'player');
                     update_match(user, match, 'update match');
                     send_data('accept invitation to play', '', user, match.listUser);
-                    console.log('add\n------------------');
+                    console.log('add\n--------------------');
                     return ;
                 }
             }

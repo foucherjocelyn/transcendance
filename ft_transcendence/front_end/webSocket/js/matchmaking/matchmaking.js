@@ -10,18 +10,6 @@ class   matchRandom {
     }
 };
 
-function    count_players(match)
-{
-    let nbrPlayer = 0;
-    for (let i = 0; i < match.listPlayer.length; i++)
-    {
-        const   player = match.listPlayer[i];
-        if (player.type === 'player')
-            nbrPlayer++;
-    }
-    return nbrPlayer;
-}
-
 function    define_match_in_list_find_match(match)
 {
     for (let i = 0; i < webSocket.listFindMatch.length; i++)
@@ -57,7 +45,7 @@ function    founded_match_random(match)
             for (let j = 0; j < webSocket.listFindMatch.length; j++)
             {
                 const   m = webSocket.listFindMatch[j].match;
-                if (m.listPlayer[0] === user)
+                if (m.listPlayer[0].id === user.id)
                 {
                     delete_match_in_list_find_match(m, user);
                 }
@@ -73,7 +61,6 @@ function    search_match_in_one_minute(match, indexMatch, callback)
         search_match_in_list_find_match(match, (result) => {
             if (result)
             {
-                // console.log('found a match for you !');
                 founded_match_random(match);
                 callback(true);
                 return;
@@ -83,34 +70,23 @@ function    search_match_in_one_minute(match, indexMatch, callback)
     webSocket.listFindMatch[indexMatch].intervalId = intervalId;
 
     const   timeoutId = setTimeout(() => {
-        // console.log("Parent program ends after 1 minute. " + webSocket.listFindMatch.length);
         delete_match_in_list_find_match(match, match.listUser);
-        callback(false);
-
-        send_data('hide loader', '', '', match.listUser);
         send_data('warning', 'Sorry guy, no matches found right now !!!', '../../img/avatar/informationsSign.png', match.listUser);
+        callback(false);
     }, 60000);
     webSocket.listFindMatch[indexMatch].timeoutId = timeoutId;
 }
 
 function    matchmaking(match, callback)
 {
-    if (count_players(match) === 1)
-    {
-        send_data('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', match.listUser);
-        callback(false);
-        return ;
-    }
-
-    send_data('display loader', '', '', match.listUser);
-
     let   indexMatch = define_match_in_list_find_match(match);
     if (indexMatch === undefined)
         webSocket.listFindMatch.push(new matchRandom(match));
 
-    indexMatch = define_match_in_list_find_match(match);
     // console.log('--------> length list find match: ' + webSocket.listFindMatch.length);
-
+    
+    // cancel search for a match
+    indexMatch = define_match_in_list_find_match(match);
     if (webSocket.listFindMatch[indexMatch].intervalId !== undefined)
     {
         delete_match_in_list_find_match(match, match.listUser);
@@ -126,6 +102,5 @@ function    matchmaking(match, callback)
 module.exports = {
     matchmaking,
     define_match_in_list_find_match,
-    delete_match_in_list_find_match,
-    count_players
+    delete_match_in_list_find_match
 };

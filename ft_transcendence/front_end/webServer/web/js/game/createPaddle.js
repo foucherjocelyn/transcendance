@@ -5,42 +5,50 @@ import { pongGame } from "./startGame.js";
 import { delete_old_score } from './createScore.js';
 import { match } from '../createMatch/createMatch.js';
 
-function    create_left_paddle()
+function createPaddle(name, id, positionX, positionZ, controlLeft, controlRight, color)
 {
-    const   distanceToBorder = 1;
-    const   distanceToTable = 0.01;
-
-    const   paddle  = new box();
+    const distanceToTable = 0.01;
+    const paddle = new box();
 
     // name
-    paddle.name = 'left paddle';
-    paddle.id = 0;
+    paddle.name = name;
+    paddle.id = id;
 
     // size
-    paddle.size.width = gameSettings.size.paddle.height;
-    paddle.size.height = gameSettings.size.paddle.height;
-    paddle.size.length = gameSettings.size.paddle.width;
+    if (positionZ === 0) {
+        paddle.size.width = gameSettings.size.paddle.height;
+        paddle.size.height = gameSettings.size.paddle.height;
+        paddle.size.length = gameSettings.size.paddle.width;
+    } else {
+        paddle.size.width = gameSettings.size.paddle.width;
+        paddle.size.height = gameSettings.size.paddle.height;
+        paddle.size.length = gameSettings.size.paddle.height;
+    }
 
     // position
-    paddle.position.x = -(gameSettings.size.table.width / 2) + (paddle.size.width / 2) + distanceToBorder;
+    paddle.position.x = positionX;
     paddle.position.y = (paddle.size.height / 2) + distanceToTable;
-    paddle.position.z = 0;
+    paddle.position.z = positionZ;
 
     // control
-    paddle.control.left = gameSettings.control.player1.left;
-    paddle.control.right = gameSettings.control.player1.right;
-    if (match.mode !== 'offline')
-    {
+    paddle.control.left = controlLeft;
+    paddle.control.right = controlRight;
+    if (match.mode !== 'offline') {
         paddle.control.left = '◄';
         paddle.control.right = '►';
     }
 
     // vector
-    paddle.vector.x = 0;
-    paddle.vector.y = 90 * gameSettings.speed.paddle;
+    if (positionZ === 0) {
+        paddle.vector.x = 0;
+        paddle.vector.y = 90 * gameSettings.speed.paddle;
+    } else {
+        paddle.vector.x = 90 * gameSettings.speed.paddle;
+        paddle.vector.y = 0;
+    }
 
     // color
-    paddle.color = gameSettings.color.paddles.player1;
+    paddle.color = color;
 
     // display
     paddle.display = createBox(paddle.size.width, paddle.size.height, paddle.size.length);
@@ -51,138 +59,56 @@ function    create_left_paddle()
     return paddle;
 }
 
-function    create_right_paddle()
+function create_left_paddle()
 {
-    const   distanceToBorder = 1;
-    const   distanceToTable = 0.01;
+    const distanceToBorder = 1;
 
-    const   paddle  = new box();
-
-    // name
-    paddle.name = 'right paddle';
-    paddle.id = 1;
-
-    // size
-    Object.assign(paddle.size, pongGame.paddle.left.size);
-
-    // position
-    paddle.position.x = (gameSettings.size.table.width / 2) - (paddle.size.width / 2) - distanceToBorder;
-    paddle.position.y = (paddle.size.height / 2) + distanceToTable;
-    paddle.position.z = 0;
-
-    // control
-    paddle.control.left = gameSettings.control.player2.left;
-    paddle.control.right = gameSettings.control.player2.right;
-    if (match.mode !== 'offline')
-    {
-        paddle.control.left = '◄';
-        paddle.control.right = '►';
-    }
-
-    // vector
-    paddle.vector.x = 0;
-    paddle.vector.y = 90 * gameSettings.speed.paddle;
-
-    // color
-    paddle.color = gameSettings.color.paddles.player2;
-
-    // display
-    paddle.display = createBox(paddle.size.width, paddle.size.height, paddle.size.length);
-    paddle.display.material.color = new THREE.Color(paddle.color);
-    paddle.display.position.set(paddle.position.x, paddle.position.y, paddle.position.z);
-    pongGame.scene.add(paddle.display);
-
-    return paddle;
+    return createPaddle('left paddle', 0,
+        -(gameSettings.size.table.width / 2) + (gameSettings.size.paddle.height / 2) + distanceToBorder,
+        0,
+        gameSettings.control.player1.left,
+        gameSettings.control.player1.right,
+        gameSettings.color.paddles.player1
+    );
 }
 
-function    create_top_paddle()
+function create_right_paddle()
 {
-    const   distanceToBorder = 1;
-    const   distanceToTable = 0.01;
+    const distanceToBorder = 1;
 
-    const   paddle  = new box();
-
-    // name
-    paddle.name = 'top paddle';
-    paddle.id = 2;
-
-    // size
-    paddle.size.width = gameSettings.size.paddle.width;
-    paddle.size.height = gameSettings.size.paddle.height;
-    paddle.size.length = gameSettings.size.paddle.height;
-
-    // position
-    paddle.position.x = 0;
-    paddle.position.y = (paddle.size.height / 2) + distanceToTable;
-    paddle.position.z = -(gameSettings.size.table.height / 2) + (paddle.size.length / 2) + distanceToBorder;
-
-    // control
-    paddle.control.left = gameSettings.control.player3.left;
-    paddle.control.right = gameSettings.control.player3.right;
-    if (match.mode !== 'offline')
-    {
-        paddle.control.left = '◄';
-        paddle.control.right = '►';
-    }
-
-    // vector
-    paddle.vector.x = 90 * gameSettings.speed.paddle;
-    paddle.vector.y = 0;
-
-    // color
-    paddle.color = gameSettings.color.paddles.player3;
-
-    // display
-    paddle.display = createBox(paddle.size.width, paddle.size.height, paddle.size.length);
-    paddle.display.material.color = new THREE.Color(paddle.color);
-    paddle.display.position.set(paddle.position.x, paddle.position.y, paddle.position.z);
-    pongGame.scene.add(paddle.display);
-
-    return paddle;
+    return createPaddle('right paddle', 1,
+        (gameSettings.size.table.width / 2) - (gameSettings.size.paddle.height / 2) - distanceToBorder,
+        0,
+        gameSettings.control.player2.left,
+        gameSettings.control.player2.right,
+        gameSettings.color.paddles.player2
+    );
 }
 
-function    create_bottom_paddle()
+function create_top_paddle()
 {
-    const   distanceToBorder = 1;
-    const   distanceToTable = 0.01;
+    const distanceToBorder = 1;
 
-    const   paddle  = new box();
+    return createPaddle('top paddle', 2,
+        0,
+        -(gameSettings.size.table.height / 2) + (gameSettings.size.paddle.height / 2) + distanceToBorder,
+        gameSettings.control.player3.left,
+        gameSettings.control.player3.right,
+        gameSettings.color.paddles.player3
+    );
+}
 
-    // name
-    paddle.name = 'bottom paddle';
-    paddle.id = 3;
+function create_bottom_paddle()
+{
+    const distanceToBorder = 1;
 
-    // size
-    Object.assign(paddle.size, pongGame.paddle.top.size);
-
-    // position
-    paddle.position.x = 0;
-    paddle.position.y = (paddle.size.height / 2) + distanceToTable;
-    paddle.position.z = (gameSettings.size.table.height / 2) - (paddle.size.length / 2) - distanceToBorder;
-
-    // control
-    paddle.control.left = gameSettings.control.player4.left;
-    paddle.control.right = gameSettings.control.player4.right;
-    if (match.mode !== 'offline')
-    {
-        paddle.control.left = '◄';
-        paddle.control.right = '►';
-    }
-
-    // vector
-    paddle.vector.x = 90 * gameSettings.speed.paddle;
-    paddle.vector.y = 0;
-
-    // color
-    paddle.color = gameSettings.color.paddles.player4;
-
-    // display
-    paddle.display = createBox(paddle.size.width, paddle.size.height, paddle.size.length);
-    paddle.display.material.color = new THREE.Color(paddle.color);
-    paddle.display.position.set(paddle.position.x, paddle.position.y, paddle.position.z);
-    pongGame.scene.add(paddle.display);
-
-    return paddle;
+    return createPaddle('bottom paddle', 3,
+        0,
+        (gameSettings.size.table.height / 2) - (gameSettings.size.paddle.height / 2) - distanceToBorder,
+        gameSettings.control.player4.left,
+        gameSettings.control.player4.right,
+        gameSettings.color.paddles.player4
+    );
 }
 
 function    delete_old_paddles()

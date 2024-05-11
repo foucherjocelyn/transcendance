@@ -4,6 +4,7 @@ import { inforPlayer } from "./createPlayers.js";
 import { client, dataToServer } from "../client/client.js";
 import { to_game } from "../home/home_game.js";
 import { invitationPlayLayerHTML } from "../home/home_creatematch.js";
+import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 
 function    add_player_mode_offline_random(button, clickCount, index)
 {
@@ -97,15 +98,48 @@ function    get_sign_cancel_create_match_button()
     }
 }
 
+function    count_players(match)
+{
+    let nbrPlayer = 0;
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
+        if (player.type === 'player')
+            nbrPlayer++;
+    }
+    return nbrPlayer;
+}
+
 function    get_sign_start_create_match_button()
 {
     const   button = document.getElementById('startCreateMatchButton');
+    let clickCount = 0;
+
     button.onclick = () => {
         // console.log('ready to play');
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
 
+        clickCount++;
+
+        if (match.mode === 'rank' || match.mode === 'tournament')
+        {
+            if (count_players(match) === 1)
+            {
+                const  sendData = new dataToServer('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', '');
+                notice_invitation_play(sendData);
+                clickCount = 0;
+                return ;
+            }
+            
+            if (match.listUser.length === 1)
+                document.getElementById('loaderMatchmakingLayer').style.display = (clickCount % 2 !== 0) ? 'flex' : 'none';
+        }
+
         const  sendData = new dataToServer('start game', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));
+
+        if (clickCount === 2)
+            clickCount = 0;
     }
 }
 

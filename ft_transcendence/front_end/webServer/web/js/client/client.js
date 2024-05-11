@@ -71,10 +71,11 @@ function    get_data_from_server(socket)
             update_match_informations(receivedData);
         if (receivedData.title === 'create match')
 			create_match("with friends");
-        if (receivedData.title === 'display loader')
-            document.getElementById('loaderMatchmakingLayer').style.display = 'flex';
         if (receivedData.title === 'hide loader')
-            document.getElementById('loaderMatchmakingLayer').style.display = 'none';
+        {
+            if (document.getElementById('loaderMatchmakingLayer') !== null)
+                document.getElementById('loaderMatchmakingLayer').style.display = 'none';
+        }
         if (receivedData.title === 'start game')
             setup_game_layer();
         if (receivedData.title === 'update game settings')

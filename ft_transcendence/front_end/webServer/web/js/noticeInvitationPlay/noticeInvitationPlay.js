@@ -54,6 +54,7 @@ function    setup_size_notice_invitation_play_layer()
 function    notice_invitation_play(data)
 {
     document.getElementById('noticeInvitationPlayLayer').style.display = 'flex';
+
     if (data.title !== 'invite to play')
         document.getElementById('rejectInvitationPlayButton').style.display = 'none';
 

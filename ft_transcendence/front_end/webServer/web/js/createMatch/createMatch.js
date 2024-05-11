@@ -2,10 +2,10 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, inforPlayer, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
-import { gameEventListener, to_game } from "../home/home_game.js";
 import { createMatchHTML } from "../home/home_creatematch.js";
+import { setup_game_layer } from "../game/startGame.js";
 
-class pMatch {
+export class pMatch {
     constructor() {
         this.admin = undefined,
             this.id = undefined,
@@ -60,9 +60,13 @@ export function    display_create_match_layer()
 
 export function update_match_informations(data) {
     match = data.content;
+
+    if (client.inforUser.status === 'playing game')
+        return ;
+
     client.inforUser.status = 'creating match';
 
-    console.log('-----------------> ' + match.mode);
+    // console.log('-----------------> ' + match.mode);
 
     if (document.getElementById('invitationPlayLayer') !== null)
         return ;
@@ -71,9 +75,22 @@ export function update_match_informations(data) {
 
     document.getElementById('createMatchLayer') === null ?
     display_create_match_layer() : setup_content_add_player_button();
+
+    if (match.mode === 'rank' || match.mode === 'tournament')
+    {
+        if (match.listUser.length > 1)
+        {
+            document.getElementById("cancelCreateMatchButton").style.display = 'none';
+            document.getElementById("startCreateMatchButton").style.display = 'none';
+
+            setTimeout(function() {
+                setup_game_layer();
+            }, 3000); // 3 secondes
+        }
+    }
 }
 
-function    create_match(mode)
+export function    create_match(mode)
 {
     match = new pMatch();
     match.mode = mode;
@@ -93,6 +110,5 @@ function    create_match(mode)
 }
 
 export {
-    match,
-    create_match
+    match
 };
