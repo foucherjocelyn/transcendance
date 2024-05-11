@@ -5,12 +5,8 @@ function    get_sign_accept_invitation_play(user, title)
 {
     const   button = document.getElementById('acceptInvitationPlayButton');
     button.onclick = () => {
-        console.log('click accept invitation to play');
-        
-        console.log(title);
         if (title === 'invite to play')
         {
-            console.log(user);
             const  sendData = new dataToServer('accept invitation to play', client.inforUser, client.inforUser, user);
             client.socket.send(JSON.stringify(sendData));
         }
@@ -23,7 +19,6 @@ function    get_sign_reject_invitation_play(user)
 {
     const   button = document.getElementById('rejectInvitationPlayButton');
     button.onclick = () => {
-        // console.log('click reject invitation to play');
 
         const  sendData = new dataToServer('reject invitation to play', "Sorry another time, I'm busy!", client.inforUser, user);
         client.socket.send(JSON.stringify(sendData));
@@ -53,16 +48,19 @@ function    setup_size_notice_invitation_play_layer()
 
 function    notice_invitation_play(data)
 {
+    if (client.inforUser.status === 'playing game')
+        return ;
+
     document.getElementById('noticeInvitationPlayLayer').style.display = 'flex';
 
     if (data.title !== 'invite to play')
         document.getElementById('rejectInvitationPlayButton').style.display = 'none';
 
     setup_size_notice_invitation_play_layer();
-    if (data.title !== 'warning')
-        set_content_notive_invitation_play(data.from.avatar, data.from.id, data.content);
-    else
-        set_content_notive_invitation_play(data.from, 'Pong Game', data.content);
+    (data.title !== 'warning') ?
+    set_content_notive_invitation_play(data.from.avatar, data.from.id, data.content) :
+    set_content_notive_invitation_play(data.from, 'Pong Game', data.content);
+
     get_sign_reject_invitation_play(data.from);
     get_sign_accept_invitation_play(data.from, data.title);
 }

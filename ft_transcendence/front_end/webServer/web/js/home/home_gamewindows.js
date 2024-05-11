@@ -15,10 +15,19 @@ export function    gameOverHTML()
             </div>
 
             <!--------------------  -------------------->
-            <div></div>
+            <div id="resultsMatchPanel"></div>
 
             <!--------------------  -------------------->
-            <div id="buttonsGameOver"></div>
+            <div id="buttonsGameOver">
+                <div>
+                    <button>
+                        <span>Exit</span>
+                    </button>
+                    <button>
+                        <span>Play again</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
     </div>

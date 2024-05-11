@@ -5,7 +5,8 @@ import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch
 import { createMatchHTML } from "../home/home_creatematch.js";
 import { setup_game_layer } from "../game/startGame.js";
 
-export class pMatch {
+export class pMatch
+{
     constructor() {
         this.admin = undefined,
             this.id = undefined,
@@ -21,13 +22,15 @@ export class pMatch {
 };
 let match = undefined;
 
-function setup_size_add_player_layer() {
+function setup_size_add_player_layer()
+{
     const addPlayerLayer = document.getElementById('addPlayerLayer');
     addPlayerLayer.style.height = `${screen.height}px`;
     addPlayerLayer.style.width = `${screen.width}px`;
 }
 
-function setup_size_add_player_button() {
+function setup_size_add_player_button()
+{
     const buttons = document.querySelectorAll('#addPlayerLayer > button');
 
     buttons.forEach(button => {
@@ -36,7 +39,8 @@ function setup_size_add_player_button() {
     })
 }
 
-function setup_size_create_match_layer() {
+function setup_size_create_match_layer()
+{
     const createMatchLayer = document.getElementById('createMatchLayer');
     createMatchLayer.style.height = `${screen.height}px`;
     createMatchLayer.style.width = `${screen.width}px`;
@@ -58,7 +62,8 @@ export function    display_create_match_layer()
     client.socket.send(JSON.stringify(sendData));
 }
 
-export function update_match_informations(data) {
+export function update_match_informations(data)
+{
     match = data.content;
 
     if (client.inforUser.status === 'playing game')

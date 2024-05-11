@@ -28,7 +28,7 @@ function    create_result()
             match.result.push(player);
     })
     match.result.reverse();
-    console.table(match.result);
+    // console.table(match.result);
 }
 
 function    check_game_over()
