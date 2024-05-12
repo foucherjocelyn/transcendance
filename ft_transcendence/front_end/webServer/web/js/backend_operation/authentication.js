@@ -134,12 +134,9 @@ export async function signIn(connect_user)
 export async function signOut()
 {
 	console.log("-User is signing out: [" + getCookie("username") + "]");
-	let f_username = {
-		username: getCookie("username")
-	};
-	if (f_username.username === null || f_username.username === "")
+	if (getCookie("token") === null || getCookie("token") === "")
 	{
-		console.log("signOut ERROR: no username defined");
+		console.log("signOut ERROR: no token found");
 		return ;
 	}
     const r = await fetch(`http://127.0.0.1:8000/api/v1/auth/logout`, {
@@ -159,10 +156,9 @@ export async function signOut()
 			  notice("You are now disconnected", 1, "#0c9605");
 			  updateMyInfo();
 //			  console.log("Your status [" + getCookie("status") + "]");
-			  deleteAllCookie();
-			  to_connectForm();
+			  //deleteAllCookie();
 			  closeSocketClient();
-			  
+			  to_connectForm();
 		  })
 		  .catch(error => {
 			  console.error("Error: ", error);

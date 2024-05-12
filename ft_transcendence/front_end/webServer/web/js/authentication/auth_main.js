@@ -31,7 +31,7 @@ export function	authCheck()
 	if (getCookie("status") === "offline" || getCookie("status") == undefined)
 		document.cookie = "token=; SameSite=Strict"
 	//	getMyInfo();
-	console.log("The token is [" + getCookie("token") + "]");
+//	console.log("The token is [" + getCookie("token") + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);
@@ -45,7 +45,7 @@ export function	authCheck()
 	console.log("---");
 }
 /*
-const urlRoutes = {
+  const urlRoutes = () => {
 	  connect: to_connectForm("true"),
 	  register: to_regisForm("true"),
 	  reset: to_forgotForm("true"),

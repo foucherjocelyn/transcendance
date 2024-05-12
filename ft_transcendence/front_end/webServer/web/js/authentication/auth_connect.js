@@ -23,7 +23,7 @@ export async function	classy_signOut(sourcename)
 		&& document.getElementById(source) !== null
 		&& document.getElementById("loadspinner") !== null)
 	{
-		document.getElementById(sourcename).classList.add("hide");
+		document.getElementById(source).classList.add("hide");
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
