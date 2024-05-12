@@ -11,7 +11,7 @@ from utils.hash import verify_password
 from utils.jwt_token import JwtTokenGenerator
 from django.contrib.auth import logout
 
-from ..models import Otp, User
+from ..models import Otp, User, Token
 from ..serializers.user import UserSerializer
 
 
@@ -49,20 +49,11 @@ class UserViewSet(viewsets.ModelViewSet):
         user.status = "online"
         user.last_login = timezone.now()
         user.save()
-        jwtToken = JwtTokenGenerator.generateJwtToken(user.id)
-        # Save key in session
-        if "jwtToken" not in request.session:
-            request.session["jwtToken"] = {}
-        if username not in request.session["jwtToken"]:
-                request.session["jwtToken"][username] = [jwtToken.key]
-        else:
-            if jwtToken.key not in request.session["jwtToken"][username]:
-                request.session["jwtToken"][username].append(jwtToken.key)
-        request.session.save()
+        token = JwtTokenGenerator.generateJwtToken(user.id)
         return Response(
             {
                 "message": f"User {username} login",
-                "access": jwtToken.key,
+                "access": token.key,
             },
             status=200,
         )
@@ -73,11 +64,12 @@ class UserViewSet(viewsets.ModelViewSet):
         # Update user status to 'offline'
         user.status = "offline"
         user.save()
-        # Get key from session
-        jwtTokenKeys = request.session.get("jwtToken", None).get(user.username, None)
-        if jwtTokenKeys:
-            JwtTokenGenerator.blackList.extend(jwtTokenKeys)
-            del request.session["jwtToken"][user.username]
+        # Get tokens from db
+        tokens = Token.objects.filter(user=user)
+        for token in tokens:
+            if not token.blacklist:
+                token.blacklist = True
+                token.save()
         return Response({"message": f"User {user.username} logout"}, status=200)
 
     @action(detail=True, methods=["get"])

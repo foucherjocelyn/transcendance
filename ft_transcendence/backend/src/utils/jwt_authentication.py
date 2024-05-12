@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from backend.settings import WEBSOCKET_TOKEN
-from backendApi.models import User
+from backendApi.models import User, Token
 from django.utils import timezone
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
@@ -14,12 +14,10 @@ class JwtAuthentication(BaseAuthentication):
         key = request.headers.get("Authorization", "").split(" ")[-1]
         if not key or key == WEBSOCKET_TOKEN:
             return None
-        if key in JwtTokenGenerator.blackList:
-            raise AuthenticationFailed("Invalid token")
         try:
             decoded_token = JwtTokenGenerator.decodedJwtToken(key)
             if not decoded_token:
-                raise ValueError("Invalid token")
+                raise AuthenticationFailed("Invalid token")
             sub = decoded_token.get("sub")
             userId = decoded_token.get("userId")
             iat = datetime.fromtimestamp(
@@ -33,9 +31,11 @@ class JwtAuthentication(BaseAuthentication):
             if iat > timezone.now():
                 raise AuthenticationFailed("Invalid token")
             if exp < timezone.now():
-                JwtTokenGenerator.blackList.append(key)
-                raise AuthenticationFailed("Expired token")
+                raise AuthenticationFailed("Invalid token")
             user = User.objects.get(id=userId)
+            token = Token.objects.get(user=user, key=key)
+            if token.blacklist:
+                raise AuthenticationFailed("Invalid token")
             return (user, None)
         except:
             raise AuthenticationFailed("Invalid token")

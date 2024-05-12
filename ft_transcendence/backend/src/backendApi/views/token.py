@@ -24,14 +24,5 @@ class TokenViewSet(viewsets.ViewSet):
             return Response({"error": "Invalid username"}, status=404)
         if not verify_password(password, user.password):
             return Response({"error": "Invalid password"}, status=400)
-        jwtToken = JwtTokenGenerator.generateJwtToken(user.id)
-        # Save key in session
-        if "jwtToken" not in request.session:
-            request.session["jwtToken"] = {}
-        if username not in request.session["jwtToken"]:
-            request.session["jwtToken"][username] = [jwtToken.key]
-        else:
-            if jwtToken.key not in request.session["jwtToken"][username]:
-                request.session["jwtToken"][username].append(jwtToken.key)
-        request.session.save()
-        return Response({"access": jwtToken.key}, status=200)
+        token = JwtTokenGenerator.generateJwtToken(user.id)
+        return Response({"access": token.key}, status=200)

@@ -3,13 +3,10 @@ from backendApi.models import User
 from cryptography.hazmat.primitives import serialization
 from django.utils import timezone
 from backend.settings import JWT
+from backendApi.models import Token
+
 
 class JwtTokenGenerator:
-    blackList= []
-    def __init__(self, user, key):
-        self.user = user
-        self.key = key
-
     def generateJwtToken(userId):
         try:
             with open("keys/private_key.pem", "rb") as key_file:
@@ -30,17 +27,19 @@ class JwtTokenGenerator:
             user = User.objects.get(
                 id=userId,
             )
-            return JwtTokenGenerator(user, key)
-        except:
+            token = Token.objects.create(user=user, key=key, expired_at=payload["exp"])
+            return token
+        except Exception as e:
+            print(e)
             return None
 
-    def decodedJwtToken(jwtToken):
+    def decodedJwtToken(token):
         try:
             with open("keys/public_key.pem", "rb") as key_file:
                 public_key = serialization.load_pem_public_key(
                     key_file.read(),
                 )
-            decodedToken = jwt.decode(jwtToken, public_key, algorithms=["RS256"])
+            decodedToken = jwt.decode(token, public_key, algorithms=["RS256"])
             return decodedToken
         except:
             return None

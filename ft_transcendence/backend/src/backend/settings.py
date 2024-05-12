@@ -184,9 +184,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1)
-}
+JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(days=1)}
 
 CORS_ALLOWED_ORIGINS = [
     f"http://{os.getenv('FRONTEND_URL')}:{os.getenv('FRONTEND_PORT')}",
