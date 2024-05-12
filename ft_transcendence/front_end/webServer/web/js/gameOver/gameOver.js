@@ -43,6 +43,11 @@ function    check_game_over()
         if (player.score === pongGame.maxPoint || count_empty_place() === 3)
         {
             pongGame.gameOver = true;
+
+            match.listPlayer.forEach((player, index) => {
+                player.paddle = pongGame.listPaddle[index];
+            })
+            
             create_result();
             
             match.timeStop = get_time();

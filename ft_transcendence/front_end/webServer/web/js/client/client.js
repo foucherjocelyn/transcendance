@@ -58,7 +58,10 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'message')
             receiveMessage(receivedData);
         if (receivedData.title === 'update list users')
+        {
             client.listUser = receivedData.content;
+            // console.table(client.listUser);   
+        }
         if (receivedData.title === 'invite to play')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'accept invitation to play')

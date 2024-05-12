@@ -9,7 +9,8 @@ class   inforPlayer {
         this.avatar = avatar,
         this.level = level
         this.type = type,
-        this.score = 0
+        this.score = 0,
+        this.paddle = undefined
     }
 };
 
@@ -71,7 +72,8 @@ function    setup_content_add_player_button()
     if (match.listPlayer[0].type === 'none')
         change_match_admin();
 
-    document.getElementById('startCreateMatchButton').style.display = (match.admin.id === client.inforUser.id) ? 'flex' : 'none';
+    document.getElementById('startCreateMatchButton').style.display =
+    ((match.admin.id === client.inforUser.id) && (match.mode !== 'tournament')) ? 'flex' : 'none';
 
     const   buttons = document.querySelectorAll('#addPlayerLayer > button');
     const   spanID = document.querySelectorAll('.idPlayer');

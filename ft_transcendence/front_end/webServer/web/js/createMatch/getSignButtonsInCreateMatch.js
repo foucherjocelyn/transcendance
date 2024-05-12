@@ -73,8 +73,10 @@ function    get_sign_add_player_button()
         const   button = buttons[i];
 
         button.onclick = () => {
+            if (match.mode === 'tournament')
+                return ;
+
             clickCount++;
-            // console.log('click on button ' + i + ' - ' + clickCount);
             if (add_player_mode_offline_random(button, clickCount, i) === 3)
                 clickCount = 0;
             if (add_player_mode_friends(button, clickCount, i) === 2)

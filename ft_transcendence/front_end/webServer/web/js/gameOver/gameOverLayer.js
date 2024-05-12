@@ -1,10 +1,11 @@
 import { client, dataToServer } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
+import { pongGame } from "../game/startGame.js";
 import { to_game } from "../home/home_game.js";
 import { gameOverHTML } from "../home/home_gamewindows.js";
 import { screen } from "../screen/screen.js";
 
-function    create_results_bar_html(player, index)
+function    create_results_bar_html(player)
 {
     const resultBar = document.createElement('div');
     resultBar.classList.add('resultBar');
@@ -25,11 +26,7 @@ function    create_results_bar_html(player, index)
         else if (i === 1)
             span.textContent = player.name;
         else if (i === 2)
-        {
-            (index === 0) ?
-            span.textContent = 'Victory' :
-            span.textContent = 'Defeat';
-        }
+            span.textContent = player.paddle.name;
         else
             span.textContent = player.score;
         spans.push(span);
@@ -49,7 +46,7 @@ function    display_results_match()
         const   player = match.result[i];
         if (player.type !== 'none')
         {
-            const   div = create_results_bar_html(player, i);
+            const   div = create_results_bar_html(player);
             document.getElementById('resultsMatchPanel').appendChild(div);
         }
     }

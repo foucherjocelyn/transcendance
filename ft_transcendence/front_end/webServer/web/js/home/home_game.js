@@ -4,9 +4,8 @@ import { to_homePage } from "./home_homeboard.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
-import { create_match } from "../createMatch/createMatch.js";
+import { create_match, join_the_tournament } from "../createMatch/createMatch.js";
 import { updateMyInfo } from "../backend_operation/get_user_info.js";
-import { client } from "../client/client.js";
 
 export function noticeInvitePlayer() {
     return (
@@ -67,7 +66,8 @@ function drawGame(callback) {
 export function gameEventListener() {
     console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
-        create_match('rank');
+        // create_match('rank');
+        join_the_tournament();
     });
     document.getElementById("g_creatematch").addEventListener("click", () => {
         create_match('with friends');

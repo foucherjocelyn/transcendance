@@ -77,7 +77,7 @@ export async function	updateMyInfo(connectFlag = false)
 	let avatar_path = await getAvatar();
 	if (avatar_path === null || avatar_path === undefined)
 		avatar_path = '../img/avatar/avatar_default.png';
-	avatar_path = '../img/avatar/avatar_default.png';//need to update
+	avatar_path = '../img/avatar/avatar1.png';//need to update
 	let info = getMyInfo();
 	info.then(() =>
 	{

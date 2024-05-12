@@ -10,7 +10,8 @@ class   inforPlayer {
         this.avatar = avatar,
         this.level = level,
         this.type = type,
-        this.score = 0
+        this.score = 0,
+        this.paddle = undefined
     }
 };
 
