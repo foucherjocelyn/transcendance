@@ -78,7 +78,7 @@ export function to_homePage(nohistory = "false")
 {
 	if (nohistory === "false")
 		history.pushState( { url: "homepage" }, "", "#homepage");
-	updateMyInfo();
+ 	updateMyInfo();
 	//openSocketClient();
 	drawHomePage( (result) =>
 		{

@@ -1,5 +1,10 @@
 import { to_homePage } from "../home/home_homeboard.js";
+import { to_game } from "../home/home_game.js";
+import { to_profilePage } from "../home/home_changeprofile.js";
+import { to_tournament } from "../home/home_tournament.js";
 import { to_connectForm } from "./auth_connect.js";
+import { to_regisForm } from "./auth_register.js";
+import { to_forgotForm } from "./auth_reset.js";
 import { getCookie } from "./auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 
@@ -44,15 +49,15 @@ export function	authCheck()
 //*/
 	console.log("---");
 }
-/*
-  const urlRoutes = () => {
-	  connect: to_connectForm("true"),
-	  register: to_regisForm("true"),
-	  reset: to_forgotForm("true"),
-	  homepage: to_homePage("true"),
-	  configprofile: to_profilePage("true"),
-	  game: to_game("true"),
-	  tournament: to_tournament("true")
+
+const urlRoutes = {
+	connect: () => to_connectForm("true"),
+	register: () => to_regisForm("true"),
+	reset: () => to_forgotForm("true"),
+	homepage: () => to_homePage("true"),
+	configprofile: () => to_profilePage("true"),
+	game: () => to_game("true"),
+	tournament: () => to_tournament("true")
 };
 
 window.onpopstate = function(event) {
@@ -63,11 +68,11 @@ window.onpopstate = function(event) {
 		let url = event.state.url;
 		if (url)
 		{
-			urlRoutes[url];
+			urlRoutes[url]();
 		}
 	}
 };
-*/
+
 /*
 function clearInputs(elemName) {
 	var divElem = document.querySelector(elemName);
