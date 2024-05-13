@@ -1,11 +1,11 @@
 import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel } from "./home_homeboard.js";
+import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { to_homePage } from "./home_homeboard.js";
 import { to_tournament } from "./home_tournament.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 import { create_match } from "../createMatch/createMatch.js";
-import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/data_update.js";
 
 export function noticeInvitePlayer() {
     return (
@@ -388,11 +388,14 @@ function drawGame(callback) {
 		${upperPanel()}
     	${noticeInvitePlayer()}
 
+
 <!--	Choose game mode		-->
 
 		<div id="g_choose_mode">
 		<button id="g_rankedmatch">Ranked Match</button>
+		<br>
 		<button id="g_creatematch">Create a match</button>
+		<br>
 		<button id="g_localmatch">Local game</button>
 		</div>
 
@@ -440,10 +443,7 @@ function drawGame(callback) {
 		<div class="r_successinfo hide"></div>
 	</div>
 `;
-    document.getElementById("h_to_home").addEventListener("click", to_homePage);
-    document.getElementById("h_to_tournament").addEventListener("click", to_tournament);
-    document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
-    document.getElementById("h_logout").addEventListener("click", () => { classy_signOut("g_game"); });
+	upperPanelEventListener("game");
     // document.getElementById("cancelCreateMatchButton").addEventListener("click", () =>
     //{ document.getElementById("h_upperpanel").classList.remove("hide");
     //});

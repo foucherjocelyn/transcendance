@@ -1,5 +1,6 @@
 import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel, to_homePage } from "./home_homeboard.js";
+import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
+import { to_homePage } from "./home_homeboard.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
 import { to_profilePage } from "./home_changeprofile.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
@@ -51,10 +52,7 @@ async function drawTournament(callback)
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
-	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
-	document.getElementById("h_to_game").addEventListener("click", to_game);
-	document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
-	document.getElementById("h_logout").addEventListener("click", () => { classy_signOut("h_tournament_page"); });
+	upperPanelEventListener("tournament");
 	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
 	callback(true);
 }

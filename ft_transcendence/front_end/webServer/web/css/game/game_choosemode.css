@@ -1,0 +1,37 @@
+#g_choose_mode {
+	background-image: url(../../img/background/card2.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 350px;
+	height: 370px;
+	position: relative;
+	margin-top: 3%;
+	justify-content: center;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#g_rankedmatch, #g_creatematch, #g_localmatch {
+	background-image: url(../../img/background/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	padding: 10px;
+	margin-top: 0.6em;
+	margin-bottom: 0.6em;
+	color: white;
+	font-weight: bold;
+	position: relative;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+#g_rankedmatch {
+}
+
+#g_creatematch {
+}
+
+#g_localmatch {
+}

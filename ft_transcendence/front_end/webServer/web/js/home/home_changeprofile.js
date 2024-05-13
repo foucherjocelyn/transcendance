@@ -1,10 +1,8 @@
+import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { loadSpinner } from "../authentication/spinner.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { checkInput2FA } from "../authentication/auth_otp.js";
-import { updateMyOtp } from "../authentication/auth_change_info.js";
-import { updateMyAvatar } from "../authentication/auth_change_info.js";
-import { updateMyAccount } from "../authentication/auth_change_info.js";
-import { upperPanel } from "./home_homeboard.js";
+import { updateMyOtp, updateMyAvatar, updateMyAccount } from "../authentication/auth_change_info.js";
 import { to_homePage } from "./home_homeboard.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
 import { to_tournament } from "./home_tournament.js";
@@ -106,10 +104,7 @@ function	to_changeInfo()
 <button class="button-img" type="button" id="p_change">Apply</button>
 `;
 
-	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
-	document.getElementById("h_to_game").addEventListener("click", () => { to_game(); });
-	document.getElementById("h_to_tournament").addEventListener("click", to_tournament);
-	document.getElementById("h_logout").addEventListener("click", () => { classy_signOut("h_myprofile"); });
+	upperPanelEventListener("myprofile");
 	document.getElementById("p_change").addEventListener("click", () => { updateMyAccount(); });
 }
 
