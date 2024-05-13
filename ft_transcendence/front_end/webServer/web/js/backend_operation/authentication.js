@@ -48,11 +48,11 @@ export async function postUser(new_user) {
 		if (!response.ok) {
 			notice("Given information invalid (mail or username is already taken)", 2, "#fc2403");
 			console.log("Client error");
-			throw new Error("fetch POST postUser");
+			return (response.status);
 		}
 		notice("Your account was succesfully created", 2, "#0c9605");
 		console.log("-");
-		return (response);
+		return (response.status);
 	}
 	catch (error) {
 		console.error("postUser :", error);

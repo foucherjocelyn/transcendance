@@ -21,6 +21,7 @@ export async function sendForm()
     };
     let register_status = await postUser(new_user);
 	document.getElementById("loadspinner").classList.add("hide");
+	console.log(register_status);
 	if (register_status >= 400 && register_status < 500)
 		document.getElementById("r_connect_page").classList.remove("hide");
 	if (register_status >= 200 && register_status < 300)
