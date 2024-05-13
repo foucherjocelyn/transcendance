@@ -1,28 +1,12 @@
+import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { loadSpinner } from "../authentication/spinner.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
-import { to_tournament } from "./home_tournament.js";
-import { to_profilePage } from "./home_changeprofile.js";
-import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
-import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
-
-export function upperPanel()
-{
-	let panel_def = `
-<div id="h_upperpanel">
-<nav class="h_upperpanel">
-				<button id="h_to_home" name="to_homepage"></button>
-				<button id="h_to_game" name="to_game"></button>
-				<button id="h_to_tournament" name="to_tournament"></button>
-				<button id="h_to_myprofile" name="to_myprofile"></button>
-				<button id="h_logout" name="logout"></button>
-			</nav>
-</div>
-`;
-	return (panel_def);
-}
+import { to_connectForm } from "../authentication/auth_connect.js"
+import { getMyInfo } from "../backend_operation/get_user_info.js";
 
 function	 newLabel()//
 {
@@ -77,13 +61,7 @@ ${noticeInvitePlayer()}
 //	console.log("loading player list");
 //	getUserList();
 	//
-	document.getElementById("h_to_game").addEventListener("click", to_game);
-	document.getElementById("h_to_tournament").addEventListener("click", to_tournament);
-	document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
-	document.getElementById("h_logout").addEventListener("click", () =>
-		{
-			classy_signOut("h_homepage");
-		});
+	upperPanelEventListener("home");
 	if (document.getElementById("loadspinner") !== undefined
 		&& document.getElementById("h_homepage") !== undefined
 		&& document.getElementById("loadspinner") !== null
@@ -95,8 +73,14 @@ ${noticeInvitePlayer()}
 	callback(false);
 }
 
-export function to_homePage(nohistory = "false")
+export async function to_homePage(nohistory = "false")
 {
+	await getMyInfo();
+	if (!getCookie("username"))
+	{
+		to_connectForm();
+		return ;
+	}
 	if (nohistory === "false")
 		history.pushState( { url: "homepage" }, "", "#homepage");
 	updateMyInfo();

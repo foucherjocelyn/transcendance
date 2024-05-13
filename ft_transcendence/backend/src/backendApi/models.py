@@ -297,3 +297,14 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification : {self.user.username} : {self.content}"
+
+
+class Token(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    key = models.CharField(unique=True)
+    expired_at = models.DateTimeField()
+    blacklist = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Token : {self.user.username} : {self.key}"

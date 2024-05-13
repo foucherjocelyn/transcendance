@@ -1,7 +1,4 @@
-import { getCookie } from "../authentication/auth_cookie.js";
-import { user, client } from '../client/client.js';
-import { openSocketClient } from "./authentication.js";
-import { getAvatar } from "./profile_picture.js";
+import { getCookie, deleteAllCookie } from "../authentication/auth_cookie.js";
 
 export async function	getUserById(user_id)
 {
@@ -72,26 +69,6 @@ export async function	getUserIdByUsername(username)
 		  });
 }
 
-export async function	updateMyInfo(connectFlag = false)
-{
-	let avatar_path = await getAvatar();
-	if (avatar_path === null || avatar_path === undefined)
-		avatar_path = '../img/avatar/avatar_default.png';
-	avatar_path = '../img/avatar/avatar1.png';//need to update
-	let info = getMyInfo();
-	info.then(() =>
-	{
-		user.id = '#' + getCookie('id');
-    	user.name = getCookie('username');
-    	user.level = getCookie("level");
-    	user.avatar = avatar_path;
-    	user.status = 'connection';
-		client.inforUser = user;
-		if (connectFlag)
-			openSocketClient();
-	});
-}
-
 export async function	getMyInfo()
 {
 //	console.log("-Obtaining user info");
@@ -112,6 +89,7 @@ export async function	getMyInfo()
 			  if (!response.ok)
 			  {
 				  console.log("getMyInfo: Client/Server error");
+				  deleteAllCookie();
 				  return;
 				  //throw new Error("fetch POST op failed");
 			  }
