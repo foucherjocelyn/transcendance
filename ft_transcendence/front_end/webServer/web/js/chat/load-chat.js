@@ -4,6 +4,14 @@ import { displayFindNewFriendWindow } from "./add-friend.js";
 import { showNotifications } from "./notifications.js";
 import { getListFriends } from "./friend-list.js";
 
+async function refreshChat() {
+    if (document.getElementById("chat-list")) {
+        const listFriends = await getListFriends();
+        renderFriendList(listFriends);
+        setTimeout(refreshChat, 5000);
+    }
+}
+
 const loadChat = () => {
     const chatDiv = document.getElementById("chat");
     if (!chatDiv)
@@ -46,7 +54,6 @@ const loadChat = () => {
     const addNewFriendButton = document.getElementById("c-add-new-friend-button");
     const listFriends = getListFriends();
     listFriends.then(list => {
-        // client.inforUser.listFriends = list;
         renderFriendList(list);
     });
     friendsListSearchButton.addEventListener("click", searchFriendList);
@@ -60,6 +67,7 @@ const loadChat = () => {
     document.querySelector("#c-show-notifications-button").addEventListener("click", showNotifications);
     document.getElementById("chat").style.display = "block";
     console.log("chat loaded");
+    refreshChat();
 };
 
 export { loadChat };
