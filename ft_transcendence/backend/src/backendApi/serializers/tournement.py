@@ -15,6 +15,7 @@ class TournamentSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "description",
+            "max_players",
             "start_date",
             "end_date",
             "status",
