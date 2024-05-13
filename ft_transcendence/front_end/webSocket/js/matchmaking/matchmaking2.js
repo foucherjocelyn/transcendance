@@ -43,7 +43,8 @@ function    add_players_random(match, maxPlayers)
                 {
                     if (listPlayer.length === maxPlayers)
                         break ;
-                    listPlayer.push(check.listPlayer[0]);
+                    if ((match.mode !== 'tournament') || (match.mode === 'tournament' && match.tournamentID === check.tournamentID))
+                        listPlayer.push(check.listPlayer[0]);
                 }
             }
         }

@@ -1,8 +1,10 @@
 import { invitation_to_play } from "../invitationPlay/invitationPlay.js";
-import { match, match_default } from "./createMatch.js";
+import { match } from "./createMatch.js";
 import { inforPlayer } from "./createPlayers.js";
 import { client, dataToServer } from "../client/client.js";
 import { to_game } from "../home/home_game.js";
+import { invitationPlayLayerHTML } from "../home/home_creatematch.js";
+import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 
 function    add_player_mode_offline_random(button, clickCount, index)
 {
@@ -48,7 +50,7 @@ function    add_player_mode_friends(button, clickCount, index)
     }
     else
     {
-        document.getElementById('createMatchLayer').style.display = 'none';
+        invitationPlayLayerHTML();
         invitation_to_play();
         player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     }
@@ -71,8 +73,10 @@ function    get_sign_add_player_button()
         const   button = buttons[i];
 
         button.onclick = () => {
+            if (match.mode === 'tournament')
+                return ;
+
             clickCount++;
-            // console.log('click on button ' + i + ' - ' + clickCount);
             if (add_player_mode_offline_random(button, clickCount, i) === 3)
                 clickCount = 0;
             if (add_player_mode_friends(button, clickCount, i) === 2)
@@ -92,23 +96,71 @@ function    get_sign_cancel_create_match_button()
         const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));
 
-        document.getElementById('createMatchLayer').style.display = 'none';
-        document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
         to_game();
-
-        // match_default();
     }
+}
+
+function    count_players(match)
+{
+    let nbrPlayer = 0;
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
+        if (player.type === 'player')
+            nbrPlayer++;
+    }
+    return nbrPlayer;
+}
+
+export function count_empty_place()
+{
+    let nbrPlace = 0;
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
+        if (player.type === 'none')
+            nbrPlace++;
+    }
+    return nbrPlace;
 }
 
 function    get_sign_start_create_match_button()
 {
     const   button = document.getElementById('startCreateMatchButton');
+    let clickCount = 0;
+
     button.onclick = () => {
-        // console.log('ready to play');
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
+        clickCount++;
+
+        // Check if there are more than 2 players in the match
+        if (count_empty_place() === 3)
+        {
+            const  sendData = new dataToServer('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', '');
+            notice_invitation_play(sendData);
+            clickCount = 0;
+            return ;
+        }
+
+        if (match.mode === 'rank' || match.mode === 'tournament')
+        {
+            if (count_players(match) === 1)
+            {
+                const  sendData = new dataToServer('warning', 'You need at least 2 players ( not AI ) to start', '../../img/avatar/informationsSign.png', '');
+                notice_invitation_play(sendData);
+                clickCount = 0;
+                return ;
+            }
+            
+            if (match.listUser.length === 1)
+                document.getElementById('loaderMatchmakingLayer').style.display = (clickCount % 2 !== 0) ? 'flex' : 'none';
+        }
 
         const  sendData = new dataToServer('start game', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));
+
+        if (clickCount === 2)
+            clickCount = 0;
     }
 }
 

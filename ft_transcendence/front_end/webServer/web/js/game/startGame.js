@@ -3,6 +3,8 @@ import { setup_game_instructions } from "../gameInstructions/gameInstructions.js
 import { setup_game_settings } from "../gameSettings/gameSetting.js";
 import { setup_game_windows } from "./gameWindows.js";
 import { match } from "../createMatch/createMatch.js";
+import { gameLayerHTML } from "../home/home_gamewindows.js";
+import { client } from "../client/client.js";
 
 class   formPongGame {
     constructor() {
@@ -40,6 +42,46 @@ class   formPongGame {
 };
 let pongGame;
 
+class   pTime {
+    constructor() {
+        this.hour = undefined,
+        this.minute = undefined,
+        this.second = undefined
+    }
+};
+
+export function    get_time()
+{
+    const   dataTime = new Date();
+    const   currentTime = new pTime();
+
+    currentTime.hour = dataTime.getHours();
+    currentTime.minute = dataTime.getMinutes();
+    currentTime.second = dataTime.getSeconds();
+
+    return currentTime;
+}
+
+class   pDate {
+    constructor() {
+        this.day = undefined,
+        this.month = undefined,
+        this.year = undefined
+    }
+};
+
+export function    get_date()
+{
+    const   dataDate = new Date();
+    const   currentDate = new pDate();
+
+    currentDate.day = dataDate.getDate();
+    currentDate.month = dataDate.getMonth() + 1;
+    currentDate.year = dataDate.getFullYear();
+
+    return currentDate;
+}
+
 function    setup_size_game_layer()
 {
     const   gameLayer = document.getElementById('gameLayer');
@@ -49,11 +91,19 @@ function    setup_size_game_layer()
 
 function    setup_game_layer()
 {
-    document.getElementById('gameLayer').style.display = 'flex';
-    document.getElementById('createMatchLayer').style.display = 'none';
+    match.timeStart = get_time();
+    match.dateStart = get_date();
 
+    client.inforUser.status = 'playing game';
+
+    if (client.inforUser.id === match.listPlayer[0].id)
+    {
+        console.log('update the informations of match on data');
+    }
+
+    gameLayerHTML();
     pongGame = new formPongGame();
-    pongGame.maxPoint = 5;
+    pongGame.maxPoint = 1;
     pongGame.listPlayer = match.listPlayer;
 
     setup_size_game_layer();

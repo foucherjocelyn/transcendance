@@ -5,10 +5,11 @@ import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
+import { create_match, join_the_tournament } from "../createMatch/createMatch.js";
 
 export function noticeInvitePlayer() {
     return (
-        `
+    `
     <!-------------------- Notice invitation play -------------------->
     <div id="noticeInvitationPlayLayer">
         <div id="avatarPlayerInvite"></div>
@@ -31,351 +32,6 @@ export function noticeInvitePlayer() {
             </div>
         </div>
     </div>
-`
-    );
-}
-
-function    gameSettingHTML()
-{
-    return (`
-    <!-------------------- Game Settings -------------------->
-    <div id="gameSettingsLayer">
-
-        <!--------------------  -------------------->
-        <div id="gameSettingButton">
-            <button>
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAACBElEQVR4nK2Wy0qcQRCFR9zFzETNRl9B8wqC97XEC4bZB8MMinEl6iLRTRbBF8gTREG3voGGmAxewE0iJLsQdWICiS7mk4LTULY9F+IcaPj5q/qcnlPVNX8m0wCAPuAH8Be4An4C05lmAXjDXbxvpsDnhMA50Hpf4klgj+rYBcYbJRuUt5vAc2BbJAfAHNALtGn16t2hciy3H1gEdoCRmNw2fY1O9w94AXQDa7Lpj9YnYBXoAgoqvMepcXqBlQT5gCy6rGGRxSb062ORZX/6chScEXmF+qhIpJhoglwQWXeBA9niT/7NiglktcaAExf/JbuO3LsPlhsEWoB3CszJc0/emWiKDsUCXgPzev4ItMcb7ISGHqDkNo7XaeMAK/wTPedTyUE9G9mTrSGQc3mX2mtYSCUv/IfAo6gOQWA+lZx3FvnRMFZDYKqKRbdttYKoMKHIdokCTqygCfLHwHeX98rZbA3TEhKzaqmAQ7Vc3KaT8jynk3vysvYcu3frvlB2KTwKujwV6sNyngKz0fsL4EEQWY6Cdu2HJGLFq4ayyIeB6yi25P1s04CKRYr66XaJ9oHfWvvyvEsnj8m/3Bp2EhnVqF3U6A3j+kjFsw55qGXPL53nWxrxmxr5/dU6L3W7d5vyh1NDpBU4S5CX7kUciWwkBN42U+CZvLXC26eLfcIMNrL5BpiAXtJiIvepAAAAAElFTkSuQmCC">
-                <span>Setting</span>
-            </button>
-        </div>
-
-        <!--------------------  -------------------->
-        <div id="gameSettingPanel">
-            <div>
-                <div id="gameSettingBar">
-                    <button>Size</button>
-                    <button>Color</button>
-                    <button>Speed</button>
-                    <button>Control</button>
-                </div>
-
-                <!--------------------  -------------------->
-                <div id="gameSettingContents">
-                    
-                    <!-------------------- Settings size panel -------------------->
-                    <div id="settingSizePanel">
-
-                        <!-------------------- Settings size table -------------------->
-                        <div class="gameSettingName">
-                            <span>Table</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingSizeTable">
-                            <div>
-                                <span>width:</span>
-                                <input type="range" value="20" min="20" max="100" step="1">
-                            </div>
-                            <div>
-                                <span>height:</span>
-                                <input type="range" value="20" min="20" max="100" step="1">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings size border -------------------->
-                        <div class="gameSettingName">
-                            <span>Border</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingSizeBorder">
-                            <div>
-                                <span>Size:</span>
-                                <input type="range" value="1" min="1" max="3" step="0.01">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings size paddle -------------------->
-                        <div class="gameSettingName">
-                            <span>Paddle</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingSizePaddle">
-                            <div>
-                                <span>width:</span>
-                                <input type="range" value="5" min="5" max="" step="1">
-                            </div>
-                            <div>
-                                <span>height:</span>
-                                <input type="range" value="1" min="1" max="" step="1">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings size ball -------------------->
-                        <div class="gameSettingName">
-                            <span>Ball</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingSizeBall">
-                            <div>
-                                <span>Size:</span>
-                                <input type="range" value="1" min="1" max="" step="1">
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-------------------- Settings color panel -------------------->
-                    <div id="settingColorPanel">
-
-                        <!-------------------- Settings color table -------------------->
-                        <div class="gameSettingName">
-                            <span>Table</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingColorTable">
-                            <div>
-                                <span>Plane:</span>
-                                <input type="color" name="" value="#241f31">
-                            </div>
-                            <div>
-                                <span>Border:</span>
-                                <input type="color" name="" value="#ffffff">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings color paddles -------------------->
-                        <div class="gameSettingName">
-                            <span>Paddles</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingColorPaddles">
-                            <div>
-                                <span>Player1:</span>
-                                <input type="color" name="" value="#3584e4">
-                            </div>
-                            <div>
-                                <span>Player2:</span>
-                                <input type="color" name="" value="#9141ac">
-                            </div>
-                            <div>
-                                <span>Player3:</span>
-                                <input type="color" name="" value="#f6d32d">
-                            </div>
-                            <div>
-                                <span>Player4:</span>
-                                <input type="color" name="" value="#33d17a">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings color ball -------------------->
-                        <div class="gameSettingName">
-                            <span>Ball</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingColorBall">
-                            <div>
-                                <span>Color:</span>
-                                <input type="color" name="" value="#ff0000">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-------------------- Settings speed panel -------------------->
-                    <div>
-
-                        <!-------------------- Settings speed paddle -------------------->
-                        <div class="gameSettingName">
-                            <span>Paddle</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingSpeedPaddle">
-                            <div>
-                                <span>Speed:</span>
-                                <input type="range" value="0.004" min="0.0001" max="0.01" step="0.0001">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings speed ball -------------------->
-                        <div class="gameSettingName">
-                            <span>Ball</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingSpeedBall">
-                            <div>
-                                <span>Speed:</span>
-                                <input type="range" value="0.004" min="0.0001" max="0.01" step="0.0001">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-------------------- Settings control panel -------------------->
-                    <div>
-
-                        <!-------------------- Settings control player 1 -------------------->
-                        <div class="gameSettingName">
-                            <span>Player 1</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingControlPlayer1">
-                            <div>
-                                <span>Left:</span>
-                                <input type="text" maxlength="1" value="a">
-                            </div>
-                            <div>
-                                <span>Right:</span>
-                                <input type="text" maxlength="1" value="q">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings control player 2 -------------------->
-                        <div class="gameSettingName">
-                            <span>Player 2</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingControlPlayer2">
-                            <div>
-                                <span>Left:</span>
-                                <input type="text" maxlength="1" value="p">
-                            </div>
-                            <div>
-                                <span>Right:</span>
-                                <input type="text" maxlength="1" value="m">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings control player 3 -------------------->
-                        <div class="gameSettingName">
-                            <span>Player 3</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingControlPlayer3">
-                            <div>
-                                <span>Left:</span>
-                                <input type="text" maxlength="1" value="z">
-                            </div>
-                            <div>
-                                <span>Right:</span>
-                                <input type="text" maxlength="1" value="e">
-                            </div>
-                        </div>
-
-                        <!-------------------- Settings control player 4 -------------------->
-                        <div class="gameSettingName">
-                            <span>Player 4</span>
-                        </div>
-
-                        <div class="gameSettingInput" id="gameSettingControlPlayer4">
-                            <div>
-                                <span>Left:</span>
-                                <input type="text" maxlength="1" value="i">
-                            </div>
-                            <div>
-                                <span>Right:</span>
-                                <input type="text" maxlength="1" value="o">
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!--------------------  -------------------->
-                <div id="gameSaveButton">
-                    <button>
-                        <span>Save</span>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-    `);
-}
-
-function    invitationPlayLayerHTML()
-    {
-    return (`
-    <!-------------------- Invitation play Layer -------------------->
-<div id="invitationPlayLayer">
-
-    <!--------------------  -------------------->
-    <button id="cancelInvitationPlayButton">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256" style="fill:#40C057;">
-            <g fill="#40c057" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M4.70703,3.29297l-1.41406,1.41406l7.29297,7.29297l-7.29297,7.29297l1.41406,1.41406l7.29297,-7.29297l7.29297,7.29297l1.41406,-1.41406l-7.29297,-7.29297l7.29297,-7.29297l-1.41406,-1.41406l-7.29297,7.29297z"></path></g></g>
-        </svg>
-    </button>
-
-    <!--------------------  -------------------->
-    <div id="invitationPlayPanel">
-
-        <!--------------------  -------------------->
-        <div id="searchInvitationPlayBar">
-
-            <!--------------------  -------------------->
-            <input type="search" id="searchInvitationPlayInput" placeholder="Search ...">
-            
-            <!--------------------  -------------------->
-            <button id="clearInvitationPlayButton">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 32 32" style="fill:#22C3E6;">
-                    <path d="M 11 2 L 11 4 L 21 4 L 21 2 L 11 2 z M 4 6 L 4 8 L 28 8 L 28 6 L 4 6 z M 7.9921875 9.875 L 6.0078125 10.125 C 6.0078125 10.125 7 18.074074 7 27 L 7 28 L 25 28 L 25 27 C 25 18.074074 25.992188 10.125 25.992188 10.125 L 24.007812 9.875 C 24.007812 9.875 23.120303 17.398914 23.042969 26 L 8.9570312 26 C 8.8796974 17.398914 7.9921875 9.875 7.9921875 9.875 z M 12.986328 10.835938 L 11.013672 11.164062 C 11.013672 11.164062 12 17.111111 12 23 L 14 23 C 14 16.888889 12.986328 10.835936 12.986328 10.835938 z M 19.013672 10.835938 C 19.013672 10.835938 18 16.888889 18 23 L 20 23 C 20 17.111111 20.986328 11.164064 20.986328 11.164062 L 19.013672 10.835938 z"></path>
-                </svg>
-            </button>
-            
-            <!--------------------  -------------------->
-            <button id="searchInvitationPlayButton">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256" style="fill:#22C3E6;">
-                    <g fill="#22c3e6" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M10,2c-4.40347,0 -8,3.59653 -8,8c0,4.40347 3.59653,8 8,8c1.75213,0 3.37052,-0.57793 4.69141,-1.54102l5.1543,5.1543c0.31352,0.32654 0.77908,0.45808 1.21713,0.34388c0.43805,-0.1142 0.78014,-0.45628 0.89433,-0.89433c0.1142,-0.43805 -0.01734,-0.90361 -0.34388,-1.21713l-5.1543,-5.1543c0.96309,-1.32088 1.54102,-2.93928 1.54102,-4.69141c0,-4.40347 -3.59653,-8 -8,-8zM10,4.5c3.05237,0 5.5,2.44763 5.5,5.5c0,3.05237 -2.44763,5.5 -5.5,5.5c-3.05237,0 -5.5,-2.44763 -5.5,-5.5c0,-3.05237 2.44763,-5.5 5.5,-5.5z"></path></g></g>
-                </svg>
-            </button>
-        </div>
-
-        <!--------------------  -------------------->
-        <div id="resultsSearchInvitationPlayPanel"></div>
-
-    </div>
-
-</div>
-    `);
-}
-
-function    createMatchHTML()
-{
-    return (`
-    <!-------------------- Create match Layer -------------------->
-    <div id="createMatchLayer">
-
-        <!--------------------  -------------------->
-        <button id="cancelCreateMatchButton">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256" style="fill:#40C057;">
-                <g fill="#40c057" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M4.70703,3.29297l-1.41406,1.41406l7.29297,7.29297l-7.29297,7.29297l1.41406,1.41406l7.29297,-7.29297l7.29297,7.29297l1.41406,-1.41406l-7.29297,-7.29297l7.29297,-7.29297l-1.41406,-1.41406l-7.29297,7.29297z"></path></g></g>
-            </svg>
-        </button>
-
-        <!--------------------  -------------------->
-        <button id="startCreateMatchButton">
-            <div></div>
-            <h1>Start</h1>
-        </button>
-
-        <!--------------------  -------------------->
-        <div id="addPlayerLayer"></div>
-    </div>
-    `);
-}
-
-function loadMatchMakingHTML() {
-    return (
-        `
-    <!-------------------- Loader match making -------------------->
-    <div id="loaderMatchmakingLayer">
-        <div class="loading">
-            <div class="loading-box">
-              <div class="WH color l1"></div>
-              <div class="ball color"></div>
-              <div class="WH color l2"></div>
-            </div>
-        </div>
-    </div>
     `);
 }
 
@@ -389,7 +45,6 @@ function drawGame(callback) {
 
 
 <!--	Choose game mode		-->
-
 		<div id="g_choose_mode">
 		<button id="g_rankedmatch">Ranked Match</button>
 		<br>
@@ -398,47 +53,9 @@ function drawGame(callback) {
 		<button id="g_localmatch">Local game</button>
 		</div>
 
-<div id="g_match_html" class="hide">
+    <div id="g_match_html" class="hide">
 
-
-    ${createMatchHTML()}
-    ${loadMatchMakingHTML()}
-    ${invitationPlayLayerHTML()}
-<!-------------------- Game layer -------------------->
-<div id="gameLayer">
-
-    <!-------------------- Countdown -------------------->
-    <div id="countdownLayer">
-        <span>3</span>
-    </div>
-
-    <!-------------------- Game intructions -------------------->
-    <div id="gameInstructionsLayer">
-        <div id="gameInstructionsPanel"></div>
-    </div>
-
-    ${gameSettingHTML()}
-
-    <!-------------------- Game windows -------------------->
-    <canvas id="gameWindows"></canvas>
-
-</div>
-
-<!-------------------- Game over layer -------------------->
-<div id="gameOverLayer">
-
-    <!--------------------  -------------------->
-    <div id="titleGameOver">
-        <span>Game Over</span>
-    </div>
-
-    <!--------------------  -------------------->
-    <div></div>
-
-    <!--------------------  -------------------->
-    <div id="buttonsGameOver"></div>
-</div>
-<div>
+    <div>
 		<div class="r_successinfo hide"></div>
 	</div>
 `;
@@ -452,7 +69,8 @@ function drawGame(callback) {
 export function gameEventListener() {
     console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
-        create_match('rank');
+        // create_match('rank');
+        join_the_tournament();
     });
     document.getElementById("g_creatematch").addEventListener("click", () => {
         create_match('with friends');
@@ -479,7 +97,4 @@ export async function to_game(nohistory = "false") {
             gameEventListener();
         }
     });
-
-    // const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, client.listUser[1]);
-    // client.socket.send(JSON.stringify(sendData));
 }

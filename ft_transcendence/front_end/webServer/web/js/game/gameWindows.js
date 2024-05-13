@@ -186,8 +186,8 @@ function    setup_game_windows()
     );
     pongGame.camera = camera;
 
-    const   axesHelper = new THREE.AxesHelper(5);
-    scene.add(axesHelper);
+    // const   axesHelper = new THREE.AxesHelper(5);
+    // scene.add(axesHelper);
 
     addLight();
     add_objects();

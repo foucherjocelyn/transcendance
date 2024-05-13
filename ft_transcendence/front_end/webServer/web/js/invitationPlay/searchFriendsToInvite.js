@@ -44,7 +44,7 @@ function    search_friends_to_invite(input)
                     results[0] = user;
                     results[i] = tmp;
                 }
-                else
+                else if (user.status !== 'playing game')
                     results.push(user);
             }
         }
@@ -58,7 +58,7 @@ function    search_friends_to_invite(input)
                     results[0] = user;
                     results[i] = tmp;
                 }
-                else
+                else if (user.status !== 'playing game')
                     results.push(user);
             }
         }

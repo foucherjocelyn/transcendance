@@ -69,13 +69,13 @@ export async function postUser(new_user)
 export function openSocketClient()
 {
 	const  sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
-			  client.socket.send(JSON.stringify(sendData));
+	client.socket.send(JSON.stringify(sendData));
 }
 
 export function closeSocketClient()
 {
 	const  sendData = new dataToServer('disconnection', client.inforUser, client.inforUser, client.inforUser);
-			  client.socket.send(JSON.stringify(sendData));
+	client.socket.send(JSON.stringify(sendData));
 }
 
 export async function signIn(connect_user)
@@ -110,9 +110,9 @@ export async function signIn(connect_user)
 		  {
 			  document.cookie = `refresh=${data.refresh}; SameSite=Strict`;
 			  document.cookie = `token=${data.access}; SameSite=Strict`;
-			  updateMyInfo(true);
-			// openSocketClient();
-			  //console.table(client.inforUser);
+
+				updateMyInfo(true);
+
 			  if (document.getElementById("loadspinner") != null)
 				  document.getElementById("loadspinner").classList.add("hide");
 			  to_homePage();

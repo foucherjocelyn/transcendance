@@ -10,7 +10,6 @@ const   webSocket = {
 
 function    update_user(user)
 {
-    console.log(user);
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
         const   find = webSocket.listUser[i];
@@ -30,11 +29,7 @@ function    get_data_from_client(data, socket)
 
     // console.log('title: ' + data.title);
     if (data.title === 'connection')
-	{
         add_new_connection(data, socket);
-        // console.log('number clients: ' + webSocket.listConnection.length);
-        // console.log(data.content);
-    }
 	else if (data.title === 'disconnect')
 		disconnect(socket);
     else if (data.title === 'update match')
