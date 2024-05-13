@@ -2,7 +2,7 @@ import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
 import { loadChat } from "../chat/load-chat.js";
-import { getTournamentsList } from "../backend_operation/tournament.js";
+import { getTournamentsList, createTournament, joinTournament } from "../backend_operation/tournament.js";
 import { authCheck } from "../authentication/auth_main.js"
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
@@ -88,7 +88,7 @@ function	 addLabel(tour_list, index)
 <button id="t_joinbutton">Join</button>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById("t_joinbutton").addEventListener("click", joinTournament(`tour_obj.id`));
+	document.getElementById("t_joinbutton").addEventListener("click", () => { joinTournament(`tour_obj.id`); });
 }
 
 function 	searchLabel()
