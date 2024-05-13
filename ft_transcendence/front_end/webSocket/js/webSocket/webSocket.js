@@ -99,7 +99,6 @@ module.exports = {
 const { add_new_connection, disconnect } = require('./addNewConnection');
 const { send_data } = require('./dataToClient');
 const { update_match } = require('./updateMatch');
-const { accept_invitation_to_play, leave_match } = require('./acceptInvitationPlay');
-const { kick_out_of_the_match } = require('./kickOutTheMatch');
+const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
 const { sign_start_game } = require('./signStartGame');
 

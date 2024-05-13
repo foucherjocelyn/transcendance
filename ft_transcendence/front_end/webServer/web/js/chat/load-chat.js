@@ -46,7 +46,6 @@ const loadChat = () => {
     const addNewFriendButton = document.getElementById("c-add-new-friend-button");
     const listFriends = getListFriends();
     listFriends.then(list => {
-        // client.inforUser.listFriends = list;
         renderFriendList(list);
     });
     friendsListSearchButton.addEventListener("click", searchFriendList);
