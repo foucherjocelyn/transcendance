@@ -1,6 +1,7 @@
 import { getListFriends } from "../backend_operation/get_user_info.js";
 import { client, dataToServer } from "../client/client.js";
 import { openChatBox } from "./chatbox.js";
+import { renderNotifications } from "./notifications.js";
 
 const renderFriendList = (list) => {
     console.log(list);
@@ -33,6 +34,7 @@ const renderFriendList = (list) => {
             client.socket.send(JSON.stringify(sendData));
         })
     });
+    renderNotifications();
 };
 
 const searchFriendList = () => {
