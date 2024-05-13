@@ -19,8 +19,8 @@ export async function getUserById(user_id) {
 			return;
 		}
 		const data = await response.json();
-		console.log("getUserById:");
-		console.log(data);
+		//console.log("getUserById:");
+		//console.log(data);
 		return (data);
 	} catch (error) {
 		console.error("getUserById: ", error);
@@ -47,8 +47,9 @@ export async function getUserIdByUsername(username) {
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await response.json();
-		console.log("getUserIdByUsername:");
-		console.log(data);
+		//console.log("getUserIdByUsername:");
+		//console.log(data);
+		return data;
 	} catch (error) {
 		console.error("getUserIdByUsername: ", error);
 	}
@@ -115,7 +116,7 @@ export async function getListUsers() {
 		}
 		const data = await response.json();
 		console.log("--");
-		return data;
+		return (data);
 	} catch (error) {
 		console.error("getListUsers: ", error);
 	}
