@@ -29,11 +29,11 @@ const friendInviteHasBeenAccepted = (sender) => {
     newUserMessages.user = sender;
     client.inforUser.listChat.push(newUserMessages);
     renderFriendList(client.inforUser.listFriends);
-    console.log(`${sender.name}${sender.id} accepted your friend invite.`);
+    console.log(`${sender.username}${sender.id} accepted your friend invite.`);
 };
 
 const friendInviteHasBeenDeclined = (sender) => {
-    console.log(`${sender.name}${sender.id} declined your friend invite.`);
+    console.log(`${sender.username}${sender.id} declined your friend invite.`);
 };
 
 const acceptFriendInvite = async (id, sender) => {
@@ -45,13 +45,13 @@ const acceptFriendInvite = async (id, sender) => {
         client.inforUser.listFriends = list;
     });
     removeFriendInvite(id);
-    postNotification({ username: sender, content: `${client.inforUser.name} accepted friend invite` });
+    postNotification({ username: sender, content: `${client.inforUser.username} accepted friend invite` });
 };
 
 const declineFriendInvite = (id, sender) => {
     updateFriendInviteStatus(id, "rejected");
     removeFriendInvite(id);
-    postNotification({ username: sender, content: `${client.inforUser.name} declined friend invite` });
+    postNotification({ username: sender, content: `${client.inforUser.username} declined friend invite` });
 };
 
 const receiveFriendInvite = (id, sender) => {
