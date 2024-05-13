@@ -76,7 +76,7 @@ function	 addLabel(tour_list, index)
 	let newLabel;
 	newLabel = `<tr id="t_tourlabel${index}" class="t_tourlabel">
 <th scope="row">${tour_list[index].name}</th>
-<td>${player_nb}/${max_players}</td>
+<td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${tour_list[index].start_date}/${tour_list[index].end_date}</td>
 <td>${tour_list[index].status}</td>
 <button id="t_joinbutton">Join</button>
