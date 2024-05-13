@@ -13,10 +13,7 @@ function    display_game_setting_panel(index)
 {
     const   settingPanel = document.querySelectorAll('#gameSettingContents > div');
     settingPanel.forEach((panel, id) => {
-        if (id === index)
-            panel.style.display = 'flex';
-        else
-            panel.style.display = 'none';
+        panel.style.display = (id === index) ? 'flex' : 'none';
     })
 }
 
@@ -39,10 +36,7 @@ function    get_sign_game_setting_button()
 
     button.onclick = () => {
         countClick++;
-        if (countClick % 2 !== 0)
-            document.getElementById('gameSettingPanel').style.display = 'flex';
-        else
-            document.getElementById('gameSettingPanel').style.display = 'none';
+        document.getElementById('gameSettingPanel').style.display = (countClick % 2 !== 0) ? 'flex' : 'none';
         countClick = (countClick === 2) ? 0 : countClick;
     }
 }

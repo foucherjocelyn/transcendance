@@ -1,3 +1,4 @@
+import { display_create_match_layer } from "../createMatch/createMatch.js";
 import { search_friends_to_invite_play } from "./searchFriendsToInvite.js";
 
 function    reset_contents_in_invitation_play_layer()
@@ -12,8 +13,7 @@ function    get_sign_cancel_invitation_play_button()
 {
     const   button = document.getElementById('cancelInvitationPlayButton');
     button.onclick = () => {
-        document.getElementById('invitationPlayLayer').style.display = 'none';
-        document.getElementById('createMatchLayer').style.display = 'flex';
+        display_create_match_layer();
     }
 }
 

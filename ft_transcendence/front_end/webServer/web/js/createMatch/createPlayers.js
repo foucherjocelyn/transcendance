@@ -9,7 +9,8 @@ class   inforPlayer {
         this.avatar = avatar,
         this.level = level
         this.type = type,
-        this.score = 0
+        this.score = 0,
+        this.paddle = undefined
     }
 };
 
@@ -68,14 +69,11 @@ function    change_match_admin()
 
 function    setup_content_add_player_button()
 {
-    // get_user_in_list_player_cl();
     if (match.listPlayer[0].type === 'none')
         change_match_admin();
 
-    if (match.admin.id === client.inforUser.id)
-        document.getElementById('startCreateMatchButton').style.display = 'flex';
-    else
-        document.getElementById('startCreateMatchButton').style.display = 'none';
+    document.getElementById('startCreateMatchButton').style.display =
+    ((match.admin.id === client.inforUser.id) && (match.mode !== 'tournament')) ? 'flex' : 'none';
 
     const   buttons = document.querySelectorAll('#addPlayerLayer > button');
     const   spanID = document.querySelectorAll('.idPlayer');

@@ -1,10 +1,12 @@
 import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel, to_homePage } from "./home_homeboard.js";
+import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
-import { to_profilePage } from "./home_changeprofile.js";
-import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
-import { getTournamentsList } from "../backend_operation/tournament.js";
+import { getTournamentsList, createTournament, joinTournament } from "../backend_operation/tournament.js";
+import { authCheck } from "../authentication/auth_main.js"
+import { getMyInfo } from "../backend_operation/get_user_info.js";
+import { getCookie } from "../authentication/auth_cookie.js";
+import { to_connectForm } from "../authentication/auth_connect.js";
 
 async function drawTournament(callback)
 {
@@ -46,15 +48,16 @@ async function drawTournament(callback)
 		</div>
 `;
 	let tour_list = await getTournamentsList();
+
+	console.log("test--------");
+	console.log(tour_list);
 	if (tour_list != undefined)
 	{
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
-	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
-	document.getElementById("h_to_game").addEventListener("click", to_game);
-	document.getElementById("h_to_myprofile").addEventListener("click", to_profilePage);
-	document.getElementById("h_logout").addEventListener("click", () => { classy_signOut("h_tournament_page"); });
+	console.log("test--------");
+	upperPanelEventListener("tournament");
 	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
 	callback(true);
 }
@@ -73,6 +76,7 @@ function	 addLabel(tour_list, index)
 //	label_index++;
 	//	console.log(`adding new label: ${label_index}`);
 
+	console.table(tour_list[0]);
 	let	player_nb = tourPlayerCount(tour_list[index]);
 	let newLabel;
 	newLabel = `<tr id="t_tourlabel${index}" class="t_tourlabel">
@@ -84,7 +88,7 @@ function	 addLabel(tour_list, index)
 <button id="t_joinbutton">Join</button>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById("t_joinbutton").addEventListener("click", joinTournament(`tour_obj.id`));
+	document.getElementById("t_joinbutton").addEventListener("click", () => { joinTournament(`tour_obj.id`); });
 }
 
 function 	searchLabel()
@@ -96,8 +100,14 @@ function 	searchLabel()
 	}
 }
 
-export function to_tournament(nohistory = "false")
+export async function to_tournament(nohistory = "false")
 {
+	await getMyInfo();
+	if (!getCookie("username"))
+	{
+		to_connectForm();
+		return ;
+	}
 	if (nohistory === "false")
 		history.pushState( { url: "tournament" }, "", "#tournament");
 	drawTournament( (result) => {

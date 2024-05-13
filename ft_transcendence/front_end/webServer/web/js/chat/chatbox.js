@@ -103,7 +103,7 @@ const sendMessage = async (friendUsername) => {
     await postNewMessage({username: friendUsername, content: newMessage.content});
     renderMessages(friendUsername);
 
-    const connectedReceiver = client.listUser.find(user => user.name == friendUsername)
+    const connectedReceiver = client.listUser.find(user => user.username == friendUsername)
     if (connectedReceiver) {
         const sendData = new dataToServer('message', newMessage.content, client.inforUser, connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
@@ -112,7 +112,7 @@ const sendMessage = async (friendUsername) => {
 
 const receiveMessage = (receivedData) => {
     console.log(client);
-    const senderName = receivedData.from.name;
+    const senderName = receivedData.from.username;
     const chattingWith = getCookie("chatboxOpenedWith");
     console.log("receiveing message");
     console.log(chattingWith);

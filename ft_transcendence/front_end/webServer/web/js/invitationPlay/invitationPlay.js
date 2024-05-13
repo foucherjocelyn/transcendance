@@ -17,20 +17,10 @@ function    setup_size_invitation_play_panel()
 
 function    accept_invite_to_play()
 {
-    console.log('accept invitation to play function');
-    if (document.getElementById('createMatchLayer') === null) {
-        console.log("create match layer is null");
-        return ;
-    }
-
-    document.getElementById('invitationPlayLayer').style.display = 'none';
-    document.getElementById('createMatchLayer').style.display = 'flex';
 }
 
 function    invitation_to_play()
 {
-    document.getElementById('invitationPlayLayer').style.display = 'flex';
-
     setup_size_invitation_play_layer();
     setup_size_invitation_play_panel();
     get_sign_buttons_in_invitation_play_layer();

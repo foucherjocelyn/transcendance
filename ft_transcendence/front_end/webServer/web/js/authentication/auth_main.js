@@ -1,7 +1,12 @@
 import { to_homePage } from "../home/home_homeboard.js";
+import { to_game } from "../home/home_game.js";
+import { to_profilePage } from "../home/home_changeprofile.js";
+import { to_tournament } from "../home/home_tournament.js";
 import { to_connectForm } from "./auth_connect.js";
+import { to_regisForm } from "./auth_register.js";
+import { to_forgotForm } from "./auth_reset.js";
 import { getCookie } from "./auth_cookie.js";
-import { updateMyInfo } from "../backend_operation/get_user_info.js";
+import { updateMyInfo } from "../backend_operation/data_update.js";
 
 
 export function notice(str, time, color)
@@ -25,33 +30,30 @@ export function	authCheck()
 {
 	console.log("---authCheck(): Checking if user is connected");
 	console.log("The user is " + getCookie("status"));
-//	to_homePage();
-	//	/*
-	if (getCookie("status") === "offline" || getCookie("status") == undefined)
-		document.cookie = "token=; SameSite=Strict"
-	//	getMyInfo();
-	console.log("The token is [" + getCookie("token") + "]");
+	updateMyInfo();
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);
 		to_homePage();
+		return ("true");
 	}
 	else
 	{
 		to_connectForm();
+		return ("false");
 	}
-//*/
 	console.log("---");
+	return ("false");
 }
-/*
+
 const urlRoutes = {
-	  connect: to_connectForm("true"),
-	  register: to_regisForm("true"),
-	  reset: to_forgotForm("true"),
-	  homepage: to_homePage("true"),
-	  configprofile: to_profilePage("true"),
-	  game: to_game("true"),
-	  tournament: to_tournament("true")
+	connect: () => to_connectForm("true"),
+	register: () => to_regisForm("true"),
+	reset: () => to_forgotForm("true"),
+	homepage: () => to_homePage("true"),
+	configprofile: () => to_profilePage("true"),
+	game: () => to_game("true"),
+	tournament: () => to_tournament("true")
 };
 
 window.onpopstate = function(event) {
@@ -62,11 +64,11 @@ window.onpopstate = function(event) {
 		let url = event.state.url;
 		if (url)
 		{
-			urlRoutes[url];
+			urlRoutes[url]();
 		}
 	}
 };
-*/
+
 /*
 function clearInputs(elemName) {
 	var divElem = document.querySelector(elemName);

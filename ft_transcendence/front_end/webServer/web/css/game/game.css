@@ -1,11 +1,5 @@
-#g_choose_mode {
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-}
-
 #gameLayer {
-    display: none;
+    display: flex;
 
     width: 100%;
     height: 100%;

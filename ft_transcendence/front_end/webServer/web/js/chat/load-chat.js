@@ -20,12 +20,15 @@ const loadChat = () => {
     <div id="c-notifications-list"></div>
 </div>
 <br>
-<div id="chat-list">
 	<div id="chat_upperpanel">
-	<button id="c-show-notifications-button"></button>
+    <div id="c-show-notifications">
+	    <button id="c-show-notifications-button"></button>
+        <div id="c-notification-count" class="hidden"></div>
+    </div>
 	<button id="c-add-new-friend-button"></button>
 	<button id="c-hide-friend-list"></button>
 	</div>
+<div id="chat-list">
     <div id="c-friends-div">
         <h3>Friends</h3>
         <div id="c-friends-list">
@@ -46,7 +49,6 @@ const loadChat = () => {
         // client.inforUser.listFriends = list;
         renderFriendList(list);
     });
-
     friendsListSearchButton.addEventListener("click", searchFriendList);
     friendsListSearchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -54,8 +56,7 @@ const loadChat = () => {
         }
     });
     addNewFriendButton.addEventListener("click", displayFindNewFriendWindow);
-	document.getElementById("c-hide-friend-list").addEventListener("click", () =>
-		{ document.getElementById("c-friends-div").classList.add("hide"); });
+    document.getElementById("c-hide-friend-list").addEventListener("click", () => { document.getElementById("chat-list").classList.toggle("hide"); });
     document.querySelector("#c-show-notifications-button").addEventListener("click", showNotifications);
     document.getElementById("chat").style.display = "block";
     console.log("chat loaded");
