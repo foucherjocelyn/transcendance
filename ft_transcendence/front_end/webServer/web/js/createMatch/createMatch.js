@@ -104,8 +104,8 @@ export function    join_the_tournament()
     // tournamentID = ?
     match.tournamentID = 42;
 
-    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.name, client.inforUser.avatar, client.inforUser.level, 'player');
-    const player2 = new inforPlayer(42, 'Player 2', "../../img/avatar/avatar2.png", 42, 'player');
+    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.username, client.inforUser.avatarPath, client.inforUser.level, 'player');
+    const player2 = new inforPlayer('#42', 'Player 2', "../../img/avatar/avatar2.png", 42, 'player');
     const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
 
@@ -128,7 +128,7 @@ export function    create_match(mode)
     match.mode = mode;
     match.admin = client.inforUser;
 
-    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.name, client.inforUser.avatar, client.inforUser.level, 'player');
+    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.username, client.inforUser.avatarPath, client.inforUser.level, 'player');
     const player2 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');

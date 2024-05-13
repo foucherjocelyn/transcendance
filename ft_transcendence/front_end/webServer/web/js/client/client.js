@@ -3,11 +3,9 @@ import { update_position_ball } from "../game/movementsBall.js";
 import { update_position_paddle } from "../game/movementsPaddle.js";
 import { pongGame, setup_game_layer } from "../game/startGame.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
-import { accept_invite_to_play } from "../invitationPlay/invitationPlay.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { gameEventListener, to_game } from "../home/home_game.js";
 
 class   userNotifications {
     constructor() {
@@ -60,7 +58,7 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'update list users')
         {
             client.listUser = receivedData.content;
-            // console.table(client.listUser);   
+            // console.table(client.inforUser);
         }
         if (receivedData.title === 'invite to play')
             notice_invitation_play(receivedData);

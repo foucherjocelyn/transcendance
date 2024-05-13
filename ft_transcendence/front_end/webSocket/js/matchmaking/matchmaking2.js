@@ -1,6 +1,4 @@
 const { webSocket } = require("../webSocket/webSocket");
-const { send_data } = require("../webSocket/dataToClient");
-const { define_match_in_list_find_match } = require("./matchmaking");
 
 function    compare_type_match_in_list_find(match, match2)
 {

@@ -15,18 +15,9 @@ function    setup_size_invitation_play_panel()
     invitationPlayPanel.style.width = `${screen.width / 4}px`;
 }
 
-function    accept_invite_to_play()
-{
-}
-
-function    invitation_to_play()
+export function    invitation_to_play()
 {
     setup_size_invitation_play_layer();
     setup_size_invitation_play_panel();
     get_sign_buttons_in_invitation_play_layer();
 }
-
-export {
-    invitation_to_play,
-    accept_invite_to_play
-};

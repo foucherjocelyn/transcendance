@@ -13,9 +13,9 @@ function    add_player_mode_offline_random(button, clickCount, index)
 
     let player = undefined;
     if (clickCount === 1)
-        player = new inforPlayer(42, 'AI ' + (index + 1), "../../img/avatar/AI.png", 42, 'AI');
+        player = new inforPlayer('#42', 'AI ' + (index + 1), "../../img/avatar/AI.png", 42, 'AI');
     else if (clickCount === 2)
-        player = new inforPlayer(42, 'Player ' + (index + 1), "../../img/avatar/avatar2.png", 42, 'player');
+        player = new inforPlayer('#42', 'Player ' + (index + 1), "../../img/avatar/avatar2.png", 42, 'player');
     else
         player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
 
@@ -46,7 +46,7 @@ function    add_player_mode_friends(button, clickCount, index)
     let player = undefined;
     if (clickCount === 1)
     {
-        player = new inforPlayer(42, 'AI ' + (index + 1), "../../img/avatar/AI.png", 42, 'AI');
+        player = new inforPlayer('#42', 'AI ' + (index + 1), "../../img/avatar/AI.png", 42, 'AI');
     }
     else
     {
