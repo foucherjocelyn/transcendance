@@ -1,9 +1,18 @@
-import { getCookie } from "../authentication/auth_cookie.js";
 import { getListFriendInvitationsReceived, updateFriendInviteStatus } from "../backend_operation/friend_invite.js";
 import { getListNotifications, markNotificationAsRead, postNotification } from "../backend_operation/notification.js";
 import { client, dataToServer, userMessages } from "../client/client.js";
 import { renderFriendList } from "./friend-list.js";
 import { getListFriends } from "./friend-list.js";
+
+const renderNotificationCount = async (count = 0) => {
+    const notificationCountElem = document.getElementById("c-notification-count");
+    if (count === 0) {
+        notificationCountElem.classList.add("hidden");
+    } else {
+        notificationCountElem.innerText = count;
+        notificationCountElem.classList.remove("hidden");
+    }
+}
 
 const removeFriendInvite = (id) => {
     const notificationsDiv = document.getElementById("c-notifications-window");
@@ -11,6 +20,7 @@ const removeFriendInvite = (id) => {
     document.querySelector("#c-notifications-window > .c-close-button").addEventListener("click", () => {
         notificationsDiv.classList.add("hidden");
     });
+    renderNotifications();
 };
 
 const friendInviteHasBeenAccepted = (sender) => {
@@ -67,6 +77,11 @@ const renderNotifications = async () => {
     const listNotifications = await getListNotifications();
     const notificationsListElem = document.getElementById("c-notifications-list");
     const listUnreadNotifications = listNotifications.filter(notification => !notification.isRead);
+    const listOfFriendInvitations = await getListFriendInvitationsReceived();
+    const listOfPendingFriendInvitations = listOfFriendInvitations.filter(invitation => invitation.status === "pending");
+
+    const notificationCount = listUnreadNotifications.length + listOfPendingFriendInvitations.length;
+    renderNotificationCount(notificationCount);
     listUnreadNotifications.forEach(notification => {
         notificationsListElem.insertAdjacentHTML("beforeend", `<div id="notification-${notification.id}" class="notification">
                     <p class="notification-content">${notification.content}</p>
@@ -82,12 +97,8 @@ const renderNotifications = async () => {
             });
         });
     })
-    const listOfFriendInvitations = await getListFriendInvitationsReceived();
-    console.log(listOfFriendInvitations);
-    listOfFriendInvitations.forEach(invitation => {
-        if (invitation.status === "pending") {
+    listOfPendingFriendInvitations.forEach(invitation => {
             receiveFriendInvite(invitation.id, invitation.sender_username);
-        }
     });
 };
 
@@ -113,4 +124,4 @@ const receiveNotification = (receivedData) => {
     }
 };
 
-export { showNotifications, receiveNotification };
+export { showNotifications, receiveNotification, renderNotifications };

@@ -37,6 +37,19 @@ body {
     justify-content: space-between;
 }
 
+#c-notification-count {
+    position: absolute;
+    left: 45px;
+    bottom: 10px;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 10px;
+    text-align: center;
+    width: fit-content;
+    padding: 2px;
+    min-width: 12px;
+}
+
 #c-find-new-friend-window {
     position: absolute;
     top: 20%;
@@ -116,7 +129,7 @@ body {
 
 .c-invite-match-button {
     background-image: url(../../img/chat/challenge.png);
-	background-size: 100% 100%;
+    background-size: 100% 100%;
 }
 
 #c-friends-div {
@@ -149,19 +162,26 @@ body {
     bottom: 20px;
 }
 
-#c-show-notifications-button, #c-add-new-friend-button, #c-hide-friend-list, .c-invite-match-button {
-	display: inline-block;
-	position: relative;
-	margin-top: 3%;
-	width: 30px;
-	height: 30px;
-	background-color: transparent;
-	border: none;
+#c-show-notifications {
+    display: inline-block;
+}
+
+#c-show-notifications-button,
+#c-add-new-friend-button,
+#c-hide-friend-list,
+.c-invite-match-button {
+    display: inline-block;
+    position: relative;
+    margin-top: 3%;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
 }
 
 #chat_upperpanel {
-	position: fixed;
-	z-index: 300;
+    position: fixed;
+    z-index: 300;
     top: 0;
     right: 0;
     background-color: #333;
@@ -172,43 +192,43 @@ body {
     min-width: var(--chat-list-width);
     overflow: auto;
     box-sizing: border-box;
-	border-radius: 0 0 20px 20px;
+    border-radius: 0 0 20px 20px;
 }
 
 #c-show-notifications-button {
-	background-image: url(../../img/chat/bell.png);
-	background-size: 100% 100%;
-	left: 0%;
+    background-image: url(../../img/chat/bell.png);
+    background-size: 100% 100%;
+    left: 0%;
 }
 
 #c-show-notifications-button:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #c-add-new-friend-button {
-	background-image: url(../../img/chat/add.png);
-	background-size: 100% 100%;
-	left: 3%;
+    background-image: url(../../img/chat/add.png);
+    background-size: 100% 100%;
+    left: 3%;
 }
 
 #c-add-new-friend-button:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #c-hide-friend-list {
-	background-image: url(../../img/chat/minimize.png);
-	background-size: 100% 100%;
-	left: 60%;
+    background-image: url(../../img/chat/minimize.png);
+    background-size: 100% 100%;
+    left: 60%;
 }
 
 #c-hide-friend-list:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .chat-box {
     position: relative;
     margin-left: auto;
-    margin-right:35%;
+    margin-right: 35%;
     /*right: var(--chat-list-width);*/
     height: 20%;
     width: 320px;
@@ -296,4 +316,3 @@ body {
     border-radius: 20px;
     cursor: pointer;
 }
-
