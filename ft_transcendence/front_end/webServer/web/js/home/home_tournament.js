@@ -48,11 +48,15 @@ async function drawTournament(callback)
 		</div>
 `;
 	let tour_list = await getTournamentsList();
+
+	console.log("test--------");
+	console.log(tour_list);
 	if (tour_list != undefined)
 	{
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
+	console.log("test--------");
 	upperPanelEventListener("tournament");
 	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
 	callback(true);
@@ -72,6 +76,7 @@ function	 addLabel(tour_list, index)
 //	label_index++;
 	//	console.log(`adding new label: ${label_index}`);
 
+	console.table(tour_list[0]);
 	let	player_nb = tourPlayerCount(tour_list[index]);
 	let newLabel;
 	newLabel = `<tr id="t_tourlabel${index}" class="t_tourlabel">

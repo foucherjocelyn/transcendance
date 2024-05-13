@@ -1,0 +1,22 @@
+@url = http://127.0.0.1:8000/api/v1
+
+POST {{url}}/tournament/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0cmFuc2NlbmRlbmNlIiwidXNlcklkIjoyLCJpYXQiOjE3MTU2MDQzMzgsImV4cCI6MTcxNTY5MDczOH0.J60ZJzG78hu59ddYLUXf8RXLsaULn-VkjRNUIToqMxtgbPl-5cbSilSoUOkEKe0D1iWQFEVWih3qQmOmI8hz0FZ74SFht5ImOmJTTNPkfeVhz1TIlH_UWYBKgpSkxX6lZN4A-M3kuIr34dLIaTKTdfsn8PVqtzjnWYr7nNL8q5n8lgkg46n-FrGWCsgq2GWmSMp5dHBNNamwhDn_dbLtHWbImaGY08lT2wAFYUbtAezRhP3IaW5bI7K__wv8yHpcwB2v_6IB7atFXAYeI8S6HavJ5g57UFpPGn-hw3elP33Eh6DXnQQaxJfWBiWyJpDtkq7mOSyCrcLDAs962vEwLQ
+
+{
+    "name": "Happy 05",
+    "description": "Happy 05",
+    "start_date": "2024-05-01",
+    "end_date": "2024-05-30"
+}
+
+###
+
+POST {{url}}/token
+Content-Type: application/json
+
+{
+    "username": "datran",
+    "password": "datran"
+}

@@ -32,7 +32,7 @@ export async function uploadAvatar(formData)
 
 export async function getAvatar(elemImageId)
 {
-//	console.log("-getAvatar starting");
+	console.log("-getAvatar starting");
 	let f_token = getCookie("token");
 
 	try {

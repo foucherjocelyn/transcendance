@@ -30,8 +30,11 @@ export async function	getTournamentsList()
 				  console.log(data);
 				  if (data !== undefined)
 				  {
+					  console.log("-=-=-===========data is workable");
 					  return (data);
 				  }
+				  else
+					  console.log("data is undefined==============----");
 			  })
 		  .catch(error => {
 			  console.error("getTournamentsList: ", error);
