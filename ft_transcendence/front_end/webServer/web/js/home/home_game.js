@@ -5,7 +5,6 @@ import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { create_match, join_the_tournament } from "../createMatch/createMatch.js";
-import { get_sign_start_create_match_button } from "../createMatch/getSignButtonsInCreateMatch.js";
 
 export function noticeInvitePlayer() {
     return (

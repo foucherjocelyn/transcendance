@@ -4,7 +4,7 @@ export async function getUserById(user_id) {
 	let f_token = getCookie("token");
 
 	if (f_token === null || f_token === "") {
-		console.log("Token is null");
+		//console.log("Token is null");
 		return;
 	}
 	try {
@@ -31,7 +31,7 @@ export async function getUserIdByUsername(username) {
 	let f_token = getCookie("token");
 
 	if (f_token === null || f_token === "") {
-		console.log("Token is null");
+		//console.log("Token is null");
 		return;
 	}
 	try {
