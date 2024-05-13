@@ -1,9 +1,8 @@
 import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { noticeInvitePlayer, to_game } from "./home_game.js";
+import { noticeInvitePlayer } from "./home_game.js";
 import { loadChat } from "../chat/load-chat.js";
-import { getTournamentsList, createTournament, joinTournament } from "../backend_operation/tournament.js";
-import { authCheck } from "../authentication/auth_main.js"
+import { getTournamentsList, joinTournament } from "../backend_operation/tournament.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
@@ -32,7 +31,6 @@ async function drawTournament(callback)
                 <th scope="col">Match Name</th>
 				<th scope="col">Player</th>
                 <th scope="col">Time</th>
-                <th scope="col">Rating</th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
@@ -49,14 +47,11 @@ async function drawTournament(callback)
 `;
 	let tour_list = await getTournamentsList();
 
-	console.log("test--------");
-	console.log(tour_list);
 	if (tour_list != undefined)
 	{
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
-	console.log("test--------");
 	upperPanelEventListener("tournament");
 	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
 	callback(true);
@@ -76,14 +71,13 @@ function	 addLabel(tour_list, index)
 //	label_index++;
 	//	console.log(`adding new label: ${label_index}`);
 
-	console.table(tour_list[0]);
+	//console.table(tour_list[0]);
 	let	player_nb = tourPlayerCount(tour_list[index]);
 	let newLabel;
 	newLabel = `<tr id="t_tourlabel${index}" class="t_tourlabel">
 <th scope="row">${tour_list[index].name}</th>
-<td>${player_nb}</td>
-<td>${tour_list[index].start_date}/${tour_list[index].start_end}</td>
-<td>tour_rating</td>
+<td>${player_nb}/${max_players}</td>
+<td>${tour_list[index].start_date}/${tour_list[index].end_date}</td>
 <td>${tour_list[index].status}</td>
 <button id="t_joinbutton">Join</button>
 </tr>`;
