@@ -1,13 +1,12 @@
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { loadSpinner } from "../authentication/spinner.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
-import { to_tournament } from "./home_tournament.js";
-import { to_profilePage } from "./home_changeprofile.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
-import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
+import { to_connectForm } from "../authentication/auth_connect.js"
+import { getMyInfo } from "../backend_operation/get_user_info.js";
 
 function	 newLabel()//
 {
@@ -74,8 +73,14 @@ ${noticeInvitePlayer()}
 	callback(false);
 }
 
-export function to_homePage(nohistory = "false")
+export async function to_homePage(nohistory = "false")
 {
+	await getMyInfo();
+	if (!getCookie("username"))
+	{
+		to_connectForm();
+		return ;
+	}
 	if (nohistory === "false")
 		history.pushState( { url: "homepage" }, "", "#homepage");
  	updateMyInfo();

@@ -1,11 +1,12 @@
 import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { to_homePage } from "./home_homeboard.js";
 import { noticeInvitePlayer, to_game } from "./home_game.js";
-import { to_profilePage } from "./home_changeprofile.js";
-import { classy_signOut } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
 import { getTournamentsList } from "../backend_operation/tournament.js";
+import { authCheck } from "../authentication/auth_main.js"
+import { getMyInfo } from "../backend_operation/get_user_info.js";
+import { getCookie } from "../authentication/auth_cookie.js";
+import { to_connectForm } from "../authentication/auth_connect.js";
 
 async function drawTournament(callback)
 {
@@ -94,8 +95,14 @@ function 	searchLabel()
 	}
 }
 
-export function to_tournament(nohistory = "false")
+export async function to_tournament(nohistory = "false")
 {
+	await getMyInfo();
+	if (!getCookie("username"))
+	{
+		to_connectForm();
+		return ;
+	}
 	if (nohistory === "false")
 		history.pushState( { url: "tournament" }, "", "#tournament");
 	drawTournament( (result) => {
