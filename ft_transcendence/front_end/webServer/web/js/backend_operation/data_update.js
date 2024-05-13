@@ -32,7 +32,8 @@ export async function updateMyInfo(connectFlag = false) {
 	let info = await getMyInfo();
 
 	client.inforUser = await getUserById(getCookie('id'));
-	client.inforUser.avatarPath = "../img/avatar/avatar_default.png";//temp
+	if (client.inforUser !== undefined)
+		client.inforUser.avatarPath = "../img/avatar/avatar_default.png";//temp
 
 	if (connectFlag) {
 		openSocketClient();
