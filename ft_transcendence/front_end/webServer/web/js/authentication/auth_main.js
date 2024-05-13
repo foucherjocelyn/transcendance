@@ -33,7 +33,7 @@ export function	authCheck()
 //	to_homePage();
 	//	/*
 	updateMyInfo();
-	if (getCookie("status") === "offline" || getCookie("status") == undefined)
+	if (getCookie("status") === "offline" || getCookie("status") == undefined || getCookie("username") === null)
 		document.cookie = "token=; SameSite=Strict"
 	//	getMyInfo();
 //	console.log("The token is [" + getCookie("token") + "]");
