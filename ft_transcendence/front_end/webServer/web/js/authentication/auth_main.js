@@ -30,15 +30,7 @@ export function	authCheck()
 {
 	console.log("---authCheck(): Checking if user is connected");
 	console.log("The user is " + getCookie("status"));
-//	to_homePage();
-	//	/*
 	updateMyInfo();
-	/*
-	if (getCookie("status") === "offline" || getCookie("status") == undefined || getCookie("username") === null)
-		document.cookie = "token=; SameSite=Strict"
-*/
-	//	getMyInfo();
-//	console.log("The token is [" + getCookie("token") + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);
@@ -50,7 +42,6 @@ export function	authCheck()
 		to_connectForm();
 		return ("false");
 	}
-//*/
 	console.log("---");
 	return ("false");
 }

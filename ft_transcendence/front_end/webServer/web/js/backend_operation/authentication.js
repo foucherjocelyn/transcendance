@@ -1,5 +1,5 @@
 import { notice } from "../authentication/auth_main.js";
-import { getCookie } from "../authentication/auth_cookie.js";
+import { deleteAllCookie, getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_homePage } from "../home/home_homeboard.js";
 import { client, dataToServer } from "../client/client.js";
@@ -35,7 +35,7 @@ export async function postUser(new_user) {
 	console.log("-Registering new user into database");
 	console.log(new_user);
 	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/auth/register", {
+		const response = await fetch("http://127.0.0.1:8000/api/v1/auth/register", {
 			method: "POST",
 			body: JSON.stringify(new_user),
 			headers: {
@@ -44,15 +44,15 @@ export async function postUser(new_user) {
 			}
 		})
 		console.log("status :");
-		console.log(r.status);
-		if (!r.ok) {
+		console.log(response.status);
+		if (!response.ok) {
 			notice("Given information invalid (mail or username is already taken)", 2, "#fc2403");
 			console.log("Client error");
 			throw new Error("fetch POST postUser");
 		}
 		notice("Your account was succesfully created", 2, "#0c9605");
 		console.log("-");
-		return (r);
+		return (response);
 	}
 	catch (error) {
 		console.error("postUser :", error);
@@ -73,7 +73,7 @@ export async function signIn(connect_user) {
 	console.log("-Connecting user: ");
 	console.log(connect_user);
 	try {
-		const r = await fetch(`http://127.0.0.1:8000/api/v1/auth/login`, {
+		const response = await fetch(`http://127.0.0.1:8000/api/v1/auth/login`, {
 			method: "POST",
 			body: JSON.stringify(connect_user),
 			headers: {
@@ -82,17 +82,17 @@ export async function signIn(connect_user) {
 			}
 		})
 		console.log("response =");
-		console.log(r);
-		if (r.ok) {
+		console.log(response);
+		if (response.ok) {
 			notice("Connection successful", 1, "#0c9605");
 			document.cookie = `username=${connect_user.username}; SameSite=Strict`;
 		}
-		else if (!r.ok) {
+		else if (!response.ok) {
 			notice("One of the given information is invalid", 1, "#D20000");
 			console.log("Your password or username is wrong");
 			return;
 		}
-		const data = await r.json();
+		const data = await response.json();
 		document.cookie = `refresh=${data.refresh}; SameSite=Strict`;
 		document.cookie = `token=${data.access}; SameSite=Strict`;
 
@@ -111,7 +111,7 @@ export async function signIn(connect_user) {
 	} catch (error) {
 		console.error("Sign in: ", error);
 	}
-	//	return (r);
+	//	return (response);
 }
 
 export async function signOut() {
@@ -121,7 +121,7 @@ export async function signOut() {
 		return;
 	}
 	try {
-		const r = await fetch(`http://127.0.0.1:8000/api/v1/auth/logout`, {
+		const response = await fetch(`http://127.0.0.1:8000/api/v1/auth/logout`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${getCookie("token")}`
@@ -135,7 +135,8 @@ export async function signOut() {
 		}
 		console.log("logout status: " + response.status);
 		notice("You are now disconnected", 1, "#0c9605");
-		updateMyInfo();
+		//updateMyInfo();
+		deleteAllCookie();
 		//			  console.log("Your status [" + getCookie("status") + "]");
 		closeSocketClient();
 		to_connectForm();

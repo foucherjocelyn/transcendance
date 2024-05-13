@@ -29,7 +29,7 @@ export async function dataUpdate(newInfo) {
 
 
 export async function updateMyInfo(connectFlag = false) {
-	let info = await getMyInfo();
+	await getMyInfo();
 
 	client.inforUser = await getUserById(getCookie('id'));
 	if (client.inforUser !== undefined)
@@ -38,5 +38,4 @@ export async function updateMyInfo(connectFlag = false) {
 	if (connectFlag) {
 		openSocketClient();
 	}
-	return ("true");
 }
