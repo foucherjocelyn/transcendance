@@ -91,6 +91,7 @@ function    setup_size_game_layer()
 
 function    setup_game_layer()
 {
+    console.log('start game');
     match.timeStart = get_time();
     match.dateStart = get_date();
 

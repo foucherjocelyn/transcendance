@@ -124,7 +124,7 @@ export function count_empty_place()
     return nbrPlace;
 }
 
-function    get_sign_start_create_match_button()
+export function    get_sign_start_create_match_button()
 {
     const   button = document.getElementById('startCreateMatchButton');
     let clickCount = 0;
@@ -132,6 +132,7 @@ function    get_sign_start_create_match_button()
     button.onclick = () => {
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
         clickCount++;
+
 
         // Check if there are more than 2 players in the match
         if (count_empty_place() === 3)

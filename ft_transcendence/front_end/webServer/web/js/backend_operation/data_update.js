@@ -47,11 +47,12 @@ export async function	updateMyInfo(connectFlag = false)
 			user.id = '#' + getCookie('id');
     		user.name = getCookie('username');
     		user.level = getCookie("level");
-    		user.avatar = getCookie("avatar");//
+    		user.avatar = '../img/avatar/avatar_default.png';//getCookie("avatar");//
+//			console.log("from updateMyInfo: path of avatar ============== " + user.avatar);
 			//			if (getCookie("token"))//recheck secu
 			//				avatar_path = await getAvatar();
 			//	if (avatar_path === null || avatar_path === undefined)
-			//		avatar_path = '../img/avatar/avatar_default.png';
+			//avatar_path = '../img/avatar/avatar_default.png';
 			//user.avatar = avatar_path;//
     		user.status = 'connection';
 			client.inforUser = user;
