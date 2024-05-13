@@ -40,18 +40,19 @@ export async function dataUpdate(newInfo)
 
 export async function	updateMyInfo(connectFlag = false)
 {
-	let	avatar_path;
-	if (getCookie("token"))
-		avatar_path = await getAvatar();
-	if (avatar_path === null || avatar_path === undefined)
-		avatar_path = '../img/avatar/avatar_default.png';
+//	let	avatar_path;
 	let info = getMyInfo();
 	info.then(() =>
 		{
 			user.id = '#' + getCookie('id');
     		user.name = getCookie('username');
     		user.level = getCookie("level");
-    		user.avatar = avatar_path;
+    		user.avatar = getCookie("avatar");//
+			//			if (getCookie("token"))//recheck secu
+			//				avatar_path = await getAvatar();
+			//	if (avatar_path === null || avatar_path === undefined)
+			//		avatar_path = '../img/avatar/avatar_default.png';
+			//user.avatar = avatar_path;//
     		user.status = 'connection';
 			client.inforUser = user;
 			if (connectFlag)
@@ -59,5 +60,6 @@ export async function	updateMyInfo(connectFlag = false)
 				openSocketClient();
 				// match_default();
 			}
-	});
+			return ("true");
+		});
 }

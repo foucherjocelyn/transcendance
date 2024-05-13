@@ -33,21 +33,26 @@ export function	authCheck()
 //	to_homePage();
 	//	/*
 	updateMyInfo();
+	/*
 	if (getCookie("status") === "offline" || getCookie("status") == undefined || getCookie("username") === null)
 		document.cookie = "token=; SameSite=Strict"
+*/
 	//	getMyInfo();
 //	console.log("The token is [" + getCookie("token") + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);
 		to_homePage();
+		return ("true");
 	}
 	else
 	{
 		to_connectForm();
+		return ("false");
 	}
 //*/
 	console.log("---");
+	return ("false");
 }
 
 const urlRoutes = {

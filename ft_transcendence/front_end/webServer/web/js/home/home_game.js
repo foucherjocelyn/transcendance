@@ -1,11 +1,10 @@
 import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { to_homePage } from "./home_homeboard.js";
-import { to_tournament } from "./home_tournament.js";
-import { to_profilePage } from "./home_changeprofile.js";
-import { classy_signOut } from "../authentication/auth_connect.js";
 import { create_match } from "../createMatch/createMatch.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
+import { getMyInfo } from "../backend_operation/get_user_info.js";
+import { getCookie } from "../authentication/auth_cookie.js";
+import { to_connectForm } from "../authentication/auth_connect.js";
 
 export function noticeInvitePlayer() {
     return (
@@ -463,7 +462,13 @@ export function gameEventListener() {
     });
 }
 
-export function to_game(nohistory = "false") {
+export async function to_game(nohistory = "false") {
+    await getMyInfo();
+	if (!getCookie("username"))
+	{
+		to_connectForm();
+		return ;
+	}
     if (nohistory === "false")
         history.pushState({ url: "game" }, "", "#game");
     updateMyInfo();

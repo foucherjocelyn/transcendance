@@ -8,7 +8,7 @@ import { noticeInvitePlayer, to_game } from "./home_game.js";
 import { to_tournament } from "./home_tournament.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
-import { classy_signOut } from "../authentication/auth_connect.js";
+import { classy_signOut, to_connectForm } from "../authentication/auth_connect.js";
 import { loadChat } from "../chat/load-chat.js";
 
 function	enableInputReq(event, element_name)
@@ -133,11 +133,7 @@ async function	drawProfilePage(callback)
 ${noticeInvitePlayer()}
 </div>
 `;
-
-	document.getElementById("h_to_home").addEventListener("click", () => { to_homePage(); });
-	document.getElementById("h_to_game").addEventListener("click", () => { to_game(); });
-	document.getElementById("h_to_tournament").addEventListener("click", to_tournament);
-	document.getElementById("h_logout").addEventListener("click", () => { classy_signOut("h_myprofile"); });
+	upperPanelEventListener("tournament");
 	document.getElementById("h_changeinfo").addEventListener("click", () => { to_changeInfo(); });
 	document.getElementById("h_changeavatar").addEventListener("click", () =>
 		{
@@ -153,6 +149,12 @@ ${noticeInvitePlayer()}
 
 export async function to_profilePage(nohistory = "false")
 {
+	await getMyInfo();
+	if (!getCookie("username"))
+	{
+		to_connectForm();
+		return ;
+	}
 	if (nohistory === "false")
 		history.pushState( { url: "configprofile" }, "", "#config_profile");
 	drawProfilePage( (result) =>
