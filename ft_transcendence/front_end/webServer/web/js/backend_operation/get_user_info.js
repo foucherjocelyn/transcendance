@@ -113,7 +113,7 @@ export async function getListUsers() {
 			console.log("getListUsers: Client/Server error");
 			return;
 		}
-		const data = response.json();
+		const data = await response.json();
 		console.log("--");
 		return data;
 	} catch (error) {
@@ -126,22 +126,25 @@ export async function getListUsers() {
 export const getListFriends = async () => {
 	let f_token = getCookie("token");
 
-	try {
-		const reponse = await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
-			method: "GET",
-			headers: {
-				"Accept": "application/json",
-				"Content-type": "application/json",
-				"Authorization": `Bearer ${f_token}`
-			}
-		})
-		if (!response.ok) {
-			console.log("getListFriends: Client/Server error");
-			return;
-		}
-		const data = await response.json();
-		return data;
-	} catch (error) {
-		console.error("getListFriends: ", error);
-	}
+	return await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then (response => {
+            if (!response.ok) {
+                console.log("getListFriends: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then (data => {
+            return data;
+        })
+        .catch(error => {
+            console.error("getListFriends: ", error);
+        });
 }
