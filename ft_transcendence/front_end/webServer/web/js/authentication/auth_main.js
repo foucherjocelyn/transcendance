@@ -84,6 +84,8 @@ window.onpopstate = function(event) {
 			urlRoutes[url]();
 		}
 	}
+	else
+		authCheck();
 };
 
 /*
