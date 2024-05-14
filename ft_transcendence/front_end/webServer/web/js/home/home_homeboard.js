@@ -32,7 +32,7 @@ function	drawHomePage(callback)
 	<div id="h_homepage" class="hide">
 		<div id="h_player_bar">
 				<img id="hpb_player_img" src="../../img/avatar/avatar_default.png">
-				<p id="hpb_username">${getCookie("username")}</p>
+				<p id="hpb_username"></p>
 				<p id="hpb_level">Level: ${getCookie("level")}</p>
       </div>
 			<div id="h_scoreboard">
@@ -57,6 +57,7 @@ ${noticeInvitePlayer()}
 </div>
 `;
 
+	document.getElementById("hpb_username").textContent = getCookie("username");
 	//load players scoreboard
 //	console.log("loading player list");
 //	getUserList();

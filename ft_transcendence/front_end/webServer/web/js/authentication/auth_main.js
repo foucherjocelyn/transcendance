@@ -26,6 +26,22 @@ export function notice(str, time, color)
 		}, 1000);
 }
 
+function checkAddress()
+{
+	let	url = window.location.href;
+
+	console.log("here---------------");
+	console.log(url);
+	let	pagename = url.split("#")[1];
+//	console.log(pagename);
+	let found = Object.keys(urlRoutes).includes(pagename);
+//	console.log("found = " + found);
+	if (found)
+		urlRoutes[pagename]();
+	else
+		to_homePage();
+}
+
 export function	authCheck()
 {
 	console.log("---authCheck(): Checking if user is connected");
@@ -34,7 +50,8 @@ export function	authCheck()
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);
-		to_homePage();
+//		to_homePage();
+		checkAddress();
 		return ("true");
 	}
 	else
@@ -67,6 +84,8 @@ window.onpopstate = function(event) {
 			urlRoutes[url]();
 		}
 	}
+	else
+		authCheck();
 };
 
 /*
