@@ -27,6 +27,7 @@ from .configs import app
 
 # Load config file
 SECRET_KEY = app["SECRET_KEY"]
+DEBUG = app["DEBUG"]
 WEBSOCKET_TOKEN = app["WEBSOCKET_TOKEN"]
 POSTGRES_DB = app["POSTGRES_DB"]
 POSTGRES_USER = app["POSTGRES_USER"]
@@ -42,11 +43,9 @@ SSL_CERTIFICATE_KEY = app["SSL_CERTIFICATE_KEY"]
 isDev = False
 
 if isDev:
-    DEBUG = app["dev"]["DEBUG"]
     POSTGRES_HOST = app["dev"]["POSTGRES_HOST"]
     DATABASE_URL = app["dev"]["DATABASE_URL"]
 else:
-    DEBUG = app["prod"]["DEBUG"]
     POSTGRES_HOST = app["prod"]["POSTGRES_HOST"]
     DATABASE_URL = app["prod"]["DATABASE_URL"]
 
