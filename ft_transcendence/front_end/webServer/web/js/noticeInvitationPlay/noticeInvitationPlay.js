@@ -19,8 +19,7 @@ function    get_sign_reject_invitation_play(user)
 {
     const   button = document.getElementById('rejectInvitationPlayButton');
     button.onclick = () => {
-
-        const  sendData = new dataToServer('reject invitation to play', "Sorry another time, I'm busy!", client.inforUser, user);
+        const  sendData = new dataToServer('reponse invitation to play', "Sorry another time, I'm busy!", client.inforUser, user);
         client.socket.send(JSON.stringify(sendData));
 
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
@@ -58,7 +57,7 @@ function    notice_invitation_play(data)
 
     setup_size_notice_invitation_play_layer();
     (data.title !== 'warning') ?
-    set_content_notive_invitation_play(data.from.avatar, data.from.id, data.content) :
+    set_content_notive_invitation_play(data.from.avatarPath, data.from.id, data.content) :
     set_content_notive_invitation_play(data.from, 'Pong Game', data.content);
 
     get_sign_reject_invitation_play(data.from);

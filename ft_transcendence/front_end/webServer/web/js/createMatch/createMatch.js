@@ -13,6 +13,7 @@ export class pMatch
             this.mode = undefined,
             this.listUser = [],
             this.listPlayer = [],
+            this.listInvite = [],
             this.result = [],
             this.timeStart = undefined,
             this.timeStop = undefined,

@@ -36,32 +36,29 @@ export function noticeInvitePlayer() {
 
 function drawGame(callback) {
     document.querySelector("#frontpage").outerHTML =
-        `
-        <div id="frontpage">
-		${loadSpinner()}
-		${upperPanel()}
-    	${noticeInvitePlayer()}
+    `
+    <div id="frontpage">
 
+        ${loadSpinner()}
+        ${upperPanel()}
 
-<!--	Choose game mode		-->
-		<div id="g_choose_mode">
-		<button id="g_rankedmatch">Ranked Match</button>
-		<br>
-		<button id="g_creatematch">Create a match</button>
-		<br>
-		<button id="g_localmatch">Local game</button>
-		</div>
+        <!--	Choose game mode		-->
+        <div id="g_choose_mode">
+            <button id="g_rankedmatch">Ranked Match</button>
+        <br>
+            <button id="g_creatematch">Create a match</button>
+        <br>
+            <button id="g_localmatch">Local game</button>
+        </div>
 
-    <div id="g_match_html" class="hide">
+        <div id="g_match_html" class="hide"></div>
+        <div class="r_successinfo hide"></div>
 
-    <div>
-		<div class="r_successinfo hide"></div>
-	</div>
-`;
+        ${noticeInvitePlayer()}
+        
+    </div>
+    `;
 	upperPanelEventListener("game");
-    // document.getElementById("cancelCreateMatchButton").addEventListener("click", () =>
-    //{ document.getElementById("h_upperpanel").classList.remove("hide");
-    //});
     callback(true);
 }
 

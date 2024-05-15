@@ -6,6 +6,8 @@ export function invitationPlayLayerHTML()
     `
     <div id="frontpage">
 
+        ${noticeInvitePlayer()}
+
         <!-------------------- Invitation play Layer -------------------->
         <div id="invitationPlayLayer">
 

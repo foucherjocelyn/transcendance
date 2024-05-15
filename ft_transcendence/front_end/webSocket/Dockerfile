@@ -21,7 +21,7 @@ RUN npm init -y && \
     npm install -y websocket
 
 # Open port
-EXPOSE	4242
+EXPOSE	5555
 
 # Start web socket
 CMD	["node", "./src/js/webSocket/webSocket.js"]

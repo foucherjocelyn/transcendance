@@ -4,7 +4,7 @@ LABEL	maintainer="xuluu <xuluu@student.42.fr>"
 
 # Install npm, openssl
 RUN	apt-get update -y && \
-	apt-get install -y npm openssl tar
+	apt-get install -y npm openssl
 
 # Create webServer directory
 RUN	mkdir ./webServer

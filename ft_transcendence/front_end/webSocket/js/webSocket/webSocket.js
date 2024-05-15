@@ -34,6 +34,8 @@ function    get_data_from_client(data, socket)
 		disconnect(socket);
     else if (data.title === 'update match')
         update_match(data.from, data.content, data.title);
+    else if (data.title === 'invite to play')
+        request_invitation_to_play(data);
     else if (data.title === 'accept invitation to play')
         accept_invitation_to_play(data);
     else if (data.title === 'leave match')
@@ -93,7 +95,8 @@ function    setup_web_socket()
 setup_web_socket();
 
 module.exports = {
-    webSocket
+    webSocket,
+    update_user
 };
 
 const { add_new_connection, disconnect } = require('./addNewConnection');
@@ -101,4 +104,5 @@ const { send_data } = require('./dataToClient');
 const { update_match } = require('./updateMatch');
 const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
 const { sign_start_game } = require('./signStartGame');
+const { request_invitation_to_play } = require('./invitationToPlay');
 
