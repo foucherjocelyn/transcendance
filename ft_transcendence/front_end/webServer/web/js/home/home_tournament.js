@@ -47,8 +47,24 @@ async function drawTournament(callback)
 `;
 	let tour_list = await getTournamentsList();
 
+	//temp tournament object
+	tour_list = {
+		0: {
+			name: "test_tournament",
+			max_players: "10",
+			start_date: "07/07",
+			end_date: "08/07",
+			status: "preparing",
+			player_usernames: ["imaplayer"]
+		},
+		length: 1
+	};
+	//temp
+	console.log("tour_list is undefined");
 	if (tour_list != undefined)
 	{
+		console.log("tour_list is defined");
+		console.log(tour_list.length);
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
@@ -57,32 +73,24 @@ async function drawTournament(callback)
 	callback(true);
 }
 
-export function	tourPlayerCount(tour_obj)
-{
-	let	player_nb = 0;
-
-	while (tour_obj.player_usernames[player_nb])
-		player_nb++;
-	return (player_nb);
-}
-
 function	 addLabel(tour_list, index)
 {
 //	label_index++;
 	//	console.log(`adding new label: ${label_index}`);
 
 	//console.table(tour_list[0]);
-	let	player_nb = tourPlayerCount(tour_list[index]);
+	let	player_nb = tour_list[index].player_usernames.length;
 	let newLabel;
-	newLabel = `<tr id="t_tourlabel${index}" class="t_tourlabel">
+	newLabel = `<tr id="t_tourlabel${index}">
 <th scope="row">${tour_list[index].name}</th>
 <td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${tour_list[index].start_date}/${tour_list[index].end_date}</td>
 <td>${tour_list[index].status}</td>
-<button id="t_joinbutton">Join</button>
+<td><button id="t_joinbutton${index}">Join</button></td>
+<td><button id="t_infobutton${index}"></button></td>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById("t_joinbutton").addEventListener("click", () => { joinTournament(`tour_obj.id`); });
+	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { joinTournament(`tour_obj.id`); });
 }
 
 function 	searchLabel()

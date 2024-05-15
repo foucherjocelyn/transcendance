@@ -93,7 +93,7 @@
 
 #htb_filter th {
 	width: 25%;
-	resize: horizontal;
+	resize: none;
 	overflow: hidden;
 }
 
@@ -106,9 +106,19 @@
 	height: 100%;
 }
 
-#t_joinbutton {
-	display: inline-block;
+[id^="t_joinbutton"] {
+	background-image: url(../../img/background/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
 	width: 80px;
+	height: 1.5em;
+}
+
+[id^="t_infobutton"] {
+	background-image: url(../../img/background/bar.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 1.5em;
 	height: 1.5em;
 }
 
