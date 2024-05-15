@@ -2,8 +2,7 @@ FROM python:3.12-slim-bullseye
 
 # Install required packages for psycopg2
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev
+    build-essential  libpq-dev openssl
 
 RUN mkdir -p /etc/backend/ssl
 # Install pipenv
