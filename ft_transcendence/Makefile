@@ -24,11 +24,14 @@ back_logs:
 db_logs:
 	docker compose logs -f db
 
-socket_logs:
+websocket_logs:
 	docker compose logs -f websocket
 
-web_logs:
+webserver_logs:
 	docker compose logs -f webserver
+
+nginxback_logs:
+	docker compose logs -f nginx-back
 
 status:
 	docker compose ps
