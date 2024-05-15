@@ -34,6 +34,7 @@ services:
             - "${BACKEND_PORT}:${BACKEND_PORT}"
         volumes:
             - ./ssl:/etc/backend/ssl
+            - ./avatars:/home/backend/src/avatars
         networks:
             - transcendence
     websocket:
@@ -58,6 +59,8 @@ services:
             - .env
         ports:
             - "5500:5500"
+        volumes:
+            - ./avatars:/webServer/web/img/avatars
         networks:
             - transcendence
         restart: always
