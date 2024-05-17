@@ -76,11 +76,11 @@ async function drawTournament(callback)
 function	aliasJoinTournament(tour_obj)
 {
 	//create an alias
-	document.getElementById("h_tournament_board").outerHTML = `
-<div id="h_tournament_page">
+	document.getElementById("h_tournament_page").innerHTML = `
+<div id="h_tournament_aliasjoin">
 	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
 	<input type="submit" class="button-img" type="button" id="tour_inputsend" value="Confirm">
-<button id="tour_inputcancel">Back</button>
+	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
 </div>
 `;
 //	/*Send the following to alias handler
@@ -100,12 +100,12 @@ function	detailsTournament(tour_obj, index)
 	let	player_nb = tour_obj.player_usernames.length;
 	document.getElementById("tour_expanddetails").innerHTML = `
 <div id="tour_detailsbox">
+<button id="tour_details_close"></button>
 <p id="tour_details_name"></p>
 <p id="tour_details_players"></p>
 <p id="tour_details_startdate"></p>
 <p id="tour_details_enddate"></p>
 <p id="tour_details_status"></p>
-<button id="tour_details_close"></button>
 </div>
 `;
 	document.getElementById(`tour_details_name`).textContent = `Name: ${tour_obj.name}`;
