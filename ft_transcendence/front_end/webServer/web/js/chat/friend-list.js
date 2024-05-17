@@ -1,5 +1,7 @@
 import { getListFriends } from "../backend_operation/get_user_info.js";
-import { client, dataToServer } from "../client/client.js";
+import { client } from "../client/client.js";
+import { create_match } from "../createMatch/createMatch.js";
+import { send_invitation_to_play } from "../invitationPlay/displayResultsSearchInvitationPlay.js";
 import { openChatBox } from "./chatbox.js";
 import { renderNotifications } from "./notifications.js";
 
@@ -25,13 +27,13 @@ const renderFriendList = (list) => {
         friendDiv.addEventListener("click", (e) => openChatBox(friendUsername));
         friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
-            // console.log(`invited ${friendUsername} to a match`);
+            
             const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
             if (receiverUser === undefined || receiverUser.status === 'playing game')
                 return ;
             
-            const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, receiverUser);              
-            client.socket.send(JSON.stringify(sendData));
+            create_match("with friends");
+            send_invitation_to_play(receiverUser);
         })
     });
     renderNotifications();

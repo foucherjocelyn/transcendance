@@ -1,4 +1,33 @@
 import { client, dataToServer } from "../client/client.js";
+import { match } from "../createMatch/createMatch.js";
+import { reset_contents_in_invitation_play_layer } from "./getSignButtonsInInvitationPlay.js";
+
+export function check_list_invitation_to_play(user)
+{
+    for (let i = 0; i < match.listInvite.length; i++)
+    {
+        const   check = match.listInvite[i];
+        if (check.id === user.id)
+            return i;
+    }
+    return undefined;
+}
+
+export function send_invitation_to_play(recipient)
+{
+    if (check_list_invitation_to_play(recipient) !== undefined)
+        return ;
+
+    match.listInvite.push(recipient);
+    // console.log('length add: ' + match.listInvite.length);
+
+    // update list invite
+    let sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
+    client.socket.send(JSON.stringify(sendData));
+
+    sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, recipient);
+    client.socket.send(JSON.stringify(sendData));
+}
 
 function    get_sign_invite_to_play_button(user)
 {
@@ -8,11 +37,9 @@ function    get_sign_invite_to_play_button(user)
     for (let i = 0; i < buttons.length; i++)
     {
         const   button = buttons[i];
-
-        button.onclick = () => {
-            const  sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, user[i]);
-            client.socket.send(JSON.stringify(sendData));
-
+        button.onclick = () =>
+        {
+            send_invitation_to_play(user[i]);
             results[i].outerHTML = null;
         }
     }
@@ -46,24 +73,19 @@ function    display_results_search_friends_to_play_on_html(user)
     document.getElementById('resultsSearchInvitationPlayPanel').appendChild(resultsSearchInvitationPlay);
 }
 
-function    display_results_search_friends_to_play(results)
+export async function    display_results_search_friends_to_play(results)
 {
     if (results.length === 0)
         return ;
 
-    console.log('length: ' + results.length);
-    for (let i = 0; i < results.length; i++)
-    {
-        if (i < 10)
-        {
-            const   user = results[i];
-            display_results_search_friends_to_play_on_html(user);
-        }
-    }
+    // delete old results
+    if (document.querySelectorAll('#resultsSearchInvitationPlayPanel > div').length !== 0)
+        await reset_contents_in_invitation_play_layer();
+
+    results.forEach((result, index) => {
+        if (index < 10)
+            display_results_search_friends_to_play_on_html(result);
+    })
 
     get_sign_invite_to_play_button(results);
 }
-
-export {
-    display_results_search_friends_to_play
-};

@@ -173,11 +173,11 @@ function gameSettingsControlPanelHTML()
             <div class="gameSettingInput" id="gameSettingControlPlayer1">
                 <div>
                     <span>Left:</span>
-                    <input type="text" maxlength="1" value="a">
+                    <input type="text" maxlength="1" value="q">
                 </div>
                 <div>
                     <span>Right:</span>
-                    <input type="text" maxlength="1" value="q">
+                    <input type="text" maxlength="1" value="a">
                 </div>
             </div>
 
