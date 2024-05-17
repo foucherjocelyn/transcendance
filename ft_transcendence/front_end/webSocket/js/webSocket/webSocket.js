@@ -24,7 +24,7 @@ function update_user(user) {
 function get_data_from_client(data, socket) {
     data = JSON.parse(data);
 
-    console.log('title: ' + data.title);
+    // console.log('title: ' + data.title);
     if (data.title === 'connection')
         add_new_connection(data, socket);
     else if (data.title === 'disconnect')

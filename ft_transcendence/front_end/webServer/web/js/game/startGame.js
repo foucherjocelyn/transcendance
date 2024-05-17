@@ -89,22 +89,24 @@ function    setup_size_game_layer()
     gameLayer.style.width = `${screen.width}px`;
 }
 
+function    update_match_back_end()
+{
+    console.log('update the informations of match on data');
+}
+
 function    setup_game_layer()
 {
-    console.log('start game');
     match.timeStart = get_time();
     match.dateStart = get_date();
 
     client.inforUser.status = 'playing game';
 
     if (client.inforUser.id === match.listPlayer[0].id)
-    {
-        console.log('update the informations of match on data');
-    }
+        update_match_back_end()
 
     gameLayerHTML();
     pongGame = new formPongGame();
-    pongGame.maxPoint = 1;
+    pongGame.maxPoint = 5;
     pongGame.listPlayer = match.listPlayer;
 
     setup_size_game_layer();
