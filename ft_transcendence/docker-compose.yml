@@ -74,7 +74,6 @@ services:
         env_file:
             - .env
         ports:
-            - "80:80"
             - "443:443"
         volumes:
             - ./ssl:/etc/nginx/ssl
@@ -84,6 +83,12 @@ services:
 
 volumes:
     postgres-data:
+        driver: local
+    backend:
+        driver: local
+    nginx-back:
+        driver: local
+    webserver:
         driver: local
 
 networks:
