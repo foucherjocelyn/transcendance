@@ -2,7 +2,7 @@ import { gameSettings } from "./getInputsGameSettings.js";
 
 function    game_settings_size_default()
 {
-    gameSettings.size.table.width = 30;
+    gameSettings.size.table.width = 31;
     gameSettings.size.table.height = 30;
 
     gameSettings.size.border = 1;

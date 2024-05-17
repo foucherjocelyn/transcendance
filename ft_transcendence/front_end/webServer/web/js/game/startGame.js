@@ -42,46 +42,6 @@ class   formPongGame {
 };
 let pongGame;
 
-class   pTime {
-    constructor() {
-        this.hour = undefined,
-        this.minute = undefined,
-        this.second = undefined
-    }
-};
-
-export function    get_time()
-{
-    const   dataTime = new Date();
-    const   currentTime = new pTime();
-
-    currentTime.hour = dataTime.getHours();
-    currentTime.minute = dataTime.getMinutes();
-    currentTime.second = dataTime.getSeconds();
-
-    return currentTime;
-}
-
-class   pDate {
-    constructor() {
-        this.day = undefined,
-        this.month = undefined,
-        this.year = undefined
-    }
-};
-
-export function    get_date()
-{
-    const   dataDate = new Date();
-    const   currentDate = new pDate();
-
-    currentDate.day = dataDate.getDate();
-    currentDate.month = dataDate.getMonth() + 1;
-    currentDate.year = dataDate.getFullYear();
-
-    return currentDate;
-}
-
 function    setup_size_game_layer()
 {
     const   gameLayer = document.getElementById('gameLayer');
@@ -96,7 +56,7 @@ function    setup_game_layer()
 
     gameLayerHTML();
     pongGame = new formPongGame();
-    pongGame.maxPoint = 5;
+    pongGame.maxPoint = 10;
     pongGame.listPlayer = match.listPlayer;
 
     setup_size_game_layer();
