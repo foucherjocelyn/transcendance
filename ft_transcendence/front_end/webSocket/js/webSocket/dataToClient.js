@@ -13,7 +13,7 @@ function    find_socket(user)
     for (let i = 0; i < webSocket.listConnection.length; i++)
     {
         const   connection = webSocket.listConnection[i];
-        if (connection.user.id === user.id)
+        if (user !== undefined && connection.user.id === user.id)
             return connection.socket;
     }
     return undefined;
@@ -37,7 +37,8 @@ function    send_data(title, content, from, to)
         if (socket !== undefined)
         {
             // console.log('Server sent data to: ' + user.id);
-            socket.sendUTF(sendData);
+            // socket.sendUTF(sendData);
+            socket.send(sendData);
         }
         else
         {
@@ -49,5 +50,6 @@ function    send_data(title, content, from, to)
 
 module.exports = {
     send_data,
-    dataToClient
+    dataToClient,
+    find_socket
 };

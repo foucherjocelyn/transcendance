@@ -1,39 +1,38 @@
-const http = require('http');
-const WebSocketServer = require('websocket').server;
+const https = require("https");
+const fs = require('fs').promises;
+const WebSocket = require('ws');
 
-const   webSocket = {
+const webSocket = {
     listUser: [],
     listConnection: [],
     listMatch: [],
     listFindMatch: []
 };
 
-function    update_user(user)
-{
-    for (let i = 0; i < webSocket.listUser.length; i++)
-    {
-        const   find = webSocket.listUser[i];
-        if (find.id === user.id)
-        {
+function update_user(user) {
+    for (let i = 0; i < webSocket.listUser.length; i++) {
+        const find = webSocket.listUser[i];
+        if (find.id === user.id) {
             webSocket.listConnection[i].user = user;
             webSocket.listUser[i] = user;
             send_data('update list users', webSocket.listUser, user, webSocket.listUser);
-            return ;
+            return;
         }
     }
 }
 
-function    get_data_from_client(data, socket)
-{
+function get_data_from_client(data, socket) {
     data = JSON.parse(data);
 
     // console.log('title: ' + data.title);
     if (data.title === 'connection')
         add_new_connection(data, socket);
-	else if (data.title === 'disconnect')
-		disconnect(socket);
+    else if (data.title === 'disconnect')
+        disconnect(socket);
     else if (data.title === 'update match')
         update_match(data.from, data.content, data.title);
+    else if (data.title === 'invite to play')
+        request_invitation_to_play(data);
     else if (data.title === 'accept invitation to play')
         accept_invitation_to_play(data);
     else if (data.title === 'leave match')
@@ -48,52 +47,50 @@ function    get_data_from_client(data, socket)
     update_user(data.from);
 }
 
-function    listen_connection(wsServer)
+async function loadCertificates() {
+    const key = await fs.readFile('./src/ssl/private.key');
+    const cert = await fs.readFile('./src/ssl/certificate.crt');
+    return { key, cert };
+}
+
+async function setup_web_socket()
 {
-    // Handle new connections from clients
-    wsServer.on('request', (request) => {
-        const connection = request.accept(null, request.origin);
+    // Create a simple HTTPS server
+    // const options = await loadCertificates();
+    // const server = https.createServer(options, (req, res) => {
+    //     // Do nothing for now
+    // });
+
+    // Connect WebSocket with HTTPS server
+    // const wsServer = new WebSocket.Server({ server });
+    const wsServer = new WebSocket.Server({ port: 5555, secure: true });
+
+    wsServer.on('connection', (socket) => {
         console.log('New WebSocket connection established.');
 
         // Handle messages from clients
-        connection.on('message', (message) => {
-            if (message.type === 'utf8') {
-                get_data_from_client(message.utf8Data, connection);
-            }
+        socket.on('message', (message) => {
+            get_data_from_client(message, socket);
         });
 
         // Handle event when client closes connection
-        connection.on('close', () => {
-            disconnect(connection);
+        socket.on('close', () => {
+            disconnect(socket);
             console.log('WebSocket connection closed.');
         });
     });
-}
 
-function    setup_web_socket()
-{
-    // Create a simple HTTP server
-    const server = http.createServer((req, res) => {
-        // Do nothing for now
-    });
-
-    // Connect WebSocket with HTTP server
-    const wsServer = new WebSocketServer({
-        httpServer: server,
-        autoAcceptConnections: false
-    });
-
-    listen_connection(wsServer);
-
-    // Run server on port 4242
-    const PORT = process.env.PORT || 5555;
-    server.listen(PORT, () => console.log(`WebSocket server running on port ${PORT}`));
+    // Run server on port 5555
+    // const PORT = process.env.PORT || 5555;
+    // server.listen(PORT, () => console.log(`WebSocket server running on port ${PORT}`));
+    console.log(`WebSocket server running on port 5555`)
 }
 
 setup_web_socket();
 
 module.exports = {
-    webSocket
+    webSocket,
+    update_user
 };
 
 const { add_new_connection, disconnect } = require('./addNewConnection');
@@ -101,4 +98,4 @@ const { send_data } = require('./dataToClient');
 const { update_match } = require('./updateMatch');
 const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
 const { sign_start_game } = require('./signStartGame');
-
+const { request_invitation_to_play } = require('./invitationToPlay');

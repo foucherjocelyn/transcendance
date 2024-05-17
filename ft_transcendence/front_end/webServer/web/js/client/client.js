@@ -1,4 +1,4 @@
-import { create_match, display_create_match_layer, match, update_match_informations } from "../createMatch/createMatch.js";
+import { create_match, match, update_match_informations } from "../createMatch/createMatch.js";
 import { update_position_ball } from "../game/movementsBall.js";
 import { update_position_paddle } from "../game/movementsPaddle.js";
 import { pongGame, setup_game_layer } from "../game/startGame.js";
@@ -6,6 +6,7 @@ import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
+import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
 
 class   userNotifications {
     constructor() {
@@ -14,31 +15,20 @@ class   userNotifications {
     }
 };
 
-class   userMessages {
+export class   userMessages {
     constructor() {
         this.user = undefined,
         this.listMessages = [];
     }
 };
 
-const   user = {
-    id: undefined,
-    name: undefined,
-    status: undefined,
-    avatar: '../img/avatar/avatar_default.png',
-    level: undefined,
-    listFriends: [],
-    listChat: [],
-    listNotifications: []
-}
-
-const   client = {
+export const   client = {
     socket: undefined,
     inforUser: undefined,
     listUser: []
 };
 
-class   dataToServer {
+export class   dataToServer {
     constructor(title, content, from, to) {
         this.title = title,
         this.content = content,
@@ -62,10 +52,8 @@ function    get_data_from_server(socket)
         }
         if (receivedData.title === 'invite to play')
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'accept invitation to play')
-            display_create_match_layer();
-        if (receivedData.title === 'reject invitation to play')
-            notice_invitation_play(receivedData);
+        if (receivedData.title === 'reponse invitation to play')
+            reponse_invitation_to_play_cl(receivedData);
         if (receivedData.title === 'warning')
             notice_invitation_play(receivedData);
         if (receivedData.title === 'update match')
@@ -95,7 +83,9 @@ function    get_data_from_server(socket)
 function    connection()
 {
     // Connect to web socket
-    const socket = new WebSocket('ws://127.0.0.1:5555');
+    const socket = new WebSocket("ws://127.0.0.1:5555");
+    // const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    // const socket = new WebSocket(`${protocol}://127.0.0.1:5555`);
     
     socket.onopen = function() {
         console.log('Connected to WebSocket server');
@@ -111,10 +101,3 @@ function    connection()
 }
 
 connection();
-
-export {
-    user,
-    client,
-    dataToServer,
-    userMessages
-};

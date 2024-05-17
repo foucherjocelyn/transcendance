@@ -70,6 +70,9 @@ function    get_sign_buttons_game_over_layer()
         client.socket.send(JSON.stringify(sendData));
         to_game();
     }
+
+    if (match.mode === 'tournament')
+        button[1].style.display = 'none';
     
     // play again button
     button[1].onclick = () => {

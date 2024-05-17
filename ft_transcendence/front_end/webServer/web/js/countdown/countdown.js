@@ -39,7 +39,8 @@ function countdown(callback)
         if (count < 0) {
             clearInterval(countdownInterval);
 
-            document.getElementById('gameInstructionsLayer').style.display = 'none';
+            if (document.getElementById('gameInstructionsLayer') !== null)
+                document.getElementById('gameInstructionsLayer').style.display = 'none';
             countdownLayer.style.display = 'none';
             
             setup_start_game();

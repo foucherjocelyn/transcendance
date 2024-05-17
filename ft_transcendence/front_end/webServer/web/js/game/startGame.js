@@ -91,20 +91,12 @@ function    setup_size_game_layer()
 
 function    setup_game_layer()
 {
-    console.log('start game');
-    match.timeStart = get_time();
-    match.dateStart = get_date();
-
+    // console.table(match.timeStart);
     client.inforUser.status = 'playing game';
-
-    if (client.inforUser.id === match.listPlayer[0].id)
-    {
-        console.log('update the informations of match on data');
-    }
 
     gameLayerHTML();
     pongGame = new formPongGame();
-    pongGame.maxPoint = 1;
+    pongGame.maxPoint = 5;
     pongGame.listPlayer = match.listPlayer;
 
     setup_size_game_layer();

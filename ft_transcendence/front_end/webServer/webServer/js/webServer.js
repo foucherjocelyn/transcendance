@@ -1,5 +1,5 @@
 const https = require("https");
-const fs = require('fs').promises; // Importing fs with promises API
+const fs = require('fs').promises;
 const path = require('path');
 
 const getContentType = (filePath) => {
