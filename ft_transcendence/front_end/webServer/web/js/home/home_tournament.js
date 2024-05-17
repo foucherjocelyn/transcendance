@@ -47,8 +47,24 @@ async function drawTournament(callback)
 `;
 	let tour_list = await getTournamentsList();
 
+	//temp tournament object
+	tour_list = {
+		0: {
+			name: "test_tournament",
+			max_players: "10",
+			start_date: "07/07",
+			end_date: "08/07",
+			status: "preparing",
+			player_usernames: ["imaplayer", "user2"]
+		},
+		length: 1
+	};
+	//temp
+	console.log("tour_list is undefined");
 	if (tour_list != undefined)
 	{
+		console.log("tour_list is defined");
+		console.log(tour_list.length);
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
@@ -57,13 +73,47 @@ async function drawTournament(callback)
 	callback(true);
 }
 
-export function	tourPlayerCount(tour_obj)
+function	aliasJoinTournament(tour_obj)
 {
-	let	player_nb = 0;
+	//create an alias
+	document.getElementById("h_tournament_page").innerHTML = `
+<div id="h_tournament_aliasjoin">
+	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
+	<input type="submit" class="button-img" type="button" id="tour_inputsend" value="Confirm">
+	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
+</div>
+`;
+//	/*Send the following to alias handler
+	  document.getElementById("tour_inputalias").addEventListener("submit", () => {
+		  event.preventDefault();
+		  //sendAliasToServSocket(document.getElementById("tour_inputalias").value);
+		  joinTournament(tour_obj.id);
+	  });
+	document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament(); });
+	//*/
+}
 
-	while (tour_obj.player_usernames[player_nb])
-		player_nb++;
-	return (player_nb);
+function	detailsTournament(tour_obj, index)
+{
+	console.log("Here is the tour_obj");
+	console.log(tour_obj);
+	let	player_nb = tour_obj.player_usernames.length;
+	document.getElementById("tour_expanddetails").innerHTML = `
+<div id="tour_detailsbox">
+<button id="tour_details_close"></button>
+<p id="tour_details_name"></p>
+<p id="tour_details_players"></p>
+<p id="tour_details_startdate"></p>
+<p id="tour_details_enddate"></p>
+<p id="tour_details_status"></p>
+</div>
+`;
+	document.getElementById(`tour_details_name`).textContent = `Name: ${tour_obj.name}`;
+	document.getElementById(`tour_details_players`).textContent = `Nb of players: ${player_nb}/${tour_obj.max_players}`;
+	document.getElementById(`tour_details_startdate`).textContent = `Starting: ${tour_obj.start_date}`;
+	document.getElementById(`tour_details_enddate`).textContent = `Ending: ${tour_obj.end_date}`;
+	document.getElementById(`tour_details_status`).textContent = `Status: ${tour_obj.status}`;
+	document.getElementById(`tour_details_close`).addEventListener("click", () => { document.getElementById(`tour_detailsbox`).outerHTML = ``; });
 }
 
 function	 addLabel(tour_list, index)
@@ -72,17 +122,20 @@ function	 addLabel(tour_list, index)
 	//	console.log(`adding new label: ${label_index}`);
 
 	//console.table(tour_list[0]);
-	let	player_nb = tourPlayerCount(tour_list[index]);
+	let	player_nb = tour_list[index].player_usernames.length;
 	let newLabel;
-	newLabel = `<tr id="t_tourlabel${index}" class="t_tourlabel">
+	newLabel = `<tr id="t_tourlabel${index}">
 <th scope="row">${tour_list[index].name}</th>
 <td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${tour_list[index].start_date}/${tour_list[index].end_date}</td>
 <td>${tour_list[index].status}</td>
-<button id="t_joinbutton">Join</button>
+<td><button id="t_joinbutton${index}">Join</button></td>
+<td><button id="t_infobutton${index}">Details</button></td>
+<div id="tour_expanddetails"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById("t_joinbutton").addEventListener("click", () => { joinTournament(`tour_obj.id`); });
+	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
+	document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
 }
 
 function 	searchLabel()
