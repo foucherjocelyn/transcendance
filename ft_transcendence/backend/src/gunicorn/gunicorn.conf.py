@@ -1,9 +1,9 @@
-wsgi_app = 'backend.wsgi:application'
+wsgi_app = "backend.wsgi:application"
 
-bind = '0.0.0.0:8000'
+bind = "0.0.0.0:8000"
 
-workers = 4
+workers = 5
 
-keyfile = '/etc/backend/ssl/private.key'
+keyfile = "/etc/backend/ssl/private.key"
 
-certfile = '/etc/backend/ssl/certificate.crt'
+certfile = "/etc/backend/ssl/certificate.crt"
