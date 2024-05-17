@@ -4,6 +4,7 @@ import { get_input_game_setting_color } from "./gameSettingColor.js";
 import { get_input_game_setting_control } from "./gameSettingControl.js";
 import { get_input_game_setting_size } from "./gameSettingSize.js";
 import { get_input_game_setting_speed } from "./gameSettingSpeed.js";
+import { game_settings_default } from "./gameSettingsDefault.js";
 
 class   formSetting {
     constructor() {
@@ -67,10 +68,9 @@ function    get_inputs_game_settings()
 function    get_sign_save_game_setting_button()
 {
     gameSettings = new formSetting();
+    game_settings_default();
 
-    get_inputs_game_settings();
     const   button = document.querySelector('#gameSaveButton > button');
-
     button.onclick = () => {
         get_inputs_game_settings();
 
