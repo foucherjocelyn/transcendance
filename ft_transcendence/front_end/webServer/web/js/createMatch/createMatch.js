@@ -96,16 +96,16 @@ export function update_match_informations(data)
     }
 }
 
-export function    join_the_tournament()
+export function    join_the_tournament(alias, tournamentID)
 {
     match = new pMatch();
     match.mode = 'tournament';
     match.admin = client.inforUser;
 
     // tournamentID = ?
-    match.tournamentID = 42;
+    match.tournamentID = tournamentID;
 
-    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.username, client.inforUser.avatarPath, client.inforUser.level, 'player');
+    const player1 = new inforPlayer(client.inforUser.id, alias, client.inforUser.avatarPath, client.inforUser.level, 'player');
     const player2 = new inforPlayer('#42', 'Player 2', "../../img/avatar/avatar2.png", 42, 'player');
     const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');

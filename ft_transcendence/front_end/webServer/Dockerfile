@@ -32,7 +32,7 @@ RUN	mv ./ssl ./webServer
 RUN	cp -rf ./web/js/game/OrbitControls.js ./node_modules/three/examples/jsm/controls/
 
 # Open port
-EXPOSE	8080
+EXPOSE	5500
 
 # Start web server
 CMD	["node", "./webServer/js/webServer.js"]

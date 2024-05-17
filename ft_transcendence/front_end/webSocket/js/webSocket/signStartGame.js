@@ -39,6 +39,9 @@ function    sign_start_game(data)
     }
     else
     {
+        if (match.mode === 'tournament')
+            match.listPlayer[0].name = match.listPlayer[0].name + match.listPlayer[0].id;
+
         matchmaking(match, (result) => {
             if (!result)
                 return ;
@@ -50,7 +53,6 @@ function    sign_start_game(data)
                     leave_match(player);
             }
             update_match(data.from, match, 'update match');
-            // send_data(data.title, data.content, data.from, match.listUser);
         })
     }
 }

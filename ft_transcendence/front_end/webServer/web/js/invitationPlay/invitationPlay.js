@@ -30,6 +30,9 @@ export function reponse_invitation_to_play_cl(data)
     // console.log('length delete: ' + match.listInvite.length);
     if (data.content === "accepted the invitation to play") // accepted
     {
+        if (document.getElementById('loaderMatchmakingLayer') !== null)
+            document.getElementById('loaderMatchmakingLayer').style.display = 'none';
+        
         // update list invite
         let sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
         client.socket.send(JSON.stringify(sendData));

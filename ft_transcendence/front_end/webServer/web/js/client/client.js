@@ -83,7 +83,9 @@ function    get_data_from_server(socket)
 function    connection()
 {
     // Connect to web socket
-    const socket = new WebSocket('ws://127.0.0.1:5555');
+    const socket = new WebSocket("ws://127.0.0.1:5555");
+    // const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    // const socket = new WebSocket(`${protocol}://127.0.0.1:5555`);
     
     socket.onopen = function() {
         console.log('Connected to WebSocket server');

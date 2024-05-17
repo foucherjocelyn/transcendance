@@ -37,7 +37,8 @@ function    send_data(title, content, from, to)
         if (socket !== undefined)
         {
             // console.log('Server sent data to: ' + user.id);
-            socket.sendUTF(sendData);
+            // socket.sendUTF(sendData);
+            socket.send(sendData);
         }
         else
         {

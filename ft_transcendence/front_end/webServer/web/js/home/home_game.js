@@ -5,6 +5,7 @@ import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { create_match, join_the_tournament } from "../createMatch/createMatch.js";
+import { client } from "../client/client.js";
 
 export function noticeInvitePlayer() {
     return (
@@ -66,7 +67,7 @@ export function gameEventListener() {
     console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
         // create_match('rank');
-        join_the_tournament();
+        join_the_tournament('toto', 42);
     });
     document.getElementById("g_creatematch").addEventListener("click", () => {
         create_match('with friends');
