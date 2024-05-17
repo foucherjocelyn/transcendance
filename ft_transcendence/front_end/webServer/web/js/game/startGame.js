@@ -89,20 +89,10 @@ function    setup_size_game_layer()
     gameLayer.style.width = `${screen.width}px`;
 }
 
-function    update_match_back_end()
-{
-    console.log('update the informations of match on data');
-}
-
 function    setup_game_layer()
 {
-    match.timeStart = get_time();
-    match.dateStart = get_date();
-
+    // console.table(match.timeStart);
     client.inforUser.status = 'playing game';
-
-    if (client.inforUser.id === match.listPlayer[0].id)
-        update_match_back_end()
 
     gameLayerHTML();
     pongGame = new formPongGame();

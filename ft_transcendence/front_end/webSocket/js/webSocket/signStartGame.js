@@ -1,6 +1,7 @@
 const { matchmaking } = require("../matchmaking/matchmaking");
 const { leave_match } = require("./acceptInvitationPlay");
 const { send_data } = require("./dataToClient");
+const { informations_match_start } = require("./getResultsMatch");
 const { update_match, define_match } = require("./updateMatch");
 const { webSocket } = require("./webSocket");
 
@@ -34,8 +35,7 @@ function    sign_start_game(data)
     
     if (match.mode !== 'rank' && match.mode !== 'tournament')
     {
-        update_match(data.from, match, 'update match');
-        send_data(data.title, data.content, data.from, match.listUser);
+        informations_match_start(data, match);
     }
     else
     {
@@ -52,7 +52,7 @@ function    sign_start_game(data)
                 if (player.type === 'player')
                     leave_match(player);
             }
-            update_match(data.from, match, 'update match');
+            informations_match_start(data, match);
         })
     }
 }
