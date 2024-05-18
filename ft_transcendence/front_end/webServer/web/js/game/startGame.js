@@ -56,7 +56,7 @@ function    setup_game_layer()
 
     gameLayerHTML();
     pongGame = new formPongGame();
-    pongGame.maxPoint = 10;
+    pongGame.maxPoint = 5;
     pongGame.listPlayer = match.listPlayer;
 
     setup_size_game_layer();
