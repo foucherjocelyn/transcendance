@@ -110,7 +110,7 @@ function    movements_ball()
                 pongGame.speedBall = gameSettings.speed.paddle;
         
             const   distance = ball.collision.distance;
-            if (distance <= 0)
+            if (distance < 0)
                 return ;
 
             const   touchPoint = ball.collision.touch;

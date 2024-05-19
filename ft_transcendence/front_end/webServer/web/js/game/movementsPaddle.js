@@ -38,7 +38,7 @@ function vertical_movement(paddle, direction)
     check_collisions(paddle, (result) => {
         if (result && (paddle.collision.touch === 'top' || paddle.collision.touch === 'bottom')) {
             let distance = paddle.collision.distance;
-            if (distance === 0)
+            if (distance < 0)
                 return ;
             speed = (speed < 0) ? -distance : distance;
         }
@@ -65,7 +65,7 @@ function horizontal_movement(paddle, direction)
     check_collisions(paddle, (result) => {
         if (result && (paddle.collision.touch === 'left' || paddle.collision.touch === 'right')) {
             let distance = paddle.collision.distance;
-            if (distance === 0)
+            if (distance < 0)
                 return ;
             speed = (speed < 0) ? -distance : distance;
         }
