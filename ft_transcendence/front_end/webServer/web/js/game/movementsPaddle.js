@@ -14,6 +14,19 @@ function    update_position_paddle(data)
     update_status_objects();
 }
 
+function getCircularReplacer() {
+    const seen = new WeakSet();
+    return (key, value) => {
+        if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) {
+                return;
+            }
+            seen.add(value);
+        }
+        return value;
+    };
+}
+
 function vertical_movement(paddle, direction)
 {
     let speed = paddle.vector.y;
@@ -22,25 +35,22 @@ function vertical_movement(paddle, direction)
         speed = -speed;
     }
 
-    let collision = false;
     check_collisions(paddle, (result) => {
-        if (result) {
-            collision = true;
+        if (result && (paddle.collision.touch === 'top' || paddle.collision.touch === 'bottom')) {
             let distance = paddle.collision.distance;
+            if (distance === 0)
+                return ;
             speed = (speed < 0) ? -distance : distance;
         }
     })
-
-    const   typePlayer = match.listPlayer[paddle.id].type;
-
-    if (!collision)
-        paddle.position.z += speed;
+    paddle.position.z += speed;
     update_status_objects();
-
-    if (typePlayer !== 'AI' && !collision)
+    
+    const   typePlayer = match.listPlayer[paddle.id].type;
+    if (typePlayer !== 'AI')
     {
         const sendData = new dataToServer('update movement paddle', paddle, client.inforUser, match.listPlayer);
-        client.socket.send(JSON.stringify(sendData));
+        client.socket.send(JSON.stringify(sendData, getCircularReplacer()));
     }
 }
 
@@ -52,25 +62,22 @@ function horizontal_movement(paddle, direction)
         speed = -speed;
     }
 
-    let collision = false;
     check_collisions(paddle, (result) => {
-        if (result) {
-            collision = true;
+        if (result && (paddle.collision.touch === 'left' || paddle.collision.touch === 'right')) {
             let distance = paddle.collision.distance;
+            if (distance === 0)
+                return ;
             speed = (speed < 0) ? -distance : distance;
         }
     })
-
-    const   typePlayer = match.listPlayer[paddle.id].type;
-
-    if (!collision)
-        paddle.position.x += speed;
+    paddle.position.x += speed;
     update_status_objects();
-
-    if (typePlayer !== 'AI' && !collision)
+    
+    const   typePlayer = match.listPlayer[paddle.id].type;
+    if (typePlayer !== 'AI')
     {
         const sendData = new dataToServer('update movement paddle', paddle, client.inforUser, match.listPlayer);
-        client.socket.send(JSON.stringify(sendData));
+        client.socket.send(JSON.stringify(sendData, getCircularReplacer()));
     }
 }
 
