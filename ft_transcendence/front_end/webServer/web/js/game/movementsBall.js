@@ -88,7 +88,29 @@ function    check_lost_point()
         if (border.name === touch.name && paddle !== undefined)
         {
             last_touch(paddle);
-            // pongGame.lostPoint = true;
+            pongGame.lostPoint = true;
+            pongGame.listBorder.forEach(border => {
+                border.display.material.color.set(0xff0000);
+            })
+            return ;
+        }
+    }
+}
+
+function    change_color_after_collision(touch)
+{
+    for (let i = 0; i < pongGame.listBorder.length; i++)
+    {
+        const   paddle = pongGame.listPaddle[i];
+        const   border = pongGame.listBorder[i];
+        if ((paddle !== undefined && paddle.name === touch.name)
+        || (border.name === touch.name))
+        {
+            border.display.material.color.set(0x18e1e7);
+            setTimeout(function() {
+                border.display.material.color.set(gameSettings.color.border);
+            }, 100);
+            return ;
         }
     }
 }
@@ -127,6 +149,8 @@ function    movements_ball()
                 ball.vector.y += speed;
                 ball.vector.y = -ball.vector.y;
             }
+
+            change_color_after_collision(ball.collision.who);
 
             const  sendData = new dataToServer('update movement ball', ball.position, client.inforUser, match.listPlayer);
             client.socket.send(JSON.stringify(sendData));
