@@ -6,7 +6,7 @@ import { openChatBox } from "./chatbox.js";
 import { renderNotifications } from "./notifications.js";
 
 const renderFriendList = (list) => {
-    console.log(list);
+    //console.log(list);
     const friendsList = document.getElementById("c-friends-list");
     friendsList.innerHTML = "";
     list.forEach((user) => {
