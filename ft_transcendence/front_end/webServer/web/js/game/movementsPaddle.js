@@ -29,6 +29,10 @@ function getCircularReplacer() {
 
 function vertical_movement(paddle, direction)
 {
+    if ((paddle.collisionPoint.top === pongGame.limit.top && direction < 0)
+    || (paddle.collisionPoint.bottom === pongGame.limit.bottom && direction > 0))
+        return ;
+
     let speed = paddle.vector.y;
     if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0)) {
         paddle.vector.y = -paddle.vector.y;
@@ -54,6 +58,10 @@ function vertical_movement(paddle, direction)
 
 function horizontal_movement(paddle, direction)
 {
+    if ((paddle.collisionPoint.left === pongGame.limit.left && direction < 0)
+    || (paddle.collisionPoint.right === pongGame.limit.right && direction > 0))
+        return ;
+
     let speed = paddle.vector.x;
     if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0)) {
         paddle.vector.x = -paddle.vector.x;
