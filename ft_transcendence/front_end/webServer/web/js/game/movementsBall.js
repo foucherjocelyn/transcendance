@@ -1,6 +1,7 @@
 import { client, dataToServer } from "../client/client.js";
 import { match } from "../createMatch/createMatch.js";
 import { define_player } from "../createMatch/createPlayers.js";
+import { gameSettings } from "../gameSettings/getInputsGameSettings.js";
 import { check_collision } from "./collision.js";
 import { update_status_objects } from "./createBall.js";
 import { define_paddle } from "./createPaddle.js";
@@ -104,9 +105,9 @@ function    movements_ball()
         {
             check_lost_point();
 
-            pongGame.speedBall += 0.0002;
-            if (pongGame.speedBall >= 0.01)
-                pongGame.speedBall = 0.01;
+            pongGame.speedBall += 0.001;
+            if (pongGame.speedBall >= gameSettings.speed.paddle)
+                pongGame.speedBall = gameSettings.speed.paddle;
         
             const   distance = ball.collision.distance;
             if (distance <= 0)

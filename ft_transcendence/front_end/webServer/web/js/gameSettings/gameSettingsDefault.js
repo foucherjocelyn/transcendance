@@ -28,8 +28,8 @@ function    game_settings_color_default()
 
 function    game_settings_speed_default()
 {
-    gameSettings.speed.paddle = 0.004;
-    gameSettings.speed.ball = 0.004;
+    gameSettings.speed.paddle = 0.5;
+    gameSettings.speed.ball = 0.1;
 }
 
 function    game_settings_control_default()
