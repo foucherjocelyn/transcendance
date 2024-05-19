@@ -106,8 +106,9 @@ function    movements_ball()
             check_lost_point();
 
             pongGame.speedBall += 0.001;
-            if (pongGame.speedBall >= gameSettings.speed.paddle)
-                pongGame.speedBall = gameSettings.speed.paddle;
+            if ((pongGame.speedBall + speedX >= gameSettings.speed.paddle)
+            || (pongGame.speedBall + speedY >= gameSettings.speed.paddle))
+                pongGame.speedBall = 0;
         
             const   distance = ball.collision.distance;
             if (distance < 0)
