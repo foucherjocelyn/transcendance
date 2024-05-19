@@ -96,6 +96,9 @@ function    movements_ball()
 {
     const   ball = pongGame.ball;
 
+    let speedX = ball.vector.x;
+    let speedY = ball.vector.y;
+
     check_collisions(ball, (result) => {
         if (result)
         {
@@ -105,15 +108,21 @@ function    movements_ball()
             if (pongGame.speedBall >= 0.01)
                 pongGame.speedBall = 0.01;
         
+            const   distance = ball.collision.distance;
+            if (distance <= 0)
+                return ;
+
             const   touchPoint = ball.collision.touch;
             if (touchPoint === 'left' || touchPoint === 'right')
             {
+                speedX = (speedX < 0) ? -distance : distance;
                 let speed = (ball.vector.x < 0) ? -pongGame.speedBall : pongGame.speedBall;
                 ball.vector.x += speed;
                 ball.vector.x = -ball.vector.x;
             }
             else
             {
+                speedY = (speedY < 0) ? -distance : distance;
                 let speed = (ball.vector.y < 0) ? -pongGame.speedBall : pongGame.speedBall;
                 ball.vector.y += speed;
                 ball.vector.y = -ball.vector.y;
@@ -124,8 +133,8 @@ function    movements_ball()
         }
     })
 
-    ball.position.x += ball.vector.x;
-    ball.position.z += ball.vector.y;
+    ball.position.x += speedX;
+    ball.position.z += speedY;
 }
 
 export {
