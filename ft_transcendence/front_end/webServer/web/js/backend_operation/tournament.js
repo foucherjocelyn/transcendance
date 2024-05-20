@@ -90,7 +90,7 @@ export async function	joinTournament(tour_id)
 	}
 	//await createAlias(player_id);
 	try {
-		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}/join", {
+		const r = await fetch(`https://localhost/api/v1/tournament/${tour_id}/join`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
