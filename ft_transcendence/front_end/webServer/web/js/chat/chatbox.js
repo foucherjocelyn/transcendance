@@ -1,6 +1,6 @@
 import { client, dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
-import { postNewMessage } from "../backend_operation/messages.js";
+import { postMuteUser, postNewMessage } from "../backend_operation/messages.js";
 
 const renderMessages = async (friendUsername) => {
     let f_token = getCookie("token");
@@ -127,10 +127,17 @@ const receiveMessage = (receivedData) => {
     messages.push(newMessage);*/
 };
 
+const muteUser = (username) => {
+    console.log('mute');
+    postMuteUser(username);
+}
+
 const openChatBox = (friendUsername) => {
+    const muteButtonHTML = `<button id="c-mute-button-${friendUsername}" class="c-mute-button"></button>`
     const chatBox = document.getElementById("c-chat-box");
     chatBox.innerHTML = `
         <div id="c-chat-box-header" class="chat-box-header">
+        ${muteButtonHTML}
         <h3></h3>
         <button id="c-chat-box-close-button" class="c-close-button">&times;</button>
         </div>
@@ -150,6 +157,7 @@ const openChatBox = (friendUsername) => {
     chatBoxHeaderFriendName.textContent = friendUsername;
     document.cookie = `chatboxOpenedWith=${friendUsername}; SameSite=Strict`;
     renderMessages(friendUsername);
+    document.getElementById(`c-mute-button-${friendUsername}`).addEventListener("click", () => { muteUser(friendUsername) });
     chatBoxCloseButton.addEventListener("click", closeChatBox);
     sendMessageButton.addEventListener("click", () => { sendMessage(friendUsername) });
     chatInputContent.addEventListener("keydown", (e) => {

@@ -25,3 +25,29 @@ export const postNewMessage = async (message) => {
             console.error("Error postMessage: ", error);
         });
 };
+
+export const postMuteUser = async (username) => {
+    let f_token = getCookie("token");
+    await fetch("https://localhost/api/v1/user/friendship/mute", {
+        method: "POST",
+        body: JSON.stringify({username: username}),
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("muteUser: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error muteUser: ", error);
+        });
+};
