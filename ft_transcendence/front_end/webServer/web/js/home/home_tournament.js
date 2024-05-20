@@ -6,6 +6,7 @@ import { getTournamentsList, joinTournament } from "../backend_operation/tournam
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
+import { join_the_tournament } from "../createMatch/createMatch.js";
 
 async function drawTournament(callback)
 {
@@ -86,7 +87,7 @@ function	aliasJoinTournament(tour_obj)
 //	/*Send the following to alias handler
 	  document.getElementById("tour_inputalias").addEventListener("submit", () => {
 		  event.preventDefault();
-		  //sendAliasToServSocket(document.getElementById("tour_inputalias").value);
+		  join_the_tournament(document.getElementById("tour_inputalias").value, tour_obj.id);
 		  joinTournament(tour_obj.id);
 	  });
 	document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament(); });
