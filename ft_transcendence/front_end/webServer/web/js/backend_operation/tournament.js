@@ -10,7 +10,7 @@ export async function	getTournamentsList()
 	}
 	try {
 //		console.log("-Listing all tournaments");
-		const r = await fetch("https://localhost/api/v1/tournament/list", {
+		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/list", {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -53,7 +53,7 @@ will return a tournament object
 		return;
 	}
 	try {
-		const r = await fetch("https://localhost/api/v1/tournament/create", {
+		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/create", {
 			method: "POST",
 			body: JSON.stringify(tour_info),
 			headers: {
@@ -112,7 +112,7 @@ export async function	joinTournament(tour_id)
 	}
 	//await createAlias(player_id);
 	try {
-		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}/join", {
+		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}/join", {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -147,7 +147,7 @@ export async function	getTournamentInfoById(tour_id)
 		return;
 	}
 	try {
-		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}", {
+		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}", {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -191,7 +191,7 @@ will return a tournament object
 		return;
 	}
 	try {
-		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}", {
+		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}", {
 			method: "PUT",
 			body: JSON.stringify(tour_info),
 			headers: {

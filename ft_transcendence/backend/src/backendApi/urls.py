@@ -40,7 +40,6 @@ urlpatterns = [
         "profile/me/avatar",
         UserViewSet.as_view({"post": "uploadAvatarPicture", "get": "getAvatarPicture"}),
     ),
-    path("profile/me/is-admin", UserViewSet.as_view({"post": "isAdmin"})),
     # OTP
     path("otps", OtpViewSet.as_view({"get": "list", "post": "create"})),
     path(

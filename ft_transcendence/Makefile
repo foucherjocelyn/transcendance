@@ -1,8 +1,5 @@
 all: up
 
-# ssh:
-# 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private.key -out ssl/certificate.crt -subj "/C=FR/ST=Paris/L=Paris/O=42/CN=ft_transcendence"
-
 up:
 	docker compose up -d --build
 
@@ -27,14 +24,11 @@ back_logs:
 db_logs:
 	docker compose logs -f db
 
-websocket_logs:
+socket_logs:
 	docker compose logs -f websocket
 
-webserver_logs:
+web_logs:
 	docker compose logs -f webserver
-
-nginxback_logs:
-	docker compose logs -f nginx-back
 
 status:
 	docker compose ps

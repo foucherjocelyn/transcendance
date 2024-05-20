@@ -7,7 +7,7 @@ export async function dataUpdate(newInfo) {
 	//	console.log("-dataUpdate starting");
 	let f_token = getCookie("token");
 	try {
-		const response = await fetch("https://localhost/api/v1/profile/me", {
+		const response = await fetch("http://127.0.0.1:8000/api/v1/profile/me", {
 			method: "PUT",
 			body: JSON.stringify(newInfo),
 			headers: {

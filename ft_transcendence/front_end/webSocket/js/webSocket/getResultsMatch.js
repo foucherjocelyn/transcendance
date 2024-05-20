@@ -1,6 +1,5 @@
 const { send_data } = require("./dataToClient");
-const { update_match, define_match } = require("./updateMatch");
-const { webSocket } = require("./webSocket");
+const { update_match } = require("./updateMatch");
 
 class   pTime {
     constructor() {
@@ -52,21 +51,6 @@ function    informations_match_start(data, match)
         send_data(data.title, data.content, data.from, match.listUser);
 }
 
-function    informations_match_end(user, inforMatch)
-{
-    let indexMatch = define_match(user);
-    if (indexMatch === undefined)
-        return false;
-
-    webSocket.listMatch[indexMatch] = inforMatch;
-    const   match = webSocket.listMatch[indexMatch];
-
-    match.timeStop = get_time();
-    match.dateStop = get_date();
-    // console.table(match.result);
-}
-
 module.exports = {
-    informations_match_start,
-    informations_match_end
+    informations_match_start
 };
