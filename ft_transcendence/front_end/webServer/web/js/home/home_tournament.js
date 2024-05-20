@@ -85,8 +85,9 @@ function	aliasJoinTournament(tour_obj)
 </div>
 `;
 //	/*Send the following to alias handler
-	  document.getElementById("tour_inputalias").addEventListener("submit", () => {
+	  document.getElementById("tour_inputsend").addEventListener("click", () => {
 		  event.preventDefault();
+		  console.log("submit alias detected");
 		  join_the_tournament(document.getElementById("tour_inputalias").value, tour_obj.id);
 		  joinTournament(tour_obj.id);
 	  });

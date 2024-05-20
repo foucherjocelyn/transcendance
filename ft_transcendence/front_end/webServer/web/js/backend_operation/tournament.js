@@ -79,28 +79,6 @@ will return a tournament object
 	}
 }
 
-async function	createAlias(player_id)
-{
-	console.log("-creating an alias");
-	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}/alias", {
-			method: "POST",
-			headers: {
-				"Authorization": `Bearer ${f_token}`
-			}
-		})
-		if (!r.ok)
-		{
-			console.log("creating an alias: Client/Server error");
-			return;
-			//throw new Error("fetch POST op failed");
-		}
-		console.log("-");
-	} catch(error) {
-		console.error("createAlias: ", error);
-	}
-}
-
 export async function	joinTournament(tour_id)
 {
 	console.log("-Joining a tournament");
