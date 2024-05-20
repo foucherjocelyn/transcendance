@@ -127,14 +127,6 @@ class UserViewSet(viewsets.ModelViewSet):
         users = User.objects.filter(is_superuser=False)
         serializer = self.get_serializer(users, many=True)
         return Response(serializer.data, status=200)
-    
-    @action(detail=True, methods=["post"])
-    def isAdmin(self, request):
-        user = request.user
-        if user.is_superuser:
-            return Response({"isAdmin": True}, status=200)
-        else:
-            return Response({"isAdmin": False}, status=200)
 
     def get_permissions(self):
         if self.action in ["register", "logIn"]:
@@ -148,7 +140,6 @@ class UserViewSet(viewsets.ModelViewSet):
             "getAvatarPicture",
             "uploadAvatarPicture",
             "getUserIdByUsername",
-            "isAdmin",
         ]:
             self.permission_classes = [IsAuthenticated]
         else:

@@ -2,7 +2,6 @@ import os
 
 app = {
     "SECRET_KEY": os.getenv("SECRET_KEY"),
-    "DEBUG": os.getenv("DEBUG"),
     "WEBSOCKET_TOKEN": os.getenv("WEBSOCKET_TOKEN"),
     "POSTGRES_DB": os.getenv("POSTGRES_DB"),
     "POSTGRES_USER": os.getenv("POSTGRES_USER"),
@@ -15,10 +14,12 @@ app = {
     "SSL_CERTIFICATE": os.getenv("SSL_CERTIFICATE"),
     "SSL_CERTIFICATE_KEY": os.getenv("SSL_CERTIFICATE_KEY"),
     "dev": {
+        "DEBUG": os.getenv("DEBUG_DEV"),
         "POSTGRES_HOST": os.getenv("POSTGRES_HOST_DEV"),
         "DATABASE_URL": os.getenv("DATABASE_URL_DEV"),
     },
     "prod": {
+        "DEBUG": os.getenv("DEBUG_PROD"),
         "POSTGRES_HOST": os.getenv("POSTGRES_HOST_PROD"),
         "DATABASE_URL": os.getenv("DATABASE_URL_PROD"),
     },

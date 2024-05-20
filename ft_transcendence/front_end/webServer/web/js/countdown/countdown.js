@@ -5,7 +5,7 @@ import { gameSettings } from "../gameSettings/getInputsGameSettings.js";
 
 function    setup_start_game()
 {
-    const   vector = gameSettings.speed.ball;
+    const   vector = 45 * gameSettings.speed.ball;
     const   ball = pongGame.ball;
 
     pongGame.listTouch = [];

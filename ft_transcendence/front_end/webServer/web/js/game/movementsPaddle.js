@@ -14,74 +14,63 @@ function    update_position_paddle(data)
     update_status_objects();
 }
 
-function getCircularReplacer() {
-    const seen = new WeakSet();
-    return (key, value) => {
-        if (typeof value === "object" && value !== null) {
-            if (seen.has(value)) {
-                return;
-            }
-            seen.add(value);
-        }
-        return value;
-    };
-}
-
 function vertical_movement(paddle, direction)
 {
-    if ((paddle.collisionPoint.top === pongGame.limit.top && direction < 0)
-    || (paddle.collisionPoint.bottom === pongGame.limit.bottom && direction > 0))
-        return ;
-
     let speed = paddle.vector.y;
     if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0)) {
         paddle.vector.y = -paddle.vector.y;
         speed = -speed;
     }
 
+    let collision = false;
     check_collisions(paddle, (result) => {
-        if (result && (paddle.collision.touch === 'top' || paddle.collision.touch === 'bottom')) {
+        if (result) {
+            collision = true;
             let distance = paddle.collision.distance;
             speed = (speed < 0) ? -distance : distance;
         }
     })
-    paddle.position.z += speed;
-    update_status_objects();
-    
+
     const   typePlayer = match.listPlayer[paddle.id].type;
-    if (typePlayer !== 'AI')
+
+    if (!collision)
+        paddle.position.z += speed;
+    update_status_objects();
+
+    if (typePlayer !== 'AI' && !collision)
     {
         const sendData = new dataToServer('update movement paddle', paddle, client.inforUser, match.listPlayer);
-        client.socket.send(JSON.stringify(sendData, getCircularReplacer()));
+        client.socket.send(JSON.stringify(sendData));
     }
 }
 
 function horizontal_movement(paddle, direction)
 {
-    if ((paddle.collisionPoint.left === pongGame.limit.left && direction < 0)
-    || (paddle.collisionPoint.right === pongGame.limit.right && direction > 0))
-        return ;
-
     let speed = paddle.vector.x;
     if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0)) {
         paddle.vector.x = -paddle.vector.x;
         speed = -speed;
     }
 
+    let collision = false;
     check_collisions(paddle, (result) => {
-        if (result && (paddle.collision.touch === 'left' || paddle.collision.touch === 'right')) {
+        if (result) {
+            collision = true;
             let distance = paddle.collision.distance;
             speed = (speed < 0) ? -distance : distance;
         }
     })
-    paddle.position.x += speed;
-    update_status_objects();
-    
+
     const   typePlayer = match.listPlayer[paddle.id].type;
-    if (typePlayer !== 'AI')
+
+    if (!collision)
+        paddle.position.x += speed;
+    update_status_objects();
+
+    if (typePlayer !== 'AI' && !collision)
     {
         const sendData = new dataToServer('update movement paddle', paddle, client.inforUser, match.listPlayer);
-        client.socket.send(JSON.stringify(sendData, getCircularReplacer()));
+        client.socket.send(JSON.stringify(sendData));
     }
 }
 

@@ -8,7 +8,7 @@ import { updateMyInfo } from "./data_update.js";
 export async function requestToken(f_log) {
 	console.log("-Requesting new token");
 	try {
-		const response = await fetch("https://localhost/api/v1/token", {
+		const response = await fetch("http://127.0.0.1:8000/api/v1/token", {
 			method: "POST",
 			body: JSON.stringify(f_log),
 			headers: {
@@ -35,7 +35,7 @@ export async function postUser(new_user) {
 	console.log("-Registering new user into database");
 	console.log(new_user);
 	try {
-		const response = await fetch("https://localhost/api/v1/auth/register", {
+		const response = await fetch("http://127.0.0.1:8000/api/v1/auth/register", {
 			method: "POST",
 			body: JSON.stringify(new_user),
 			headers: {
@@ -73,7 +73,7 @@ export async function signIn(connect_user) {
 	console.log("-Connecting user: ");
 	console.log(connect_user);
 	try {
-		const response = await fetch(`https://localhost/api/v1/auth/login`, {
+		const response = await fetch(`http://127.0.0.1:8000/api/v1/auth/login`, {
 			method: "POST",
 			body: JSON.stringify(connect_user),
 			headers: {
@@ -121,7 +121,7 @@ export async function signOut() {
 		return;
 	}
 	try {
-		const response = await fetch(`https://localhost/api/v1/auth/logout`, {
+		const response = await fetch(`http://127.0.0.1:8000/api/v1/auth/logout`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${getCookie("token")}`

@@ -19,7 +19,7 @@ function    check_user_in_list_player(user) {
 
 async function    get_list_friends() {
     try {
-        const listFriends = await fetch("https://localhost/api/v1/user/friendship", {
+        const listFriends = await fetch("http://127.0.0.1:8000/api/v1/user/friendship", {
         method: "GET",
         headers: {
             "Accept": "application/json",

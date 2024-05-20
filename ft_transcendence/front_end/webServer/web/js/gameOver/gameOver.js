@@ -1,8 +1,8 @@
-import { client, dataToServer } from '../client/client.js';
+import { client } from '../client/client.js';
 import { match } from '../createMatch/createMatch.js';
 import { count_empty_place } from '../createMatch/getSignButtonsInCreateMatch.js';
 import { create_score } from '../game/createScore.js'
-import { pongGame } from '../game/startGame.js';
+import { get_date, get_time, pongGame } from '../game/startGame.js';
 import { setup_game_over } from './gameOverLayer.js';
 
 function    create_result()
@@ -32,17 +32,6 @@ function    create_result()
     // console.table(match.result);
 }
 
-function    define_winner()
-{
-    for (let i = 0; i < match.result.length; i++)
-    {
-        const   player = match.result[i];
-        if (player.type === 'player')
-            return player;
-    };
-    return undefined;
-}
-
 function    check_game_over()
 {
     for (let i = 0; i < match.listPlayer.length; i++)
@@ -60,14 +49,15 @@ function    check_game_over()
             })
             
             create_result();
-
-            const   winner = define_winner();
-            if (client.inforUser.id === winner.id)
-            {
-                const sendData = new dataToServer('game over', match, client.inforUser, match.listUser);
-	            client.socket.send(JSON.stringify(sendData));
-            }
             
+            match.timeStop = get_time();
+            match.dateStop = get_date();
+            
+            if (player.id === client.inforUser.id)
+            {
+                console.log('send to data base');
+            }
+
             setup_game_over();
             return ;
         }

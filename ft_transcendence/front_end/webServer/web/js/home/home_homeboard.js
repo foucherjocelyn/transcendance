@@ -6,7 +6,7 @@ import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { loadChat } from "../chat/load-chat.js";
 import { to_connectForm } from "../authentication/auth_connect.js"
-import { getAllMyGames, getAllMyScores, getMyInfo } from "../backend_operation/get_user_info.js";
+import { getMyInfo } from "../backend_operation/get_user_info.js";
 
 function	 newLabel()//
 {
@@ -19,24 +19,6 @@ function	 newLabel()//
 </tr>`;
 	document.getElementById("hs_info").insertAdjacentHTML("beforeend", newLabel);
 	return (label);
-}
-
-async function	renderMatchHistory() {
-	const myGames = await getAllMyGames();
-	console.log(myGames);
-	const myGamesSorted = myGames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-	const myScores = await getAllMyScores();
-	console.log(myScores);
-	const matchTableBody = myGamesSorted.map(game => `
-		<tr class="${game.winner_username === getCookie('username') ? 'win' : 'loss'}">
-			<td>${game.mode}</td>
-			<td>${game.player_usernames.join('<br />')}</td>
-			<td>${game.winner_username}</td>
-			<td>${myScores.find(score => score.game_id === game.id)?.score}</td>
-			<td>${game.created_at.slice(0, game.created_at.indexOf('.')).split('T').join('<br />')}
-		</tr>
-	`).join('');
-	document.getElementById("hs_info").innerHTML = matchTableBody;
 }
 
 function	drawHomePage(callback)
@@ -57,11 +39,10 @@ function	drawHomePage(callback)
 			<table id="h_score">
     	    <thead>
               <tr id="hs_filter">\<!-- display in red or blue if defeat/victory  -->
-			  <th scope="col">Mode</th>
-			  <th scope="col">Players</th>
-			  <th scope="col">Winner</th>
-			  <th scope="col">My Score</th>
-			  <th scope="col">Date</th>
+				<th scope="col">Tournament name</th>
+                <th scope="col">Number of players</th>
+                <th scope="col">Date</th>
+				<th scope="col">Outcome</th>
 <!-- Display player stats  -->
               </tr>
             </thead>
@@ -76,7 +57,6 @@ ${noticeInvitePlayer()}
 </div>
 `;
 
-	renderMatchHistory();
 	document.getElementById("hpb_username").textContent = getCookie("username");
 	//load players scoreboard
 //	console.log("loading player list");
