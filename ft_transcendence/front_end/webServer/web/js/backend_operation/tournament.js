@@ -83,7 +83,7 @@ async function	createAlias(player_id)
 {
 	console.log("-creating an alias");
 	try {
-		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}/alias", {
+		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}/alias", {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
