@@ -112,7 +112,7 @@ function    accept_invitation_to_play(data)
     }
     
     add_user_in_a_match(data.to, data.from);
-    console.log('---------------')
+    console.log('----------------')
 }
 
 module.exports = {
