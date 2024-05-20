@@ -85,7 +85,7 @@ function    check_lost_point()
     {
         const   border = pongGame.listBorder[i];
         paddle = pongGame.listPaddle[i];
-        if (border.name === touch.name && paddle !== undefined)
+        if (pongGame.listTouch.length > 0 && border.name === touch.name && paddle !== undefined)
         {
             last_touch(paddle);
             pongGame.lostPoint = true;
