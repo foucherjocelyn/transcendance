@@ -13,6 +13,7 @@ qrcode = "*"
 python-dotenv = "*"
 cryptography = "*"
 pyjwt = "*"
+gunicorn = "*"
 
 [dev-packages]
 

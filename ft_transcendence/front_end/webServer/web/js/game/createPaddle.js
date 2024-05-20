@@ -41,9 +41,9 @@ function createPaddle(name, id, positionX, positionZ, controlLeft, controlRight,
     // vector
     if (positionZ === 0) {
         paddle.vector.x = 0;
-        paddle.vector.y = 90 * gameSettings.speed.paddle;
+        paddle.vector.y = gameSettings.speed.paddle;
     } else {
-        paddle.vector.x = 90 * gameSettings.speed.paddle;
+        paddle.vector.x = gameSettings.speed.paddle;
         paddle.vector.y = 0;
     }
 

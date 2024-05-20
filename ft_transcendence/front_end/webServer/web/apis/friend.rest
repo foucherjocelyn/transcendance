@@ -1,4 +1,4 @@
-@url=http://127.0.0.1:8000/api/v1
+@url=https://localhost/api/v1
 
 GET {{url}}/user/friendship
 Content-Type: application/json

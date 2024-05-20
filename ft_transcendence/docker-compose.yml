@@ -1,6 +1,7 @@
 services:
     db:
         image: postgres:16-bullseye
+        container_name: db
         restart: always
         env_file:
             - .env
@@ -18,9 +19,11 @@ services:
         hostname: db
 
     backend:
+        image: backend
         build:
             context: ./backend
             dockerfile: Dockerfile
+        container_name: backend
         restart: always
         env_file:
             - .env
@@ -29,6 +32,9 @@ services:
                 condition: service_healthy
         ports:
             - "${BACKEND_PORT}:${BACKEND_PORT}"
+        volumes:
+            - ./ssl:/etc/backend/ssl
+            - ./avatars:/home/backend/src/avatars
         networks:
             - transcendence
     websocket:
@@ -53,12 +59,36 @@ services:
             - .env
         ports:
             - "5500:5500"
+        volumes:
+            - ./avatars:/webServer/web/img/avatars
+        networks:
+            - transcendence
+        restart: always
+    
+    nginx-back:
+        image: nginx
+        build: ./nginx-back
+        container_name: nginx-back
+        depends_on:
+            - backend
+        env_file:
+            - .env
+        ports:
+            - "443:443"
+        volumes:
+            - ./ssl:/etc/nginx/ssl
         networks:
             - transcendence
         restart: always
 
 volumes:
     postgres-data:
+        driver: local
+    backend:
+        driver: local
+    nginx-back:
+        driver: local
+    webserver:
         driver: local
 
 networks:
