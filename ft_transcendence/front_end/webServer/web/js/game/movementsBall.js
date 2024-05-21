@@ -70,6 +70,19 @@ function    last_touch(lostPaddle)
     }
 }
 
+function    handled_anyone_touching_ball(lostPaddle)
+{
+    for (let i = 0; i < pongGame.listPaddle.length; i++)
+    {
+        const   paddle = pongGame.listPaddle[i];
+        if (paddle !== undefined && paddle.name !== lostPaddle.name)
+        {
+            pongGame.listTouch.push(paddle);
+            return ;
+        }
+    }
+}
+
 function    check_lost_point()
 {
     const   touch = pongGame.ball.collision.who;
@@ -85,8 +98,10 @@ function    check_lost_point()
     {
         const   border = pongGame.listBorder[i];
         paddle = pongGame.listPaddle[i];
-        if (pongGame.listTouch.length > 0 && border.name === touch.name && paddle !== undefined)
+        if (border.name === touch.name && paddle !== undefined)
         {
+            if (pongGame.listTouch.length === 0)
+                handled_anyone_touching_ball(paddle);
             last_touch(paddle);
             pongGame.lostPoint = true;
             pongGame.listBorder.forEach(border => {
