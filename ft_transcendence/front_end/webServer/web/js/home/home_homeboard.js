@@ -72,7 +72,7 @@ function	drawHomePage(callback)
 	</div>
 	<div id="chat"></div>
 	<div class="r_successinfo hide"></div>
-${noticeInvitePlayer()}
+	${noticeInvitePlayer()}
 </div>
 `;
 
