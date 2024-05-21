@@ -2,6 +2,7 @@ import { getListFriends } from "../backend_operation/get_user_info.js";
 import { client } from "../client/client.js";
 import { create_match } from "../createMatch/createMatch.js";
 import { send_invitation_to_play } from "../invitationPlay/displayResultsSearchInvitationPlay.js";
+import { searchFindNewFriendWindow } from "./add-friend.js";
 import { openChatBox } from "./chatbox.js";
 import { renderNotifications } from "./notifications.js";
 
@@ -37,6 +38,7 @@ const renderFriendList = (list) => {
         })
     });
     renderNotifications();
+    searchFindNewFriendWindow();
 };
 
 const searchFriendList = () => {
