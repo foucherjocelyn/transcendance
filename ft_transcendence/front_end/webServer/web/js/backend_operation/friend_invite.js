@@ -1,7 +1,7 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 
 export async function getListFriendInvitationSent() {
-    console.log("--getListFriendInvitationSent starting");
+    //console.log("--getListFriendInvitationSent starting");
     let f_token = getCookie("token");
     //    console.log(f_token);
 
@@ -24,7 +24,6 @@ export async function getListFriendInvitationSent() {
         .catch(error => {
             console.error("getListFriendInvitationSent ", error);
         });
-    console.log("--");
     return response;
 }
 

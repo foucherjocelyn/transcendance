@@ -98,7 +98,7 @@ export async function getMyInfo() {
 }
 
 export async function getListUsers() {
-	console.log("--getListUsers starting");
+
 	let f_token = getCookie("token");
 
 	try {
@@ -145,6 +145,28 @@ export const getListFriends = async () => {
 		console.error("getListFriends: ", error);
 	}
 
+}
+
+export const getListMutedUsers = async () => {
+	let f_token = getCookie("token");
+
+	try {
+		const response = await fetch("https://localhost/api/v1/user/friendship/mute/list", {
+			method: "GET",
+			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json",
+				"Authorization": `Bearer ${f_token}`
+			}
+		})
+		if (!response.ok) {
+			console.log("getListMutedUsers: Client/Server error");
+			return;
+		}
+		return response.json();
+	} catch (error) {
+		console.error("getListMutedUsers: ", error);
+	}
 }
 
 export const getAllMyGames = async () => {

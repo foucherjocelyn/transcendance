@@ -1,6 +1,7 @@
 import { client, dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { postMuteUser, postNewMessage } from "../backend_operation/messages.js";
+import { getListMutedUsers } from "../backend_operation/get_user_info.js";
 
 const renderMessages = async (friendUsername) => {
     let f_token = getCookie("token");
@@ -130,6 +131,7 @@ const receiveMessage = (receivedData) => {
 const muteUser = (username) => {
     console.log('mute');
     postMuteUser(username);
+    console.log(getListMutedUsers());
 }
 
 const openChatBox = (friendUsername) => {
