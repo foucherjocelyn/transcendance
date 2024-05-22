@@ -17,8 +17,10 @@ async function drawTournament(callback)
 			<div id="h_tournament_page" class="hide">
 				<div id="h_tournament_board">
 					<div class="t_sort_head">
+					<!--
 				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
 	            <button type="button" id="htb_mglass" name="mglass"></button>
+				-->
        		    <select id="htb_dropdown" name="options">
 	              <option value="upcoming" selected>Upcoming</option>
        		      <option value="ongoing">Ongoing</option>
@@ -57,7 +59,7 @@ async function drawTournament(callback)
 			addLabel(tour_list, i);
 	}
 	upperPanelEventListener("tournament");
-	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
+	//document.getElementById("htb_mglass").addEventListener("click", searchLabel);
 	callback(true);
 }
 

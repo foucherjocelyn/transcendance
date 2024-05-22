@@ -2,12 +2,37 @@
     background-image: url(../../img/background/card2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
+    position: absolute;
+    left: 80%;
+    transform: translateX(-80%);
+    top: 15%;
     padding: 10px;
-    height: 500px;
+    height: 300px;
     width: 300px;
+}
+
+#ip_avatar, #inspectprofile p {
+    position: relative;
+    border-radius: 60px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+#inspectprofile_close {
+    background-image: url(../../img/icon/close.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: transparent;
+	border: none;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    margin-left: 85%;
+}
+
+#inspectprofile p {
+    color: white;
+    font-weight: bold;
 }
 
 #ip_avatar {

@@ -125,7 +125,7 @@ async function	drawProfilePage(callback)
 		</div>
 		<hr id="h_myprofileoptionsline">
 		<div id="h_current_parameters">
-			<img style="max-width: 300px; max-height: 300px; position:relative; left: 25%; margin-top: 5%;" src="../../img/png/gear.png"></img>
+			<img id="h_myprofilemenu" src="../../img/png/gear.png" alt="gear icon"></img>
 		</div>
 	</div>
 	<div id="chat"></div>

@@ -40,11 +40,15 @@ const renderFriendList = (list) => {
         })
         friendDiv.querySelector(".c-inspectprofile-button").addEventListener("click", (e) => {
             e.stopPropagation();
-            
+            /*
+            console.log("inspect button clicked");
             const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
             if (receiverUser === undefined)
+                {
+                    console.log("receiverUser is undefined");
                 return ;
-            
+                }
+                */
             inspectProfile(friendUsername);
         })
     });

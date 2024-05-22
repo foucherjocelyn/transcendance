@@ -65,6 +65,7 @@ function	drawHomePage(callback)
 <!-- Display player stats  -->
               </tr>
             </thead>
+			<br>
             <tbody id="hs_info">
             </tbody>
           </table>

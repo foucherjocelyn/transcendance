@@ -37,6 +37,7 @@
     -   [Update my profile](#update-my-profile)
     -   [Get my profile avatar](#get-my-profile-avatar)
     -   [Upload my profile avatar](#upload-my-profile-avatar)
+    -   [Update my status](#update-my-status)
 
 -   **Channels**
 
@@ -70,6 +71,7 @@
     -   [Unban user from sending a friend invitation](#unban-user-from-sending-a-friend-invitation)
     -   [Mute user from sending private messages](#mute-user-from-sending-private-messages)
     -   [Unmute user from sending private messages](#unmute-user-from-sending-private-messages)
+    -   [Get list of muted users](#get-list-of-muted-users)
 
 -   **User Messages**
 
@@ -384,6 +386,23 @@ avatar: File
 Upload a profile avatar, save it in the backend and update the user's avetarPath in the database
 
 For frontend implementation, see: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#uploading_a_file
+
+## Update my status
+
+Only authenticated user can update the user's status to `online` or `offline`
+
+```typescript
+POST /api/v1/profile/me/status
+authorization Bearer <token>
+{
+	status: string
+}
+```
+
+### Return
+
+-   The updated user profile ([User](#user))
+
 
 # Channels
 
@@ -821,6 +840,17 @@ authorization Bearer <token>
 
 -   A updated MutedUser object ([MutedUser](#muteduser))
 
+## Get list of muted users
+
+```typescript
+GET /api/v1/user/friendship/mute/list
+authorization Bearer <token>
+```
+
+### Return
+
+-   A list of MutedUser objects ([MutedUser](#muteduser))
+
 # User messages
 
 ## Send a message to a friend
@@ -1225,6 +1255,23 @@ authorization Bearer <token>
 	sender_username: string,
 	receiver_username: string,
 	content: string,
+	created_at: Date,
+	updated_at: Date
+}
+```
+
+## Tournament
+
+```typescript
+{
+	id: number,
+	name: string,
+	description: string,
+	max_players: number,
+	start_date: Date,
+	end_date: Date,
+	status: 'upcoming' | 'ongoing' | 'completed',
+	player_usernames: string[],
 	created_at: Date,
 	updated_at: Date
 }
