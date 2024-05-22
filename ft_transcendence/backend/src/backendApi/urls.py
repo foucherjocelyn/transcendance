@@ -191,7 +191,7 @@ urlpatterns = [
     path("user/friendship/unmute", FriendshipViewSet.as_view({"post": "unmuteUser"})),
     path(
         "user/friendship/mute/list",
-        FriendshipViewSet.as_view({"get": "listMutedUsers"}),
+        FriendshipViewSet.as_view({"get": "listMutedUser"}),
     ),
     # User messsage
     path(

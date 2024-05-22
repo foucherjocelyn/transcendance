@@ -157,7 +157,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             return Response({"error": "Sender is already banned"}, status=400)
 
         until_string = request.data.get("until", None)
-        reason = request.data.get("bannedReason", None)
+        reason = request.data.get("reason", None)
         if not until_string:
             until = datetime.max.date()
         else:
@@ -283,9 +283,9 @@ class FriendshipViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"])
     def listMutedUser(self, request):
-        sender = request.user
+        user = request.user
         muted_users = MutedUser.objects.filter(
-            sender=sender, until__gte=datetime.now().date()
+            Q(sender=user) | Q(receiver=user), until__gte=datetime.now().date()
         )
         serializer = MutedUserSerializer(muted_users, many=True)
         return Response(serializer.data, status=200)
