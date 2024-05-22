@@ -48,21 +48,6 @@ async function drawTournament(callback)
 `;
 	let tour_list = await getTournamentsList();
 
-	//temp tournament object
-	/*
-	tour_list = {
-		0: {
-			name: "test_tournament",
-			max_players: "10",
-			start_date: "07/07",
-			end_date: "08/07",
-			status: "preparing",
-			player_usernames: ["imaplayer", "user2"]
-		},
-		length: 1
-	};
-	*/
-	//temp
 	console.log("tour_list is undefined");
 	if (tour_list != undefined)
 	{
