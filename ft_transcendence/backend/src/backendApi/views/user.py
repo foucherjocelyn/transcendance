@@ -135,6 +135,19 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"isAdmin": True}, status=200)
         else:
             return Response({"isAdmin": False}, status=200)
+    
+    @action(detail=True, methods=["get"])
+    def updateStatus(self, request):
+        user = request.user
+        status = request.data.get("status", None)
+        if not status:
+            return Response({"error": "Status not provided"}, status=400)
+        if status not in ["online", "offline"]:
+            return Response({"error": "Invalid status"}, status=400)
+        user.status = status
+        user.save()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=200)
 
     def get_permissions(self):
         if self.action in ["register", "logIn"]:
@@ -149,6 +162,7 @@ class UserViewSet(viewsets.ModelViewSet):
             "uploadAvatarPicture",
             "getUserIdByUsername",
             "isAdmin",
+            "updateStatus",
         ]:
             self.permission_classes = [IsAuthenticated]
         else:
