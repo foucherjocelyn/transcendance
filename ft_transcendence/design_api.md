@@ -70,6 +70,7 @@
     -   [Unban user from sending a friend invitation](#unban-user-from-sending-a-friend-invitation)
     -   [Mute user from sending private messages](#mute-user-from-sending-private-messages)
     -   [Unmute user from sending private messages](#unmute-user-from-sending-private-messages)
+    -   [Get list of muted users](#get-list-of-muted-users)
 
 -   **User Messages**
 
@@ -820,6 +821,17 @@ authorization Bearer <token>
 ### Return
 
 -   A updated MutedUser object ([MutedUser](#muteduser))
+
+## Get list of muted users
+
+```typescript
+GET /api/v1/user/friendship/mute/list
+authorization Bearer <token>
+```
+
+### Return
+
+-   A list of MutedUser objects ([MutedUser](#muteduser))
 
 # User messages
 

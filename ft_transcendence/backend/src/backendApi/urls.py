@@ -188,6 +188,10 @@ urlpatterns = [
     path("user/friendship/unban", FriendshipViewSet.as_view({"post": "unbanUser"})),
     path("user/friendship/mute", FriendshipViewSet.as_view({"post": "muteUser"})),
     path("user/friendship/unmute", FriendshipViewSet.as_view({"post": "unmuteUser"})),
+    path(
+        "user/friendship/mute/list",
+        FriendshipViewSet.as_view({"get": "listMutedUsers"}),
+    ),
     # User messsage
     path(
         "user/friend/messages",
@@ -250,7 +254,10 @@ urlpatterns = [
     path("game/<int:game_id>/score", GameViewSet.as_view({"post": "addScore"})),
     path("game/me", GameViewSet.as_view({"get": "listMyGames"})),
     path("game/me/score", GameViewSet.as_view({"get": "listMyScores"})),
-    path("game/<int:game_id>/winner/levelup", GameViewSet.as_view({"post": "levelUpWinner"})),
+    path(
+        "game/<int:game_id>/winner/levelup",
+        GameViewSet.as_view({"post": "levelUpWinner"}),
+    ),
     # Tournament
     path("tournaments", TournamentViewSet.as_view({"get": "list", "post": "create"})),
     path(
