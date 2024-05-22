@@ -68,8 +68,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
         if tournament.players.filter(id=user.id).exists():
             return Response({"error": "User already joined"}, status=400)
         # Check is the tournament status is ongoing
-        if tournament.status != "ongoing":
-            return Response({"error": "Tournament is not ongoing"}, status=400)
+        if tournament.status != "upcoming":
+            return Response({"error": "Tournament is not upcoming"}, status=400)
         tournament.players.add(user)
         tournament.save()
         serializer = self.get_serializer(tournament)

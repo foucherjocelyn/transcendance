@@ -1,7 +1,6 @@
 from backendApi.serializers.game import GameSerializer
 from backendApi.serializers.game_score import GameScoreSerializer
 from backendApi.models import Game, User, GameScore
-from backendApi.permissions import IsWebSocketServer
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -179,9 +178,9 @@ class GameViewSet(viewsets.ModelViewSet):
             "endGame",
             "addScore",
             "levelUpWinner",
+            "listMyGames",
+            "listMyScores",
         ]:
-            self.permission_classes = [IsWebSocketServer]
-        elif self.action in ["listMyGames", "listMyScores"]:
             self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
