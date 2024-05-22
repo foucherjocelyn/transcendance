@@ -22,7 +22,7 @@
 }
 
 #h_tournament_board {
-	background-image: url(../../img/background/card2.png);
+	background-image: url(../../img/background/card3_head.png);
 	background-size: cover;
 	border-radius: 4px;
 	min-width:380px;
@@ -36,7 +36,7 @@
 }
 
 #h_tournament_aliasjoin {
-	background-image: url(../../img/background/card2.png);
+	background-image: url(../../img/background/card3.png);
 	background-size: cover;
 	border-radius: 4px;
 	width: 350px;
@@ -73,6 +73,7 @@
 	margin-left: 90%;
 }
 
+/*
 #htb_search {
 	position: relative;
 	left: 2%;
@@ -100,11 +101,13 @@
 	background-size: cover;
 	
 }
+*/
 
 #htb_dropdown {
 	position: relative;
 	right: auto;
-	left: 35%;
+	left: 90%;
+	transform: translateX(-90%);
 	background-image: url(../../img/background/bar.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;

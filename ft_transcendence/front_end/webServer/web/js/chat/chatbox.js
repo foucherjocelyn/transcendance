@@ -5,7 +5,7 @@ import { postNewMessage } from "../backend_operation/messages.js";
 const renderMessages = async (friendUsername) => {
     let f_token = getCookie("token");
 
-    const friendIdObject = await fetch(`http://127.0.0.1:8000/api/v1/users/id/${friendUsername}`, {
+    const friendIdObject = await fetch(`https://localhost/api/v1/users/id/${friendUsername}`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -28,7 +28,7 @@ const renderMessages = async (friendUsername) => {
             console.error("getUserId : ", error);
         });
     const friendId = friendIdObject.user_id.toString();
-    const messagesSent = await fetch(`http://127.0.0.1:8000/api/v1/user/friend/${friendId}/message/sent`, {
+    const messagesSent = await fetch(`https://localhost/api/v1/user/friend/${friendId}/message/sent`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -50,7 +50,7 @@ const renderMessages = async (friendUsername) => {
         .catch(error => {
             console.error("renderMessages : ", error);
         });
-    const messagesReceived = await fetch(`http://127.0.0.1:8000/api/v1/user/friend/${friendId}/message/received`, {
+    const messagesReceived = await fetch(`https://localhost/api/v1/user/friend/${friendId}/message/received`, {
         method: "GET",
         headers: {
             "Accept": "application/json",

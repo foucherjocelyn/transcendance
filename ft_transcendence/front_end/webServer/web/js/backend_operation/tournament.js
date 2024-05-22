@@ -10,7 +10,7 @@ export async function	getTournamentsList()
 	}
 	try {
 //		console.log("-Listing all tournaments");
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/list", {
+		const r = await fetch("https://localhost/api/v1/tournament/list", {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -53,7 +53,7 @@ will return a tournament object
 		return;
 	}
 	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/create", {
+		const r = await fetch("https://localhost/api/v1/tournament/create", {
 			method: "POST",
 			body: JSON.stringify(tour_info),
 			headers: {
@@ -79,28 +79,6 @@ will return a tournament object
 	}
 }
 
-async function	createAlias(player_id)
-{
-	console.log("-creating an alias");
-	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}/alias", {
-			method: "POST",
-			headers: {
-				"Authorization": `Bearer ${f_token}`
-			}
-		})
-		if (!r.ok)
-		{
-			console.log("creating an alias: Client/Server error");
-			return;
-			//throw new Error("fetch POST op failed");
-		}
-		console.log("-");
-	} catch(error) {
-		console.error("createAlias: ", error);
-	}
-}
-
 export async function	joinTournament(tour_id)
 {
 	console.log("-Joining a tournament");
@@ -112,7 +90,7 @@ export async function	joinTournament(tour_id)
 	}
 	//await createAlias(player_id);
 	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}/join", {
+		const r = await fetch(`https://localhost/api/v1/tournament/${tour_id}/join`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -147,7 +125,7 @@ export async function	getTournamentInfoById(tour_id)
 		return;
 	}
 	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}", {
+		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}", {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -191,7 +169,7 @@ will return a tournament object
 		return;
 	}
 	try {
-		const r = await fetch("http://127.0.0.1:8000/api/v1/tournament/${tour_id}", {
+		const r = await fetch("https://localhost/api/v1/tournament/${tour_id}", {
 			method: "PUT",
 			body: JSON.stringify(tour_info),
 			headers: {

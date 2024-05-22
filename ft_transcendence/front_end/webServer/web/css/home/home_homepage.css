@@ -34,7 +34,8 @@
 
 #hpb_level {
 	top: -30%;
-	left: 78%;
+	left: 70%;
+	transform: translateX(-70%);
 }
 
 /*
@@ -46,13 +47,13 @@
 */
 
 #h_scoreboard {
-	background-image: url(../../img/background/card2.png);
+	background-image: url(../../img/background/card3_head.png);
 	background-size: cover;
 	border-radius: 4px;
 	min-width:380px;
-	width: 90%;
+	width: 900px;
 	height: 400px;
-	max-weight: 700px;
+	max-height: 700px;
 	padding: 10px;
 	position: relative;	
 	margin-left: auto;
@@ -77,7 +78,24 @@
 }
 
 #hs_filter th {
-	width: 25%;
-	resize: horizontal;
+	width: 20%;
+	resize: none;
 	overflow: hidden;
+}
+
+#hs_info {
+	color: #AAAAAA;
+}
+
+#hs_info td {
+	padding-left: 10px;
+	border: 1px solid black;
+}
+
+#hs_info tr.win {
+	background-color: green;
+}
+
+#hs_info tr.loss {
+	background-color: red;
 }

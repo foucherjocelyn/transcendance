@@ -6,6 +6,7 @@ import { getTournamentsList, joinTournament } from "../backend_operation/tournam
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
+import { join_the_tournament } from "../createMatch/createMatch.js";
 
 async function drawTournament(callback)
 {
@@ -16,8 +17,10 @@ async function drawTournament(callback)
 			<div id="h_tournament_page" class="hide">
 				<div id="h_tournament_board">
 					<div class="t_sort_head">
+					<!--
 				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
 	            <button type="button" id="htb_mglass" name="mglass"></button>
+				-->
        		    <select id="htb_dropdown" name="options">
 	              <option value="upcoming" selected>Upcoming</option>
        		      <option value="ongoing">Ongoing</option>
@@ -47,19 +50,6 @@ async function drawTournament(callback)
 `;
 	let tour_list = await getTournamentsList();
 
-	//temp tournament object
-	tour_list = {
-		0: {
-			name: "test_tournament",
-			max_players: "10",
-			start_date: "07/07",
-			end_date: "08/07",
-			status: "preparing",
-			player_usernames: ["imaplayer", "user2"]
-		},
-		length: 1
-	};
-	//temp
 	console.log("tour_list is undefined");
 	if (tour_list != undefined)
 	{
@@ -69,7 +59,7 @@ async function drawTournament(callback)
 			addLabel(tour_list, i);
 	}
 	upperPanelEventListener("tournament");
-	document.getElementById("htb_mglass").addEventListener("click", searchLabel);
+	//document.getElementById("htb_mglass").addEventListener("click", searchLabel);
 	callback(true);
 }
 
@@ -84,9 +74,10 @@ function	aliasJoinTournament(tour_obj)
 </div>
 `;
 //	/*Send the following to alias handler
-	  document.getElementById("tour_inputalias").addEventListener("submit", () => {
+	  document.getElementById("tour_inputsend").addEventListener("click", () => {
 		  event.preventDefault();
-		  //sendAliasToServSocket(document.getElementById("tour_inputalias").value);
+		  console.log("submit alias detected");
+		  join_the_tournament(document.getElementById("tour_inputalias").value, tour_obj.id);
 		  joinTournament(tour_obj.id);
 	  });
 	document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament(); });

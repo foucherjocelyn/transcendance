@@ -15,7 +15,7 @@
 
 .r_successinfo {
 	width: 500px;
-	background-image: url(../../img/background/bar.png);
+	background-image: url(../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	padding: 10px;
@@ -32,7 +32,7 @@
 
 input, textarea {
 	margin: 2px 0 0;
-	background-image: url(../../img/background/bar.png);
+	background-image: url(../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	color: white;

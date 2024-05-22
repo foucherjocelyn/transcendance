@@ -1,12 +1,13 @@
 import { getListFriends } from "../backend_operation/get_user_info.js";
 import { client } from "../client/client.js";
 import { create_match } from "../createMatch/createMatch.js";
+import { inspectProfile } from "../home/home_profile.js";
 import { send_invitation_to_play } from "../invitationPlay/displayResultsSearchInvitationPlay.js";
 import { openChatBox } from "./chatbox.js";
 import { renderNotifications } from "./notifications.js";
 
 const renderFriendList = (list) => {
-    console.log(list);
+    //console.log(list);
     const friendsList = document.getElementById("c-friends-list");
     friendsList.innerHTML = "";
     list.forEach((user) => {
@@ -17,6 +18,7 @@ const renderFriendList = (list) => {
                     </div>
                     <div class="user-name">${user.username}</div>
                     <button id="c-invite-match${user.username}" class="c-invite-match-button"></button>
+                    <button id="c-inspectprofile${user.username}" class="c-inspectprofile-button"></button>
                 </div>`;
     });
     document.querySelectorAll(".c-friend").forEach(friendDiv => {
@@ -34,6 +36,19 @@ const renderFriendList = (list) => {
             
             create_match("with friends");
             send_invitation_to_play(receiverUser);
+        })
+        friendDiv.querySelector(".c-inspectprofile-button").addEventListener("click", (e) => {
+            e.stopPropagation();
+            /*
+            console.log("inspect button clicked");
+            const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
+            if (receiverUser === undefined)
+                {
+                    console.log("receiverUser is undefined");
+                return ;
+                }
+                */
+            inspectProfile(friendUsername);
         })
     });
     renderNotifications();
