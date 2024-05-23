@@ -1,6 +1,6 @@
 import { screen } from "../screen/screen.js";
 import { match } from "../createMatch/createMatch.js";
-import { define_paddle } from "../game/createPaddle.js";
+import { pongGame } from "../client/client.js";
 
 function    setup_size_game_instructions_layer()
 {
@@ -78,7 +78,7 @@ function    setup_game_instructions()
         const   player = match.listPlayer[i];
         if (player.type !== 'none')
         {
-            const       paddle = define_paddle(i);
+            const       paddle = pongGame.listPaddle[i];
             const   playerIntroduction = create_player_introduction(paddle);
             gameInstructionsPanel.appendChild(playerIntroduction);
         }

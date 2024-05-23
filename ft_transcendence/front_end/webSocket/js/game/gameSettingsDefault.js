@@ -1,6 +1,5 @@
-import { gameSettings } from "./getInputsGameSettings.js";
 
-function    game_settings_size_default()
+function    game_settings_size_default(gameSettings)
 {
     gameSettings.size.table.width = 31;
     gameSettings.size.table.height = 30;
@@ -13,7 +12,7 @@ function    game_settings_size_default()
     gameSettings.size.ball = 1;
 }
 
-function    game_settings_color_default()
+function    game_settings_color_default(gameSettings)
 {
     gameSettings.color.plane = '#241f31';
     gameSettings.color.border = '#ffffff';
@@ -26,13 +25,13 @@ function    game_settings_color_default()
     gameSettings.color.ball = '#ff0000';
 }
 
-function    game_settings_speed_default()
+function    game_settings_speed_default(gameSettings)
 {
     gameSettings.speed.paddle = 0.5;
     gameSettings.speed.ball = 0.1;
 }
 
-function    game_settings_control_default()
+function    game_settings_control_default(gameSettings)
 {
     gameSettings.control.player1.left = 'q';
     gameSettings.control.player1.right = 'a';
@@ -47,10 +46,14 @@ function    game_settings_control_default()
     gameSettings.control.player4.right = 'o';
 }
 
-export function    game_settings_default()
+function    game_settings_default(gameSettings)
 {
-    game_settings_size_default();
-    game_settings_color_default();
-    game_settings_speed_default();
-    game_settings_control_default();
+    game_settings_size_default(gameSettings);
+    game_settings_color_default(gameSettings);
+    game_settings_speed_default(gameSettings);
+    game_settings_control_default(gameSettings);
 }
+
+module.exports = {
+    game_settings_default
+};

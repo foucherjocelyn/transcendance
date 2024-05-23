@@ -45,7 +45,7 @@ export function    gameLayerHTML()
 
             <!-------------------- Countdown -------------------->
             <div id="countdownLayer">
-                <span>3</span>
+                <span></span>
             </div>
 
             <!-------------------- Game intructions -------------------->

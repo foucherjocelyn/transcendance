@@ -41,6 +41,8 @@ function get_data_from_client(data, socket) {
         kick_out_of_the_match(data);
     else if (data.title === 'start game')
         sign_start_game(data);
+    else if (data.title === 'update game settings')
+        update_game_settings_ws(data);
     else if (data.title === 'game over')
         informations_match_end(data.from, data.content);
     else
@@ -101,4 +103,5 @@ const { update_match } = require('./updateMatch');
 const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
 const { sign_start_game } = require('./signStartGame');
 const { request_invitation_to_play } = require('./invitationToPlay');
-const { informations_match_end } = require("./getResultsMatch");
+const { informations_match_end } = require("./getResultsMatch");const { update_game_settings_ws } = require("../game/gameSettingsWS");
+

@@ -1,4 +1,4 @@
-import { gameSettings } from "./getInputsGameSettings.js";
+import { gameSettings } from "./updateGameSetting.js";
 
 function    get_input_color_table()
 {

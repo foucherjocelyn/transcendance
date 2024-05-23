@@ -1,4 +1,4 @@
-import { gameSettings } from "./getInputsGameSettings.js";
+import { gameSettings } from "./updateGameSetting.js";
 
 const   listButtons = [];
 

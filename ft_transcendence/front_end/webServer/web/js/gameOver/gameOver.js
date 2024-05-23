@@ -1,8 +1,6 @@
-import { client, dataToServer } from '../client/client.js';
+import { client, dataToServer, pongGame } from '../client/client.js';
 import { match } from '../createMatch/createMatch.js';
 import { count_empty_place } from '../createMatch/getSignButtonsInCreateMatch.js';
-import { create_score } from '../game/createScore.js'
-import { pongGame } from '../game/startGame.js';
 import { setup_game_over } from './gameOverLayer.js';
 
 function    create_result()
@@ -48,9 +46,6 @@ function    check_game_over()
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
-        if (player.score !== 0)
-            create_score();
-
         if (player.score === pongGame.maxPoint || count_empty_place() === 3)
         {
             pongGame.gameOver = true;

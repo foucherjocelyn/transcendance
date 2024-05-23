@@ -1,3 +1,4 @@
+const { setup_game_WS } = require("../game/setupGameWS");
 const { send_data } = require("./dataToClient");
 const { update_match, define_match } = require("./updateMatch");
 const { webSocket } = require("./webSocket");
@@ -47,40 +48,14 @@ function    informations_match_start(data, match)
     // match.timeStart = get_time();
     // match.dateStart = get_date();
     
-    const   websocket_token = process.env.WEBSOCKET_TOKEN;
-    console.log(websocket_token);
-
-    // fetch('/api/v1/game', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${websocket_token}`
-    //     },
-    //     body: JSON.stringify({
-    //         owner_username: string,
-    //         visibility: "public";
-    //         mode: "classic" | "ranked" | "tournament";// optional, default: 'classic'
-    //         tournament_name: string;// optional
-    //         maxScore: number;// optional
-    //         status: "progressing" | "end";// optional
-    //     })
-    // })
-    // .then(response => {
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok ' + response.statusText);
-    //     }
-    //     return response.json();
-    // })
-    // .then(data => {
-    //     console.log('Success:', data);
-    // })
-    // .catch(error => {
-    //     console.error('Error:', error);
-    // });
+    // const   websocket_token = process.env.WEBSOCKET_TOKEN;
+    // console.log(websocket_token);
 
     update_match(data.from, match, 'update match');
     if (match.mode !== 'rank' && match.mode !== 'tournament')
         send_data(data.title, data.content, data.from, match.listUser);
+
+    setup_game_WS(match);
 }
 
 function    informations_match_end(user, inforMatch)

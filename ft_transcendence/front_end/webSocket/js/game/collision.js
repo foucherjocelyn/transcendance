@@ -134,6 +134,6 @@ function    check_collision(obj, obj2)
     return (false);
 }
 
-export {
+module.exports = {
     check_collision
 };

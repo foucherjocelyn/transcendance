@@ -1,7 +1,5 @@
 import { setup_start_game } from "../countdown/countdown.js";
 import { add_objects } from "../game/gameWindows.js";
-import { pongGame } from "../game/startGame.js";
-import { gameSettings } from "./getInputsGameSettings.js";
 
 function    update_game_setting_size()
 {
@@ -64,19 +62,19 @@ function    update_game_setting_control()
     gameSettingControlPlayer4[1].value = gameSettings.control.player4.right;
 }
 
-function    update_game_settings(data)
+export let gameSettings;
+export function    update_game_settings(data)
 {
-    Object.assign(gameSettings, data.content);
+    gameSettings = data.content;
 
     update_game_setting_size();
     update_game_setting_color();
     update_game_setting_speed();
     update_game_setting_control();
     
+    if (data.from === 'server')
+        return ;
+    
     add_objects();
     setup_start_game();
 }
-
-export {
-    update_game_settings
-};

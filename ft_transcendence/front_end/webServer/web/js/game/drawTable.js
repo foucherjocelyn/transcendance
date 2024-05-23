@@ -1,50 +1,41 @@
-import { gameSettings } from "../gameSettings/getInputsGameSettings.js";
+import { pongGame } from "../client/client.js";
+import { gameSettings } from "../gameSettings/updateGameSetting.js";
 import { createPlane, delete_old_object } from "./createObjects.js";
-import { pongGame } from "./startGame.js";
-
-function    setup_limit_table(wTable, hTable)
-{
-    pongGame.limit.top = -(hTable / 2);
-    pongGame.limit.bottom = hTable / 2;
-    pongGame.limit.left = -(wTable / 2);
-    pongGame.limit.right = wTable / 2;
-}
+import { displayPongGame } from "./startGame.js";
 
 function    delete_old_plane()
 {
-    let table = pongGame.plane;
-
-    for (let row = 0; row < table.length; row++)
+    if (displayPongGame.table.length === 0)
+        return ;
+    
+    const   pongTable = displayPongGame.table;
+    for (let row = 0; row < pongTable.length; row++)
     {
-        for (let column = 0; column < table[row].length; column++)
+        for (let column = 0; column < pongTable[row].length; column++)
         {
-            let plane = table[row][column];
+            let plane = pongTable[row][column];
             delete_old_object(plane);
-            table[row][column] = null;
         }
     }
-    table = [];
 }
 
-function    create_plane()
+export function draw_table()
 {
-    if (pongGame.plane !== undefined)
-        delete_old_plane();
+    delete_old_plane();
 
-    pongGame.plane = [];
+    displayPongGame.table = [];
 
+    const   pongTable = displayPongGame.table;
     const   wTable = gameSettings.size.table.width;
     const   hTable = gameSettings.size.table.height;
     const   colorBorder = gameSettings.color.border;
     const   colorPlane = gameSettings.color.plane;
 
-    setup_limit_table(wTable, hTable);
-
     let poZ = -(hTable / 2) + 0.5;
     for (let row = 0; row < hTable; row++)
     {
         let poX = -(wTable / 2) + 0.5;
-        pongGame.plane[row] = [];
+        pongTable[row] = [];
         
         for (let column = 0; column < wTable; column++)
         {
@@ -55,14 +46,10 @@ function    create_plane()
             plane.position.set(poX, 0, poZ);
             pongGame.scene.add(plane);
 
-            pongGame.plane[row][column] = plane;
+            pongTable[row][column] = plane;
 
             poX += 1;
         }
         poZ += 1;
     }
 }
-
-export {
-    create_plane
-};

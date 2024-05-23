@@ -1,6 +1,5 @@
 import { client, dataToServer } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
-import { pongGame } from "../game/startGame.js";
 import { to_game } from "../home/home_game.js";
 import { gameOverHTML } from "../home/home_gamewindows.js";
 import { screen } from "../screen/screen.js";

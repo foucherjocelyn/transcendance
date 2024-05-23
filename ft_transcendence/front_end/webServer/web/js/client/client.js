@@ -1,12 +1,12 @@
-import { create_match, match, update_match_informations } from "../createMatch/createMatch.js";
-import { update_position_ball } from "../game/movementsBall.js";
-import { update_position_paddle } from "../game/movementsPaddle.js";
-import { pongGame, setup_game_layer } from "../game/startGame.js";
-import { update_game_settings } from "../gameSettings/updateGameSetting.js";
+import { create_match, update_match_informations } from "../createMatch/createMatch.js";
+import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
 import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
+import { update_game_settings } from "../gameSettings/updateGameSetting.js";
+import { display_countdown } from "../countdown/countdown.js";
+import { draw_score } from "../game/drawScore.js";
 
 class   userNotifications {
     constructor() {
@@ -37,6 +37,7 @@ export class   dataToServer {
     }
 }
 
+export let pongGame;
 function    get_data_from_server(socket)
 {
     socket.onmessage = function(event) {
@@ -67,16 +68,22 @@ function    get_data_from_server(socket)
         }
         if (receivedData.title === 'start game')
             setup_game_layer();
+        if (receivedData.title === 'countdown')
+            display_countdown(receivedData.content);
         if (receivedData.title === 'update game settings')
             update_game_settings(receivedData);
-        if (receivedData.title === 'update vector ball')
-            Object.assign(pongGame.ball.vector, receivedData.content);
-        if (receivedData.title === 'update movement ball')
-            Object.assign(pongGame.ball.position, receivedData.content);
-        if (receivedData.title === 'update movement paddle')
-            update_position_paddle(receivedData.content);
-        if (receivedData.title === 'update movement ball')
-            update_position_ball(receivedData.content);
+        if (receivedData.title === 'update pongGame')
+            pongGame = receivedData.content;
+        if (receivedData.title === 'update borders')
+            pongGame.listBorder = receivedData.content;
+        if (receivedData.title === 'update paddles')
+            pongGame.listPaddle = receivedData.content;
+        if (receivedData.title === 'update ball')
+            pongGame.ball = receivedData.content;
+        if (receivedData.title === 'movement ball')
+            pongGame.ball.position = receivedData.content;
+        if (receivedData.title === 'draw score')
+            draw_score(receivedData.content);
     };
 }
 

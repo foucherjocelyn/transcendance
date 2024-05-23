@@ -2,45 +2,18 @@ import { screen } from "../screen/screen.js";
 import { setup_game_instructions } from "../gameInstructions/gameInstructions.js";
 import { setup_game_settings } from "../gameSettings/gameSetting.js";
 import { setup_game_windows } from "./gameWindows.js";
-import { match } from "../createMatch/createMatch.js";
 import { gameLayerHTML } from "../home/home_gamewindows.js";
 import { client } from "../client/client.js";
 
-class   formPongGame {
+class   formDisplay {
     constructor() {
-        this.lostPoint = true,
-        this.gameOver = false,
-        this.plane = undefined,
-        this.limit = {
-            left: undefined,
-            right: undefined,
-            top: undefined,
-            bottom: undefined
-        },
-        this.border = {
-            left: undefined,
-            right: undefined,
-            top: undefined,
-            bottom: undefined
-        },
-        this.listBorder = undefined,
-        this.paddle = {
-            left: undefined,
-            right: undefined,
-            top: undefined,
-            bottom: undefined
-        },
-        this.listPaddle = undefined,
-        this.score = {
-            player1: undefined,
-            player2: undefined,
-            player3: undefined,
-            player4: undefined
-        },
-        this.ball = undefined
+        this.ball = undefined,
+        this.borders = [],
+        this.paddles = [],
+        this.scores = [],
+        this.table = []
     }
 };
-let pongGame;
 
 function    setup_size_game_layer()
 {
@@ -49,23 +22,17 @@ function    setup_size_game_layer()
     gameLayer.style.width = `${screen.width}px`;
 }
 
-function    setup_game_layer()
+export let  displayPongGame;
+export function    setup_game_layer()
 {
-    // console.table(match.timeStart);
     client.inforUser.status = 'playing game';
+    displayPongGame = new formDisplay();
 
     gameLayerHTML();
-    pongGame = new formPongGame();
-    pongGame.maxPoint = 5;
-    pongGame.listPlayer = match.listPlayer;
-
-    setup_size_game_layer();
-    setup_game_settings();
-    setup_game_windows();
-    setup_game_instructions();
+    setTimeout(function() {
+        setup_size_game_layer();
+        setup_game_settings();
+        setup_game_windows();
+        setup_game_instructions();
+    }, 100);
 }
-
-export {
-    setup_game_layer,
-    pongGame
-};
