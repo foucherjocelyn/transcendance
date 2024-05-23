@@ -45,6 +45,8 @@ function    get_date()
 
 function    informations_match_start(data, match)
 {
+    data.from.status = 'playing game';
+    
     // match.timeStart = get_time();
     // match.dateStart = get_date();
     
@@ -52,10 +54,7 @@ function    informations_match_start(data, match)
     // console.log(websocket_token);
 
     update_match(data.from, match, 'update match');
-    if (match.mode !== 'rank' && match.mode !== 'tournament')
-        send_data(data.title, data.content, data.from, match.listUser);
-
-    setup_game_WS(match);
+    setup_game_WS(data, match);
 }
 
 function    informations_match_end(user, inforMatch)

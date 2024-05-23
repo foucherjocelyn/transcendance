@@ -88,10 +88,6 @@ export function update_match_informations(data)
         {
             document.getElementById("cancelCreateMatchButton").style.display = 'none';
             document.getElementById("startCreateMatchButton").style.display = 'none';
-
-            setTimeout(function() {
-                setup_game_layer();
-            }, 3000); // 3 secondes
         }
     }
 }
