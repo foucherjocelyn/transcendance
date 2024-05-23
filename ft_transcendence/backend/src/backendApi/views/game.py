@@ -120,18 +120,27 @@ class GameViewSet(viewsets.ModelViewSet):
         game_score, created = GameScore.objects.get_or_create(game=game, player=player)
         game_score.score = score
         game_score.save()
-        # Update the winner of the game
-        scores = GameScore.objects.filter(game=game)
-        # Get the player with the highest score
-        winner = scores.order_by("-score").first().player
-        winnerScore = scores.order_by("-score").first().score
-        game.winner = winner
-        game.winnerScore = winnerScore
-        game.save()
         return Response(
             {"message": f"Score of the player {player_username} added or updated"},
             status=200,
         )
+
+    @action(detail=True, methods=["post"])
+    def updateWinnerOfGame(self, request, game_id):
+        try:
+            game = Game.objects.get(id=game_id)
+        except Game.DoesNotExist:
+            return Response({"error": "Game not found"}, status=404)
+        # Find the winner from game scores
+        scores = GameScore.objects.filter(game=game)
+        if not scores.exists():
+            return Response({"error": "No scores found"}, status=400)
+        max_score = scores.order_by("-score").first()
+        winner = max_score.player
+        game.winner = winner
+        game.winnerScore = max_score.score
+        game.save()
+        return Response({"message": "Winner updated successfully"}, status=200)
 
     @action(detail=True, methods=["post"])
     def levelUpWinner(self, request, game_id):
@@ -177,6 +186,7 @@ class GameViewSet(viewsets.ModelViewSet):
             "removePlayerFromGame",
             "endGame",
             "addScore",
+            "updateWinnerOfGame",
             "levelUpWinner",
             "listMyGames",
             "listMyScores",

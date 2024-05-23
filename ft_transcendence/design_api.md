@@ -88,6 +88,7 @@
     -   [Remove a player from a game](#remove-a-player-from-a-game)
     -   [End a game](#end-a-game)
     -   [Add score of a player](#add-score-of-a-player)
+    -   [Update the winner of a game](#update-the-winner-of-a-game)
     -   [Level up the winner](#level-up-the-winner)
     -   [List all my games](#list-all-my-games)
     -   [List all my scores](#list-all-my-scores)
@@ -128,7 +129,7 @@ POST /api/v1/token
 
 ```typescript
 {
-	access: string
+    access: string;
 }
 ```
 
@@ -402,7 +403,6 @@ authorization Bearer <token>
 ### Return
 
 -   The updated user profile ([User](#user))
-
 
 # Channels
 
@@ -992,8 +992,7 @@ authorization Bearer <token>
 
 ## Add score of a player
 
-Add a player's score. Only the websocket server is allowed access. The AI's score will be disregarded. The winner's
-score will be automatically updated.
+Add a player's score. The AI's score will be disregarded.
 
 ```typescript
 POST /api/v1/game/<game_id>/score
@@ -1008,9 +1007,23 @@ authorization Bearer <token>
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
 
+## Update the winner of a game
+
+The winner will be updated based on the highest score.
+
+```typescript
+POST /api/v1/game/<game_id>/winner
+authorization Bearer <token>
+```
+
+### Return
+
+-   The ([Message](#message)) if success or ([Error](#error)) if error raised
+
+
 ## Level up the winner
 
-Level up the winner. Only the websocket server is allowed access.
+Level up the winner.
 
 ```typescript
 POST /api/v1/game/<game_id>/winner/levelup
@@ -1020,7 +1033,6 @@ authorization Bearer <token>
 ### Return
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
-
 
 ## List all my games
 
@@ -1034,7 +1046,6 @@ authorization Bearer <token>
 ### Return
 
 -   A list of game objects ([Game](#game))
-
 
 ## List all my scores
 
@@ -1052,8 +1063,7 @@ authorization Bearer <token>
 {
 	name: string,
 	description: string, // optional
-	start_date: Date, // Format: YYYY-MM-DD
-	end_date: Date, // Format: YYYY-MM-DD
+	start_time: DateTime, // Format: YYYY-MM-DD HH:MM:SS
 }
 ```
 
@@ -1097,9 +1107,7 @@ authorization Bearer <token>
 {
 	name: string,
 	description: string, // optional
-	start_date: Date, // Format: YYYY-MM-DD
-	end_date: Date, // Format: YYYY-MM-DD
-	status: "upcoming" | "ongoing" | "completed", // optional
+	start_time: DateTime, // Format: YYYY-MM-DD HH:MM:SS
 }
 ```
 
@@ -1260,19 +1268,33 @@ authorization Bearer <token>
 }
 ```
 
-## Tournament
+## Game
 
 ```typescript
 {
 	id: number,
-	name: string,
-	description: string,
-	max_players: number,
-	start_date: Date,
-	end_date: Date,
-	status: 'upcoming' | 'ongoing' | 'completed',
+	visibility: "public" | "private",
+	mode: "classic" | "ranked" | "tournament",
+	tournament_name: string, // if mode = tournament
+	owner_username: string,
 	player_usernames: string[],
-	created_at: Date,
-	updated_at: Date
+	created_at: DateTime,
+	updated_at: DateTime
+}
+
+## Tournament
+
+```typescript
+{
+    id: number,
+    name: string,
+    description: string, // optional
+    owner_username: string,
+    start_time: DateTime,
+    max_players: number,
+    status: "registering" | "progressing",
+    player_usernames: string[],
+    created_at: DateTime,
+    updated_at: DateTime
 }
 ```

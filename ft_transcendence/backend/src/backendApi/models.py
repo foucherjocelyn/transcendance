@@ -116,6 +116,13 @@ class Tournament(models.Model):
     status = models.CharField(
         max_length=20, choices=status_choices, default="registering"
     )
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tournament_owner",
+        null=True,
+        default=None,
+    )
     players = models.ManyToManyField(
         User, related_name="tournament_players", default=list
     )

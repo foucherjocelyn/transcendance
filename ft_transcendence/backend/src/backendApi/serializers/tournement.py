@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 
 class TournamentSerializer(serializers.ModelSerializer):
+    owner_username = serializers.CharField(source="owner.username", read_only=True)
     player_usernames = serializers.ListField(
         child=serializers.CharField(), read_only=True
     )
@@ -15,6 +16,7 @@ class TournamentSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "description",
+            "owner_username",
             "start_time",
             "max_players",
             "status",
@@ -38,8 +40,11 @@ class TournamentSerializer(serializers.ModelSerializer):
         return super().to_representation(instance)
 
     def create(self, validated_data):
+        owner = self.context["request"].user
         # Create the tournament
-        tournement = super().create(validated_data)
+        tournement = Tournament.objects.create(**validated_data)
+        tournement.owner = owner
+        tournement.players.add(owner)
         # Set the status by compared to the start time
         if tournement.start_time > timezone.now():
             tournement.status = "registering"
@@ -51,5 +56,9 @@ class TournamentSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         for key, value in validated_data.items():
             setattr(instance, key, value)
+        if instance.start_time > timezone.now():
+            instance.status = "registering"
+        else:
+            instance.status = "progressing"
         instance.save()
         return instance
