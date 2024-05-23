@@ -1281,6 +1281,7 @@ authorization Bearer <token>
 	created_at: DateTime,
 	updated_at: DateTime
 }
+```
 
 ## Tournament
 
