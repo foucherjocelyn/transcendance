@@ -284,10 +284,16 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"])
     def listMutedUser(self, request):
         user = request.user
-        muted_users = MutedUser.objects.filter(
+        muteds = MutedUser.objects.filter(
             Q(sender=user) | Q(receiver=user), until__gte=datetime.now().date()
         )
-        serializer = MutedUserSerializer(muted_users, many=True)
+        muted_users = []
+        for muted in muteds:
+            if muted.sender == user:
+                muted_users.append(muted.receiver)
+            else:
+                muted_users.append(muted.sender)
+        serializer = UserSerializer(muted_users, many=True)
         return Response(serializer.data, status=200)
 
     def get_permissions(self):

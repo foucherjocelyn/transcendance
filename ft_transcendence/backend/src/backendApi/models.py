@@ -107,8 +107,7 @@ class ChannelInvitedUser(models.Model):
 class Tournament(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True, default=None)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_time = models.DateTimeField()
     max_players = models.PositiveIntegerField(default=100)
     status_choices = [
         ("upcoming", "Upcoming"),
