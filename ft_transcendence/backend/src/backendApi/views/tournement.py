@@ -11,7 +11,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
     queryset = Tournament.objects.all()
     serializer_class = TournamentSerializer
 
-
     def get_queryset(self):
         return Tournament.objects.order_by("id")
 
@@ -39,7 +38,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=200)
         else:
             return Response(serializer.errors, status=400)
-    
+
     # Get tournement by id
     @action(detail=True, methods=["get"])
     def getTournamentById(self, request, tournament_id):
@@ -49,7 +48,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return Response({"error": "Tournament not found"}, status=404)
         serializer = self.get_serializer(tournament)
         return Response(serializer.data, status=200)
-    
+
     # Get all tournaments
     @action(detail=True, methods=["get"])
     def getAllTournaments(self, request):
@@ -76,7 +75,13 @@ class TournamentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=200)
 
     def get_permissions(self):
-        if self.action in ["joinTournament", "getTournamentById", "getAllTournaments"]:
+        if self.action in [
+            "createTournament",
+            "updateTournament",
+            "joinTournament",
+            "getTournamentById",
+            "getAllTournaments",
+        ]:
             self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]

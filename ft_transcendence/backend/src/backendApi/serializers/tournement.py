@@ -15,9 +15,8 @@ class TournamentSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "description",
+            "start_time",
             "max_players",
-            "start_date",
-            "end_date",
             "status",
             "player_usernames",
             "created_at",
@@ -31,12 +30,6 @@ class TournamentSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-    def validate(self, data):
-        super().validate(data)
-        if data["start_date"] > data["end_date"]:
-            raise InputValidationError(detail="Start time must be before end time")
-        return data
-
     def get_player_usernames(self, obj):
         return [player.username for player in obj.players.all()]
 
@@ -45,14 +38,13 @@ class TournamentSerializer(serializers.ModelSerializer):
         return super().to_representation(instance)
 
     def create(self, validated_data):
+        # Create the tournament
         tournement = super().create(validated_data)
         # Set the status by compared to the start time
-        if tournement.start_date > timezone.now().date():
-            tournement.status = "upcoming"
-        elif tournement.end_date < timezone.now().date():
-            tournement.status = "completed"
+        if tournement.start_time > timezone.now():
+            tournement.status = "registering"
         else:
-            tournement.status = "ongoing"
+            tournement.status = "progressing"
         tournement.save()
         return tournement
 
