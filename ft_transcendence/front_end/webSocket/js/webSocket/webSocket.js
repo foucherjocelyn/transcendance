@@ -45,6 +45,8 @@ function get_data_from_client(data, socket) {
         update_game_settings_ws(data);
     else if (data.title === 'game over')
         informations_match_end(data.from, data.content);
+    else if (data.title === 'movement paddle')
+        get_sign_movement_paddle(socket, data.content);
     else
         send_data(data.title, data.content, data.from, data.to);
 
@@ -104,4 +106,5 @@ const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = requir
 const { sign_start_game } = require('./signStartGame');
 const { request_invitation_to_play } = require('./invitationToPlay');
 const { informations_match_end } = require("./getResultsMatch");const { update_game_settings_ws } = require("../game/gameSettingsWS");
+const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 

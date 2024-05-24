@@ -10,6 +10,7 @@ export function    delete_old_score_bar(paddle)
         const   check = pongGame.listPaddle[i];
         if (check !== null &&
             check.name === paddle.name &&
+            check.listScore !== undefined &&
             displayPongGame.scores[i] !== undefined &&
             displayPongGame.scores[i].length > 0)
         {
@@ -30,7 +31,7 @@ export function draw_score(paddle)
     for (let i = 0; i < pongGame.listPaddle.length; i++)
     {
         const   check = pongGame.listPaddle[i];
-        if (check.name === paddle.name)
+        if (check !== null && check.name === paddle.name)
         {
             pongGame.listPaddle[i] = paddle;
             paddle.listScore.forEach(score => {

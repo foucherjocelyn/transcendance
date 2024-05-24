@@ -143,7 +143,7 @@ export function    get_sign_start_create_match_button()
             return ;
         }
 
-        if (match.mode === 'rank' || match.mode === 'tournament')
+        if (match.mode === 'ranked' || match.mode === 'tournament')
         {
             if (count_players(match) === 1)
             {

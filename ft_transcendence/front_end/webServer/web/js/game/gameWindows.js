@@ -1,6 +1,6 @@
 import * as THREE from '../../../node_modules/three/build/three.module.js';
 import { OrbitControls } from '../../../node_modules/three/examples/jsm/controls/OrbitControls.js';
-import { client, pongGame } from '../client/client.js';
+import { client, dataToServer, pongGame } from '../client/client.js';
 import { match } from '../createMatch/createMatch.js';
 import { gameSettings } from '../gameSettings/updateGameSetting.js';
 import { screen } from "../screen/screen.js";
@@ -22,48 +22,16 @@ function	addLight(scene)
 	pongGame.scene.add(directionalLight);
 }
 
-// function    handle_player_deconnection()
-// {
-//     for (let i = 0; i < pongGame.listPlayer.length; i++)
-//     {
-//         const   player1 = pongGame.listPlayer[i];
-//         const   player2 = match.listPlayer[i];
-//         if (player1.id !== player2.id)
-//         {
-//             match.result.push(player1);
-//             return ;
-//         }
-//     }
-// }
+function    movements_paddle()
+{
+    document.addEventListener("keydown", function(event) {
+        // console.log(event.keyCode);
+        // console.log(event.key);
 
-// function    start_game()
-// {
-//     if (pongGame.listPlayer !== match.listPlayer)
-//     {
-//         handle_player_deconnection();
-//         pongGame.listPlayer = match.listPlayer;
-//         draw_paddle();
-//     }
-
-//     update_status_objects();
-//     movements_ball();
-//     update_status_objects();
-//     movement_AI();
-
-//     for (let i = 0; i < pongGame.listPaddle.length; i++)
-//     {
-//         const   paddle = pongGame.listPaddle[i];
-//         if (paddle !== undefined)
-//         {
-//             paddle.display.position.set(paddle.position.x, paddle.position.y, paddle.position.z);
-//         }
-//     }
-
-//     const   ball = pongGame.ball;
-//     ball.display.position.set(ball.position.x, ball.position.y, ball.position.z);
-
-//     update_status_objects();
-// }
+        const sendData = new dataToServer('movement paddle', event.key, client.inforUser, client.inforUser);
+	    client.socket.send(JSON.stringify(sendData));
+    });
+}
 
 function    animation(renderer, scene, camera)
 {
@@ -118,6 +86,7 @@ function    add_objects()
     draw_border();
     draw_paddle();
     draw_ball();
+    movements_paddle();
 }
 
 function    setup_game_windows()

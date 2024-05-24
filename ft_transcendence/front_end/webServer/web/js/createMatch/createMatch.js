@@ -82,7 +82,7 @@ export function update_match_informations(data)
     document.getElementById('createMatchLayer') === null ?
     display_create_match_layer() : setup_content_add_player_button();
 
-    if (match.mode === 'rank' || match.mode === 'tournament')
+    if (match.mode === 'ranked' || match.mode === 'tournament')
     {
         if (match.listUser.length > 1)
         {

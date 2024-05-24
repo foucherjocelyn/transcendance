@@ -1,4 +1,4 @@
-const { dataToClient, send_data } = require("./dataToClient");
+const { send_data } = require("./dataToClient");
 const { delete_match_in_list_find_match } = require("../matchmaking/matchmaking");
 const { webSocket } = require("./webSocket");
 
@@ -45,7 +45,7 @@ function    update_match(user, inforMatch, title)
 
     if (match.listUser.length === 0)
     {
-        if (match.mode === 'rank')
+        if (match.mode === 'ranked')
             delete_match_in_list_find_match(match, user);
         webSocket.listMatch.splice(indexMatch, 1);
     }

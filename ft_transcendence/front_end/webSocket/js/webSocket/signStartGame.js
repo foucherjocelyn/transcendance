@@ -33,7 +33,7 @@ function    sign_start_game(data)
     const   match = webSocket.listMatch[indexMatch];
     arrange_player_positions(match);
     
-    if (match.mode !== 'rank' && match.mode !== 'tournament')
+    if (match.mode !== 'ranked' && match.mode !== 'tournament')
     {
         informations_match_start(data, match);
     }

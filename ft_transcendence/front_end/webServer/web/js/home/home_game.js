@@ -66,8 +66,8 @@ function drawGame(callback) {
 export function gameEventListener() {
     console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
-        // create_match('rank');
-        join_the_tournament('toto', 42);
+        create_match('ranked');
+        // join_the_tournament('toto', 42);
     });
     document.getElementById("g_creatematch").addEventListener("click", () => {
         create_match('with friends');

@@ -127,7 +127,6 @@ function    movements_ball_ws(pongGame, gameSettings)
     check_collisions(ball, pongGame, (result) => {
         if (result)
         {
-            console.log('continue ....');
             check_lost_point(pongGame, gameSettings);
 
             pongGame.speedBall += 0.001;

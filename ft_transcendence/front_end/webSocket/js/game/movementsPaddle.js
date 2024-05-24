@@ -1,4 +1,6 @@
 const { send_data } = require("../webSocket/dataToClient");
+const { define_match } = require("../webSocket/updateMatch");
+const { webSocket } = require("../webSocket/webSocket");
 const { check_collisions } = require("./movementsBall");
 const { update_status_objects_ws } = require("./updateCollisionsPoint");
 
@@ -44,79 +46,75 @@ function horizontal_movement(paddle, direction, pongGame)
         }
     })
     paddle.position.x += speed;
+    send_data('update paddles', pongGame.listPaddle, 'server', pongGame.listUser);
     update_status_objects_ws(pongGame);
 }
 
-// function    get_sign_movement_paddle(player, keyCode)
-// {
-//     if (keyCode === player.control.left)
-//     {
-//         if (player.name === 'left paddle' || player.name === 'right paddle')
-//             vertical_movement(player, -1);
-//         else
-//             horizontal_movement(player, -1);
-//     }
-//     else if (keyCode === player.control.right)
-//     {
-//         if (player.name === 'left paddle' || player.name === 'right paddle')
-//             vertical_movement(player, 1);
-//         else
-//             horizontal_movement(player, 1);
-//     }
-// }
 
-// function    get_sign_movement_paddle_mode_online(player, keyCode)
-// {
-//     if ((keyCode === 'ArrowLeft' && player.name === 'left paddle')
-//         || (keyCode === 'ArrowRight' && player.name === 'right paddle'))
-//         vertical_movement(player, -1);
-//     else if ((keyCode === 'ArrowLeft' && player.name === 'right paddle')
-//         || (keyCode === 'ArrowRight' && player.name === 'left paddle'))
-//         vertical_movement(player, 1);
-//     else if ((keyCode === 'ArrowLeft' && player.name === 'top paddle')
-//         || (keyCode === 'ArrowRight' && player.name === 'bottom paddle'))
-//         horizontal_movement(player, 1);
-//     else
-//         horizontal_movement(player, -1);
-// }
+function    movement_paddle_mode_offline(keyCode, paddle, pongGame)
+{
+    if (keyCode === paddle.control.left)
+    {
+        if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
+            vertical_movement(paddle, -1, pongGame);
+        else
+            horizontal_movement(paddle, -1, pongGame);
+    }
+    else if (keyCode === paddle.control.right)
+    {
+        if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
+            vertical_movement(paddle, 1, pongGame);
+        else
+            horizontal_movement(paddle, 1, pongGame);
+    }
+}
 
-// function    movements_paddle_mode_online(keyCode)
-// {
-//     for (let i = 0; i < match.listPlayer.length; i++)
-//     {
-//         const   player = match.listPlayer[i];
-//         if (player.id === client.inforUser.id)
-//         {
-//             const   paddle = pongGame.listPaddle[i];
-//             if (paddle !== undefined) {
-//                 get_sign_movement_paddle_mode_online(paddle, keyCode);
-//             }
-//             return ;
-//         }
-//     }
-// }
+function    movement_paddle_mode_online(keyCode, paddle, pongGame)
+{
+    if (keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight')
+        return ;
 
-// function    movements_paddle()
-// {
-//     document.addEventListener("keydown", function(event) {
-//         // console.log(event.keyCode);
-//         // console.log(event.key);
+    if ((keyCode === 'ArrowLeft' && paddle.name === 'left paddle')
+        || (keyCode === 'ArrowRight' && paddle.name === 'right paddle'))
+        vertical_movement(paddle, -1, pongGame);
+    else if ((keyCode === 'ArrowLeft' && paddle.name === 'right paddle')
+        || (keyCode === 'ArrowRight' && paddle.name === 'left paddle'))
+        vertical_movement(paddle, 1, pongGame);
+    else if ((keyCode === 'ArrowLeft' && paddle.name === 'top paddle')
+        || (keyCode === 'ArrowRight' && paddle.name === 'bottom paddle'))
+        horizontal_movement(paddle, 1, pongGame);
+    else
+        horizontal_movement(paddle, -1, pongGame);
+}
 
-//         if (match.mode !== 'offline')
-//             movements_paddle_mode_online(event.key);
-//         else
-//         {
-//             for (let i = 0; i < pongGame.listPaddle.length; i++)
-//             {
-//                 const   paddle = pongGame.listPaddle[i];
-//                 if (paddle !== undefined)
-//                     get_sign_movement_paddle(paddle, event.key);
-//             }
-//         }
-//     });
-// }
+function    get_sign_movement_paddle(socket, keyCode)
+{
+    if (keyCode === '')
+        return ;
+
+    for (let i = 0; i < webSocket.listConnection.length; i++)
+    {
+        const   connection = webSocket.listConnection[i];
+        if (connection.socket === socket)
+        {
+            const   user = connection.user;
+            let indexMatch = define_match(user);
+            if (indexMatch === undefined)
+                return ;
+
+            const   match = webSocket.listMatch[indexMatch];
+            const   index = match.listPlayer.findIndex(player => player.id === user.id);
+            const   paddle = match.pongGame.listPaddle[index];
+
+            (match.mode === 'offline') ?
+            movement_paddle_mode_offline(keyCode, paddle, match.pongGame) :
+            movement_paddle_mode_online(keyCode, paddle, match.pongGame);
+        }
+    }
+}
 
 module.exports = {
     vertical_movement,
-    horizontal_movement
+    horizontal_movement,
+    get_sign_movement_paddle
 };

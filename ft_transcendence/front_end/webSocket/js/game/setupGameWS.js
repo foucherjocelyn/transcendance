@@ -19,7 +19,7 @@ function    setup_game_WS(data, match)
     match.pongGame.listUser = match.listUser;
 
     send_data('update pongGame', match.pongGame, 'server', match.listUser);
-    if (match.mode !== 'rank' && match.mode !== 'tournament')
+    if (match.mode !== 'ranked' && match.mode !== 'tournament')
         start_game(data, match);
     else
     {

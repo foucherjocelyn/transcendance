@@ -19,33 +19,38 @@ function    find_socket(user)
     return undefined;
 }
 
+function getCircularReplacer() {
+    const seen = new WeakSet();
+    return (key, value) => {
+        if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) {
+                return undefined;
+            }
+            seen.add(value);
+        }
+        return value;
+    };
+}
+
 function    send_data(title, content, from, to)
 {
     let   sendData = new dataToClient(title, content, from);
-    sendData = JSON.stringify(sendData);
+    sendData = (title === 'update paddles') ?
+    JSON.stringify(sendData, getCircularReplacer()) :
+    JSON.stringify(sendData);
 
-    let   destinations = [];
-    if (Array.isArray(to))
-        destinations = to;
-    else
-        destinations[0] = to;
-
-    for (let i = 0; i < destinations.length; i++)
-    {
-        const   user = destinations[i];
-        const   socket = find_socket(user);
-        if (socket !== undefined)
-        {
-            // console.log('Server sent data to: ' + user.id);
+    let destinations = Array.isArray(to) ? to : [to];
+    destinations.forEach(user => {
+        const socket = find_socket(user);
+        if (socket !== undefined) {
             // socket.sendUTF(sendData);
             socket.send(sendData);
+        } else {
+            if (title === 'notification' || title === 'message') {
+                console.log('connect with database');
+            }
         }
-        else
-        {
-            if (title === 'notification' || title === 'message')
-                console.log('connect with data base');
-        }
-    }
+    });
 }
 
 module.exports = {
