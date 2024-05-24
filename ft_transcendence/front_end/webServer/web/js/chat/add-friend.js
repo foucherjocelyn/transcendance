@@ -4,7 +4,7 @@ import { getListFriends } from "./friend-list.js";
 import { getListUsers } from "../backend_operation/get_user_info.js";
 import { getListFriendInvitationSent, getListFriendInvitationsReceived, sendFriendInvite } from "../backend_operation/friend_invite.js";
 
-const searchFindNewFriendWindow = async () => {
+export const searchFindNewFriendWindow = async () => {
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list");
     const regex = /([A-Za-z]+)/g;
     const searchInput = document.querySelector("#c-find-new-friend-window input");

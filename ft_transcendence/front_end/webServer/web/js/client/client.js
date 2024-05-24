@@ -4,7 +4,7 @@ import { update_position_paddle } from "../game/movementsPaddle.js";
 import { pongGame, setup_game_layer } from "../game/startGame.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
-import { receiveMessage } from "../chat/chatbox.js";
+import { receiveMessage, renderChatInput } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
 import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
 
@@ -77,6 +77,10 @@ function    get_data_from_server(socket)
             update_position_paddle(receivedData.content);
         if (receivedData.title === 'update movement ball')
             update_position_ball(receivedData.content);
+        if (receivedData.title === 'mute')
+            renderChatInput(receivedData.from.username);
+        if (receivedData.title === 'unmute')
+            renderChatInput(receivedData.from.username);
     };
 }
 
