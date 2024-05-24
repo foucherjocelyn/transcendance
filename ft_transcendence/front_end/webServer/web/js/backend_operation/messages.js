@@ -51,3 +51,29 @@ export const postMuteUser = async (username) => {
             console.error("Error muteUser: ", error);
         });
 };
+
+export const postUnmuteUser = async (username) => {
+    let f_token = getCookie("token");
+    await fetch("https://localhost/api/v1/user/friendship/unmute", {
+        method: "POST",
+        body: JSON.stringify({username: username}),
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${f_token}`
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.log("postUnmuteUser: Client/Server error");
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error postUnmuteUser: ", error);
+        });
+};

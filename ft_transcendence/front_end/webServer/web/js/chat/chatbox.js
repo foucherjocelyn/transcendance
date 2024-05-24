@@ -1,6 +1,6 @@
 import { client, dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
-import { postMuteUser, postNewMessage } from "../backend_operation/messages.js";
+import { postMuteUser, postNewMessage, postUnmuteUser } from "../backend_operation/messages.js";
 import { getListMutedUsers } from "../backend_operation/get_user_info.js";
 
 const renderMessages = async (friendUsername) => {
@@ -101,7 +101,7 @@ const sendMessage = async (friendUsername) => {
         content: chatInputContent.value
     }
     chatInputContent.value = "";
-    await postNewMessage({username: friendUsername, content: newMessage.content});
+    await postNewMessage({ username: friendUsername, content: newMessage.content });
     renderMessages(friendUsername);
 
     const connectedReceiver = client.listUser.find(user => user.username == friendUsername)
@@ -128,18 +128,78 @@ const receiveMessage = (receivedData) => {
     messages.push(newMessage);*/
 };
 
-const muteUser = (username) => {
-    console.log('mute');
-    postMuteUser(username);
-    console.log(getListMutedUsers());
+const renderUnmuteButton = (username) => {
+    document.getElementById("c-chat-box-header").insertAdjacentHTML('afterbegin', `<button id="c-unmute-button-${username}" class="c-unmute-button"></button>`);
+    document.getElementById(`c-unmute-button-${username}`).addEventListener("click", () => { unmuteUser(username) });
 }
 
-const openChatBox = (friendUsername) => {
-    const muteButtonHTML = `<button id="c-mute-button-${friendUsername}" class="c-mute-button"></button>`
+const renderMuteButton = (username) => {
+    document.getElementById("c-chat-box-header").insertAdjacentHTML('afterbegin', `<button id="c-mute-button-${username}" class="c-mute-button"></button>`);
+    document.getElementById(`c-mute-button-${username}`).addEventListener("click", () => { muteUser(username) });
+}
+
+const unmuteUser = async (username) => {
+    console.log('unmute');
+    await postUnmuteUser(username);
+    console.log(getListMutedUsers());
+    await renderChatInput(username);
+
+    const connectedReceiver = client.listUser.find(user => user.username == username)
+    if (connectedReceiver) {
+        const sendData = new dataToServer('unmute', '', client.inforUser, connectedReceiver);
+        client.socket.send(JSON.stringify(sendData));
+    }
+}
+
+const muteUser = async (username) => {
+    console.log('mute');
+    await postMuteUser(username);
+    console.log(getListMutedUsers());
+    await renderChatInput(username);
+
+    const connectedReceiver = client.listUser.find(user => user.username == username)
+    if (connectedReceiver) {
+        const sendData = new dataToServer('mute', '', client.inforUser, connectedReceiver);
+        client.socket.send(JSON.stringify(sendData));
+    }
+}
+
+export const renderChatInput = async (friendUsername) => {
+    console.log("renderchat input");
+    const chattingWith = getCookie("chatboxOpenedWith");
+    if (chattingWith !== friendUsername)
+        return ;
+    //display mute/unmute button except when muted by the other user
+    //when muted or muting don't display input section of the chat box, but display a message instead
+    const listMutedUsers = await getListMutedUsers();
+    const amIMuted = listMutedUsers.some(elem => elem.sender_username === friendUsername);
+    const amIMuting = listMutedUsers.some(elem => elem.receiver_username === friendUsername);
+    document.getElementById(`c-mute-button-${friendUsername}`)?.remove();
+    document.getElementById(`c-unmute-button-${friendUsername}`)?.remove();
+    if (!amIMuting && !amIMuted) {
+        document.getElementById("c-chat-input").innerHTML = `<input name="message" type="text" placeholder="Type your message...">
+        <button>Send</button>`;
+        const sendMessageButton = document.querySelector("#c-chat-input button");
+        const chatInputContent = document.querySelector("#c-chat-input input");
+        sendMessageButton.addEventListener("click", () => { sendMessage(friendUsername) });
+        chatInputContent.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                sendMessage(friendUsername);
+            }
+        });
+        renderMuteButton(friendUsername);
+    } else {
+        if (!amIMuted) { 
+            renderUnmuteButton(friendUsername);
+        }
+        document.getElementById("c-chat-input").innerHTML = `<p class="c-chat-mute-text">This conversation is currently muted.</p>`
+    }
+}
+
+const openChatBox = async (friendUsername) => {
     const chatBox = document.getElementById("c-chat-box");
     chatBox.innerHTML = `
         <div id="c-chat-box-header" class="chat-box-header">
-        ${muteButtonHTML}
         <h3></h3>
         <button id="c-chat-box-close-button" class="c-close-button">&times;</button>
         </div>
@@ -147,26 +207,17 @@ const openChatBox = (friendUsername) => {
         <div id="c-chat-messages" class="chat-messages">
         </div>
         <div id="c-chat-input" class="chat-input">
-        <input name="message" type="text" placeholder="Type your message...">
-        <button>Send</button>
         </div>
         </div>
         `;
-    const sendMessageButton = document.querySelector("#c-chat-input button");
-    const chatInputContent = document.querySelector("#c-chat-input input");
     const chatBoxHeaderFriendName = document.querySelector("#c-chat-box-header h3");
     const chatBoxCloseButton = document.getElementById("c-chat-box-close-button");
     chatBoxHeaderFriendName.textContent = friendUsername;
     document.cookie = `chatboxOpenedWith=${friendUsername}; SameSite=Strict`;
+
+    renderChatInput(friendUsername);
     renderMessages(friendUsername);
-    document.getElementById(`c-mute-button-${friendUsername}`).addEventListener("click", () => { muteUser(friendUsername) });
     chatBoxCloseButton.addEventListener("click", closeChatBox);
-    sendMessageButton.addEventListener("click", () => { sendMessage(friendUsername) });
-    chatInputContent.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            sendMessage(friendUsername);
-        }
-    });
     chatBox.classList.remove("hidden");
 };
 

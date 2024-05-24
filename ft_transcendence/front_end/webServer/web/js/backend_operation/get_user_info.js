@@ -115,7 +115,6 @@ export async function getListUsers() {
 			return;
 		}
 		const data = await response.json();
-		console.log("--");
 		return (data);
 	} catch (error) {
 		console.error("getListUsers: ", error);

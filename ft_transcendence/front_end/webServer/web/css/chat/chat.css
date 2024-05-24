@@ -182,7 +182,8 @@ body {
 #c-add-new-friend-button,
 #c-hide-friend-list,
 .c-invite-match-button,
-.c-mute-button {
+.c-mute-button,
+.c-unmute-button {
     display: inline-block;
     position: relative;
     margin-top: 3%;
@@ -240,6 +241,12 @@ body {
 
 .c-mute-button {
     background-image: url(../../img/chat/block-message.png);
+    background-size: 100% 100%;
+    bottom: 5px;
+}
+
+.c-unmute-button {
+    background-image: url(../../img/chat/unblock-message.png);
     background-size: 100% 100%;
     bottom: 5px;
 }
