@@ -849,7 +849,7 @@ authorization Bearer <token>
 
 ### Return
 
--   A list of User object ([User](#user))
+-   A list of MutedUser objects ([MutedUser](#muteduser))
 
 # User messages
 
