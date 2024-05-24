@@ -20,7 +20,7 @@ function    create_ball_ws(match)
     ball.position.z = 0;
 
     match.pongGame.ball = ball;
-    send_data('update ball', match.pongGame.ball, 'server', match.listUser)
+    send_data('update ball', match.pongGame.ball, 'server', match.listUser);
 }
 
 module.exports = {

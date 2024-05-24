@@ -84,7 +84,7 @@ function    create_borders_ws(match)
         const border = createBorderFunctions[i](match.gameSettings);
         match.pongGame.listBorder.push(border);
     }
-    send_data('update borders', match.pongGame.listBorder, 'server', match.listUser)
+    send_data('update borders', match.pongGame.listBorder, 'server', match.listUser);
 }
 
 module.exports = {

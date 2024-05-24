@@ -7,6 +7,7 @@ import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { display_countdown } from "../countdown/countdown.js";
 import { draw_score } from "../game/drawScore.js";
+import { draw_paddle } from "../game/drawPaddles.js";
 
 class   userNotifications {
     constructor() {
@@ -84,6 +85,8 @@ function    get_data_from_server(socket)
             pongGame.ball.position = receivedData.content;
         if (receivedData.title === 'draw score')
             draw_score(receivedData.content);
+        if (receivedData.title === 'draw paddles')
+            draw_paddle();
     };
 }
 

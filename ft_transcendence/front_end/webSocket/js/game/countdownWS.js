@@ -40,6 +40,7 @@ function    start_game_ws(match)
             create_paddles_ws(match);
             handle_player_deconnection(match.pongGame.listUser, match.listUser, match);
             match.pongGame.listUser = match.listUser;
+            send_data('draw paddles', '', 'server', match.listUser);
         }
 
         // game over

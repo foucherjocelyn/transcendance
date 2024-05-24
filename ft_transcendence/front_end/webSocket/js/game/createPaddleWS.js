@@ -137,7 +137,7 @@ function    create_paddles_ws(match)
     match.pongGame.listPaddle.push(match.pongGame.paddle.top);
     match.pongGame.listPaddle.push(match.pongGame.paddle.bottom);
 
-    send_data('update paddles', match.pongGame.listPaddle, 'server', match.listUser)
+    send_data('update paddles', match.pongGame.listPaddle, 'server', match.listUser);
 }
 
 module.exports = {
