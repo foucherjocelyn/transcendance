@@ -55,11 +55,12 @@
 	background-color: grey;
 	border-radius: 4px;
 	width: 240px;
-	height: 280x;
+	height: auto;
 	padding: 5px;
-	margin-top: 8%;
 	position: absolute;
-	left: 30%;
+	left: 72%;
+	transform: translateX(-50%);
+	top: 37%;
 }
 
 #tour_details_close {

@@ -16,6 +16,29 @@ body {
     display: none;
 }
 
+#c-notifications-window {/* NEED TO REPLACE THAT */
+    position: absolute;
+    right: 20%;
+    top: 5%;
+    width: 30%;
+    height: 50%;
+    min-height: 320px;
+    background-image: url(../../img/background/card3.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-color: none;
+    border-radius: 15px;
+    border-color: red;
+    color: white;
+}
+
+#c-notifications-content { /* PLACE IN MIDDLE */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/*
 #c-notifications-window {
     position: absolute;
     right: 20%;
@@ -27,6 +50,7 @@ body {
     background-color: #333333;
     color: white;
 }
+*/
 
 #c-notifications-window .c-close-button {
     margin-left: 92%;
@@ -140,7 +164,7 @@ body {
     width: 40px;
     height: 40px;
     background-color: transparent;
-	border: none;
+    border: none;
     margin-top: 2px;
 }
 

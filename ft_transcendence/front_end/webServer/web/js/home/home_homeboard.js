@@ -21,11 +21,11 @@ function	 newLabel()//
 	return (label);
 }
 
-async function	renderMatchHistory() {
-	const myGames = await getAllMyGames();
+export async function	renderMatchHistory(username) {
+	const myGames = await getAllMyGames(username);
 	console.log(myGames);
 	const myGamesSorted = myGames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-	const myScores = await getAllMyScores();
+	const myScores = await getAllMyScores(username);
 	console.log(myScores);
 	const matchTableBody = myGamesSorted.map(game => `
 		<tr class="${game.winner_username === getCookie('username') ? 'win' : 'loss'}">
@@ -77,7 +77,7 @@ function	drawHomePage(callback)
 </div>
 `;
 
-	renderMatchHistory();
+	renderMatchHistory(getCookie("username"));
 	document.getElementById("hpb_username").textContent = getCookie("username");
 	//load players scoreboard
 //	console.log("loading player list");
