@@ -32,7 +32,7 @@ class formGameSetting {
         },
         this.speed = {
             paddle: 0.5,
-            ball: 0.1
+            ball: 0.01
         },
         this.control = {
             player1: {

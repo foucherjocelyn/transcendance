@@ -117,6 +117,20 @@ function    check_collisions(obj, pongGame, callback)
     callback(false);
 }
 
+function    increase_ball_speed(ball, gameSettings, pongGame)
+{
+    let speedX = (ball.vector.x > 0) ? ball.vector.x : -ball.vector.x;
+    let speedY = (ball.vector.y > 0) ? ball.vector.y : -ball.vector.y;
+    let speed = (speedX > speedY) ? speedX : speedY;
+
+    pongGame.ballSpeed += 0.01;
+    if (speed + pongGame.ballSpeed > pongGame.maxSpeed)
+        pongGame.ballSpeed = pongGame.maxSpeed - speed;
+
+    // update paddle speed
+    gameSettings.speed.paddle = speed + pongGame.ballSpeed;
+}
+
 function    movements_ball_ws(pongGame, gameSettings)
 {
     const   ball = pongGame.ball;
@@ -128,26 +142,22 @@ function    movements_ball_ws(pongGame, gameSettings)
         if (result)
         {
             check_lost_point(pongGame, gameSettings);
-
-            pongGame.speedBall += 0.001;
-            if ((pongGame.speedBall + speedX >= gameSettings.speed.paddle)
-            || (pongGame.speedBall + speedY >= gameSettings.speed.paddle))
-                pongGame.speedBall = 0;
-        
+            increase_ball_speed(ball, gameSettings, pongGame);
+            
             const   distance = ball.collision.distance;
             const   touchPoint = ball.collision.touch;
             
             if (touchPoint === 'left' || touchPoint === 'right')
             {
                 speedX = (speedX < 0) ? -distance : distance;
-                let speed = (ball.vector.x < 0) ? -pongGame.speedBall : pongGame.speedBall;
+                let speed = (ball.vector.x < 0) ? -pongGame.ballSpeed : pongGame.ballSpeed;
                 ball.vector.x += speed;
                 ball.vector.x = -ball.vector.x;
             }
             else
             {
                 speedY = (speedY < 0) ? -distance : distance;
-                let speed = (ball.vector.y < 0) ? -pongGame.speedBall : pongGame.speedBall;
+                let speed = (ball.vector.y < 0) ? -pongGame.ballSpeed : pongGame.ballSpeed;
                 ball.vector.y += speed;
                 ball.vector.y = -ball.vector.y;
             }
@@ -162,5 +172,5 @@ function    movements_ball_ws(pongGame, gameSettings)
 
 module.exports = {
     movements_ball_ws,
-    check_collisions
+    check_collisions,
 };

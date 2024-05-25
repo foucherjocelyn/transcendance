@@ -5,9 +5,9 @@ import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
 import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
-import { display_countdown } from "../countdown/countdown.js";
 import { draw_score } from "../game/drawScore.js";
 import { draw_paddle } from "../game/drawPaddles.js";
+import { display_countdown } from "../game/countdown.js";
 
 class   userNotifications {
     constructor() {

@@ -6,15 +6,33 @@ const { webSocket } = require("../webSocket/webSocket");
 const { create_paddles_ws } = require("./createPaddleWS");
 const { check_game_over } = require("./gameOver");
 
+function calculate_max_ball_speed(ballSpeed, tableWidth, tableHeight)
+{
+    const speedMultiplier = 0.008;
+    const maxSpeed = ballSpeed + speedMultiplier * (tableWidth + tableHeight);
+    return maxSpeed;
+}
+
+function calculate_ball_speed(ballSpeed, tableWidth, tableHeight)
+{
+    const baseSpeed = ballSpeed;
+    const speedMultiplier = (tableWidth + tableHeight) / 2;
+
+    return (baseSpeed * speedMultiplier) - 0.2;
+}
+
 function    setup_start_game_ws(pongGame, gameSettings)
 {
-    pongGame.lostPoint = false;
-    const   vector = gameSettings.speed.ball;
+    const   vector = calculate_ball_speed(gameSettings.speed.ball, gameSettings.size.table.width, gameSettings.size.table.height);
     const   ball = pongGame.ball;
 
-    pongGame.listTouch = [];
+    gameSettings.speed.paddle = vector;
 
-    pongGame.speedBall = 0;
+    pongGame.lostPoint = false;
+    pongGame.listTouch = [];
+    pongGame.ballSpeed = 0;
+    pongGame.maxSpeed = calculate_max_ball_speed(gameSettings.speed.ball, gameSettings.size.table.width, gameSettings.size.table.height);
+    
     ball.position.x = 0;
     ball.position.z = 0;
 
@@ -59,15 +77,15 @@ function    start_game_ws(match)
         }
 
         update_status_objects_ws(match.pongGame);
-        movement_AI_ws(match.pongGame);
         movements_ball_ws(match.pongGame, match.gameSettings);
+        movement_AI_ws(match.pongGame);
         send_data('movement ball', match.pongGame.ball.position, 'server', match.listUser);
     }, 20);
 }
 
 function    countdownWS(match)
 {
-    let count = (match.pongGame.lostPoint === false) ? 15 : 3;
+    let count = (match.pongGame.lostPoint === false) ? 1 : 3;
     const countdownInterval = setInterval(function() {
         if (count < -1)
         {

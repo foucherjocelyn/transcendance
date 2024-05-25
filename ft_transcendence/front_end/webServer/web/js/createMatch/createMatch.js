@@ -125,7 +125,8 @@ export function    create_match(mode)
     match.mode = mode;
     match.admin = client.inforUser;
 
-    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.username, client.inforUser.avatarPath, client.inforUser.level, 'player');
+    // const player1 = new inforPlayer(client.inforUser.id, client.inforUser.username, client.inforUser.avatarPath, client.inforUser.level, 'player');
+    const player1 = new inforPlayer(client.inforUser.id, client.inforUser.username, client.inforUser.avatarPath, client.inforUser.level, 'AI');
     const player2 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
     const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');

@@ -1,4 +1,3 @@
-import { setup_start_game } from "../countdown/countdown.js";
 import { add_objects } from "../game/gameWindows.js";
 
 function    update_game_setting_size()
@@ -76,5 +75,5 @@ export function    update_game_settings(data)
         return ;
     
     add_objects();
-    setup_start_game();
+    // setup_start_game();
 }
