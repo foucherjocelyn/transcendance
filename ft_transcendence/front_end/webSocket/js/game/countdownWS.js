@@ -6,33 +6,33 @@ const { webSocket } = require("../webSocket/webSocket");
 const { create_paddles_ws } = require("./createPaddleWS");
 const { check_game_over } = require("./gameOver");
 
-function calculate_max_ball_speed(ballSpeed, tableWidth, tableHeight)
+function calculate_ball_speed(tableWidth, tableHeight)
 {
-    const speedMultiplier = 0.008;
-    const maxSpeed = ballSpeed + speedMultiplier * (tableWidth + tableHeight);
-    return maxSpeed;
+    // Base speed multipliers
+    const minSpeedMultiplier = 0.001;
+    const maxSpeedMultiplier = 0.008;
+
+    // Calculate the ball speed based on the multipliers and table dimensions
+    const minSpeed = minSpeedMultiplier * (tableWidth + tableHeight);
+    const maxSpeed = maxSpeedMultiplier * (tableWidth + tableHeight);
+
+    return { minSpeed, maxSpeed };
 }
 
-function calculate_ball_speed(ballSpeed, tableWidth, tableHeight)
+function    setup_start_game_ws(match, pongGame, gameSettings)
 {
-    const baseSpeed = ballSpeed;
-    const speedMultiplier = (tableWidth + tableHeight) / 2;
-
-    return (baseSpeed * speedMultiplier) - 0.2;
-}
-
-function    setup_start_game_ws(pongGame, gameSettings)
-{
-    const   vector = calculate_ball_speed(gameSettings.speed.ball, gameSettings.size.table.width, gameSettings.size.table.height);
+    const { minSpeed, maxSpeed } = calculate_ball_speed(gameSettings.size.table.width, gameSettings.size.table.height);
+    const   vector = minSpeed;
     const   ball = pongGame.ball;
-
-    gameSettings.speed.paddle = vector;
 
     pongGame.lostPoint = false;
     pongGame.listTouch = [];
     pongGame.ballSpeed = 0;
-    pongGame.maxSpeed = calculate_max_ball_speed(gameSettings.speed.ball, gameSettings.size.table.width, gameSettings.size.table.height);
-    
+    pongGame.maxSpeed = maxSpeed;
+
+    gameSettings.speed.paddle = maxSpeed;
+    create_paddles_ws(match);
+
     ball.position.x = 0;
     ball.position.z = 0;
 
@@ -90,7 +90,7 @@ function    countdownWS(match)
         if (count < -1)
         {
             clearInterval(countdownInterval);
-            setup_start_game_ws(match.pongGame, match.gameSettings);
+            setup_start_game_ws(match, match.pongGame, match.gameSettings);
             start_game_ws(match);
             return ;
         }

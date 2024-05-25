@@ -117,7 +117,7 @@ function    check_collisions(obj, pongGame, callback)
     callback(false);
 }
 
-function    increase_ball_speed(ball, gameSettings, pongGame)
+function    increase_ball_speed(ball, pongGame)
 {
     let speedX = (ball.vector.x > 0) ? ball.vector.x : -ball.vector.x;
     let speedY = (ball.vector.y > 0) ? ball.vector.y : -ball.vector.y;
@@ -126,9 +126,6 @@ function    increase_ball_speed(ball, gameSettings, pongGame)
     pongGame.ballSpeed += 0.01;
     if (speed + pongGame.ballSpeed > pongGame.maxSpeed)
         pongGame.ballSpeed = pongGame.maxSpeed - speed;
-
-    // update paddle speed
-    gameSettings.speed.paddle = speed + pongGame.ballSpeed;
 }
 
 function    movements_ball_ws(pongGame, gameSettings)
@@ -142,7 +139,7 @@ function    movements_ball_ws(pongGame, gameSettings)
         if (result)
         {
             check_lost_point(pongGame, gameSettings);
-            increase_ball_speed(ball, gameSettings, pongGame);
+            increase_ball_speed(ball, pongGame);
             
             const   distance = ball.collision.distance;
             const   touchPoint = ball.collision.touch;
