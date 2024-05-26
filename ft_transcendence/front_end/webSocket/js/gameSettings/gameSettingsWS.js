@@ -1,9 +1,15 @@
 const { send_data } = require("../webSocket/dataToClient");
 const { define_match } = require("../webSocket/updateMatch");
 const { webSocket } = require("../webSocket/webSocket");
-const { create_ball_ws } = require("./createBallWS");
-const { create_borders_ws } = require("./createBorderWS");
-const { create_paddles_ws } = require("./createPaddleWS");
+
+const { create_ball_ws } = require("../game/createBallWS");
+const { create_borders_ws } = require("../game/createBorderWS");
+const { create_paddles_ws } = require("../game/createPaddleWS");
+
+const { check_game_settings_size } = require("./checkGameSettingsSize");
+const { check_game_settings_color } = require("./checkGameSettingsColor");
+const { check_game_settings_speed } = require("./checkGameSettingsSpeed");
+const { check_game_settings_control } = require("./checkGameSettingsControl");
 
 class formGameSetting {
     constructor() {
@@ -31,8 +37,8 @@ class formGameSetting {
             ball: '#ff0000'
         },
         this.speed = {
-            paddle: 0.5,
-            ball: 0.01
+            paddle: 0.488,
+            ball: 0.001
         },
         this.control = {
             player1: {
@@ -77,6 +83,26 @@ function    create_object_pong_game(match)
     create_ball_ws(match);
 }
 
+function    check_game_settings(match, gameSettings)
+{
+    if (!check_game_settings_size(gameSettings)) {
+        return false;
+    }
+    if (!check_game_settings_color(gameSettings)) {
+        return false;
+    }
+    if (!check_game_settings_speed(gameSettings)) {
+        return false;
+    }
+    if (match.mode !== 'offline') {
+        return true;
+    }
+    if (!check_game_settings_control(match.gameSettings, gameSettings)) {
+        return false;
+    }
+    return true;
+}
+
 function    update_game_settings_ws(data)
 {
     let indexMatch = define_match(data.from);
@@ -84,10 +110,17 @@ function    update_game_settings_ws(data)
         return false;
 
     const   match = webSocket.listMatch[indexMatch];
-    match.gameSettings = data.content;
-    setup_limit_table(match.pongGame, match.gameSettings);
-    create_object_pong_game(match);
-    send_data(data.title, data.content, data.from, data.to);
+
+    // check the values of game settings before update on server
+    if (check_game_settings(match, data.content))
+    {
+        Object.assign(match.gameSettings, data.content);
+
+        setup_limit_table(match.pongGame, match.gameSettings);
+        create_object_pong_game(match);
+    }
+
+    send_data(data.title, match.gameSettings, data.from, data.to);
 }
 
 module.exports = {

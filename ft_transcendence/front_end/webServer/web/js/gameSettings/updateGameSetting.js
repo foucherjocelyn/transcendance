@@ -75,5 +75,4 @@ export function    update_game_settings(data)
         return ;
     
     add_objects();
-    // setup_start_game();
 }

@@ -6,10 +6,14 @@ const { webSocket } = require("../webSocket/webSocket");
 const { create_paddles_ws } = require("./createPaddleWS");
 const { check_game_over } = require("./gameOver");
 
-function calculate_ball_speed(tableWidth, tableHeight)
+function calculate_ball_speed(gameSettings)
 {
+    const   ballSpeed = gameSettings.speed.ball;
+    const   tableWidth = gameSettings.size.table.width;
+    const   tableHeight = gameSettings.size.table.height;
+
     // Base speed multipliers
-    const minSpeedMultiplier = 0.001;
+    const minSpeedMultiplier = ballSpeed;
     const maxSpeedMultiplier = 0.008;
 
     // Calculate the ball speed based on the multipliers and table dimensions
@@ -19,25 +23,23 @@ function calculate_ball_speed(tableWidth, tableHeight)
     return { minSpeed, maxSpeed };
 }
 
-function    setup_start_game_ws(match, pongGame, gameSettings)
+function    setup_start_game_ws(pongGame, gameSettings)
 {
-    const { minSpeed, maxSpeed } = calculate_ball_speed(gameSettings.size.table.width, gameSettings.size.table.height);
-    const   vector = minSpeed;
+    const { minSpeed, maxSpeed } = calculate_ball_speed(gameSettings);
     const   ball = pongGame.ball;
+
+    // console.log(minSpeed + ' - ' + maxSpeed);
 
     pongGame.lostPoint = false;
     pongGame.listTouch = [];
     pongGame.ballSpeed = 0;
     pongGame.maxSpeed = maxSpeed;
 
-    gameSettings.speed.paddle = maxSpeed;
-    create_paddles_ws(match);
-
     ball.position.x = 0;
     ball.position.z = 0;
 
-    ball.vector.x = (Math.random() < 0.5) ? vector : -vector;
-    ball.vector.y = (Math.random() < 0.5) ? vector : -vector;
+    ball.vector.x = (Math.random() < 0.5) ? minSpeed : -minSpeed;
+    ball.vector.y = (Math.random() < 0.5) ? minSpeed : -minSpeed;
 }
 
 function    handle_player_deconnection(arr1, arr2, match)
@@ -85,12 +87,12 @@ function    start_game_ws(match)
 
 function    countdownWS(match)
 {
-    let count = (match.pongGame.lostPoint === false) ? 1 : 3;
+    let count = (match.pongGame.lostPoint === false) ? 15 : 3;
     const countdownInterval = setInterval(function() {
         if (count < -1)
         {
             clearInterval(countdownInterval);
-            setup_start_game_ws(match, match.pongGame, match.gameSettings);
+            setup_start_game_ws(match.pongGame, match.gameSettings);
             start_game_ws(match);
             return ;
         }
@@ -103,5 +105,6 @@ function    countdownWS(match)
 }
 
 module.exports = {
-    countdownWS
+    countdownWS,
+    calculate_ball_speed
 };

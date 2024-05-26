@@ -123,6 +123,9 @@ function    increase_ball_speed(ball, pongGame)
     let speedY = (ball.vector.y > 0) ? ball.vector.y : -ball.vector.y;
     let speed = (speedX > speedY) ? speedX : speedY;
 
+    // console.log('max: ' + pongGame.maxSpeed);
+    // console.log(speed + pongGame.ballSpeed);
+
     pongGame.ballSpeed += 0.01;
     if (speed + pongGame.ballSpeed > pongGame.maxSpeed)
         pongGame.ballSpeed = pongGame.maxSpeed - speed;

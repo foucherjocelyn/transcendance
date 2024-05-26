@@ -12,7 +12,7 @@ const webSocket = {
 function update_user(user) {
     for (let i = 0; i < webSocket.listUser.length; i++) {
         const find = webSocket.listUser[i];
-        if (find.id === user.id) {
+        if (find !== undefined && find.id === user.id) {
             webSocket.listConnection[i].user = user;
             webSocket.listUser[i] = user;
             send_data('update list users', webSocket.listUser, user, webSocket.listUser);
@@ -105,6 +105,6 @@ const { update_match } = require('./updateMatch');
 const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
 const { sign_start_game } = require('./signStartGame');
 const { request_invitation_to_play } = require('./invitationToPlay');
-const { informations_match_end } = require("./getResultsMatch");const { update_game_settings_ws } = require("../game/gameSettingsWS");
+const { informations_match_end } = require("./getResultsMatch");const { update_game_settings_ws } = require("../gameSettings/gameSettingsWS");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 

@@ -1,4 +1,4 @@
-import { client, dataToServer } from "../client/client.js";
+import { client, dataToServer, pongGame } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
 import { to_game } from "../home/home_game.js";
 import { gameOverHTML } from "../home/home_gamewindows.js";
@@ -38,11 +38,11 @@ function    create_results_bar_html(player)
     return resultBar;
 }
 
-function    display_results_match()
+function    display_results_match(result)
 {
-    for (let i = 0; i < match.result.length; i++)
+    for (let i = 0; i < result.length; i++)
     {
-        const   player = match.result[i];
+        const   player = result[i];
         if (player.type !== 'none')
         {
             const   div = create_results_bar_html(player);
@@ -65,8 +65,8 @@ function    get_sign_buttons_game_over_layer()
     // exit button
     button[0].onclick = () => {
         client.inforUser.status = 'connection';
-        const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
-        client.socket.send(JSON.stringify(sendData));
+        // const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
+        // client.socket.send(JSON.stringify(sendData));
         to_game();
     }
 
@@ -77,20 +77,16 @@ function    get_sign_buttons_game_over_layer()
     button[1].onclick = () => {
         const   mode = match.mode;
         client.inforUser.status = 'connection';
-        const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
-        client.socket.send(JSON.stringify(sendData));
+        // const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
+        // client.socket.send(JSON.stringify(sendData));
         create_match(mode);
     }
 }
 
-function    setup_game_over()
+export function    display_game_over_layer(result)
 {
     gameOverHTML();
     setup_size_game_over_layer();
-    display_results_match();
+    display_results_match(result);
     get_sign_buttons_game_over_layer();
 }
-
-export {
-    setup_game_over
-};

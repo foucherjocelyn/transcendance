@@ -3,9 +3,7 @@ import { gameSettings } from "./updateGameSetting.js";
 function    get_input_size_table()
 {
     const   inputs = document.querySelectorAll('#gameSettingSizeTable > div > input');
-    let   widthTable = parseInt(inputs[0].value);
-    if (inputs[0].value % 2 === 0)
-        widthTable++;
+    const   widthTable = parseInt(inputs[0].value);
     const   heightTable = parseInt(inputs[1].value);
 
     gameSettings.size.table.width = widthTable;
@@ -23,14 +21,8 @@ function    get_input_size_border()
 function    get_input_size_paddle()
 {
     const   inputs = document.querySelectorAll('#gameSettingSizePaddle > div > input');
-
-    let   widthPaddle = parseInt(inputs[0].value);
-    let   heightPaddle = parseInt(inputs[1].value);
-
-    if (inputs[0].value > gameSettings.size.table.width / 2)
-        widthPaddle = gameSettings.size.table.width / 5;
-    if (inputs[1].value > widthPaddle)
-        heightPaddle = widthPaddle;
+    const   widthPaddle = parseInt(inputs[0].value);
+    const   heightPaddle = parseInt(inputs[1].value);
 
     gameSettings.size.paddle.width = widthPaddle;
     gameSettings.size.paddle.height = heightPaddle;
@@ -39,10 +31,7 @@ function    get_input_size_paddle()
 function    get_input_size_ball()
 {
     const   input = document.querySelector('#gameSettingSizeBall > div > input');
-
-    let   sizeBall = parseFloat(input.value);
-    if (input.value > gameSettings.size.paddle.width)
-        sizeBall = gameSettings.size.paddle.width / 5;
+    const   sizeBall = parseFloat(input.value);
 
     gameSettings.size.ball = sizeBall;
 }

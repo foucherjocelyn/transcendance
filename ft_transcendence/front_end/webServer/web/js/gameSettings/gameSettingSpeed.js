@@ -11,10 +11,7 @@ function    get_input_speed_paddle()
 function    get_input_speed_ball()
 {
     const   input = document.querySelector('#gameSettingSpeedBall > div > input');
-
-    let   speedBall = parseFloat(input.value);
-    if (input.value > gameSettings.speed.paddle)
-        speedBall = gameSettings.speed.paddle;
+    const   speedBall = parseFloat(input.value);
 
     gameSettings.speed.ball = speedBall;
 }

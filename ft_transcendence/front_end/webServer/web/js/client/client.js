@@ -7,7 +7,8 @@ import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { draw_score } from "../game/drawScore.js";
 import { draw_paddle } from "../game/drawPaddles.js";
-import { display_countdown } from "../game/countdown.js";
+import { display_countdown } from "../game/displayCountdown.js";
+import { display_game_over_layer } from "../game/gameOverLayer.js";
 
 class   userNotifications {
     constructor() {
@@ -87,6 +88,8 @@ function    get_data_from_server(socket)
             draw_score(receivedData.content);
         if (receivedData.title === 'draw paddles')
             draw_paddle();
+        if (receivedData.title === 'game over')
+            display_game_over_layer(receivedData.content);
     };
 }
 

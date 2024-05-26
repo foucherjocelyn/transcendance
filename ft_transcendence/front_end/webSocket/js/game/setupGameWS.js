@@ -1,7 +1,7 @@
 const { send_data } = require("../webSocket/dataToClient");
 const { countdownWS } = require("./countdownWS");
 const { formPongGameWS } = require("./formBox");
-const { setup_game_settings_WS, create_object_pong_game } = require("./gameSettingsWS");
+const { setup_game_settings_WS, create_object_pong_game } = require("../gameSettings/gameSettingsWS");
 
 function    start_game(data, match)
 {
@@ -14,7 +14,7 @@ function    start_game(data, match)
 function    setup_game_WS(data, match)
 {
     match.pongGame = new formPongGameWS();
-    match.pongGame.maxPoint = 5;
+    match.pongGame.maxPoint = 1; // max = 5
     match.pongGame.listPlayer = match.listPlayer;
     match.pongGame.listUser = match.listUser;
 
