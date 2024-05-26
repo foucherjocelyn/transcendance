@@ -162,18 +162,30 @@ class GameViewSet(viewsets.ModelViewSet):
         winner.save()
         return Response({"message": "Winner level up successfully"}, status=200)
 
-    # List all my games
-    @action(detail=True, methods=["get"])
-    def listMyGames(self, request):
-        user = request.user
+    # List all game of a user
+    @action(detail=True, methods=["post"])
+    def listAllGamesByUser(self, request):
+        username = request.data.get("username", None)
+        if not username:
+            return Response({"error": "Username not provided"}, status=400)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
         games = Game.objects.filter(players=user)
         serializer = self.get_serializer(games, many=True)
         return Response(serializer.data, status=200)
 
-    # List all my scores
-    @action(detail=True, methods=["get"])
-    def listMyScores(self, request):
-        user = request.user
+    # List all scores of a user
+    @action(detail=True, methods=["post"])
+    def listAllScoresByUser(self, request):
+        username = request.data.get("username", None)
+        if not username:
+            return Response({"error": "Username not provided"}, status=400)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
         scores = GameScore.objects.filter(player=user)
         serializer = GameScoreSerializer(scores, many=True)
         return Response(serializer.data, status=200)
@@ -188,8 +200,8 @@ class GameViewSet(viewsets.ModelViewSet):
             "addScore",
             "updateWinnerOfGame",
             "levelUpWinner",
-            "listMyGames",
-            "listMyScores",
+            "listAllGamesByUser",
+            "listAllScoresByUser",
         ]:
             self.permission_classes = [IsAuthenticated]
         else:

@@ -90,8 +90,8 @@
     -   [Add score of a player](#add-score-of-a-player)
     -   [Update the winner of a game](#update-the-winner-of-a-game)
     -   [Level up the winner](#level-up-the-winner)
-    -   [List all my games](#list-all-my-games)
-    -   [List all my scores](#list-all-my-scores)
+    -   [List all games by user](#list-all-games-by-user)
+    -   [List all scores by user](#list-all-scores-by-user)
 
 -   **Tournaments**
 
@@ -1034,22 +1034,37 @@ authorization Bearer <token>
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
 
-## List all my games
+## List all games by user
 
-Return a list of all games that the user is a player of. Only the player can see their games.
+Return a list of all games that the user is a player of.
 
 ```typescript
-GET /api/v1/game/me
+POST /api/v1/game/list
 authorization Bearer <token>
+{
+	username: string
+}
 ```
 
 ### Return
 
 -   A list of game objects ([Game](#game))
 
-## List all my scores
+## List all scores by user
 
-Return a list of all scores that the user obtained. Only the player can see their scores.
+Return a list of all scores that the user obtained.
+
+```typescript
+POST /api/v1/game/score/list
+authorization Bearer <token>
+{
+	username: string
+}
+```
+
+### Return
+
+-   A list of score objects ([Score](#score))
 
 # Tournaments
 
