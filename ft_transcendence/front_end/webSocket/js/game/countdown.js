@@ -1,9 +1,9 @@
 const { send_data } = require("../webSocket/dataToClient");
-const { update_status_objects_ws } = require("./updateCollisionsPoint");
-const { movements_ball_ws } = require("./movementsBall");
-const { movement_AI_ws } = require("./movementsAI");
+const { update_status_objects } = require("./collisionsPoint");
+const { movements_ball } = require("./movementsBall");
+const { movement_AI } = require("./movementsAI");
 const { webSocket } = require("../webSocket/webSocket");
-const { create_paddles_ws } = require("./createPaddleWS");
+const { create_paddles } = require("./createPaddle");
 const { check_game_over } = require("./gameOver");
 
 function calculate_ball_speed(gameSettings)
@@ -57,7 +57,7 @@ function    start_game_ws(match)
         const nbrPlayer = 4 - match.pongGame.listPlayer.filter(player => player.type === 'none').length;
         if (nbrPlayer !== nbrPaddle)
         {
-            create_paddles_ws(match);
+            create_paddles(match);
             handle_player_deconnection(match.pongGame.listUser, match.listUser, match);
             match.pongGame.listUser = match.listUser;
             send_data('draw paddles', '', 'server', match.listUser);
@@ -73,19 +73,19 @@ function    start_game_ws(match)
         // lost point
         if (match.pongGame.lostPoint)
         {
-            countdownWS(match);
+            countdown(match);
             clearInterval(intervalId);
             return ;
         }
 
-        update_status_objects_ws(match.pongGame);
-        movements_ball_ws(match.pongGame, match.gameSettings);
-        movement_AI_ws(match.pongGame);
+        update_status_objects(match.pongGame);
+        movements_ball(match.pongGame, match.gameSettings);
+        movement_AI(match.pongGame);
         send_data('movement ball', match.pongGame.ball.position, 'server', match.listUser);
     }, 20);
 }
 
-function    countdownWS(match)
+function    countdown(match)
 {
     let count = (match.pongGame.lostPoint === false) ? 15 : 3;
     const countdownInterval = setInterval(function() {
@@ -105,6 +105,6 @@ function    countdownWS(match)
 }
 
 module.exports = {
-    countdownWS,
+    countdown,
     calculate_ball_speed
 };

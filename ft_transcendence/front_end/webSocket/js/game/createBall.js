@@ -1,7 +1,7 @@
 const { send_data } = require("../webSocket/dataToClient");
 const { boxWS } = require("./formBox");
 
-function    create_ball_ws(match)
+function    create_ball(match)
 {
     const   distanceToTable = 0.01;
     const   ball  = new boxWS();
@@ -24,5 +24,5 @@ function    create_ball_ws(match)
 }
 
 module.exports = {
-    create_ball_ws
+    create_ball
 };

@@ -1,20 +1,20 @@
 const { send_data } = require("../webSocket/dataToClient");
-const { countdownWS } = require("./countdownWS");
+const { countdown } = require("./countdown");
 const { formPongGameWS } = require("./formBox");
-const { setup_game_settings_WS, create_object_pong_game } = require("../gameSettings/gameSettingsWS");
+const { setup_game_settings, create_object_pong_game } = require("../gameSettings/gameSettings");
 
 function    start_game(data, match)
 {
     send_data(data.title, data.content, data.from, match.listUser);
-    setup_game_settings_WS(match);
-    countdownWS(match);
+    setup_game_settings(match);
+    countdown(match);
     create_object_pong_game(match);
 }
 
-function    setup_game_WS(data, match)
+function    setup_game(data, match)
 {
     match.pongGame = new formPongGameWS();
-    match.pongGame.maxPoint = 1; // max = 5
+    match.pongGame.maxPoint = 5; // max = 5
     match.pongGame.listPlayer = match.listPlayer;
     match.pongGame.listUser = match.listUser;
 
@@ -30,5 +30,5 @@ function    setup_game_WS(data, match)
 }
 
 module.exports = {
-    setup_game_WS
+    setup_game
 };

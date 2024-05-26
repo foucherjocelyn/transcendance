@@ -9,7 +9,7 @@ function    update_collision_points(obj)
     obj.collisionPoint.right = obj.position.x + (obj.size.width / 2);
 }
 
-function    update_status_objects_ws(pongGame)
+function    update_status_objects(pongGame)
 {
     update_collision_points(pongGame.ball);
 
@@ -27,6 +27,6 @@ function    update_status_objects_ws(pongGame)
 }
 
 module.exports = {
-    update_status_objects_ws
+    update_status_objects
 };
 

@@ -1,7 +1,7 @@
 const { send_data } = require("../webSocket/dataToClient");
 const { boxWS } = require("./formBox");
 
-function    define_paddle_ws(id, pongGame)
+function    define_paddle(id, pongGame)
 {
     if (id === undefined || pongGame.listPaddle === undefined)
         return undefined;
@@ -115,7 +115,7 @@ function create_bottom_paddle(modeGame, gameSettings)
     );
 }
 
-function    create_paddles_ws(match)
+function    create_paddles(match)
 {
     match.pongGame.paddle.left = undefined;
     match.pongGame.paddle.right = undefined;
@@ -141,6 +141,6 @@ function    create_paddles_ws(match)
 }
 
 module.exports = {
-    create_paddles_ws,
-    define_paddle_ws
+    create_paddles,
+    define_paddle
 };

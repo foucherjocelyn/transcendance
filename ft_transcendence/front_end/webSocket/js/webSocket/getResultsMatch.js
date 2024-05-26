@@ -1,4 +1,4 @@
-const { setup_game_WS } = require("../game/setupGameWS");
+const { setup_game } = require("../game/setupGame");
 const { send_data } = require("./dataToClient");
 const { update_match, define_match } = require("./updateMatch");
 const { webSocket } = require("./webSocket");
@@ -54,7 +54,7 @@ function    informations_match_start(data, match)
     // console.log(websocket_token);
 
     update_match(data.from, match, 'update match');
-    setup_game_WS(data, match);
+    setup_game(data, match);
 }
 
 function    informations_match_end(user, inforMatch)

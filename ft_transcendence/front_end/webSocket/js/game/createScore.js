@@ -97,7 +97,7 @@ function    horizontal_score_bar(paddle, pongGame, gameSettings)
     draw_horizontal_score_bar(x, y, z, nextDistance, paddle, pongGame, gameSettings);
 }
 
-function    create_score_ws(paddle, pongGame, gameSettings)
+function    create_score(paddle, pongGame, gameSettings)
 {
     if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
         vertical_score_bar(paddle, pongGame, gameSettings);
@@ -106,5 +106,5 @@ function    create_score_ws(paddle, pongGame, gameSettings)
 }
 
 module.exports = {
-    create_score_ws
+    create_score
 };

@@ -1,5 +1,5 @@
 const { horizontal_movement, vertical_movement } = require("./movementsPaddle");
-const { update_status_objects_ws } = require("./updateCollisionsPoint");
+const { update_status_objects } = require("./collisionsPoint");
 
 function    vertical_movement_AI(paddle, pongGame)
 {
@@ -14,7 +14,7 @@ function    vertical_movement_AI(paddle, pongGame)
         vertical_movement(paddle, 1, pongGame);
     }
 
-    update_status_objects_ws(pongGame);
+    update_status_objects(pongGame);
 }
 
 function    horizontal_movement_AI(paddle, pongGame)
@@ -30,10 +30,10 @@ function    horizontal_movement_AI(paddle, pongGame)
         horizontal_movement(paddle, 1, pongGame);
     }
 
-    update_status_objects_ws(pongGame);
+    update_status_objects(pongGame);
 }
 
-function    movement_AI_ws(pongGame)
+function    movement_AI(pongGame)
 {
     for (let i = 0; i < pongGame.listPaddle.length; i++)
     {
@@ -55,5 +55,5 @@ function    movement_AI_ws(pongGame)
 }
 
 module.exports = {
-    movement_AI_ws
+    movement_AI
 };

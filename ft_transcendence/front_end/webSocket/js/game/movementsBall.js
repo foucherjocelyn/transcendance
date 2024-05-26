@@ -1,6 +1,6 @@
 const { check_collision } = require("./collision");
-const { define_paddle_ws } = require("./createPaddleWS");
-const { create_score_ws } = require("./createScoreWS");
+const { define_paddle } = require("./createPaddle");
+const { create_score } = require("./createScore");
 
 function    last_touch(lostPaddle, pongGame, gameSettings)
 {
@@ -12,7 +12,7 @@ function    last_touch(lostPaddle, pongGame, gameSettings)
         {
             const   player = pongGame.listPlayer[paddle.id];
             player.score++;
-            create_score_ws(paddle, pongGame, gameSettings);
+            create_score(paddle, pongGame, gameSettings);
             return ;
         }
     }
@@ -35,7 +35,7 @@ function    check_lost_point(pongGame, gameSettings)
 {
     const   touch = pongGame.ball.collision.who;
     
-    let   paddle = define_paddle_ws(touch.id, pongGame);
+    let   paddle = define_paddle(touch.id, pongGame);
     if (paddle !== undefined)
     {
         pongGame.listTouch.push(paddle);
@@ -131,7 +131,7 @@ function    increase_ball_speed(ball, pongGame)
         pongGame.ballSpeed = pongGame.maxSpeed - speed;
 }
 
-function    movements_ball_ws(pongGame, gameSettings)
+function    movements_ball(pongGame, gameSettings)
 {
     const   ball = pongGame.ball;
 
@@ -171,6 +171,6 @@ function    movements_ball_ws(pongGame, gameSettings)
 }
 
 module.exports = {
-    movements_ball_ws,
+    movements_ball,
     check_collisions,
 };

@@ -1,10 +1,12 @@
 import { client, dataToServer } from "../client/client.js";
 import { match } from "../createMatch/createMatch.js";
-import { get_input_game_setting_color } from "./gameSettingColor.js";
-import { get_input_game_setting_control } from "./gameSettingControl.js";
-import { get_input_game_setting_size } from "./gameSettingSize.js";
-import { get_input_game_setting_speed } from "./gameSettingSpeed.js";
+
 import { gameSettings } from "./updateGameSetting.js";
+
+import { get_input_game_setting_size } from "./getInputSize.js";
+import { get_input_game_setting_color } from "./getInputColor.js";
+import { get_input_game_setting_speed } from "./getInputSpeed.js";
+import { get_input_game_setting_control } from "./getInputControl.js";
 
 function    get_inputs_game_settings()
 {

@@ -2,14 +2,14 @@ const { send_data } = require("../webSocket/dataToClient");
 const { define_match } = require("../webSocket/updateMatch");
 const { webSocket } = require("../webSocket/webSocket");
 
-const { create_ball_ws } = require("../game/createBallWS");
-const { create_borders_ws } = require("../game/createBorderWS");
-const { create_paddles_ws } = require("../game/createPaddleWS");
+const { create_ball } = require("../game/createBall");
+const { create_borders } = require("../game/createBorder");
+const { create_paddles } = require("../game/createPaddle");
 
-const { check_game_settings_size } = require("./checkGameSettingsSize");
-const { check_game_settings_color } = require("./checkGameSettingsColor");
-const { check_game_settings_speed } = require("./checkGameSettingsSpeed");
-const { check_game_settings_control } = require("./checkGameSettingsControl");
+const { check_game_settings_size } = require("./checkInputSize");
+const { check_game_settings_color } = require("./checkInputColor");
+const { check_game_settings_speed } = require("./checkInputSpeed");
+const { check_game_settings_control } = require("./checkInputControl");
 
 class formGameSetting {
     constructor() {
@@ -69,7 +69,7 @@ function    setup_limit_table(pongGame, gameSettings)
     pongGame.limit.right = gameSettings.size.table.width / 2;
 }
 
-function    setup_game_settings_WS(match)
+function    setup_game_settings(match)
 {
     match.gameSettings = new formGameSetting();
     setup_limit_table(match.pongGame, match.gameSettings);
@@ -78,9 +78,9 @@ function    setup_game_settings_WS(match)
 
 function    create_object_pong_game(match)
 {
-    create_borders_ws(match);
-    create_paddles_ws(match);
-    create_ball_ws(match);
+    create_borders(match);
+    create_paddles(match);
+    create_ball(match);
 }
 
 function    check_game_settings(match, gameSettings)
@@ -103,7 +103,7 @@ function    check_game_settings(match, gameSettings)
     return true;
 }
 
-function    update_game_settings_ws(data)
+function    update_game_settings(data)
 {
     let indexMatch = define_match(data.from);
     if (indexMatch === undefined)
@@ -124,7 +124,7 @@ function    update_game_settings_ws(data)
 }
 
 module.exports = {
-    setup_game_settings_WS,
-    update_game_settings_ws,
+    setup_game_settings,
+    update_game_settings,
     create_object_pong_game
 };

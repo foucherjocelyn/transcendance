@@ -69,7 +69,7 @@ function create_bottom_border(gameSettings) {
     );
 }
 
-function    create_borders_ws(match)
+function    create_borders(match)
 {
     match.pongGame.listBorder = [];
 
@@ -88,5 +88,5 @@ function    create_borders_ws(match)
 }
 
 module.exports = {
-    create_borders_ws
+    create_borders
 };

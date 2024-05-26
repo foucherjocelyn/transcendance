@@ -2,7 +2,7 @@ const { send_data } = require("../webSocket/dataToClient");
 const { define_match } = require("../webSocket/updateMatch");
 const { webSocket } = require("../webSocket/webSocket");
 const { check_collisions } = require("./movementsBall");
-const { update_status_objects_ws } = require("./updateCollisionsPoint");
+const { update_status_objects } = require("./collisionsPoint");
 
 function vertical_movement(paddle, direction, pongGame)
 {
@@ -24,7 +24,7 @@ function vertical_movement(paddle, direction, pongGame)
     })
     paddle.position.z += speed;
     send_data('update paddles', pongGame.listPaddle, 'server', pongGame.listUser);
-    update_status_objects_ws(pongGame);
+    update_status_objects(pongGame);
 }
 
 function horizontal_movement(paddle, direction, pongGame)
@@ -47,12 +47,15 @@ function horizontal_movement(paddle, direction, pongGame)
     })
     paddle.position.x += speed;
     send_data('update paddles', pongGame.listPaddle, 'server', pongGame.listUser);
-    update_status_objects_ws(pongGame);
+    update_status_objects(pongGame);
 }
 
 
 function    movement_paddle_mode_offline(keyCode, paddle, pongGame)
 {
+    if (paddle === undefined)
+        return ;
+    
     if (keyCode === paddle.control.left)
     {
         if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
@@ -71,7 +74,7 @@ function    movement_paddle_mode_offline(keyCode, paddle, pongGame)
 
 function    movement_paddle_mode_online(keyCode, paddle, pongGame)
 {
-    if (keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight')
+    if ((paddle === undefined) || (keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight'))
         return ;
 
     if ((keyCode === 'ArrowLeft' && paddle.name === 'left paddle')

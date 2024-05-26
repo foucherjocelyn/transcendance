@@ -1,5 +1,5 @@
-const { calculate_ball_speed } = require("../game/countdownWS");
-const { isNumeric } = require("./checkGameSettingsSize");
+const { calculate_ball_speed } = require("../game/countdown");
+const { isNumeric } = require("./checkInputSize");
 
 function    check_game_settings_speed_ball(gameSettings)
 {
