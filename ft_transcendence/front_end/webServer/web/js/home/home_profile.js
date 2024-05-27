@@ -39,7 +39,7 @@ export async function	inspectProfile(username)
 		document.querySelector("#inspectprofile").remove();
 	});
 	document.getElementById("inspectprofile_more").addEventListener("click", () => {
-		to_playerprofile("true", user_info);
+		to_playerprofile("false", user_info);
 	});
 }
 
@@ -52,16 +52,16 @@ function	drawProfilePage(user_info)
 <div id="frontpage">
 	${loadSpinner()}
 	${upperPanel()}
-	<div id="inspectprofile_page" class="hide">
-		<div id="ip_player_bar">
-				<img id="ip_player_img" src="../../img/avatar/avatar_default.png">
-				<p id="ip_username"></p>
-				<p id="ip_level">Level: ${user_info.level}</p>
+	<div id="h_homepage" class="hide">
+		<div id="h_player_bar">
+				<img id="hpb_player_img" src="../../img/avatar/avatar_default.png">
+				<p id="hpb_username"></p>
+				<p id="hpb_level">Level: ${user_info.level}</p>
       </div>
-			<div id="ip_scoreboard">
-			<table id="ip_score">
+			<div id="h_scoreboard">
+			<table id="h_score">
     	    <thead>
-              <tr id="ip_filter">
+              <tr id="hs_filter">
 			  <th scope="col">Mode</th>
 			  <th scope="col">Players</th>
 			  <th scope="col">Winner</th>
@@ -71,7 +71,7 @@ function	drawProfilePage(user_info)
               </tr>
             </thead>
 			<br>
-            <tbody id="ip_info">
+            <tbody id="hs_info">
             </tbody>
           </table>
 			</div>
@@ -83,17 +83,17 @@ function	drawProfilePage(user_info)
 `;
 
 	renderMatchHistory(user_info.username);
-	document.getElementById("ip_username").textContent = user_info.username;
+	document.getElementById("hpb_username").textContent = user_info.username;
 	upperPanelEventListener("profilepage");
 	if (document.getElementById("loadspinner") !== undefined
-		&& document.getElementById("inspectprofile_page") !== undefined
+		&& document.getElementById("h_homepage") !== undefined
 		&& document.getElementById("loadspinner") !== null
-		&& document.getElementById("inspectprofile_page") !== null)
+		&& document.getElementById("h_homepage") !== null)
 	{
-		if (document.getElementById("ip_player_img") != null)
+		if (document.getElementById("hpb_player_img") != null)
 			user_info.avatarPath;//need to check if existing
 		document.getElementById("loadspinner").classList.add("hide");
-		document.getElementById("inspectprofile_page").classList.remove("hide");
+		document.getElementById("h_homepage").classList.remove("hide");
 		loadChat();
 		return ;
 	}
@@ -110,7 +110,7 @@ export async function to_playerprofile(nohistory = "false", user_info)
 		return ;
 	}
 	if (nohistory === "false")
-		history.pushState( { url: `${user_info.username}` }, "", `#${user_info.username}`);
+		history.pushState( { url: `homepage` }, "", `#homepage`);//{ url: `${user_info.username}` }, "", `#${user_info.username}`);
 	updateMyInfo();
 	drawProfilePage(user_info);
 }

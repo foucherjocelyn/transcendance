@@ -6,7 +6,7 @@ import { getTournamentsList, joinTournament } from "../backend_operation/tournam
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
-import { to_tournamentWaitingRoom, to_tournament_waiting_room } from "./home_tournament_room.js";
+import { to_tournamentWaitingRoom } from "./home_tournament_room.js";
 
 function 	sortThisTable(option)
 {
@@ -92,7 +92,7 @@ function	aliasJoinTournament(tour_obj)
 </div>
 `;
 	  document.getElementById("tour_inputsend").addEventListener("click", () => {
-		  e.preventDefault();
+		  event.preventDefault();
 		  //console.log("submit alias detected");
 		  to_tournamentWaitingRoom("true", tour_obj);
 	  });

@@ -201,7 +201,7 @@ export async function getAllMyScores(username)
 
 */
 
-export const getAllMyScores = async () => {
+export const getAllMyGames = async () => {
 	let f_token = getCookie("token");
 
 	try {

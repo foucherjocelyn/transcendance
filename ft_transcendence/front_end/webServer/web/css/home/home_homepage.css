@@ -1,11 +1,11 @@
-#h_player_bar, #ip_player_bar {
+#h_player_bar {
 	background-color: #002f69;
 	position: relative;
 	height: 3.5em;
 	margin-bottom: 3em;
 }
 
-#hpb_player_img, #ip_player_img {
+#hpb_player_img {
 	display: inline-block;
 	background-color: white;
 	border-radius: 60px;
@@ -18,7 +18,7 @@
 	max-height: 80px;
 }
 
-#hpb_username, #hpb_level, #ip_username, #ip_level {
+#hpb_username, #hpb_level {
 	display: inline-block;
 	position: relative;
 	margin-top: -2em;
@@ -26,13 +26,13 @@
 	font-weight: bold;
 }
 
-#hpb_username, #ip_username {
+#hpb_username {
 	margin-bottom: -1%;
 	top: -2em;
 	left: 130px;
 }
 
-#hpb_level, #ip_level {
+#hpb_level {
 	top: -30%;
 	left: 70%;
 	transform: translateX(-70%);
@@ -46,7 +46,7 @@
 }
 */
 
-#h_scoreboard, #ip_scoreboard {
+#h_scoreboard {
 	background-image: url(../../img/background/card3_head.png);
 	background-size: cover;
 	border-radius: 4px;
@@ -60,7 +60,7 @@
 	margin-right: auto;
 }
 
-#h_score, #ip_score {
+#h_score {
 	position: relative;
 	width: 80%;
 	margin-top: 3%;
@@ -68,7 +68,7 @@
 	margin-right: auto;
 }
 
-#hs_filter, #ip_filter {
+#hs_filter {
 	color: gray;
 	font-weight: bold;
 	background-image: url(../../img/background/bar.png);
@@ -77,25 +77,25 @@
 	border-radius: 2px;
 }
 
-#hs_filter th, #ip_filter th {
+#hs_filter th {
 	width: 20%;
 	resize: none;
 	overflow: hidden;
 }
 
-#hs_info, #ip_info {
+#hs_info {
 	color: #AAAAAA;
 }
 
-#hs_info td, #ip_info td {
+#hs_info td {
 	padding-left: 10px;
 	border: 1px solid black;
 }
 
-#hs_info tr.win, #ip_info tr.win {
+#hs_info tr.win {
 	background-color: green;
 }
 
-#hs_info tr.loss, #ip_info tr.loss {
+#hs_info tr.loss {
 	background-color: red;
 }
