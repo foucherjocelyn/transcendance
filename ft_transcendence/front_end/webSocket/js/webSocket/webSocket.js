@@ -9,8 +9,10 @@ const webSocket = {
     listFindMatch: []
 };
 
-function update_user(user) {
-    for (let i = 0; i < webSocket.listUser.length; i++) {
+function    update_user(user)
+{
+    for (let i = 0; i < webSocket.listUser.length; i++)
+    {
         const find = webSocket.listUser[i];
         if (find !== undefined && find.id === user.id) {
             webSocket.listConnection[i].user = user;
@@ -29,28 +31,26 @@ function get_data_from_client(data, socket) {
         add_new_connection(data, socket);
     else if (data.title === 'disconnect')
         disconnect(socket);
-    else if (data.title === 'update match')
-        update_match(data.from, data.content, data.title);
+    else if (data.title === 'create match')
+        create_match(socket, data.content);
+    else if (data.title === 'add player')
+        add_player(socket, data.content);
     else if (data.title === 'invite to play')
-        request_invitation_to_play(data);
+        request_invitation_to_play(socket, data.to);
     else if (data.title === 'accept invitation to play')
         accept_invitation_to_play(data);
     else if (data.title === 'leave match')
         leave_match(data.from);
-    else if (data.title === 'kick out of the match')
-        kick_out_of_the_match(data);
     else if (data.title === 'start game')
         sign_start_game(data);
     else if (data.title === 'update game settings')
         update_game_settings(data);
-    else if (data.title === 'game over')
-        informations_match_end(data.from, data.content);
     else if (data.title === 'movement paddle')
         get_sign_movement_paddle(socket, data.content);
     else
         send_data(data.title, data.content, data.from, data.to);
 
-    update_user(data.from);
+    // update_user(data.from);
 }
 
 async function loadCertificates() {
@@ -101,11 +101,11 @@ module.exports = {
 
 const { add_new_connection, disconnect } = require('./addNewConnection');
 const { send_data } = require('./dataToClient');
-const { update_match } = require('./updateMatch');
-const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
-const { sign_start_game } = require('./signStartGame');
-const { request_invitation_to_play } = require('./invitationToPlay');
-const { informations_match_end } = require("./getResultsMatch");
+const { accept_invitation_to_play, leave_match } = require('../match/acceptInvitationPlay');
+const { sign_start_game } = require('../match/signStartGame');
+const { request_invitation_to_play } = require('../match/invitationToPlay');
 const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
+const { create_match } = require("../match/createMatch");
+const { add_player } = require("../match/addPlayer");
 

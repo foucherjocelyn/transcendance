@@ -1,7 +1,6 @@
 import { getCookie } from "../authentication/auth_cookie.js";
-import { client } from "../client/client.js";
 import { match } from "../createMatch/createMatch.js";
-import { check_list_invitation_to_play, display_results_search_friends_to_play } from "./displayResultsSearchInvitationPlay.js";
+import { display_results_search_friends_to_play } from "./displayResultsSearchInvitationPlay.js";
 
 function    check_str_in_str(str, str2) {
     return String(str).includes(String(str2));
@@ -50,7 +49,7 @@ async function    search_friends_to_invite(input) {
                     results[0] = user;
                     results[i] = tmp;
                 }
-                else if (user.status !== 'playing game' && check_list_invitation_to_play(user) === undefined)
+                else if (user.status !== 'playing game')
                     results.push(user);
             }
         }

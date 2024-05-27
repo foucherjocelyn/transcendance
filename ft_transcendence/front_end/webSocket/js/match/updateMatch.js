@@ -1,6 +1,6 @@
-const { send_data } = require("./dataToClient");
+const { webSocket } = require("../webSocket/webSocket");
 const { delete_match_in_list_find_match } = require("../matchmaking/matchmaking");
-const { webSocket } = require("./webSocket");
+const { send_data } = require("../webSocket/dataToClient");
 
 function    define_match(user)
 {
@@ -30,7 +30,7 @@ function    get_user_in_list_player_ws(match)
     }
 }
 
-function    update_match(user, inforMatch, title)
+function    update_match(user, inforMatch)
 {
     let indexMatch = define_match(user)
     if (indexMatch === undefined)
@@ -51,7 +51,7 @@ function    update_match(user, inforMatch, title)
     }
     else
     {
-        send_data(title, match, user, match.listUser);
+        send_data('update match', match, user, match.listUser);
     }
 
     console.log('length list match: ' + webSocket.listMatch.length);

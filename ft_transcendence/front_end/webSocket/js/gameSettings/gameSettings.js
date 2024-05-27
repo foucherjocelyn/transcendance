@@ -1,6 +1,6 @@
 const { send_data } = require("../webSocket/dataToClient");
-const { define_match } = require("../webSocket/updateMatch");
 const { webSocket } = require("../webSocket/webSocket");
+const { define_match } = require("../match/updateMatch");
 
 const { create_ball } = require("../game/createBall");
 const { create_borders } = require("../game/createBorder");

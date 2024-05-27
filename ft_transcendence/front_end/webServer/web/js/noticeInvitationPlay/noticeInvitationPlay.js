@@ -52,13 +52,14 @@ function    notice_invitation_play(data)
 
     document.getElementById('noticeInvitationPlayLayer').style.display = 'flex';
 
-    if (data.title !== 'invite to play')
-        document.getElementById('rejectInvitationPlayButton').style.display = 'none';
+    let rejectButton = document.getElementById('rejectInvitationPlayButton');
+    rejectButton.style.display = (data.title === 'invite to play') ? 'flex' : 'none';
 
     setup_size_notice_invitation_play_layer();
-    (data.title !== 'warning') ?
-    set_content_notive_invitation_play(data.from.avatarPath, data.from.id, data.content) :
-    set_content_notive_invitation_play(data.from, 'Pong Game', data.content);
+
+    (data.title === 'warning') ?
+    set_content_notive_invitation_play(data.from, 'Pong Game', data.content) :
+    set_content_notive_invitation_play(data.from.avatarPath, data.from.id, data.content);
 
     get_sign_reject_invitation_play(data.from);
     get_sign_accept_invitation_play(data.from, data.title);

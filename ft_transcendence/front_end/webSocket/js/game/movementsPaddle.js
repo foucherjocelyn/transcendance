@@ -1,8 +1,8 @@
-const { send_data } = require("../webSocket/dataToClient");
-const { define_match } = require("../webSocket/updateMatch");
 const { webSocket } = require("../webSocket/webSocket");
+const { send_data } = require("../webSocket/dataToClient");
 const { check_collisions } = require("./movementsBall");
 const { update_status_objects } = require("./collisionsPoint");
+const { define_match } = require("../match/updateMatch");
 
 function vertical_movement(paddle, direction, pongGame)
 {

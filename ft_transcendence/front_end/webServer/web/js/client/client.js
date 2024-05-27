@@ -3,7 +3,7 @@ import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
+import { display_invitation_play_layer, reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { draw_score } from "../game/drawScore.js";
 import { draw_paddle } from "../game/drawPaddles.js";
@@ -59,10 +59,14 @@ function    get_data_from_server(socket)
             reponse_invitation_to_play_cl(receivedData);
         if (receivedData.title === 'warning')
             notice_invitation_play(receivedData);
+
         if (receivedData.title === 'update match')
             update_match_informations(receivedData);
+        if (receivedData.title === 'search friend to play')
+            display_invitation_play_layer();
         if (receivedData.title === 'create match')
 			create_match("with friends");
+
         if (receivedData.title === 'hide loader')
         {
             if (document.getElementById('loaderMatchmakingLayer') !== null)

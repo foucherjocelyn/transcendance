@@ -1,31 +1,9 @@
 import { client, dataToServer } from "../client/client.js";
-import { match } from "../createMatch/createMatch.js";
 import { reset_contents_in_invitation_play_layer } from "./getSignButtonsInInvitationPlay.js";
-
-export function check_list_invitation_to_play(user)
-{
-    for (let i = 0; i < match.listInvite.length; i++)
-    {
-        const   check = match.listInvite[i];
-        if (check.id === user.id)
-            return i;
-    }
-    return undefined;
-}
 
 export function send_invitation_to_play(recipient)
 {
-    if (check_list_invitation_to_play(recipient) !== undefined)
-        return ;
-
-    match.listInvite.push(recipient);
-    // console.log('length add: ' + match.listInvite.length);
-
-    // update list invite
-    let sendData = new dataToServer('update match', match, client.inforUser, match.listUser);
-    client.socket.send(JSON.stringify(sendData));
-
-    sendData = new dataToServer('invite to play', "Hey guy, do you want to play 'Pong Game' with me?", client.inforUser, recipient);
+    const sendData = new dataToServer('invite to play', '', client.inforUser, recipient);
     client.socket.send(JSON.stringify(sendData));
 }
 

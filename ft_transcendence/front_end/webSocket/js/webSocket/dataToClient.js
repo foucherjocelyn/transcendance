@@ -13,7 +13,7 @@ function    find_socket(user)
     for (let i = 0; i < webSocket.listConnection.length; i++)
     {
         const   connection = webSocket.listConnection[i];
-        if (user !== undefined && connection.user.id === user.id)
+        if (user !== undefined && connection.user !== undefined && connection.user.id === user.id)
             return connection.socket;
     }
     return undefined;
