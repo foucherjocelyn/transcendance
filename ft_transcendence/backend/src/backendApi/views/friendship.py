@@ -138,10 +138,12 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             receiver = User.objects.get(username=receiver_username)
         except User.DoesNotExist:
             return Response({"error": "Receiver not found"}, status=404)
-        
+
         # Check is sender and receiver are same person
         if sender == receiver:
-            return Response({"error": "Sender and receiver are the same person"}, status=400)
+            return Response(
+                {"error": "Sender and receiver are the same person"}, status=400
+            )
 
         # Check if the receiver is already banned by the sender
         if BannedUser.objects.filter(
@@ -155,7 +157,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             return Response({"error": "Sender is already banned"}, status=400)
 
         until_string = request.data.get("until", None)
-        reason = request.data.get("bannedReason", None)
+        reason = request.data.get("reason", None)
         if not until_string:
             until = datetime.max.date()
         else:
@@ -253,6 +255,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=201)
 
     # Unmute user to send message
+    @action(detail=True, methods=["post"])
     def unmuteUser(self, request):
         sender = request.user
         receiver_username = request.data.get("username", None)
@@ -278,6 +281,15 @@ class FriendshipViewSet(viewsets.ModelViewSet):
         serializer = MutedUserSerializer(muted_user)
         return Response(serializer.data, status=200)
 
+    @action(detail=False, methods=["get"])
+    def listMutedUser(self, request):
+        user = request.user
+        muteds = MutedUser.objects.filter(
+            Q(sender=user) | Q(receiver=user), until__gte=datetime.now().date()
+        )
+        serializer = MutedUserSerializer(muteds, many=True)
+        return Response(serializer.data, status=200)
+
     def get_permissions(self):
         if self.action in [
             "inviteFriend",
@@ -289,6 +301,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             "listFriendshipsSent",
             "listFriendshipsReceived",
             "listFriends",
+            "listMutedUser",
         ]:
             self.permission_classes = [IsAuthenticated]
         else:

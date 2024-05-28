@@ -37,6 +37,7 @@
     -   [Update my profile](#update-my-profile)
     -   [Get my profile avatar](#get-my-profile-avatar)
     -   [Upload my profile avatar](#upload-my-profile-avatar)
+    -   [Update my status](#update-my-status)
 
 -   **Channels**
 
@@ -70,6 +71,7 @@
     -   [Unban user from sending a friend invitation](#unban-user-from-sending-a-friend-invitation)
     -   [Mute user from sending private messages](#mute-user-from-sending-private-messages)
     -   [Unmute user from sending private messages](#unmute-user-from-sending-private-messages)
+    -   [Get list of muted users](#get-list-of-muted-users)
 
 -   **User Messages**
 
@@ -86,9 +88,10 @@
     -   [Remove a player from a game](#remove-a-player-from-a-game)
     -   [End a game](#end-a-game)
     -   [Add score of a player](#add-score-of-a-player)
+    -   [Update the winner of a game](#update-the-winner-of-a-game)
     -   [Level up the winner](#level-up-the-winner)
-    -   [List all my games](#list-all-my-games)
-    -   [List all my scores](#list-all-my-scores)
+    -   [List all games by user](#list-all-games-by-user)
+    -   [List all scores by user](#list-all-scores-by-user)
 
 -   **Tournaments**
 
@@ -126,7 +129,7 @@ POST /api/v1/token
 
 ```typescript
 {
-	access: string
+    access: string;
 }
 ```
 
@@ -384,6 +387,22 @@ avatar: File
 Upload a profile avatar, save it in the backend and update the user's avetarPath in the database
 
 For frontend implementation, see: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#uploading_a_file
+
+## Update my status
+
+Only authenticated user can update the user's status to `online` or `offline`
+
+```typescript
+POST /api/v1/profile/me/status
+authorization Bearer <token>
+{
+	status: string
+}
+```
+
+### Return
+
+-   The updated user profile ([User](#user))
 
 # Channels
 
@@ -821,6 +840,17 @@ authorization Bearer <token>
 
 -   A updated MutedUser object ([MutedUser](#muteduser))
 
+## Get list of muted users
+
+```typescript
+GET /api/v1/user/friendship/mute/list
+authorization Bearer <token>
+```
+
+### Return
+
+-   A list of MutedUser objects ([MutedUser](#muteduser))
+
 # User messages
 
 ## Send a message to a friend
@@ -962,8 +992,7 @@ authorization Bearer <token>
 
 ## Add score of a player
 
-Add a player's score. Only the websocket server is allowed access. The AI's score will be disregarded. The winner's
-score will be automatically updated.
+Add a player's score. The AI's score will be disregarded.
 
 ```typescript
 POST /api/v1/game/<game_id>/score
@@ -978,9 +1007,23 @@ authorization Bearer <token>
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
 
+## Update the winner of a game
+
+The winner will be updated based on the highest score.
+
+```typescript
+POST /api/v1/game/<game_id>/winner
+authorization Bearer <token>
+```
+
+### Return
+
+-   The ([Message](#message)) if success or ([Error](#error)) if error raised
+
+
 ## Level up the winner
 
-Level up the winner. Only the websocket server is allowed access.
+Level up the winner.
 
 ```typescript
 POST /api/v1/game/<game_id>/winner/levelup
@@ -991,24 +1034,37 @@ authorization Bearer <token>
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
 
+## List all games by user
 
-## List all my games
-
-Return a list of all games that the user is a player of. Only the player can see their games.
+Return a list of all games that the user is a player of.
 
 ```typescript
-GET /api/v1/game/me
+POST /api/v1/game/list
 authorization Bearer <token>
+{
+	username: string
+}
 ```
 
 ### Return
 
 -   A list of game objects ([Game](#game))
 
+## List all scores by user
 
-## List all my scores
+Return a list of all scores that the user obtained.
 
-Return a list of all scores that the user obtained. Only the player can see their scores.
+```typescript
+POST /api/v1/game/score/list
+authorization Bearer <token>
+{
+	username: string
+}
+```
+
+### Return
+
+-   A list of score objects ([Score](#score))
 
 # Tournaments
 
@@ -1022,8 +1078,7 @@ authorization Bearer <token>
 {
 	name: string,
 	description: string, // optional
-	start_date: Date, // Format: YYYY-MM-DD
-	end_date: Date, // Format: YYYY-MM-DD
+	start_time: DateTime, // Format: YYYY-MM-DD HH:MM:SS
 }
 ```
 
@@ -1067,9 +1122,7 @@ authorization Bearer <token>
 {
 	name: string,
 	description: string, // optional
-	start_date: Date, // Format: YYYY-MM-DD
-	end_date: Date, // Format: YYYY-MM-DD
-	status: "upcoming" | "ongoing" | "completed", // optional
+	start_time: DateTime, // Format: YYYY-MM-DD HH:MM:SS
 }
 ```
 
@@ -1227,5 +1280,37 @@ authorization Bearer <token>
 	content: string,
 	created_at: Date,
 	updated_at: Date
+}
+```
+
+## Game
+
+```typescript
+{
+	id: number,
+	visibility: "public" | "private",
+	mode: "classic" | "ranked" | "tournament",
+	tournament_name: string, // if mode = tournament
+	owner_username: string,
+	player_usernames: string[],
+	created_at: DateTime,
+	updated_at: DateTime
+}
+```
+
+## Tournament
+
+```typescript
+{
+    id: number,
+    name: string,
+    description: string, // optional
+    owner_username: string,
+    start_time: DateTime,
+    max_players: number,
+    status: "registering" | "progressing",
+    player_usernames: string[],
+    created_at: DateTime,
+    updated_at: DateTime
 }
 ```

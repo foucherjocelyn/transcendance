@@ -1,6 +1,4 @@
 from datetime import datetime
-
-from backend.settings import WEBSOCKET_TOKEN
 from backendApi.models import User, Token
 from django.utils import timezone
 from rest_framework.authentication import BaseAuthentication
@@ -11,13 +9,17 @@ from .jwt_token import JwtTokenGenerator
 
 class JwtAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        key = request.headers.get("Authorization", "").split(" ")[-1]
-        if not key or key == WEBSOCKET_TOKEN:
-            return None
         try:
+            authorization = request.headers.get("Authorization", None)
+            if not authorization:
+                return None
+            if len(authorization.split(" ")) != 2:
+                raise AuthenticationFailed("Invalid format")
+            prefix = authorization.split(" ")[0]
+            key = authorization.split(" ")[1]
+            if prefix != "Bearer":
+                raise AuthenticationFailed("Invalid prefix")
             decoded_token = JwtTokenGenerator.decodedJwtToken(key)
-            if not decoded_token:
-                raise AuthenticationFailed("Invalid token")
             sub = decoded_token.get("sub")
             userId = decoded_token.get("userId")
             iat = datetime.fromtimestamp(
@@ -36,6 +38,7 @@ class JwtAuthentication(BaseAuthentication):
             token = Token.objects.get(user=user, key=key)
             if token.blacklist:
                 raise AuthenticationFailed("Invalid token")
-            return (user, None)
-        except:
+            return (user, token)
+        except Exception as e:
+            print(e)
             raise AuthenticationFailed("Invalid token")

@@ -1,7 +1,6 @@
 from backendApi.serializers.game import GameSerializer
 from backendApi.serializers.game_score import GameScoreSerializer
 from backendApi.models import Game, User, GameScore
-from backendApi.permissions import IsWebSocketServer
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -121,18 +120,27 @@ class GameViewSet(viewsets.ModelViewSet):
         game_score, created = GameScore.objects.get_or_create(game=game, player=player)
         game_score.score = score
         game_score.save()
-        # Update the winner of the game
-        scores = GameScore.objects.filter(game=game)
-        # Get the player with the highest score
-        winner = scores.order_by("-score").first().player
-        winnerScore = scores.order_by("-score").first().score
-        game.winner = winner
-        game.winnerScore = winnerScore
-        game.save()
         return Response(
             {"message": f"Score of the player {player_username} added or updated"},
             status=200,
         )
+
+    @action(detail=True, methods=["post"])
+    def updateWinnerOfGame(self, request, game_id):
+        try:
+            game = Game.objects.get(id=game_id)
+        except Game.DoesNotExist:
+            return Response({"error": "Game not found"}, status=404)
+        # Find the winner from game scores
+        scores = GameScore.objects.filter(game=game)
+        if not scores.exists():
+            return Response({"error": "No scores found"}, status=400)
+        max_score = scores.order_by("-score").first()
+        winner = max_score.player
+        game.winner = winner
+        game.winnerScore = max_score.score
+        game.save()
+        return Response({"message": "Winner updated successfully"}, status=200)
 
     @action(detail=True, methods=["post"])
     def levelUpWinner(self, request, game_id):
@@ -154,18 +162,30 @@ class GameViewSet(viewsets.ModelViewSet):
         winner.save()
         return Response({"message": "Winner level up successfully"}, status=200)
 
-    # List all my games
-    @action(detail=True, methods=["get"])
-    def listMyGames(self, request):
-        user = request.user
+    # List all game of a user
+    @action(detail=True, methods=["post"])
+    def listAllGamesByUser(self, request):
+        username = request.data.get("username", None)
+        if not username:
+            return Response({"error": "Username not provided"}, status=400)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
         games = Game.objects.filter(players=user)
         serializer = self.get_serializer(games, many=True)
         return Response(serializer.data, status=200)
 
-    # List all my scores
-    @action(detail=True, methods=["get"])
-    def listMyScores(self, request):
-        user = request.user
+    # List all scores of a user
+    @action(detail=True, methods=["post"])
+    def listAllScoresByUser(self, request):
+        username = request.data.get("username", None)
+        if not username:
+            return Response({"error": "Username not provided"}, status=400)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
         scores = GameScore.objects.filter(player=user)
         serializer = GameScoreSerializer(scores, many=True)
         return Response(serializer.data, status=200)
@@ -178,10 +198,11 @@ class GameViewSet(viewsets.ModelViewSet):
             "removePlayerFromGame",
             "endGame",
             "addScore",
+            "updateWinnerOfGame",
             "levelUpWinner",
+            "listAllGamesByUser",
+            "listAllScoresByUser",
         ]:
-            self.permission_classes = [IsWebSocketServer]
-        elif self.action in ["listMyGames", "listMyScores"]:
             self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
