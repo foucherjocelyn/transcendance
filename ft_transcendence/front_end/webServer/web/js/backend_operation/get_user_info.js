@@ -174,7 +174,7 @@ export async function getAllMyGames(username)
 
 	try {
 		const response = await fetch("https://localhost/api/v1/game/me", {
-			method: "GET",
+			method: "POST",
 			body: JSON.stringify(username),
 			headers: {
 				"Accept": "application/json",
@@ -190,7 +190,6 @@ export async function getAllMyGames(username)
 	} catch (error) {
 		console.error("getAllMyGames: ", error);
 	}
-
 }
 
 export async function getAllMyScores(username)
@@ -199,7 +198,7 @@ export async function getAllMyScores(username)
 
 	try {
 		const response = await fetch("https://localhost/api/v1/game/me/score", {
-			method: "GET",
+			method: "POST",
 			body: JSON.stringify(username),
 			headers: {
 				"Accept": "application/json",
