@@ -110,8 +110,6 @@ function	to_changeInfo()
 
 async function	drawProfilePage(callback)
 {
-	let	my_info = `
-`;
 	await getMyInfo();
 	document.querySelector("#frontpage").outerHTML = 
 `<div id="frontpage">
