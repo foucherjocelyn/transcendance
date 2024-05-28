@@ -2,23 +2,73 @@ import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { noticeInvitePlayer } from "./home_game.js";
 import { loadChat } from "../chat/load-chat.js";
-import { getTournamentsList, joinTournament } from "../backend_operation/tournament.js";
+import { getTournamentsList } from "../backend_operation/tournament.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_tournamentWaitingRoom } from "./home_tournament_room.js";
 
-function 	sortThisTable(option)
+function	 addLabel(tour_list, index)
 {
-	
+//	label_index++;
+	//	console.log(`adding new label: ${label_index}`);
+
+	//console.table(tour_list[0]);
+	let	player_nb = tour_list[index].player_usernames.length;
+	let newLabel;
+	newLabel = `<tr id="t_tourlabel${index}">
+<th scope="row">${tour_list[index].name}</th>
+<td>${player_nb}/${tour_list[index].max_players}</td>
+<td>${tour_list[index].start_date}/${tour_list[index].end_date}</td>
+<td>${tour_list[index].status}</td>
+<td><button id="t_joinbutton${index}">Join</button></td>
+<td><button id="t_infobutton${index}">Details</button></td>
+<div id="tour_expanddetails"></div>
+</tr>`;
+	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
+	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
+	document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
 }
 
-function 	searchLabel()
-{//WIP
-	if (document.getElementById("t_search").value !== "")
+async function 	sortThisTable(tour_list, sort_type)
+{
+	document.getElementById("htb_info").innerHTML = "";
+	//let tour_list = await getTournamentsList();
+
+	if (tour_list != undefined)
 	{
-		let foundLabel = "";
-		tournInfo.insertAdjacentHTML("beforeend", foundLabel);
+		console.log(tour_list.length);
+		let i = 0;
+		for (; i < tour_list.length; i++)
+			{
+			if (sort_type === tour_list[i].status)
+				addLabel(tour_list, i);
+			}
+	}
+}
+
+function 	searchLabel(tour_list, search_value)
+{
+	document.getElementById("htb_info").innerHTML = "";
+	if (document.getElementById("htb_search").value !== "")
+	{
+	//	let tour_list = await getTournamentsList();
+	
+		if (tour_list != undefined)
+		{
+			console.log(tour_list.length);
+			let i = 0;
+			for (; i < tour_list.length; i++)
+				{
+					if (tour_list[i].name.startsWith(search_value))
+						addLabel(tour_list, i);
+				}
+		}
+	}
+	else
+	{
+		for (let i = 0; i < tour_list.length; i++)
+			addLabel(tour_list, i);
 	}
 }
 
@@ -31,14 +81,11 @@ async function drawTournament(callback)
 			<div id="h_tournament_page" class="hide">
 				<div id="h_tournament_board">
 					<div class="t_sort_head">
-					<!--
 				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
-	            <button type="button" id="htb_mglass" name="mglass"></button>
-				-->
        		    <select id="htb_dropdown" name="options">
 	              <option value="upcoming" selected>Upcoming</option>
        		      <option value="ongoing">Ongoing</option>
-           		  <option value="finished">Finished</option>
+           		  <option value="completed">Finished</option>
 	            </select>
        				</div>
 	        <hr id="htb_sep" name="t_sep" class="t_separator">
@@ -64,19 +111,18 @@ async function drawTournament(callback)
 `;
 	let tour_list = await getTournamentsList();
 
-	console.log("tour_list is undefined");
 	if (tour_list != undefined)
 	{
-		console.log("tour_list is defined");
-		console.log(tour_list.length);
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
 	}
 	upperPanelEventListener("tournament");
 	document.getElementById("htb_dropdown").addEventListener("change", () => {
-		sortThisTable(this.value);
+		sortThisTable(tour_list, document.querySelector('#htb_dropdown').value);
 	});
-	//document.getElementById("htb_mglass").addEventListener("click", searchLabel);
+	document.getElementById("htb_search").addEventListener("input", () => {
+		searchLabel(tour_list, document.querySelector('#htb_search').value);
+	});
 	callback(true);
 }
 
@@ -121,28 +167,6 @@ function	detailsTournament(tour_obj, index)
 	document.getElementById(`tour_details_status`).textContent = `Status: ${tour_obj.status}`;
 	document.getElementById(`tour_details_close`).addEventListener("click", () => { document.getElementById(`tour_detailsbox`).outerHTML = ``; });
 	document.getElementById(`tour_details_more`).addEventListener("click", () => { document.getElementById(`tour_detailsbox`).outerHTML = ``; });
-}
-
-function	 addLabel(tour_list, index)
-{
-//	label_index++;
-	//	console.log(`adding new label: ${label_index}`);
-
-	//console.table(tour_list[0]);
-	let	player_nb = tour_list[index].player_usernames.length;
-	let newLabel;
-	newLabel = `<tr id="t_tourlabel${index}">
-<th scope="row">${tour_list[index].name}</th>
-<td>${player_nb}/${tour_list[index].max_players}</td>
-<td>${tour_list[index].start_date}/${tour_list[index].end_date}</td>
-<td>${tour_list[index].status}</td>
-<td><button id="t_joinbutton${index}">Join</button></td>
-<td><button id="t_infobutton${index}">Details</button></td>
-<div id="tour_expanddetails"></div>
-</tr>`;
-	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
-	document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
 }
 
 export async function to_tournament(nohistory = "false")

@@ -147,8 +147,6 @@ export const getListFriends = async () => {
 
 }
 
-/* New API
-
 export async function getAllMyGames(username)
 {
 	let f_token = getCookie("token");
@@ -199,8 +197,7 @@ export async function getAllMyScores(username)
 
 }
 
-*/
-
+/*
 export const getAllMyGames = async () => {
 	let f_token = getCookie("token");
 
@@ -246,3 +243,4 @@ export const getAllMyScores = async () => {
 	}
 
 }
+*/

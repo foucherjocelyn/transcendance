@@ -8,6 +8,7 @@ import { loadChat } from "../chat/load-chat.js";
 import { to_connectForm } from "../authentication/auth_connect.js"
 import { getAllMyGames, getAllMyScores, getMyInfo } from "../backend_operation/get_user_info.js";
 
+/*
 function	 newLabel()//
 {
 	let label;
@@ -20,6 +21,7 @@ function	 newLabel()//
 	document.getElementById("hs_info").insertAdjacentHTML("beforeend", newLabel);
 	return (label);
 }
+*/
 
 export async function	renderMatchHistory(username) {
 	const myGames = await getAllMyGames(username);
@@ -28,7 +30,7 @@ export async function	renderMatchHistory(username) {
 	const myScores = await getAllMyScores(username);
 	console.log(myScores);
 	const matchTableBody = myGamesSorted.map(game => `
-		<tr class="${game.winner_username === getCookie('username') ? 'win' : 'loss'}">
+		<tr class="${game.winner_username === username ? 'win' : 'loss'}">
 			<td>${game.mode}</td>
 			<td>${game.player_usernames.join('<br />')}</td>
 			<td>${game.winner_username}</td>
