@@ -30,11 +30,18 @@ function setup_size_create_match_layer()
     createMatchLayer.style.width = `${screen.width}px`;
 }
 
+export function    display_loader(status)
+{
+    const   loaderLayer = document.getElementById('loaderMatchmakingLayer');
+    if (loaderLayer !== null) {
+        loaderLayer.style.display = status;
+    }
+}
+
 export function    display_create_match_layer()
 {
     if (document.getElementById('createMatchLayer') === null)
         createMatchHTML();
-    client.inforUser.status = 'creating match';
 
     setup_size_create_match_layer();
     setup_size_add_player_layer();
@@ -49,8 +56,6 @@ export function update_match_informations(data)
 
     if (client.inforUser.status === 'playing game')
         return ;
-
-    client.inforUser.status = 'creating match';
 
     if (document.getElementById('invitationPlayLayer') !== null)
         return ;
@@ -70,6 +75,6 @@ export function update_match_informations(data)
 
 export function    create_match(mode)
 {
-    const sendData = new dataToServer('create match', mode, client.inforUser, 'server');
+    const sendData = new dataToServer('create match', mode, client.inforUser, 'socket server');
     client.socket.send(JSON.stringify(sendData));
 }

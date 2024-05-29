@@ -42,39 +42,44 @@ function    check_number_player(match)
     return true;
 }
 
-function    call_matchmaking(match, data)
+function    call_matchmaking(user, match)
 {
-    if (match.mode === 'tournament')
-            match.listPlayer[0].name = match.listPlayer[0].name + match.listPlayer[0].id;
+    send_data('display loader', 'flex', 'server', user);
+
+    if (match.mode === 'tournament') {
+        match.listPlayer[0].name = match.listPlayer[0].name + match.listPlayer[0].id;
+    }
 
     matchmaking(match, (result) => {
-        if (!result)
+        if (!result) {
             return ;
+        }
         
         match.listPlayer.forEach((player, index) => {
             if (index > 0 && player.type === 'player') {
                 leave_match(player);
             }
         })
-        setup_game(data, match);
+        setup_game(match);
     })
 }
 
-function    sign_start_game(data)
+function    sign_start_game(sender)
 {
-    let indexMatch = define_match(data.from);
-    if (indexMatch === undefined)
+    const   match = define_match(sender);
+    if (match === undefined) {
         return;
+    }
 
-    const   match = webSocket.listMatch[indexMatch];
     arrange_player_positions(match);
+    
     if (!check_number_player(match)) {
         return ;
     }
     
     (match.mode === 'ranked' || match.mode === 'tournament') ?
-    call_matchmaking(match, data) :
-    setup_game(data, match);
+    call_matchmaking(sender, match) :
+    setup_game(match);
 }
 
 module.exports = {

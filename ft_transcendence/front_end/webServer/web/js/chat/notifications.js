@@ -1,6 +1,6 @@
 import { getListFriendInvitationsReceived, updateFriendInviteStatus } from "../backend_operation/friend_invite.js";
 import { getListNotifications, markNotificationAsRead, postNotification } from "../backend_operation/notification.js";
-import { client, dataToServer, userMessages } from "../client/client.js";
+import { client, userMessages } from "../client/client.js";
 import { renderFriendList } from "./friend-list.js";
 import { getListFriends } from "./friend-list.js";
 

@@ -22,7 +22,7 @@ function    define_match_in_list_find_match(match)
 
 function    delete_match_in_list_find_match(match, user)
 {
-    send_data('hide loader', '', '', user);
+    send_data('display loader', 'none', 'server', user);
     
     let   indexMatch = define_match_in_list_find_match(match);
     if (indexMatch === undefined)

@@ -45,7 +45,7 @@ function    setup_size_notice_invitation_play_layer()
     noticeInvitationPlayLayer.style.width = `${screen.width / 4}px`;
 }
 
-function    notice_invitation_play(data)
+export function    notice_invitation_play(data)
 {
     if (client.inforUser.status === 'playing game')
         return ;
@@ -64,7 +64,3 @@ function    notice_invitation_play(data)
     get_sign_reject_invitation_play(data.from);
     get_sign_accept_invitation_play(data.from, data.title);
 }
-
-export {
-    notice_invitation_play
-};

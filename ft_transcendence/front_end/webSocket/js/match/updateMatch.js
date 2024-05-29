@@ -7,11 +7,8 @@ function    define_match(user)
     for (let i = 0; i < webSocket.listMatch.length; i++)
     {
         const   match = webSocket.listMatch[i];
-        for (let j = 0; j < match.listUser.length; j++)
-        {
-            const   player = match.listUser[j];
-            if (player.id === user.id)
-                return i;
+        if (match.id === user.matchID) {
+            return match;
         }
     }
     return undefined;
@@ -30,27 +27,24 @@ function    get_user_in_list_player_ws(match)
     }
 }
 
-function    update_match(user, inforMatch)
+function    update_match(user)
 {
-    let indexMatch = define_match(user)
-    if (indexMatch === undefined)
-        webSocket.listMatch.push(inforMatch);
-
-    indexMatch = define_match(user);
-
-    webSocket.listMatch[indexMatch] = inforMatch;
-    const   match = webSocket.listMatch[indexMatch];
+    const   match = define_match(user);
+    if (match === undefined) {
+        return ;
+    }
 
     get_user_in_list_player_ws(match);
 
     if (match.listUser.length === 0)
     {
-        if (match.mode === 'ranked')
+        if (match.mode === 'ranked') {
             delete_match_in_list_find_match(match, user);
+        }
+        const   indexMatch = webSocket.listMatch.findIndex(check => check.id === match.id);
         webSocket.listMatch.splice(indexMatch, 1);
     }
-    else
-    {
+    else if (user.status === 'creating match') {
         send_data('update match', match, user, match.listUser);
     }
 

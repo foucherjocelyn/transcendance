@@ -64,9 +64,8 @@ function    get_sign_buttons_game_over_layer()
 
     // exit button
     button[0].onclick = () => {
-        client.inforUser.status = 'connection';
-        // const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
-        // client.socket.send(JSON.stringify(sendData));
+        const  sendData = new dataToServer('leave match', '', client.inforUser, 'socket server');
+        client.socket.send(JSON.stringify(sendData));
         to_game();
     }
 
@@ -76,9 +75,8 @@ function    get_sign_buttons_game_over_layer()
     // play again button
     button[1].onclick = () => {
         const   mode = match.mode;
-        client.inforUser.status = 'connection';
-        // const  sendData = new dataToServer('leave match', match, client.inforUser, match.listUser);
-        // client.socket.send(JSON.stringify(sendData));
+        const  sendData = new dataToServer('leave match', '', client.inforUser, 'socket server');
+        client.socket.send(JSON.stringify(sendData));
         create_match(mode);
     }
 }

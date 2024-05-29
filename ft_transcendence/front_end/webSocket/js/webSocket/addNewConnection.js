@@ -23,13 +23,16 @@ function    disconnect(socket)
         const   connection = webSocket.listConnection[i];
         if (connection.socket === socket)
         {
-            if (connection.user.status === 'creating match' || connection.user.status === 'playing game')
-                leave_match(connection.user);
+            const   user = connection.user;
+            if (user.status === 'creating match' || user.status === 'playing game') {
+                leave_match(user);
+            }
 
             webSocket.listConnection.splice(i, 1);
             webSocket.listUser.splice(i, 1);
 
-            send_data('update list users', webSocket.listUser, 'server', webSocket.listUser);
+            // send_data('update list users', webSocket.listUser, 'server', webSocket.listUser);
+            return ;
         }
     }
 }

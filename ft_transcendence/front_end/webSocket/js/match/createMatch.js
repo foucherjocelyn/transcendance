@@ -57,10 +57,9 @@ function    define_user(socket)
     return undefined;
 }
 
-function    create_match(socket, mode)
+function    create_match(user, mode)
 {
-    const   user = define_user(socket);
-    if (user === undefined || (mode !== 'ranked' && mode !== 'with friends' && mode !== 'offline'))
+    if (mode !== 'ranked' && mode !== 'with friends' && mode !== 'offline')
         return ;
 
     const   match = new formMatch();
@@ -68,17 +67,20 @@ function    create_match(socket, mode)
     match.mode = mode;
     match.admin = user;
 
-    const player1 = new inforPlayer(user.id, user.username, user.avatarPath, user.level, 'player');
-    const player2 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
-    const player3 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
-    const player4 = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+    for (let i = 0; i < 4; i++)
+    {
+        const   player = (i === 0) ?
+        new inforPlayer(user.id, user.username, user.avatarPath, user.level, 'player') :
+        new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
 
-    match.listPlayer.push(player1);
-    match.listPlayer.push(player2);
-    match.listPlayer.push(player3);
-    match.listPlayer.push(player4);
+        match.listPlayer.push(player);
+    }
 
-    update_match(user, match);
+    user.matchID = match.id;
+    user.status = 'creating match';
+
+    webSocket.listMatch.push(match);
+    update_match(user);
 }
 
 module.exports = {

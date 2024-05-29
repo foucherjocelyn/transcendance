@@ -9,48 +9,105 @@ const webSocket = {
     listFindMatch: []
 };
 
-function    update_user(user)
+function    define_user_by_socket(socket)
 {
-    for (let i = 0; i < webSocket.listUser.length; i++)
+    for (let i = 0; i < webSocket.listConnection.length; i++)
     {
-        const find = webSocket.listUser[i];
-        if (find !== undefined && find.id === user.id) {
-            webSocket.listConnection[i].user = user;
-            webSocket.listUser[i] = user;
-            send_data('update list users', webSocket.listUser, user, webSocket.listUser);
-            return;
+        const   connection = webSocket.listConnection[i];
+        if (connection.socket === socket) {
+            return connection.user;
+        }
+    }
+    return undefined;
+}
+
+function    define_user_by_ID(userID)
+{
+    for (let i = 0; i < webSocket.listConnection.length; i++)
+    {
+        const   connection = webSocket.listConnection[i];
+        if (connection.user.id === userID) {
+            return connection.user;
+        }
+    }
+    return undefined;
+}
+
+function    handle_requirements(title, content, sender, recipient)
+{
+    if (sender.status === 'online')
+    {
+        if (title === 'disconnect') {
+            disconnect(socket);
+        }
+        else if (title === 'create match') {
+            create_match(sender, content);
+        }
+        else if (title === 'accept invitation to play') {
+            accept_invitation_to_play(sender, recipient);
+        }
+        else {
+            send_data(title, content, sender, recipient);
+        }
+    }
+    else if (sender.status === 'creating match')
+    {
+        if (title === 'add player') {
+            add_player(sender, content);
+        }
+        else if (title === 'invite to play') {
+            request_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'accept invitation to play') {
+            accept_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'leave match') {
+            leave_match(sender);
+        }
+        else if (title === 'start game') {
+            sign_start_game(sender);
+        }
+    }
+    else if (sender.status === 'playing game')
+    {
+        if (title === 'update game settings') {
+            update_game_settings(sender, content);
+        }
+        else if (title === 'movement paddle') {
+            get_sign_movement_paddle(sender, content);
+        }
+        else if (title === 'leave match') {
+            leave_match(sender);
         }
     }
 }
 
-function get_data_from_client(data, socket) {
+function    check_requirements(data, socket)
+{
     data = JSON.parse(data);
-
     // console.log('title: ' + data.title);
-    if (data.title === 'connection')
-        add_new_connection(data, socket);
-    else if (data.title === 'disconnect')
-        disconnect(socket);
-    else if (data.title === 'create match')
-        create_match(socket, data.content);
-    else if (data.title === 'add player')
-        add_player(socket, data.content);
-    else if (data.title === 'invite to play')
-        request_invitation_to_play(socket, data.to);
-    else if (data.title === 'accept invitation to play')
-        accept_invitation_to_play(data);
-    else if (data.title === 'leave match')
-        leave_match(data.from);
-    else if (data.title === 'start game')
-        sign_start_game(data);
-    else if (data.title === 'update game settings')
-        update_game_settings(data);
-    else if (data.title === 'movement paddle')
-        get_sign_movement_paddle(socket, data.content);
-    else
-        send_data(data.title, data.content, data.from, data.to);
 
-    // update_user(data.from);
+    if (data.title === 'connection') {
+        add_new_connection(data, socket);
+    }
+    else
+    {
+        const   sender = define_user_by_socket(socket);
+        if (sender === undefined) {
+            return ;
+        }
+
+        let   recipient = data.to;
+        if (recipient !== 'socket server')
+        {
+            recipient = define_user_by_ID(recipient.id);
+            if (recipient === undefined) {
+                return ;
+            }
+        }
+
+        handle_requirements(data.title, data.content, sender, recipient);
+    }
 }
 
 async function loadCertificates() {
@@ -76,7 +133,7 @@ async function setup_web_socket()
 
         // Handle messages from clients
         socket.on('message', (message) => {
-            get_data_from_client(message, socket);
+            check_requirements(message, socket);
         });
 
         // Handle event when client closes connection
@@ -96,7 +153,8 @@ setup_web_socket();
 
 module.exports = {
     webSocket,
-    update_user
+    define_user_by_socket,
+    define_user_by_ID
 };
 
 const { add_new_connection, disconnect } = require('./addNewConnection');

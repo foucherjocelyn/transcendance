@@ -1,4 +1,4 @@
-import { create_match, update_match_informations } from "../createMatch/createMatch.js";
+import { create_match, display_loader, update_match_informations } from "../createMatch/createMatch.js";
 import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
@@ -46,54 +46,67 @@ function    get_data_from_server(socket)
         let   receivedData = JSON.parse(event.data);
         // console.log(receivedData.title);
 
-        if (receivedData.title === 'message')
+        if (receivedData.title === 'message') {
             receiveMessage(receivedData);
-        if (receivedData.title === 'update list users')
-        {
+        }
+        if (receivedData.title === 'update list users') {
             client.listUser = receivedData.content;
             // console.table(client.inforUser);
         }
-        if (receivedData.title === 'invite to play')
+        if (receivedData.title === 'invite to play') {
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'reponse invitation to play')
-            reponse_invitation_to_play_cl(receivedData);
-        if (receivedData.title === 'warning')
-            notice_invitation_play(receivedData);
-
-        if (receivedData.title === 'update match')
-            update_match_informations(receivedData);
-        if (receivedData.title === 'search friend to play')
-            display_invitation_play_layer();
-        if (receivedData.title === 'create match')
-			create_match("with friends");
-
-        if (receivedData.title === 'hide loader')
-        {
-            if (document.getElementById('loaderMatchmakingLayer') !== null)
-                document.getElementById('loaderMatchmakingLayer').style.display = 'none';
         }
-        if (receivedData.title === 'start game')
+        if (receivedData.title === 'reponse invitation to play') {
+            reponse_invitation_to_play_cl(receivedData);
+        }
+        if (receivedData.title === 'warning') {
+            notice_invitation_play(receivedData);
+        }
+        if (receivedData.title === 'update match') {
+            update_match_informations(receivedData);
+        }
+        if (receivedData.title === 'search friend to play') {
+            display_invitation_play_layer();
+        }
+        if (receivedData.title === 'create match') {
+			create_match("with friends");
+        }
+        if (receivedData.title === 'display loader') {
+            display_loader(receivedData.content);
+        }
+        if (receivedData.title === 'start game') {
             setup_game_layer();
-        if (receivedData.title === 'countdown')
+        }
+        if (receivedData.title === 'countdown') {
             display_countdown(receivedData.content);
-        if (receivedData.title === 'update game settings')
+        }
+        if (receivedData.title === 'update game settings') {
             update_game_settings(receivedData);
-        if (receivedData.title === 'update pongGame')
+        }
+        if (receivedData.title === 'update pongGame') {
             pongGame = receivedData.content;
-        if (receivedData.title === 'update borders')
+        }
+        if (receivedData.title === 'update borders') {
             pongGame.listBorder = receivedData.content;
-        if (receivedData.title === 'update paddles')
+        }
+        if (receivedData.title === 'update paddles') {
             pongGame.listPaddle = receivedData.content;
-        if (receivedData.title === 'update ball')
+        }
+        if (receivedData.title === 'update ball') {
             pongGame.ball = receivedData.content;
-        if (receivedData.title === 'movement ball')
+        }
+        if (receivedData.title === 'movement ball') {
             pongGame.ball.position = receivedData.content;
-        if (receivedData.title === 'draw score')
+        }
+        if (receivedData.title === 'draw score') {
             draw_score(receivedData.content);
-        if (receivedData.title === 'draw paddles')
+        }
+        if (receivedData.title === 'draw paddles') {
             draw_paddle();
-        if (receivedData.title === 'game over')
+        }
+        if (receivedData.title === 'game over') {
             display_game_over_layer(receivedData.content);
+        }
     };
 }
 

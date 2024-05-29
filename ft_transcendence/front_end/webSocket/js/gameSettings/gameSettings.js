@@ -103,24 +103,23 @@ function    check_game_settings(match, gameSettings)
     return true;
 }
 
-function    update_game_settings(data)
+function    update_game_settings(sender, newGameSettings)
 {
-    let indexMatch = define_match(data.from);
-    if (indexMatch === undefined)
+    const   match = define_match(sender);
+    if (match === undefined) {
         return false;
-
-    const   match = webSocket.listMatch[indexMatch];
+    }
 
     // check the values of game settings before update on server
-    if (check_game_settings(match, data.content))
+    if (check_game_settings(match, newGameSettings))
     {
-        Object.assign(match.gameSettings, data.content);
+        Object.assign(match.gameSettings, newGameSettings);
 
         setup_limit_table(match.pongGame, match.gameSettings);
         create_object_pong_game(match);
     }
 
-    send_data(data.title, match.gameSettings, data.from, data.to);
+    send_data('update game settings', match.gameSettings, sender, match.listUser);
 }
 
 module.exports = {

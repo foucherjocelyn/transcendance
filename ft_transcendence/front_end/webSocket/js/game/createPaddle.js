@@ -137,6 +137,13 @@ function    create_paddles(match)
     match.pongGame.listPaddle.push(match.pongGame.paddle.top);
     match.pongGame.listPaddle.push(match.pongGame.paddle.bottom);
 
+    match.listPlayer.forEach((player, index) => {
+        const   paddle = match.pongGame.listPaddle[index];
+        if (paddle !== undefined) {
+            player.paddle = paddle;
+        }
+    })
+
     send_data('update paddles', match.pongGame.listPaddle, 'server', match.listUser);
 }
 

@@ -87,7 +87,7 @@ function    start_game_ws(match)
 
 function    countdown(match)
 {
-    let count = (match.pongGame.lostPoint === false) ? 15 : 3;
+    let count = (match.pongGame.lostPoint === false) ? 1 : 3;
     const countdownInterval = setInterval(function() {
         if (count < -1)
         {

@@ -25,7 +25,6 @@ function    setup_size_game_layer()
 export let  displayPongGame;
 export function    setup_game_layer()
 {
-    client.inforUser.status = 'playing game';
     displayPongGame = new formDisplay();
 
     gameLayerHTML();

@@ -90,30 +90,23 @@ function    movement_paddle_mode_online(keyCode, paddle, pongGame)
         horizontal_movement(paddle, -1, pongGame);
 }
 
-function    get_sign_movement_paddle(socket, keyCode)
+function    get_sign_movement_paddle(user, keyCode)
 {
-    if (keyCode === '')
+    if (keyCode === '') {
         return ;
-
-    for (let i = 0; i < webSocket.listConnection.length; i++)
-    {
-        const   connection = webSocket.listConnection[i];
-        if (connection.socket === socket)
-        {
-            const   user = connection.user;
-            let indexMatch = define_match(user);
-            if (indexMatch === undefined)
-                return ;
-
-            const   match = webSocket.listMatch[indexMatch];
-            const   index = match.listPlayer.findIndex(player => player.id === user.id);
-            const   paddle = match.pongGame.listPaddle[index];
-
-            (match.mode === 'offline') ?
-            movement_paddle_mode_offline(keyCode, paddle, match.pongGame) :
-            movement_paddle_mode_online(keyCode, paddle, match.pongGame);
-        }
     }
+
+    const   match = define_match(user);
+    if (match === undefined) {
+        return ;
+    }
+
+    const   index = match.listPlayer.findIndex(player => player.id === user.id);
+    const   paddle = match.pongGame.listPaddle[index];
+
+    (match.mode === 'offline') ?
+    movement_paddle_mode_offline(keyCode, paddle, match.pongGame) :
+    movement_paddle_mode_online(keyCode, paddle, match.pongGame);
 }
 
 module.exports = {

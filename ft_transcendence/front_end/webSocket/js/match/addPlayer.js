@@ -1,7 +1,7 @@
 const { webSocket } = require("../webSocket/webSocket");
 const { send_data } = require("../webSocket/dataToClient");
 const { leave_match } = require("./acceptInvitationPlay");
-const { define_user, inforPlayer } = require("./createMatch");
+const { inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
 
 function    kick_out_of_the_match(user, match, player)
@@ -19,7 +19,8 @@ function    add_player_mode_friend(user, match, position)
     if (player.type === 'none') {
         match.listPlayer[position] = new inforPlayer('#42', 'AI ' + (position + 1), "../../img/avatar/AI.png", 42, 'AI');
     }
-    else {
+    else
+    {
         if (player.type === 'AI')
             send_data('search friend to play', '', 'server', user);
         else
@@ -42,27 +43,22 @@ function    add_player_mode_ranked(match, position)
     }
 }
 
-function    add_player(socket, position)
+function    add_player(user, position)
 {
-    if (position === 0)
-        return ;
-
-    const   user = define_user(socket);
-    if (user === undefined) {
+    if (position === 0) {
         return ;
     }
 
-    let indexMatch = define_match(user);
-    if (indexMatch === undefined) {
+    const   match = define_match(user);
+    if (match === undefined) {
         return ;
     }
 
-    const   match = webSocket.listMatch[indexMatch];
     (match.mode === 'with friends') ?
     add_player_mode_friend(user, match, position) :
     add_player_mode_ranked(match, position);
 
-    update_match(user, match);
+    update_match(user);
 }
 
 module.exports = {

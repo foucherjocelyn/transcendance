@@ -1,8 +1,11 @@
 export function display_countdown(number)
 {
     const   countdownLayer = document.getElementById('countdownLayer');
-    countdownLayer.style.display = 'flex';
+    if (countdownLayer === null) {
+        return ;
+    }
 
+    countdownLayer.style.display = 'flex';
     const   contentCountdown = document.querySelector('#countdownLayer > span')
 
     if (number === -1)
@@ -13,8 +16,10 @@ export function display_countdown(number)
         if (document.getElementById('gameSettingPanel') !== null)
             document.getElementById('gameSettingPanel').style.display = 'none';
     }
-    else if (number === 0)
+    else if (number === 0) {
         contentCountdown.textContent = "Start";
-    else
+    }
+    else {
         contentCountdown.textContent = number;
+    }
 }

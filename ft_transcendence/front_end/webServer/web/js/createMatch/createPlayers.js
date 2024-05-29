@@ -1,4 +1,4 @@
-import { client, dataToServer } from "../client/client.js";
+import { client } from "../client/client.js";
 import { match } from "./createMatch.js";
 
 function    create_add_player_button()

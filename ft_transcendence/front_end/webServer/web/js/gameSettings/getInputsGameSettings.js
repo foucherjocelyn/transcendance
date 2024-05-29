@@ -22,7 +22,7 @@ export function    get_sign_save_game_setting_button()
     button.onclick = () => {
         get_inputs_game_settings();
 
-        const  sendData = new dataToServer('update game settings', gameSettings, client.inforUser, match.listUser);
+        const  sendData = new dataToServer('update game settings', gameSettings, client.inforUser, 'socket server');
         client.socket.send(JSON.stringify(sendData));
     }
 }

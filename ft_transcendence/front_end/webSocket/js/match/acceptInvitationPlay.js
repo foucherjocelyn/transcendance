@@ -9,7 +9,7 @@ function    change_match_admin(match)
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
-        if (i > 0 && player.id !== admin.id)
+        if (i > 0 && player.type === 'player')
         {
             match.admin = player;
             match.listPlayer[0] = player;
@@ -17,70 +17,71 @@ function    change_match_admin(match)
             return ;
         }
     }
-
-    console.table(match.listPlayer);
-    console.table(match.admin.id);
 }
 
 function    leave_match(user)
 {
-    let indexMatch = define_match(user);
-    if (indexMatch === undefined)
+    const   match = define_match(user);
+    if (match === undefined) {
         return ;
+    }
 
-    const   match = webSocket.listMatch[indexMatch];
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
         if (player.id === user.id)
         {
             // admin leave
-            (player.id === match.admin.id) ?
+            (player.id === match.admin.id && user.status === 'creating match' && match.listUser.length > 1) ?
             change_match_admin(match) :
             match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
-
-            update_match(user, match);
+            
+            // update status user
+            user.status = 'online';
+            update_match(user);
             return ;
         }
     }
 }
 
-function    add_user_in_a_match(user, newPlayer, match)
+function    add_user_in_match(user, newPlayer, match)
 {
+    newPlayer.status = 'creating match';
+    newPlayer.matchID = match.id;
+    
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
         if (player.type === 'none')
         {
             match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.username, newPlayer.avatarPath, newPlayer.level, 'player');
-            update_match(user, match);
-            
+            update_match(user);
             send_data('reponse invitation to play', 'accepted the invitation to play', newPlayer, match.listUser);
             return ;
         }
     }
 }
 
-function    accept_invitation_to_play(data)
+function    accept_invitation_to_play(sender, recipient)
 {
-    let indexMatch = define_match(data.to);
-    if (indexMatch === undefined)
+    const   match = define_match(recipient);
+    if (match === undefined) {
         return ;
+    }
 
-    const   match = webSocket.listMatch[indexMatch];
-    const   inListInvite = match.listInvite.some(user => user.id === data.from.id);
+    const   inListInvite = match.listInvite.some(user => user.id === sender.id);
     if (!inListInvite) {
         return ;
     }
 
     const   nbrPlace = match.listPlayer.filter(player => player.type === 'none').length;
     if (nbrPlace === 0) {
-        send_data('reject invitation to play', 'Sorry guy, the match is full!', data.to, data.from);
+        send_data('reject invitation to play', 'Sorry guy, the match is full!', recipient, sender);
         return ;
     }
 
-    leave_match(data.from);
-    add_user_in_a_match(data.to, data.from, match);
+    leave_match(sender);
+    add_user_in_match(recipient, sender, match);
 }
 
 module.exports = {

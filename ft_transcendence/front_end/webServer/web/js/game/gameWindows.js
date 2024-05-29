@@ -22,21 +22,28 @@ function	addLight(scene)
 	pongGame.scene.add(directionalLight);
 }
 
-function    movements_paddle()
+function    handleKeyDown(event)
 {
-    document.addEventListener("keydown", function(event) {
-        // console.log(event.keyCode);
-        // console.log(event.key);
+    // console.log(event.keyCode);
+    // console.log(event.key);
 
-        const sendData = new dataToServer('movement paddle', event.key, client.inforUser, client.inforUser);
-	    client.socket.send(JSON.stringify(sendData));
-    });
+    const sendData = new dataToServer('movement paddle', event.key, client.inforUser, 'socket server');
+    client.socket.send(JSON.stringify(sendData));
+}
+
+function    movements_paddle() {
+    document.addEventListener("keydown", handleKeyDown);
+}
+
+function    stop_movements_paddle() {
+    document.removeEventListener("keydown", handleKeyDown);
 }
 
 function    animation(renderer, scene, camera)
 {
     if (pongGame.gameOver)
     {
+        stop_movements_paddle();
         renderer.setAnimationLoop(null);
         return ;
     }
@@ -86,7 +93,6 @@ function    add_objects()
     draw_border();
     draw_paddle();
     draw_ball();
-    movements_paddle();
 }
 
 function    setup_game_windows()
@@ -112,6 +118,7 @@ function    setup_game_windows()
 
     addLight();
     add_objects();
+    movements_paddle();
 
     const   orbit = new OrbitControls(camera, renderer.domElement);
     orbit.update();
