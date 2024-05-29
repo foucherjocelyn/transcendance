@@ -30,6 +30,12 @@
     margin-left: 85%;
 }
 
+#inspectprofile_more {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 #inspectprofile p {
     color: white;
     font-weight: bold;

@@ -168,6 +168,55 @@ export const getListMutedUsers = async () => {
 	}
 }
 
+export async function getAllMyGames(username)
+{
+	let f_token = getCookie("token");
+
+	try {
+		const response = await fetch("https://localhost/api/v1/game/list", {
+			method: "POST",
+			body: JSON.stringify(username),
+			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json",
+				"Authorization": `Bearer ${f_token}`
+			}
+		})
+		if (!response.ok) {
+			console.log("getAllMyGames: Client/Server error");
+			return;
+		}
+		return response.json();
+	} catch (error) {
+		console.error("getAllMyGames: ", error);
+	}
+}
+
+export async function getAllMyScores(username)
+{
+	let f_token = getCookie("token");
+
+	try {
+		const response = await fetch("https://localhost/api/v1/game/score/list", {
+			method: "POST",
+			body: JSON.stringify(username),
+			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json",
+				"Authorization": `Bearer ${f_token}`
+			}
+		})
+		if (!response.ok) {
+			console.log("getAllMyScores: Client/Server error");
+			return;
+		}
+		return response.json();
+	} catch (error) {
+		console.error("getAllMyScores: ", error);
+	}
+}
+
+/*
 export const getAllMyGames = async () => {
 	let f_token = getCookie("token");
 
@@ -188,7 +237,6 @@ export const getAllMyGames = async () => {
 	} catch (error) {
 		console.error("getAllMyGames: ", error);
 	}
-
 }
 
 export const getAllMyScores = async () => {
@@ -213,3 +261,4 @@ export const getAllMyScores = async () => {
 	}
 
 }
+*/

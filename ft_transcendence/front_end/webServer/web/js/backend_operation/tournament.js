@@ -23,8 +23,6 @@ export async function	getTournamentsList()
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await r.json();
-		console.log("getTournamentsList data:");
-		console.log(data);
 		if (data !== undefined)
 			return (data);
 //		console.log("-");
