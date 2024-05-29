@@ -1,3 +1,4 @@
+const { send_data } = require("../webSocket/dataToClient");
 const { check_collision } = require("./collision");
 const { define_paddle } = require("./createPaddle");
 const { create_score } = require("./createScore");
@@ -50,33 +51,29 @@ function    check_lost_point(pongGame, gameSettings)
         {
             if (pongGame.listTouch.length === 0)
                 handled_anyone_touching_ball(paddle, pongGame);
+
             last_touch(paddle, pongGame, gameSettings);
             pongGame.lostPoint = true;
-            // pongGame.listBorder.forEach(border => {
-            //     border.display.material.color.set(0xff0000);
-            // })
             return ;
         }
     }
 }
 
-// function    change_color_after_collision(touch, pongGame)
-// {
-//     for (let i = 0; i < pongGame.listBorder.length; i++)
-//     {
-//         const   paddle = pongGame.listPaddle[i];
-//         const   border = pongGame.listBorder[i];
-//         if ((paddle !== undefined && paddle.name === touch.name)
-//         || (border.name === touch.name))
-//         {
-//             border.display.material.color.set(0x18e1e7);
-//             setTimeout(function() {
-//                 border.display.material.color.set(gameSettings.color.border);
-//             }, 100);
-//             return ;
-//         }
-//     }
-// }
+function    change_color_after_collision(touch, pongGame)
+{
+    for (let i = 0; i < pongGame.listBorder.length; i++)
+    {
+        const   paddle = pongGame.listPaddle[i];
+        const   border = pongGame.listBorder[i];
+
+        if ((paddle !== undefined && paddle.name === touch.name)
+            || (border.name === touch.name))
+        {
+            send_data('change color border', border, 'server', pongGame.listUser);
+            return ;
+        }
+    }
+}
 
 function    check_collisions(obj, pongGame, callback)
 {
@@ -162,7 +159,7 @@ function    movements_ball(pongGame, gameSettings)
                 ball.vector.y = -ball.vector.y;
             }
 
-            // change_color_after_collision(ball.collision.who, pongGame);
+            change_color_after_collision(ball.collision.who, pongGame);
         }
     })
 

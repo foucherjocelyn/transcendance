@@ -9,6 +9,7 @@ import { draw_score } from "../game/drawScore.js";
 import { draw_paddle } from "../game/drawPaddles.js";
 import { display_countdown } from "../game/displayCountdown.js";
 import { display_game_over_layer } from "../game/gameOverLayer.js";
+import { change_color_border } from "../game/drawBorders.js";
 
 class   userNotifications {
     constructor() {
@@ -105,6 +106,9 @@ function    get_data_from_server(socket)
         }
         if (receivedData.title === 'draw paddles') {
             draw_paddle();
+        }
+        if (receivedData.title === 'change color border') {
+            change_color_border(receivedData.content);
         }
         if (receivedData.title === 'game over') {
             display_game_over_layer(receivedData.content);

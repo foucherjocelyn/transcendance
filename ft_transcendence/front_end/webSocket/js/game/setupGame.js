@@ -25,7 +25,7 @@ function    setup_game(match)
     update_status_user(match, 'playing game');
 
     match.pongGame = new formPongGameWS();
-    match.pongGame.maxPoint = 1; // max = 5
+    match.pongGame.maxPoint = 5; // max = 5
     match.pongGame.listPlayer = match.listPlayer;
     match.pongGame.listUser = match.listUser;
 

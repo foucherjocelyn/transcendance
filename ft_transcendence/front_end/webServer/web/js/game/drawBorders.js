@@ -24,3 +24,21 @@ export function    draw_border()
         pongGame.scene.add(displayPongGame.borders[index]);
     })
 }
+
+export function change_color_border(border)
+{
+    for (let i = 0; i < pongGame.listBorder.length; i++)
+    {
+        const   check = pongGame.listBorder[i];
+        if (check.name === border.name)
+        {
+            const   imgBorder = displayPongGame.borders[i];
+            imgBorder.material.color.set(0x18e1e7);
+
+            setTimeout(function() {
+                imgBorder.material.color.set(gameSettings.color.border);
+            }, 100);
+            return ;
+        }
+    }
+}
