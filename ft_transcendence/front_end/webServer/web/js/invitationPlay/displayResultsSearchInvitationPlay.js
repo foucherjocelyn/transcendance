@@ -3,7 +3,7 @@ import { reset_contents_in_invitation_play_layer } from "./getSignButtonsInInvit
 
 export function send_invitation_to_play(recipient)
 {
-    const sendData = new dataToServer('invite to play', '', client.inforUser, recipient);
+    const sendData = new dataToServer('invite to play', '', recipient);
     client.socket.send(JSON.stringify(sendData));
 }
 

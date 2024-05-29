@@ -6,8 +6,9 @@ const { define_match, update_match } = require("./updateMatch");
 
 function    kick_out_of_the_match(user, match, player)
 {
-    if (user.id !== match.admin.id)
+    if (user.id !== match.admin.id) {
         return ;
+    }
 
     leave_match(player);
     send_data('create match', '', 'server', player);
@@ -22,7 +23,7 @@ function    add_player_mode_friend(user, match, position)
     else
     {
         if (player.type === 'AI')
-            send_data('search friend to play', '', 'server', user);
+            send_data('display invitation play layer', '', 'server', user);
         else
             kick_out_of_the_match(user, match, player);
         match.listPlayer[position] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');

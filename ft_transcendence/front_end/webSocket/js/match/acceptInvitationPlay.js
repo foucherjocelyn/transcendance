@@ -55,8 +55,8 @@ function    add_user_in_match(user, newPlayer, match)
         if (player.type === 'none')
         {
             match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.username, newPlayer.avatarPath, newPlayer.level, 'player');
+            send_data('display invitation play layer', '', 'server', user);
             update_match(user);
-            send_data('reponse invitation to play', 'accepted the invitation to play', newPlayer, match.listUser);
             return ;
         }
     }
@@ -76,7 +76,7 @@ function    accept_invitation_to_play(sender, recipient)
 
     const   nbrPlace = match.listPlayer.filter(player => player.type === 'none').length;
     if (nbrPlace === 0) {
-        send_data('reject invitation to play', 'Sorry guy, the match is full!', recipient, sender);
+        send_data('refused participate match', 'Sorry guy, the match is full!', recipient, sender);
         return ;
     }
 
@@ -84,7 +84,13 @@ function    accept_invitation_to_play(sender, recipient)
     add_user_in_match(recipient, sender, match);
 }
 
+function    reject_invitation_to_play(sender, recipient)
+{
+    send_data('reject invitation to play', "Sorry another time, I'm busy!", sender, recipient);
+}
+
 module.exports = {
     accept_invitation_to_play,
+    reject_invitation_to_play,
     leave_match
 };

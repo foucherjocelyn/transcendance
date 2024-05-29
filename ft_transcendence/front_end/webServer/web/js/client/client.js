@@ -3,7 +3,7 @@ import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { display_invitation_play_layer, reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
+import { display_invitation_play_layer } from "../invitationPlay/invitationPlay.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { draw_score } from "../game/drawScore.js";
 import { draw_paddle } from "../game/drawPaddles.js";
@@ -31,10 +31,9 @@ export const   client = {
 };
 
 export class   dataToServer {
-    constructor(title, content, from, to) {
+    constructor(title, content, to) {
         this.title = title,
         this.content = content,
-        this.from = from,
         this.to = to
     }
 }
@@ -56,8 +55,11 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'invite to play') {
             notice_invitation_play(receivedData);
         }
-        if (receivedData.title === 'reponse invitation to play') {
-            reponse_invitation_to_play_cl(receivedData);
+        if (receivedData.title === 'refused participate match') {
+            notice_invitation_play(receivedData);
+        }
+        if (receivedData.title === 'reject invitation to play') {
+            notice_invitation_play(receivedData);
         }
         if (receivedData.title === 'warning') {
             notice_invitation_play(receivedData);
@@ -65,7 +67,7 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'update match') {
             update_match_informations(receivedData);
         }
-        if (receivedData.title === 'search friend to play') {
+        if (receivedData.title === 'display invitation play layer') {
             display_invitation_play_layer();
         }
         if (receivedData.title === 'create match') {

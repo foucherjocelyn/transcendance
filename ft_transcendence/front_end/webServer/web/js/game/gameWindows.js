@@ -27,7 +27,7 @@ function    handleKeyDown(event)
     // console.log(event.keyCode);
     // console.log(event.key);
 
-    const sendData = new dataToServer('movement paddle', event.key, client.inforUser, 'socket server');
+    const sendData = new dataToServer('movement paddle', event.key, 'socket server');
     client.socket.send(JSON.stringify(sendData));
 }
 

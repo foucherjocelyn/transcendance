@@ -1,4 +1,4 @@
-import { client, dataToServer, pongGame } from "../client/client.js";
+import { client, dataToServer } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
 import { to_game } from "../home/home_game.js";
 import { gameOverHTML } from "../home/home_gamewindows.js";
@@ -64,7 +64,7 @@ function    get_sign_buttons_game_over_layer()
 
     // exit button
     button[0].onclick = () => {
-        const  sendData = new dataToServer('leave match', '', client.inforUser, 'socket server');
+        const  sendData = new dataToServer('leave match', '', 'socket server');
         client.socket.send(JSON.stringify(sendData));
         to_game();
     }
@@ -75,7 +75,7 @@ function    get_sign_buttons_game_over_layer()
     // play again button
     button[1].onclick = () => {
         const   mode = match.mode;
-        const  sendData = new dataToServer('leave match', '', client.inforUser, 'socket server');
+        const  sendData = new dataToServer('leave match', '', 'socket server');
         client.socket.send(JSON.stringify(sendData));
         create_match(mode);
     }

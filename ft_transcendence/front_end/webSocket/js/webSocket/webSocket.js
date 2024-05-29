@@ -46,9 +46,15 @@ function    handle_requirements(title, content, sender, recipient)
         else if (title === 'accept invitation to play') {
             accept_invitation_to_play(sender, recipient);
         }
-        else {
+        else if (title === 'reject invitation to play') {
+            reject_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'message') {
             send_data(title, content, sender, recipient);
         }
+        // else {
+        //     send_data(title, content, sender, recipient);
+        // }
     }
     else if (sender.status === 'creating match')
     {
@@ -60,6 +66,9 @@ function    handle_requirements(title, content, sender, recipient)
         }
         else if (title === 'accept invitation to play') {
             accept_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'reject invitation to play') {
+            reject_invitation_to_play(sender, recipient);
         }
         else if (title === 'leave match') {
             leave_match(sender);
@@ -159,7 +168,7 @@ module.exports = {
 
 const { add_new_connection, disconnect } = require('./addNewConnection');
 const { send_data } = require('./dataToClient');
-const { accept_invitation_to_play, leave_match } = require('../match/acceptInvitationPlay');
+const { accept_invitation_to_play, leave_match, reject_invitation_to_play } = require('../match/acceptInvitationPlay');
 const { sign_start_game } = require('../match/signStartGame');
 const { request_invitation_to_play } = require('../match/invitationToPlay');
 const { update_game_settings } = require("../gameSettings/gameSettings");

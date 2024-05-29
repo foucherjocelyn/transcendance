@@ -7,7 +7,7 @@ function    get_sign_accept_invitation_play(user, title)
     button.onclick = () => {
         if (title === 'invite to play')
         {
-            const  sendData = new dataToServer('accept invitation to play', client.inforUser, client.inforUser, user);
+            const  sendData = new dataToServer('accept invitation to play', '', user);
             client.socket.send(JSON.stringify(sendData));
         }
 
@@ -19,7 +19,7 @@ function    get_sign_reject_invitation_play(user)
 {
     const   button = document.getElementById('rejectInvitationPlayButton');
     button.onclick = () => {
-        const  sendData = new dataToServer('reponse invitation to play', "Sorry another time, I'm busy!", client.inforUser, user);
+        const  sendData = new dataToServer('reject invitation to play', "Sorry another time, I'm busy!", user);
         client.socket.send(JSON.stringify(sendData));
 
         document.getElementById('noticeInvitationPlayLayer').style.display = 'none';
@@ -47,9 +47,6 @@ function    setup_size_notice_invitation_play_layer()
 
 export function    notice_invitation_play(data)
 {
-    if (client.inforUser.status === 'playing game')
-        return ;
-
     document.getElementById('noticeInvitationPlayLayer').style.display = 'flex';
 
     let rejectButton = document.getElementById('rejectInvitationPlayButton');

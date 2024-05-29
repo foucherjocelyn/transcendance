@@ -60,7 +60,7 @@ export function update_match_informations(data)
     if (document.getElementById('invitationPlayLayer') !== null)
         return ;
 
-    document.getElementById('createMatchLayer') === null ?
+    (document.getElementById('createMatchLayer') === null) ?
     display_create_match_layer() : setup_content_add_player_button();
 
     if (match.mode === 'ranked' || match.mode === 'tournament')
@@ -75,6 +75,6 @@ export function update_match_informations(data)
 
 export function    create_match(mode)
 {
-    const sendData = new dataToServer('create match', mode, client.inforUser, 'socket server');
+    const sendData = new dataToServer('create match', mode, 'socket server');
     client.socket.send(JSON.stringify(sendData));
 }
