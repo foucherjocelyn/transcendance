@@ -1,7 +1,5 @@
-from django.contrib.auth import authenticate
 from django.core.files.storage import default_storage
 from django.http import FileResponse
-from django.shortcuts import render
 from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -9,11 +7,14 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from utils.hash import verify_password
 from utils.jwt_token import JwtTokenGenerator
-from django.contrib.auth import logout
+import os
+import json
+from django.shortcuts import redirect
+import requests
 
 from ..models import Otp, User, Token
 from ..serializers.user import UserSerializer
-
+from backend.settings import logger
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -31,8 +32,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def logIn(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
+        username = request.data.get("username", None)
+        password = request.data.get("password", None)
+        if not username or not password:
+            return Response({"error": "Username or password not provided"}, status=400)
+        user = None
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -57,6 +61,33 @@ class UserViewSet(viewsets.ModelViewSet):
             },
             status=200,
         )
+
+    @action(detail=True, methods=["get"])
+    def logIn42(self, request):
+        client_id = os.getenv("CLIENT_ID_42")
+        client_secret = os.getenv("CLIENT_SECRET_42")
+        redirect_uri = "https://localhost/api/v1/auth/login42"
+        authorization_url = f"https://api.intra.42.fr/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+        if "code" not in request.GET:
+            return redirect(authorization_url)
+        authorization_code = request.GET.get("code")
+        data = {
+            "grant_type": "authorization_code",
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "code": authorization_code,
+            "redirect_uri": redirect_uri,
+        }
+        url = "https://api.intra.42.fr/oauth/token"
+        payload = json.dumps(data)
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("POST", url, headers=headers, data=payload)
+        logger.info(response.json())
+        access_token = response.json().get("access_token")
+        exprires_in = response.json().get("expires_in")
+        if not access_token:
+            return Response({"error": "Failed to get access token"}, status=400)
+        return Response({"access_token": access_token}, status=200)
 
     @action(detail=True, methods=["post"])
     def logOut(self, request):
@@ -127,7 +158,7 @@ class UserViewSet(viewsets.ModelViewSet):
         users = User.objects.filter(is_superuser=False)
         serializer = self.get_serializer(users, many=True)
         return Response(serializer.data, status=200)
-    
+
     @action(detail=True, methods=["post"])
     def isAdmin(self, request):
         user = request.user
@@ -135,7 +166,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"isAdmin": True}, status=200)
         else:
             return Response({"isAdmin": False}, status=200)
-    
+
     @action(detail=True, methods=["get"])
     def updateStatus(self, request):
         user = request.user
@@ -150,7 +181,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=200)
 
     def get_permissions(self):
-        if self.action in ["register", "logIn"]:
+        if self.action in ["register", "logIn", "logIn42"]:
             self.permission_classes = [AllowAny]
         elif self.action in [
             "list",

@@ -34,6 +34,7 @@ urlpatterns = [
     # Auth
     path("auth/register", UserViewSet.as_view({"post": "register"})),
     path("auth/login", UserViewSet.as_view({"post": "logIn"})),
+    path("auth/login42", UserViewSet.as_view({"get": "logIn42"})),
     path("auth/logout", UserViewSet.as_view({"post": "logOut"})),
     path("profile/me", UserViewSet.as_view({"get": "getMe", "put": "updateMe"})),
     path(
@@ -253,7 +254,9 @@ urlpatterns = [
     ),
     path("game/<int:game_id>/end", GameViewSet.as_view({"post": "endGame"})),
     path("game/<int:game_id>/score", GameViewSet.as_view({"post": "addScore"})),
-    path("game/<int:game_id>/winner", GameViewSet.as_view({"post": "updateWinnerOfGame"})),
+    path(
+        "game/<int:game_id>/winner", GameViewSet.as_view({"post": "updateWinnerOfGame"})
+    ),
     path("game/list", GameViewSet.as_view({"post": "listAllGamesByUser"})),
     path("game/score/list", GameViewSet.as_view({"post": "listAllScoresByUser"})),
     path(
@@ -285,6 +288,26 @@ urlpatterns = [
         ),
     ),
     path("tournament/list", TournamentViewSet.as_view({"get": "getAllTournaments"})),
+    path(
+        "tournament/<int:tournament_id>/start",
+        TournamentViewSet.as_view({"post": "startTournament"}),
+    ),
+    path(
+        "tournament/<int:tournament_id>/end",
+        TournamentViewSet.as_view({"post": "endTournament"}),
+    ),
+    path(
+        "tournament/<int:tournament_id>/leave",
+        TournamentViewSet.as_view({"post": "leaveTournament"}),
+    ),
+    path(
+        "tournament/<int:tournament_id>/delete",
+        TournamentViewSet.as_view({"delete": "deleteTournament"}),
+    ),
+    path(
+        "tournament/<int:tournament_id>/champion/update",
+        TournamentViewSet.as_view({"post": "updateChampion"}),
+    ),
     # Notification
     path(
         "notifications", NotificationViewSet.as_view({"get": "list", "post": "create"})

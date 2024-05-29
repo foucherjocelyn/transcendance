@@ -7,6 +7,7 @@ from django.db import models
 
 
 class User(AbstractUser, PermissionsMixin):
+    id42 = models.IntegerField(null=True, blank=True)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
@@ -112,6 +113,7 @@ class Tournament(models.Model):
     status_choices = [
         ("registering", "Registering"),
         ("progressing", "Progressing"),
+        ("finished", "Finished"),
     ]
     status = models.CharField(
         max_length=20, choices=status_choices, default="registering"
@@ -125,6 +127,13 @@ class Tournament(models.Model):
     )
     players = models.ManyToManyField(
         User, related_name="tournament_players", default=list
+    )
+    champion = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tournament_champion",
+        null=True,
+        default=None,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

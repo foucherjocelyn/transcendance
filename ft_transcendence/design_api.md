@@ -96,9 +96,15 @@
 -   **Tournaments**
 
     -   [Create a new tournament](#create-a-new-tournament)
+    -   [Join a tournament](#join-a-tournament)
     -   [Get a tournament by tournament id](#get-a-tournament-by-tournament-id)
     -   [Update tournament by id](#update-tournament-by-id)
     -   [List all tournaments](#list-all-tournaments)
+    -   [Start a tournament](#start-a-tournament)
+    -   [End a tournament](#end-a-tournament)
+    -   [Leave a tournament](#leave-a-tournament)
+    -   [Delete a tournament](#delete-a-tournament)
+    -   [Update the champion of a tournament](#update-the-champion-of-a-tournament)
 
 -   **Notifications**
     -   [Create a new notification](#create-a-new-notification)
@@ -1020,7 +1026,6 @@ authorization Bearer <token>
 
 -   The ([Message](#message)) if success or ([Error](#error)) if error raised
 
-
 ## Level up the winner
 
 Level up the winner.
@@ -1070,8 +1075,6 @@ authorization Bearer <token>
 
 ## Create a new tournament
 
-Only admin of the site can create or remove a new tournament.
-
 ```typescript
 POST /api/v1/tournament/create
 authorization Bearer <token>
@@ -1088,7 +1091,7 @@ authorization Bearer <token>
 
 ## Join a tournament
 
-The authenticated user can join a tournament if the tournament's status is 'ongoing'.
+The authenticated user can join a tournament if the tournament's status is 'registering'.
 
 ```typescript
 POST /api/v1/tournament/<tournament_id>/join
@@ -1142,6 +1145,74 @@ authorization Bearer <token>
 ### Return
 
 -   A list of tournament objects ([Tournament](#tournament))
+
+## Start a tournament
+
+Change the status of the tournament to 'progressing'.
+
+```typescript
+POST /api/v1/tournament/<tournament_id>/start
+authorization Bearer <token>
+```
+
+### Return
+
+-   The updated tournament object ([Tournament](#tournament))
+
+## End a tournament
+
+Change the status of the tournament to 'finished'.
+
+```typescript
+POST /api/v1/tournament/<tournament_id>/end
+authorization Bearer <token>
+```
+
+### Return
+
+-   The updated tournament object ([Tournament](#tournament))
+
+## Leave a tournament
+
+The authenticated user can leave a tournament if the tournament's status is 'registering'.
+
+```typescript
+POST /api/v1/tournament/<tournament_id>/leave
+authorization Bearer <token>
+```
+
+### Return
+
+-   The updated tournament object ([Tournament](#tournament))
+
+## Delete a tournament
+
+Only the owner of the tournament can delete it and it can be deleted only if the tournament's status is 'registering'.
+
+```typescript
+DELETE /api/v1/tournament/<tournament_id>
+authorization Bearer <token>
+```
+
+### Return
+
+-   The message if success or ([Error](#error)) if error raised
+
+## Update the champion of a tournament
+
+Only the owner of the tournament can update the champion.
+
+```typescript
+POST /api/v1/tournament/<tournament_id>/champion/update
+authorization Bearer <token>
+{
+	username: string
+}
+```
+
+### Return
+
+-   The updated tournament object ([Tournament](#tournament))
 
 # Notifications
 
@@ -1310,6 +1381,7 @@ authorization Bearer <token>
     max_players: number,
     status: "registering" | "progressing",
     player_usernames: string[],
+	champion_username: string,
     created_at: DateTime,
     updated_at: DateTime
 }

@@ -9,6 +9,9 @@ class TournamentSerializer(serializers.ModelSerializer):
     player_usernames = serializers.ListField(
         child=serializers.CharField(), read_only=True
     )
+    champion_username = serializers.CharField(
+        source="champion.username", read_only=True
+    )
 
     class Meta:
         model = Tournament
@@ -21,6 +24,7 @@ class TournamentSerializer(serializers.ModelSerializer):
             "max_players",
             "status",
             "player_usernames",
+            "champion_username",
             "created_at",
             "updated_at",
         ]
@@ -28,6 +32,7 @@ class TournamentSerializer(serializers.ModelSerializer):
             "id",
             "status",
             "player_usernames",
+            "champion_username",
             "created_at",
             "updated_at",
         ]
