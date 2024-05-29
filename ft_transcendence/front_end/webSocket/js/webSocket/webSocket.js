@@ -5,8 +5,7 @@ const WebSocket = require('ws');
 const webSocket = {
     listUser: [],
     listConnection: [],
-    listMatch: [],
-    listFindMatch: []
+    listMatch: []
 };
 
 function    define_user_by_socket(socket)

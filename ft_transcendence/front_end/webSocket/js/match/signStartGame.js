@@ -1,9 +1,9 @@
-const { webSocket } = require("../webSocket/webSocket");
-const { define_match } = require("./updateMatch");
-const { leave_match } = require("./acceptInvitationPlay");
-const { matchmaking } = require("../matchmaking/matchmaking");
+const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
+const { define_match, update_match } = require("./updateMatch");
+const { matchmaking } = require("./matchmaking");
 const { send_data } = require("../webSocket/dataToClient");
 const { setup_game } = require("../game/setupGame");
+const { leave_match } = require("./acceptInvitationPlay");
 
 function    arrange_player_positions(match)
 {
@@ -50,18 +50,24 @@ function    call_matchmaking(user, match)
         match.listPlayer[0].name = match.listPlayer[0].name + match.listPlayer[0].id;
     }
 
-    matchmaking(match, (result) => {
-        if (!result) {
-            return ;
+    matchmaking(user, match, (result) => {
+        if (result)
+        {
+            match.listPlayer.forEach((player, index) => {
+                if (player.type === 'player')
+                {
+                    const   user2 = define_user_by_ID(player.id);
+                    if (index > 0)
+                    {
+                        leave_match(user2);
+                        user2.matchID = match.id;
+                    }
+                    update_match(user2);
+                }
+            });
+            setup_game(match);
         }
-        
-        match.listPlayer.forEach((player, index) => {
-            if (index > 0 && player.type === 'player') {
-                leave_match(player);
-            }
-        })
-        setup_game(match);
-    })
+    });
 }
 
 function    sign_start_game(sender)

@@ -1,5 +1,5 @@
 const { webSocket } = require("../webSocket/webSocket");
-const { delete_match_in_list_find_match } = require("../matchmaking/matchmaking");
+const { stop_finding_random_matches } = require("./matchmaking");
 const { send_data } = require("../webSocket/dataToClient");
 
 function    define_match(user)
@@ -39,7 +39,7 @@ function    update_match(user)
     if (match.listUser.length === 0)
     {
         if (match.mode === 'ranked') {
-            delete_match_in_list_find_match(match, user);
+            stop_finding_random_matches(user, match);
         }
         const   indexMatch = webSocket.listMatch.findIndex(check => check.id === match.id);
         webSocket.listMatch.splice(indexMatch, 1);

@@ -24,14 +24,12 @@ function    disconnect(socket)
         if (connection.socket === socket)
         {
             const   user = connection.user;
-            if (user.status === 'creating match' || user.status === 'playing game') {
+            if ((user !== undefined) && (user.status === 'creating match' || user.status === 'playing game')) {
                 leave_match(user);
             }
 
             webSocket.listConnection.splice(i, 1);
             webSocket.listUser.splice(i, 1);
-
-            // send_data('update list users', webSocket.listUser, 'server', webSocket.listUser);
             return ;
         }
     }
