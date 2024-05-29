@@ -7,6 +7,7 @@ import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_tournamentWaitingRoom } from "./home_tournament_room.js";
+import { renderTournamentTree } from "../tournamentTree/tournamentTree.js";
 
 function	 addLabel(tour_list, index)
 {
@@ -23,11 +24,14 @@ function	 addLabel(tour_list, index)
 <td>${tour_list[index].status}</td>
 <td><button id="t_joinbutton${index}">Join</button></td>
 <td><button id="t_infobutton${index}">Details</button></td>
+<td><button id="t_treebutton${index}">Tree</button></td>
 <div id="tour_expanddetails"></div>
+<div id="tournament_tree"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
 	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
 	document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
+	document.getElementById(`t_treebutton${index}`).addEventListener("click", () => { renderTournamentTree(tour_list[index], index); });
 }
 
 async function 	sortThisTable(tour_list, sort_type)
