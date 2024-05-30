@@ -5,16 +5,16 @@ class formMatch
 {
     constructor() {
         this.admin = undefined,
-            this.id = undefined,
-            this.mode = undefined,
-            this.listUser = [],
-            this.listPlayer = [],
-            this.listInvite = [],
-            this.result = [],
-            this.timeStart = undefined,
-            this.timeStop = undefined,
-            this.dateStart = undefined,
-            this.dateStop = undefined
+        this.id = undefined,
+        this.mode = undefined,
+        this.listUser = [],
+        this.listPlayer = [],
+        this.listInvite = [],
+        this.result = [],
+        this.timeStart = undefined,
+        this.timeStop = undefined,
+        this.dateStart = undefined,
+        this.dateStop = undefined
     }
 };
 
@@ -65,7 +65,6 @@ function    create_match(user, mode)
     const   match = new formMatch();
     match.id = create_match_ID();
     match.mode = mode;
-    match.admin = user;
 
     for (let i = 0; i < 4; i++)
     {
@@ -78,6 +77,7 @@ function    create_match(user, mode)
 
     user.matchID = match.id;
     user.status = 'creating match';
+    match.admin = match.listPlayer[0];
 
     webSocket.listMatch.push(match);
     update_match(user);

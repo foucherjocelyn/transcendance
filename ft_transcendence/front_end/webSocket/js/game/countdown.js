@@ -1,10 +1,11 @@
+const { webSocket } = require("../webSocket/webSocket");
 const { send_data } = require("../webSocket/dataToClient");
 const { update_status_objects } = require("./collisionsPoint");
 const { movements_ball } = require("./movementsBall");
 const { movement_AI } = require("./movementsAI");
-const { webSocket } = require("../webSocket/webSocket");
 const { create_paddles } = require("./createPaddle");
 const { check_game_over } = require("./gameOver");
+const { send_to_DB } = require("../dataToDB/dataToDB");
 
 function calculate_ball_speed(gameSettings)
 {
@@ -28,8 +29,6 @@ function    setup_start_game_ws(pongGame, gameSettings)
     const { minSpeed, maxSpeed } = calculate_ball_speed(gameSettings);
     const   ball = pongGame.ball;
 
-    // console.log(minSpeed + ' - ' + maxSpeed);
-
     pongGame.lostPoint = false;
     pongGame.listTouch = [];
     pongGame.ballSpeed = 0;
@@ -42,10 +41,19 @@ function    setup_start_game_ws(pongGame, gameSettings)
     ball.vector.y = (Math.random() < 0.5) ? minSpeed : -minSpeed;
 }
 
-function    handle_player_deconnection(arr1, arr2, match)
+function    handle_player_leave_match(match)
 {
-    const   playerLeave = arr1.filter(element => !arr2.includes(element));
-    match.result.push(playerLeave[0]);
+    const   newListPlayer = match.listUser;
+    const   oldListPlayer = match.pongGame.listUser;
+
+    const   playerLeave = (oldListPlayer.filter(player => !newListPlayer.includes(player)))[0];
+    match.result.push(playerLeave);
+
+    create_paddles(match);
+    send_data('draw paddles', '', 'server', match.listUser);
+
+    match.pongGame.listUser = match.listUser;
+    send_to_DB(`/api/v1/game/${match.id}/player/remove`, match, playerLeave);
 }
 
 function    start_game_ws(match)
@@ -53,14 +61,8 @@ function    start_game_ws(match)
     const intervalId = setInterval(function()
     {
         // The number of players has changed
-        const nbrPaddle = 4 - match.pongGame.listPaddle.filter(paddle => paddle === undefined).length;
-        const nbrPlayer = 4 - match.pongGame.listPlayer.filter(player => player.type === 'none').length;
-        if (nbrPlayer !== nbrPaddle)
-        {
-            create_paddles(match);
-            handle_player_deconnection(match.pongGame.listUser, match.listUser, match);
-            match.pongGame.listUser = match.listUser;
-            send_data('draw paddles', '', 'server', match.listUser);
+        if (match.listUser.length !== match.pongGame.listUser.length) {
+            handle_player_leave_match(match);
         }
 
         // game over
@@ -71,15 +73,14 @@ function    start_game_ws(match)
         }
 
         // lost point
-        if (match.pongGame.lostPoint)
-        {
+        if (match.pongGame.lostPoint) {
             countdown(match);
             clearInterval(intervalId);
             return ;
         }
 
         update_status_objects(match.pongGame);
-        movements_ball(match.pongGame, match.gameSettings);
+        movements_ball(match);
         movement_AI(match.pongGame);
         send_data('movement ball', match.pongGame.ball.position, 'server', match.listUser);
     }, 20);
@@ -87,7 +88,7 @@ function    start_game_ws(match)
 
 function    countdown(match)
 {
-    let count = (match.pongGame.lostPoint === false) ? 15 : 3;
+    let count = (match.pongGame.lostPoint === false) ? 1 : 3;
     const countdownInterval = setInterval(function() {
         if (count < -1)
         {

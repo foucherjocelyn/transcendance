@@ -1,3 +1,4 @@
+const { send_to_DB } = require("../dataToDB/dataToDB");
 const { send_data } = require("../webSocket/dataToClient");
 
 function    create_result(match)
@@ -12,10 +13,13 @@ function    create_result(match)
             match.result.push(player);
         }
     }
-    
-    // Arranged from largest to smallest
-    match.result.sort((a, b) => b.score - a.score);
-    
+
+    // Arranged from smallest to largest
+    match.result.sort((a, b) => a.score - b.score);
+    match.result.reverse();
+    const   winner = match.result.filter(player => player.type === 'player')[0];
+
+    send_to_DB(`/api/v1/game/${match.id}/end`, match, winner);
     send_data('game over', match.result, 'server', match.listUser);
     send_data('update pongGame', match.pongGame, 'server', match.listUser);
 }
@@ -23,15 +27,15 @@ function    create_result(match)
 function    check_game_over(match)
 {
     const   nbrPaddle = 4 - match.pongGame.listPaddle.filter(paddle => paddle === undefined).length;
-    const   winner = match.pongGame.listPlayer.filter(player => player.score === match.pongGame.maxPoint);
+    const   winner = match.pongGame.listPlayer.filter(player => player.score === match.pongGame.maxPoint)[0];
 
-    if (nbrPaddle < 2) {
+    if (nbrPaddle < 2 || match.listUser.length === 0) {
         match.pongGame.gameOver = true;
     }
     else if (match.mode === 'ranked' && match.listUser.length === 1) {
         match.pongGame.gameOver = true;
     }
-    else if (winner.length !== 0) {
+    else if (winner !== undefined) {
         match.pongGame.gameOver = true;
     }
 

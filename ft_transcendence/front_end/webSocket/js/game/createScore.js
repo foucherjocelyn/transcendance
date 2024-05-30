@@ -3,7 +3,7 @@ const { boxWS } = require("./formBox");
 
 function    create_score_point(x, y, z, color, gameSettings)
 {
-    const   score  = new boxWS();
+    const   score = new boxWS();
 
     // size
     score.size.width = gameSettings.size.border;
@@ -21,8 +21,10 @@ function    create_score_point(x, y, z, color, gameSettings)
     return score;
 }
 
-function    draw_vertical_score_bar(x, y, z, nextDistance, paddle, pongGame, gameSettings)
+function    draw_vertical_score_bar(x, y, z, nextDistance, paddle, match)
 {
+    const   pongGame = match.pongGame;
+    const   gameSettings = match.gameSettings;
     const   player = pongGame.listPlayer[paddle.id];
 
     paddle.listScore = [];
@@ -35,10 +37,13 @@ function    draw_vertical_score_bar(x, y, z, nextDistance, paddle, pongGame, gam
     send_data('draw score', paddle, 'server', pongGame.listUser);
 }
 
-function    vertical_score_bar(paddle, pongGame, gameSettings)
+function    vertical_score_bar(paddle, match)
 {
-    if (paddle === undefined)
+    const   pongGame = match.pongGame;
+
+    if (paddle === undefined) {
         return ;
+    }
 
     const   border = pongGame.listBorder[paddle.id];
 
@@ -56,11 +61,13 @@ function    vertical_score_bar(paddle, pongGame, gameSettings)
     let nextDistance = border.size.height + (border.size.height / 2);
     nextDistance = (border.position.x < 0) ? -nextDistance : nextDistance;
 
-    draw_vertical_score_bar(x, y, z, nextDistance, paddle, pongGame, gameSettings);
+    draw_vertical_score_bar(x, y, z, nextDistance, paddle, match);
 }
 
-function    draw_horizontal_score_bar(x, y, z, nextDistance, paddle, pongGame, gameSettings)
+function    draw_horizontal_score_bar(x, y, z, nextDistance, paddle, match)
 {
+    const   pongGame = match.pongGame;
+    const   gameSettings = match.gameSettings;
     const   player = pongGame.listPlayer[paddle.id];
 
     paddle.listScore = [];
@@ -73,10 +80,13 @@ function    draw_horizontal_score_bar(x, y, z, nextDistance, paddle, pongGame, g
     send_data('draw score', paddle, 'server', pongGame.listUser);
 }
 
-function    horizontal_score_bar(paddle, pongGame, gameSettings)
+function    horizontal_score_bar(paddle, match)
 {
-    if (paddle === undefined)
+    const   pongGame = match.pongGame;
+
+    if (paddle === undefined) {
         return ;
+    }
 
     const   border = pongGame.listBorder[paddle.id];
 
@@ -94,15 +104,17 @@ function    horizontal_score_bar(paddle, pongGame, gameSettings)
     let nextDistance = border.size.height + (border.size.height / 2);
     nextDistance = (border.position.z < 0) ? nextDistance : -nextDistance;
 
-    draw_horizontal_score_bar(x, y, z, nextDistance, paddle, pongGame, gameSettings);
+    draw_horizontal_score_bar(x, y, z, nextDistance, paddle, match);
 }
 
-function    create_score(paddle, pongGame, gameSettings)
+function    create_score(paddle, match)
 {
-    if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
-        vertical_score_bar(paddle, pongGame, gameSettings);
-    else
-        horizontal_score_bar(paddle, pongGame, gameSettings);
+    if (paddle.name === 'left paddle' || paddle.name === 'right paddle') {
+        vertical_score_bar(paddle, match);
+    }
+    else {
+        horizontal_score_bar(paddle, match);
+    }
 }
 
 module.exports = {

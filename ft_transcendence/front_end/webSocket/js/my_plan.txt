@@ -1,0 +1,60 @@
+-   **Games**
+
+    -   [Create a new game](#create-a-new-game)
+
+POST /api/v1/game
+authorization Bearer <token>
+{
+	owner_username: string,
+	visibility: "public" | "private";// optional,default: 'public'
+	mode: "classic" | "ranked" | "tournament";// optional, default: 'classic'
+	tournament_name: string;// optional
+	maxScore: number;// optional
+	status: "progressing" | "end";// optional
+}
+
+    **************************************************************
+    -   [Add a new player to a game](#add-a-new-player-to-a-game)
+
+POST /api/v1/game/<game_id>/player/add
+authorization Bearer <token>
+{
+	username: string
+}
+
+    **************************************************************
+    -   [Remove a player from a game](#remove-a-player-from-a-game)
+
+POST /api/v1/game/<game_id>/player/remove
+authorization Bearer <token>
+{
+	username: string
+}
+
+    **************************************************************
+    -   [End a game](#end-a-game)
+
+POST /api/v1/game/<game_id>/end
+authorization Bearer <token>
+
+    **************************************************************
+    -   [Add score of a player](#add-score-of-a-player)
+
+POST /api/v1/game/<game_id>/score
+authorization Bearer <token>
+{
+	username: string,
+	score: number
+}
+
+    **************************************************************
+    -   [Update the winner of a game](#update-the-winner-of-a-game)
+
+POST /api/v1/game/<game_id>/winner
+authorization Bearer <token>
+
+    **************************************************************
+    -   [Level up the winner](#level-up-the-winner)
+
+POST /api/v1/game/<game_id>/winner/levelup
+authorization Bearer <token>

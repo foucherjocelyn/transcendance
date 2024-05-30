@@ -1,8 +1,9 @@
-const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
+const { define_user_by_ID } = require("../webSocket/webSocket");
 const { formPongGameWS } = require("./formBox");
 const { send_data } = require("../webSocket/dataToClient");
 const { countdown } = require("./countdown");
 const { setup_game_settings, create_object_pong_game } = require("../gameSettings/gameSettings");
+const { send_to_DB } = require("../dataToDB/dataToDB");
 
 function    start_game(match)
 {
@@ -22,6 +23,7 @@ function    update_status_user(match, status)
 
 function    setup_game(match)
 {
+    send_to_DB('/api/v1/game', match, '');
     update_status_user(match, 'playing game');
 
     match.pongGame = new formPongGameWS();

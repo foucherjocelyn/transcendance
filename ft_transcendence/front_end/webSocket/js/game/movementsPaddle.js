@@ -7,17 +7,20 @@ const { define_match } = require("../match/updateMatch");
 function vertical_movement(paddle, direction, pongGame)
 {
     if ((paddle.collisionPoint.top === pongGame.limit.top && direction < 0)
-    || (paddle.collisionPoint.bottom === pongGame.limit.bottom && direction > 0))
+    || (paddle.collisionPoint.bottom === pongGame.limit.bottom && direction > 0)) {
         return ;
+    }
 
     let speed = paddle.vector.y;
-    if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0)) {
+    if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0))
+    {
         paddle.vector.y = -paddle.vector.y;
         speed = -speed;
     }
 
     check_collisions(paddle, pongGame, (result) => {
-        if (result && (paddle.collision.touch === 'top' || paddle.collision.touch === 'bottom')) {
+        if (result && (paddle.collision.touch === 'top' || paddle.collision.touch === 'bottom'))
+        {
             let distance = paddle.collision.distance;
             speed = (speed < 0) ? -distance : distance;
         }
@@ -30,17 +33,20 @@ function vertical_movement(paddle, direction, pongGame)
 function horizontal_movement(paddle, direction, pongGame)
 {
     if ((paddle.collisionPoint.left === pongGame.limit.left && direction < 0)
-    || (paddle.collisionPoint.right === pongGame.limit.right && direction > 0))
+    || (paddle.collisionPoint.right === pongGame.limit.right && direction > 0)) {
         return ;
+    }
 
     let speed = paddle.vector.x;
-    if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0)) {
+    if ((speed > 0 && direction < 0) || (speed < 0 && direction > 0))
+    {
         paddle.vector.x = -paddle.vector.x;
         speed = -speed;
     }
 
     check_collisions(paddle, pongGame, (result) => {
-        if (result && (paddle.collision.touch === 'left' || paddle.collision.touch === 'right')) {
+        if (result && (paddle.collision.touch === 'left' || paddle.collision.touch === 'right'))
+        {
             let distance = paddle.collision.distance;
             speed = (speed < 0) ? -distance : distance;
         }
@@ -53,41 +59,51 @@ function horizontal_movement(paddle, direction, pongGame)
 
 function    movement_paddle_mode_offline(keyCode, paddle, pongGame)
 {
-    if (paddle === undefined)
+    if (paddle === undefined) {
         return ;
+    }
     
     if (keyCode === paddle.control.left)
     {
-        if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
+        if (paddle.name === 'left paddle' || paddle.name === 'right paddle') {
             vertical_movement(paddle, -1, pongGame);
-        else
+        }
+        else {
             horizontal_movement(paddle, -1, pongGame);
+        }
     }
     else if (keyCode === paddle.control.right)
     {
-        if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
+        if (paddle.name === 'left paddle' || paddle.name === 'right paddle') {
             vertical_movement(paddle, 1, pongGame);
-        else
+        }
+        else {
             horizontal_movement(paddle, 1, pongGame);
+        }
     }
 }
 
 function    movement_paddle_mode_online(keyCode, paddle, pongGame)
 {
-    if ((paddle === undefined) || (keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight'))
+    if ((paddle === undefined) || (keyCode !== 'ArrowLeft' && keyCode !== 'ArrowRight')) {
         return ;
+    }
 
     if ((keyCode === 'ArrowLeft' && paddle.name === 'left paddle')
-        || (keyCode === 'ArrowRight' && paddle.name === 'right paddle'))
+        || (keyCode === 'ArrowRight' && paddle.name === 'right paddle')) {
         vertical_movement(paddle, -1, pongGame);
+    }
     else if ((keyCode === 'ArrowLeft' && paddle.name === 'right paddle')
-        || (keyCode === 'ArrowRight' && paddle.name === 'left paddle'))
+        || (keyCode === 'ArrowRight' && paddle.name === 'left paddle')) {
         vertical_movement(paddle, 1, pongGame);
+    }
     else if ((keyCode === 'ArrowLeft' && paddle.name === 'top paddle')
-        || (keyCode === 'ArrowRight' && paddle.name === 'bottom paddle'))
+        || (keyCode === 'ArrowRight' && paddle.name === 'bottom paddle')) {
         horizontal_movement(paddle, 1, pongGame);
-    else
+    }
+    else {
         horizontal_movement(paddle, -1, pongGame);
+    }
 }
 
 function    get_sign_movement_paddle(user, keyCode)
