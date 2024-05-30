@@ -1,7 +1,7 @@
 all: up
 
-# ssh:
-# 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private.key -out ssl/certificate.crt -subj "/C=FR/ST=Paris/L=Paris/O=42/CN=ft_transcendence"
+ssl:
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private.key -out ssl/certificate.crt -subj "/C=FR/ST=Paris/L=Paris/O=42/CN=ft_transcendence"
 
 up:
 	docker compose up -d --build

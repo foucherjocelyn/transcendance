@@ -9,4 +9,4 @@ fi
 
 pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
-pipenv run gunicorn -c /home/backend/src/gunicorn/gunicorn.conf.py
+pipenv run gunicorn --log-file=- --reload -c /home/backend/src/gunicorn/gunicorn.conf.py

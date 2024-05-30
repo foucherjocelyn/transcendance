@@ -18,6 +18,8 @@ export async function	classy_signOut(sourcename)
 		source = "h_homepage";
 	else if (sourcename === "myprofile")
 		source = "h_myprofile";
+	else if (sourcename === "profilepage")
+		source = "inspectprofile_page";
 	if (document.getElementById(source) !== undefined
 		&& document.getElementById("loadspinner") !== undefined
 		&& document.getElementById(source) !== null
@@ -78,14 +80,16 @@ function load_connectForm(callback)
 			</form>
 			</div>
         <hr id="r_line2">
-        <p id="rb_forgot" name="rb_forgot" class="textlink">Forgot password</p>
+      <!--  <p id="rb_forgot" name="rb_forgot" class="textlink">Forgot password</p> -->
         <p id="rb_signup" name="rb_signup" class="textlink">Create new account</p>
+		<p id="rb_signup42" name="rb_signup42" class="textlink">Login with 42</p>
 	</div>
 </div>
 <div class="r_successinfo hide"></div>
 `;
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
-	document.getElementById("rb_forgot").addEventListener("click", to_forgotForm);
+	//document.getElementById("rb_forgot").addEventListener("click", to_forgotForm);
+	document.getElementById("rb_signup42").addEventListener("click", () => { notice("Temporary connection via 42 message", 3, "#21B9DF"); });
 	document.getElementById("r_registration").addEventListener("submit", function(event) { event.preventDefault(); checkConnect(); });
 	callback(true);
 }

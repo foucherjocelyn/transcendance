@@ -1,7 +1,7 @@
 import { create_match, display_loader, update_match_informations } from "../createMatch/createMatch.js";
 import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
-import { receiveMessage } from "../chat/chatbox.js";
+import { receiveMessage, renderChatInput } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
 import { display_invitation_play_layer } from "../invitationPlay/invitationPlay.js";
 import { update_game_settings } from "../gameSettings/updateGameSetting.js";
@@ -113,6 +113,10 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'game over') {
             display_game_over_layer(receivedData.content);
         }
+        if (receivedData.title === 'mute')
+            renderChatInput(receivedData.from.username);
+        if (receivedData.title === 'unmute')
+            renderChatInput(receivedData.from.username);
     };
 }
 

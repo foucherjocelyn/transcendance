@@ -7,6 +7,7 @@ from django.db import models
 
 
 class User(AbstractUser, PermissionsMixin):
+    id42 = models.IntegerField(null=True, blank=True)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
@@ -107,23 +108,38 @@ class ChannelInvitedUser(models.Model):
 class Tournament(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True, default=None)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_time = models.DateTimeField(default=None)
     max_players = models.PositiveIntegerField(default=100)
     status_choices = [
-        ("upcoming", "Upcoming"),
-        ("ongoing", "Ongoing"),
-        ("completed", "Completed"),
+        ("registering", "Registering"),
+        ("progressing", "Progressing"),
+        ("finished", "Finished"),
     ]
-    status = models.CharField(max_length=20, choices=status_choices, default="upcoming")
+    status = models.CharField(
+        max_length=20, choices=status_choices, default="registering"
+    )
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tournament_owner",
+        null=True,
+        default=None,
+    )
     players = models.ManyToManyField(
         User, related_name="tournament_players", default=list
+    )
+    champion = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tournament_champion",
+        null=True,
+        default=None,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return f"Tournament : {self.name} : {self.status}"
 
 
 class Game(models.Model):

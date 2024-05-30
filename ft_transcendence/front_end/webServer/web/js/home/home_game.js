@@ -44,6 +44,7 @@ function drawGame(callback) {
 
         <!--	Choose game mode		-->
         <div id="g_choose_mode">
+        <p id="g_choose_mode_title">Choose a game mode</p>
             <button id="g_rankedmatch">Ranked Match</button>
         <br>
             <button id="g_creatematch">Create a match</button>

@@ -8,6 +8,7 @@ import { loadChat } from "../chat/load-chat.js";
 import { to_connectForm } from "../authentication/auth_connect.js"
 import { getAllMyGames, getAllMyScores, getMyInfo } from "../backend_operation/get_user_info.js";
 
+/*
 function	 newLabel()//
 {
 	let label;
@@ -20,15 +21,17 @@ function	 newLabel()//
 	document.getElementById("hs_info").insertAdjacentHTML("beforeend", newLabel);
 	return (label);
 }
+*/
 
-async function	renderMatchHistory() {
-	const myGames = await getAllMyGames();
+export async function	renderMatchHistory(username) {
+	const username_obj = { username };
+	const myGames = await getAllMyGames(username_obj);
 	console.log(myGames);
 	const myGamesSorted = myGames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-	const myScores = await getAllMyScores();
+	const myScores = await getAllMyScores(username_obj);
 	console.log(myScores);
 	const matchTableBody = myGamesSorted.map(game => `
-		<tr class="${game.winner_username === getCookie('username') ? 'win' : 'loss'}">
+		<tr class="${game.winner_username === username_obj ? 'win' : 'loss'}">
 			<td>${game.mode}</td>
 			<td>${game.player_usernames.join('<br />')}</td>
 			<td>${game.winner_username}</td>
@@ -65,6 +68,7 @@ function	drawHomePage(callback)
 <!-- Display player stats  -->
               </tr>
             </thead>
+			<br>
             <tbody id="hs_info">
             </tbody>
           </table>
@@ -72,11 +76,11 @@ function	drawHomePage(callback)
 	</div>
 	<div id="chat"></div>
 	<div class="r_successinfo hide"></div>
-${noticeInvitePlayer()}
+	${noticeInvitePlayer()}
 </div>
 `;
 
-	renderMatchHistory();
+	renderMatchHistory(getCookie("username"));
 	document.getElementById("hpb_username").textContent = getCookie("username");
 	//load players scoreboard
 //	console.log("loading player list");
