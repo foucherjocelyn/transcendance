@@ -60,12 +60,12 @@ export async function postUser(new_user) {
 }
 
 export function openSocketClient() {
-	const sendData = new dataToServer('connection', client.inforUser, client.inforUser, client.inforUser);
+	const sendData = new dataToServer('connection', client.inforUser, 'socket server');
 	client.socket.send(JSON.stringify(sendData));
 }
 
 export function closeSocketClient() {
-	const sendData = new dataToServer('disconnection', client.inforUser, client.inforUser, client.inforUser);
+	const sendData = new dataToServer('disconnection', client.inforUser, 'socket server');
 	client.socket.send(JSON.stringify(sendData));
 }
 

@@ -4,8 +4,7 @@ import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
-import { create_match, join_the_tournament } from "../createMatch/createMatch.js";
-import { client } from "../client/client.js";
+import { create_match } from "../createMatch/createMatch.js";
 
 export function noticeInvitePlayer() {
     return (
@@ -67,8 +66,7 @@ function drawGame(callback) {
 export function gameEventListener() {
     console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
-        // create_match('rank');
-        join_the_tournament('toto', 42);
+        create_match('ranked');
     });
     document.getElementById("g_creatematch").addEventListener("click", () => {
         create_match('with friends');

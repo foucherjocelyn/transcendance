@@ -1,20 +1,15 @@
 import * as THREE from '../../../node_modules/three/build/three.module.js';
 import { OrbitControls } from '../../../node_modules/three/examples/jsm/controls/OrbitControls.js';
-import { client } from '../client/client.js';
-import { countdown } from '../countdown/countdown.js';
+import { client, dataToServer, pongGame } from '../client/client.js';
 import { match } from '../createMatch/createMatch.js';
-import { check_game_over } from '../gameOver/gameOver.js';
-import { gameSettings } from '../gameSettings/getInputsGameSettings.js';
-
+import { gameSettings } from '../gameSettings/updateGameSetting.js';
 import { screen } from "../screen/screen.js";
-import { create_ball, update_status_objects } from './createBall.js';
-import { create_border } from './createBorder.js';
-import { create_paddle } from './createPaddle.js';
-import { create_plane } from './createPlane.js';
-import { movement_AI } from './movementsAI.js';
-import { movements_ball } from './movementsBall.js';
-import { movements_paddle } from './movementsPaddle.js';
-import { pongGame } from './startGame.js';
+import { displayPongGame } from './startGame.js';
+
+import { draw_table } from './drawTable.js';
+import { draw_border } from './drawBorders.js';
+import { draw_paddle } from './drawPaddles.js';
+import { draw_ball } from './drawBall.js';
 
 function	addLight(scene)
 {
@@ -27,106 +22,39 @@ function	addLight(scene)
 	pongGame.scene.add(directionalLight);
 }
 
-function    handle_player_deconnection()
+function    handleKeyDown(event)
 {
-    for (let i = 0; i < pongGame.listPlayer.length; i++)
-    {
-        const   player1 = pongGame.listPlayer[i];
-        const   player2 = match.listPlayer[i];
-        if (player1.id !== player2.id)
-        {
-            match.result.push(player1);
-            return ;
-        }
-    }
+    // console.log(event.keyCode);
+    // console.log(event.key);
+
+    const sendData = new dataToServer('movement paddle', event.key, 'socket server');
+    client.socket.send(JSON.stringify(sendData));
 }
 
-function    start_game()
-{
-    if (pongGame.listPlayer !== match.listPlayer)
-    {
-        handle_player_deconnection();
-        pongGame.listPlayer = match.listPlayer;
-        create_paddle();
-    }
-
-    update_status_objects();
-    movements_ball();
-    update_status_objects();
-    movement_AI();
-
-    for (let i = 0; i < pongGame.listPaddle.length; i++)
-    {
-        const   paddle = pongGame.listPaddle[i];
-        if (paddle !== undefined)
-        {
-            paddle.display.position.set(paddle.position.x, paddle.position.y, paddle.position.z);
-        }
-    }
-
-    const   ball = pongGame.ball;
-    ball.display.position.set(ball.position.x, ball.position.y, ball.position.z);
-
-    update_status_objects();
+function    movements_paddle() {
+    document.addEventListener("keydown", handleKeyDown);
 }
 
-let countdownCalled = false;
-
-function    check_lost_point(countdownCalled, callback)
-{
-    if (countdownCalled)
-    {
-        callback(false);
-        return ;
-    }
-
-    if (pongGame.lostPoint)
-    {
-        callback(true);
-        return ;
-    }
-
-    const   poX = pongGame.ball.position.x;
-    const   poZ = pongGame.ball.position.z;
-
-    if (poZ < pongGame.limit.top || poZ > pongGame.limit.bottom
-        || poX < pongGame.limit.left || poX > pongGame.limit.right)
-    {
-        callback(true);
-        return;
-    }
-    callback(false);
-
+function    stop_movements_paddle() {
+    document.removeEventListener("keydown", handleKeyDown);
 }
 
 function    animation(renderer, scene, camera)
 {
-    check_game_over();
     if (pongGame.gameOver)
     {
+        stop_movements_paddle();
         renderer.setAnimationLoop(null);
         return ;
     }
-
-    check_lost_point(countdownCalled, (result) => {
-        if (result)
-        {
-            countdownCalled = true;
-            countdown((start) => {
-                if (start)
-                {
-                    pongGame.lostPoint = false;
-                    countdownCalled = false;
-                    add_objects();
-                }
-            })
-        }
-    });
-    if (countdownCalled)
-        return ;
-
-    start_game();
     
+    const   ball = pongGame.ball;
+    displayPongGame.ball.position.set(ball.position.x, ball.position.y, ball.position.z);
+
+    pongGame.listPaddle.forEach((paddle, index) => {
+        if (paddle !== null)
+            displayPongGame.paddles[index].position.set(paddle.position.x, paddle.position.y, paddle.position.z);
+    })
     renderer.render(scene, camera);
 }
 
@@ -161,11 +89,10 @@ function    setup_camera_position(camera)
 function    add_objects()
 {
     setup_camera_position(pongGame.camera);
-    create_plane();
-    create_border();
-    create_paddle();
-    create_ball();
-    movements_paddle();
+    draw_table();
+    draw_border();
+    draw_paddle();
+    draw_ball();
 }
 
 function    setup_game_windows()
@@ -191,6 +118,7 @@ function    setup_game_windows()
 
     addLight();
     add_objects();
+    movements_paddle();
 
     const   orbit = new OrbitControls(camera, renderer.domElement);
     orbit.update();

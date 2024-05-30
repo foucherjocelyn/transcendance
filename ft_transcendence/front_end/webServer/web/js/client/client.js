@@ -1,12 +1,15 @@
-import { create_match, match, update_match_informations } from "../createMatch/createMatch.js";
-import { update_position_ball } from "../game/movementsBall.js";
-import { update_position_paddle } from "../game/movementsPaddle.js";
-import { pongGame, setup_game_layer } from "../game/startGame.js";
-import { update_game_settings } from "../gameSettings/updateGameSetting.js";
+import { create_match, display_loader, update_match_informations } from "../createMatch/createMatch.js";
+import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage, renderChatInput } from "../chat/chatbox.js";
 import { authCheck } from "../authentication/auth_main.js";
-import { reponse_invitation_to_play_cl } from "../invitationPlay/invitationPlay.js";
+import { display_invitation_play_layer } from "../invitationPlay/invitationPlay.js";
+import { update_game_settings } from "../gameSettings/updateGameSetting.js";
+import { draw_score } from "../game/drawScore.js";
+import { draw_paddle } from "../game/drawPaddles.js";
+import { display_countdown } from "../game/displayCountdown.js";
+import { display_game_over_layer } from "../game/gameOverLayer.js";
+import { change_color_border } from "../game/drawBorders.js";
 
 class   userNotifications {
     constructor() {
@@ -29,54 +32,87 @@ export const   client = {
 };
 
 export class   dataToServer {
-    constructor(title, content, from, to) {
+    constructor(title, content, to) {
         this.title = title,
         this.content = content,
-        this.from = from,
         this.to = to
     }
 }
 
+export let pongGame;
 function    get_data_from_server(socket)
 {
     socket.onmessage = function(event) {
         let   receivedData = JSON.parse(event.data);
         // console.log(receivedData.title);
 
-        if (receivedData.title === 'message')
+        if (receivedData.title === 'message') {
             receiveMessage(receivedData);
-        if (receivedData.title === 'update list users')
-        {
+        }
+        if (receivedData.title === 'update list users') {
             client.listUser = receivedData.content;
             // console.table(client.inforUser);
         }
-        if (receivedData.title === 'invite to play')
+        if (receivedData.title === 'invite to play') {
             notice_invitation_play(receivedData);
-        if (receivedData.title === 'reponse invitation to play')
-            reponse_invitation_to_play_cl(receivedData);
-        if (receivedData.title === 'warning')
-            notice_invitation_play(receivedData);
-        if (receivedData.title === 'update match')
-            update_match_informations(receivedData);
-        if (receivedData.title === 'create match')
-			create_match("with friends");
-        if (receivedData.title === 'hide loader')
-        {
-            if (document.getElementById('loaderMatchmakingLayer') !== null)
-                document.getElementById('loaderMatchmakingLayer').style.display = 'none';
         }
-        if (receivedData.title === 'start game')
+        if (receivedData.title === 'refused participate match') {
+            notice_invitation_play(receivedData);
+        }
+        if (receivedData.title === 'reject invitation to play') {
+            notice_invitation_play(receivedData);
+        }
+        if (receivedData.title === 'warning') {
+            notice_invitation_play(receivedData);
+        }
+        if (receivedData.title === 'update match') {
+            update_match_informations(receivedData);
+        }
+        if (receivedData.title === 'display invitation play layer') {
+            display_invitation_play_layer();
+        }
+        if (receivedData.title === 'create match') {
+			create_match("with friends");
+        }
+        if (receivedData.title === 'display loader') {
+            display_loader(receivedData.content);
+        }
+        if (receivedData.title === 'start game') {
             setup_game_layer();
-        if (receivedData.title === 'update game settings')
+        }
+        if (receivedData.title === 'countdown') {
+            display_countdown(receivedData.content);
+        }
+        if (receivedData.title === 'update game settings') {
             update_game_settings(receivedData);
-        if (receivedData.title === 'update vector ball')
-            Object.assign(pongGame.ball.vector, receivedData.content);
-        if (receivedData.title === 'update movement ball')
-            Object.assign(pongGame.ball.position, receivedData.content);
-        if (receivedData.title === 'update movement paddle')
-            update_position_paddle(receivedData.content);
-        if (receivedData.title === 'update movement ball')
-            update_position_ball(receivedData.content);
+        }
+        if (receivedData.title === 'update pongGame') {
+            pongGame = receivedData.content;
+        }
+        if (receivedData.title === 'update borders') {
+            pongGame.listBorder = receivedData.content;
+        }
+        if (receivedData.title === 'update paddles') {
+            pongGame.listPaddle = receivedData.content;
+        }
+        if (receivedData.title === 'update ball') {
+            pongGame.ball = receivedData.content;
+        }
+        if (receivedData.title === 'movement ball') {
+            pongGame.ball.position = receivedData.content;
+        }
+        if (receivedData.title === 'draw score') {
+            draw_score(receivedData.content);
+        }
+        if (receivedData.title === 'draw paddles') {
+            draw_paddle();
+        }
+        if (receivedData.title === 'change color border') {
+            change_color_border(receivedData.content);
+        }
+        if (receivedData.title === 'game over') {
+            display_game_over_layer(receivedData.content);
+        }
         if (receivedData.title === 'mute')
             renderChatInput(receivedData.from.username);
         if (receivedData.title === 'unmute')

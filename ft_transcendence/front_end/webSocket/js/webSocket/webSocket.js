@@ -5,48 +5,128 @@ const WebSocket = require('ws');
 const webSocket = {
     listUser: [],
     listConnection: [],
-    listMatch: [],
-    listFindMatch: []
+    listMatch: []
 };
 
-function update_user(user) {
-    for (let i = 0; i < webSocket.listUser.length; i++) {
-        const find = webSocket.listUser[i];
-        if (find.id === user.id) {
-            webSocket.listConnection[i].user = user;
-            webSocket.listUser[i] = user;
-            send_data('update list users', webSocket.listUser, user, webSocket.listUser);
-            return;
+function    define_user_by_socket(socket)
+{
+    for (let i = 0; i < webSocket.listConnection.length; i++)
+    {
+        const   connection = webSocket.listConnection[i];
+        if (connection.socket === socket) {
+            return connection.user;
+        }
+    }
+    return undefined;
+}
+
+function    define_user_by_ID(userID)
+{
+    for (let i = 0; i < webSocket.listConnection.length; i++)
+    {
+        const   connection = webSocket.listConnection[i];
+        if (connection.user.id === userID) {
+            return connection.user;
+        }
+    }
+    return undefined;
+}
+
+function    handle_requirements(title, content, sender, recipient)
+{
+    if (sender.status === 'online')
+    {
+        if (title === 'disconnect') {
+            disconnect(socket);
+        }
+        else if (title === 'create match') {
+            create_match(sender, content);
+        }
+        else if (title === 'accept invitation to play') {
+            accept_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'reject invitation to play') {
+            reject_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'message') {
+            send_data(title, content, sender, recipient);
+        }
+        // else {
+        //     send_data(title, content, sender, recipient);
+        // }
+    }
+    else if (sender.status === 'creating match')
+    {
+        if (title === 'add player') {
+            add_player(sender, content);
+        }
+        else if (title === 'invite to play') {
+            request_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'accept invitation to play') {
+            accept_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'reject invitation to play') {
+            reject_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'leave match') {
+            leave_match(sender);
+        }
+        else if (title === 'start game') {
+            sign_start_game(sender);
+        }
+    }
+    else if (sender.status === 'playing game')
+    {
+        if (title === 'update game settings') {
+            update_game_settings(sender, content);
+        }
+        else if (title === 'movement paddle') {
+            get_sign_movement_paddle(sender, content);
+        }
+        else if (title === 'leave match') {
+            leave_match(sender);
         }
     }
 }
 
-function get_data_from_client(data, socket) {
+function    check_form_data_client(obj)
+{
+    return obj && typeof obj === 'object' &&
+           'title' in obj &&
+           'content' in obj &&
+           'to' in obj;
+}
+
+function    check_requirements(data, socket)
+{
     data = JSON.parse(data);
 
-    // console.log('title: ' + data.title);
-    if (data.title === 'connection')
-        add_new_connection(data, socket);
-    else if (data.title === 'disconnect')
-        disconnect(socket);
-    else if (data.title === 'update match')
-        update_match(data.from, data.content, data.title);
-    else if (data.title === 'invite to play')
-        request_invitation_to_play(data);
-    else if (data.title === 'accept invitation to play')
-        accept_invitation_to_play(data);
-    else if (data.title === 'leave match')
-        leave_match(data.from);
-    else if (data.title === 'kick out of the match')
-        kick_out_of_the_match(data);
-    else if (data.title === 'start game')
-        sign_start_game(data);
-    else if (data.title === 'game over')
-        informations_match_end(data.from, data.content);
-    else
-        send_data(data.title, data.content, data.from, data.to);
+    if (!check_form_data_client(data)) {
+        return ;
+    }
 
-    update_user(data.from);
+    if (data.title === 'connection') {
+        add_new_connection(data.content, socket);
+    }
+    else
+    {
+        const   sender = define_user_by_socket(socket);
+        if (sender === undefined) {
+            return ;
+        }
+
+        let   recipient = data.to;
+        if (recipient !== 'socket server')
+        {
+            recipient = define_user_by_ID(recipient.id);
+            if (recipient === undefined) {
+                return ;
+            }
+        }
+
+        handle_requirements(data.title, data.content, sender, recipient);
+    }
 }
 
 async function loadCertificates() {
@@ -72,7 +152,7 @@ async function setup_web_socket()
 
         // Handle messages from clients
         socket.on('message', (message) => {
-            get_data_from_client(message, socket);
+            check_requirements(message, socket);
         });
 
         // Handle event when client closes connection
@@ -92,13 +172,17 @@ setup_web_socket();
 
 module.exports = {
     webSocket,
-    update_user
+    define_user_by_socket,
+    define_user_by_ID
 };
 
 const { add_new_connection, disconnect } = require('./addNewConnection');
 const { send_data } = require('./dataToClient');
-const { update_match } = require('./updateMatch');
-const { accept_invitation_to_play, leave_match, kick_out_of_the_match } = require('./acceptInvitationPlay');
-const { sign_start_game } = require('./signStartGame');
-const { request_invitation_to_play } = require('./invitationToPlay');
-const { informations_match_end } = require("./getResultsMatch");
+const { accept_invitation_to_play, leave_match, reject_invitation_to_play } = require('../match/acceptInvitationPlay');
+const { sign_start_game } = require('../match/signStartGame');
+const { request_invitation_to_play } = require('../match/invitationToPlay');
+const { update_game_settings } = require("../gameSettings/gameSettings");
+const { get_sign_movement_paddle } = require("../game/movementsPaddle");
+const { create_match } = require("../match/createMatch");
+const { add_player } = require("../match/addPlayer");
+

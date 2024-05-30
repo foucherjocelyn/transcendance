@@ -13,11 +13,11 @@ function gameSettingsSizePanelHTML()
             <div class="gameSettingInput" id="gameSettingSizeTable">
                 <div>
                     <span>width:</span>
-                    <input type="range" value="30" min="20" max="100" step="1">
+                    <input type="range" value="30" min="30" max="100" step="1">
                 </div>
                 <div>
                     <span>height:</span>
-                    <input type="range" value="30" min="20" max="100" step="1">
+                    <input type="range" value="30" min="30" max="100" step="1">
                 </div>
             </div>
 
@@ -140,7 +140,7 @@ function gameSettingsSpeedPanelHTML()
             <div class="gameSettingInput" id="gameSettingSpeedPaddle">
                 <div>
                     <span>Speed:</span>
-                    <input type="range" value="0.1" min="0.1" max="0.9" step="0.1">
+                    <input type="range" value="0.488" min="0.488" max="1.608" step="0.01">
                 </div>
             </div>
 
@@ -152,7 +152,7 @@ function gameSettingsSpeedPanelHTML()
             <div class="gameSettingInput" id="gameSettingSpeedBall">
                 <div>
                     <span>Speed:</span>
-                    <input type="range" value="0.1" min="0.1" max="0.9" step="0.1">
+                    <input type="range" value="0.001" min="0.001" max="0.008" step="0.001">
                 </div>
             </div>
         </div>

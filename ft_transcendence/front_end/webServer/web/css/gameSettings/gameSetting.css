@@ -15,7 +15,7 @@
 
 /* --------------------  -------------------- */
 #gameSettingButton {
-    display: flex;
+    display: none;
     flex-direction: row;
 
     justify-content: flex-end;
@@ -61,7 +61,7 @@
 
 /* --------------------  -------------------- */
 #gameSettingPanel {
-    display: none;
+    display: flex;
     flex-direction: column;
 
     justify-content: center;

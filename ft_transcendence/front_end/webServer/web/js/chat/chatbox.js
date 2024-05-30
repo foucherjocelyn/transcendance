@@ -105,8 +105,9 @@ const sendMessage = async (friendUsername) => {
     renderMessages(friendUsername);
 
     const connectedReceiver = client.listUser.find(user => user.username == friendUsername)
-    if (connectedReceiver) {
-        const sendData = new dataToServer('message', newMessage.content, client.inforUser, connectedReceiver);
+    if (connectedReceiver)
+    {
+        const sendData = new dataToServer('message', newMessage.content, connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
     }
 };

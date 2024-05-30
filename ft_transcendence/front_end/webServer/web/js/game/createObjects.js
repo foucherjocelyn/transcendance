@@ -1,44 +1,7 @@
+import { pongGame } from '../client/client.js';
 import { THREE } from './gameWindows.js';
-import { pongGame } from './startGame.js';
 
-class   box {
-    constructor() {
-        this.size = {
-            width: undefined,
-            height: undefined,
-            length: undefined
-        },
-        this.position = {
-            x: undefined,
-            y: undefined,
-            z: undefined
-        },
-        this.collisionPoint = {
-            top: undefined,
-            bottom: undefined,
-            left: undefined,
-            right: undefined
-        },
-        this.vector = {
-            x: 0,
-            y: 0
-        },
-        this.control = {
-            left: undefined,
-            right: undefined
-        },
-        this.collision = {
-            touch: undefined,
-            who: undefined,
-            distance: undefined
-        }
-        this.name = undefined,
-        this.speed = undefined,
-        this.display = undefined
-    }
-};
-
-function    delete_old_object(obj)
+export function    delete_old_object(obj)
 {
     pongGame.scene.remove(obj);
     obj.geometry.dispose();
@@ -46,7 +9,7 @@ function    delete_old_object(obj)
 }
 
 // Form Box
-function	createBox(w, h, l)
+export function	createBox(w, h, l)
 {
 	const	boxGeometry = new THREE.BoxGeometry(w, h, l);
 	const	boxMaterial = new THREE.MeshStandardMaterial({
@@ -58,7 +21,7 @@ function	createBox(w, h, l)
 }
 
 // Form Plane
-function    createPlane(colorPlane)
+export function    createPlane(colorPlane)
 {
     const	planeGeometry = new THREE.PlaneGeometry(1, 1);
     let planeMaterial = new THREE.MeshBasicMaterial({
@@ -70,10 +33,3 @@ function    createPlane(colorPlane)
     plane.receiveShadow = true; // receive shadow
     return plane;
 }
-
-export {
-    createBox,
-    createPlane,
-    delete_old_object,
-    box
-};
