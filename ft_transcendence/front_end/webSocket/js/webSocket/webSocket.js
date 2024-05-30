@@ -90,13 +90,24 @@ function    handle_requirements(title, content, sender, recipient)
     }
 }
 
+function    check_form_data_client(obj)
+{
+    return obj && typeof obj === 'object' &&
+           'title' in obj &&
+           'content' in obj &&
+           'to' in obj;
+}
+
 function    check_requirements(data, socket)
 {
     data = JSON.parse(data);
-    // console.log('title: ' + data.title);
+
+    if (!check_form_data_client(data)) {
+        return ;
+    }
 
     if (data.title === 'connection') {
-        add_new_connection(data, socket);
+        add_new_connection(data.content, socket);
     }
     else
     {

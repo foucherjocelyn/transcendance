@@ -1,6 +1,7 @@
-const { webSocket } = require("./webSocket");
+const { webSocket, define_user_by_ID } = require("./webSocket");
 const { leave_match } = require("../match/acceptInvitationPlay");
-const { send_data } = require("./dataToClient");
+const { define_socket_by_user } = require("./dataToClient");
+const { isNumeric } = require("../gameSettings/checkInputSize");
 
 class   connection {
     constructor(user, socket) {
@@ -9,11 +10,27 @@ class   connection {
     }
 };
 
-function    add_new_connection(data, socket)
+function    add_new_connection(inforUser, socket)
 {
-    const   user = new connection(data.content, socket);
+    if (inforUser === undefined || inforUser.id === undefined || !isNumeric(inforUser.id)) {
+        return ;
+    }
+
+    // check same user
+    const   checkConnection = define_user_by_ID(inforUser.id);
+    if (checkConnection !== undefined)
+    {
+        // const   oldSocket = define_socket_by_user(inforUser);
+        // if (oldSocket === undefined) {
+        //     return ;
+        // }
+        // disconnect(oldSocket);
+        return ;
+    }
+
+    const   user = new connection(inforUser, socket);
     webSocket.listConnection.push(user);
-    webSocket.listUser.push(data.content);
+    // webSocket.listUser.push(inforUser);
 }
 
 function    disconnect(socket)
@@ -29,7 +46,7 @@ function    disconnect(socket)
             }
 
             webSocket.listConnection.splice(i, 1);
-            webSocket.listUser.splice(i, 1);
+            // webSocket.listUser.splice(i, 1);
             return ;
         }
     }

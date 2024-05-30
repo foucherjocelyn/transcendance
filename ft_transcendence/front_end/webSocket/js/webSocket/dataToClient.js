@@ -1,3 +1,4 @@
+const { isNumeric } = require("../gameSettings/checkInputSize");
 const { webSocket } = require("./webSocket");
 
 class   dataToClient {
@@ -8,12 +9,16 @@ class   dataToClient {
     }
 };
 
-function    find_socket(user)
+function    define_socket_by_user(user)
 {
+    if (user === undefined || !isNumeric(user.id)) {
+        return undefined;
+    }
+
     for (let i = 0; i < webSocket.listConnection.length; i++)
     {
         const   connection = webSocket.listConnection[i];
-        if (user !== undefined && connection.user !== undefined && connection.user.id === user.id)
+        if (connection.user !== undefined && connection.user.id === user.id)
             return connection.socket;
     }
     return undefined;
@@ -41,7 +46,7 @@ function    send_data(title, content, from, to)
 
     let destinations = Array.isArray(to) ? to : [to];
     destinations.forEach(user => {
-        const socket = find_socket(user);
+        const socket = define_socket_by_user(user);
         if (socket !== undefined) {
             // socket.sendUTF(sendData);
             socket.send(sendData);
@@ -56,5 +61,5 @@ function    send_data(title, content, from, to)
 module.exports = {
     send_data,
     dataToClient,
-    find_socket
+    define_socket_by_user
 };
