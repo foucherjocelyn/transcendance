@@ -25,12 +25,11 @@ function addLabel(tour_list, index) {
 <td><button id="t_infobutton${index}">Details</button></td>
 <td><button id="t_treebutton${index}">Tree</button></td>
 <div id="tour_expanddetails"></div>
-<div id="tournament_tree"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
 	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
 	document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
-	document.getElementById(`t_treebutton${index}`).addEventListener("click", () => { renderTournamentTree(tour_list[index], index); });
+	document.getElementById(`t_treebutton${index}`).addEventListener("click", () => { renderTournamentTree(tour_list[index]); });
 }
 
 async function sortThisTable(tour_list, sort_type) {
@@ -95,6 +94,7 @@ async function drawTournament(callback) {
             <tbody id="htb_info">
             </tbody>
           </table>
+		  <div id="tournament_tree"></div>
 				</div>
 			</div>
 			<br>
