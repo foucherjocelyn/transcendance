@@ -86,7 +86,7 @@ function    start_finding_random_matches(user, match, callback)
             clearTimeout(timeoutId);
         }
         else {
-            stop_finding_random_matches(match, match.listUser);
+            stop_finding_random_matches(user, match);
             send_data('warning', 'Sorry guy, no matches found right now !!!', '../../img/avatar/informationsSign.png', match.listUser);
         }
 
