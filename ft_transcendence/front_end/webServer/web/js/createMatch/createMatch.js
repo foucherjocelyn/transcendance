@@ -40,8 +40,9 @@ export function    display_loader(status)
 
 export function    display_create_match_layer()
 {
-    if (document.getElementById('createMatchLayer') === null)
+    if (document.getElementById('createMatchLayer') === null) {
         createMatchHTML();
+    }
 
     setup_size_create_match_layer();
     setup_size_add_player_layer();
@@ -54,22 +55,17 @@ export function update_match_informations(data)
 {
     match = data.content;
 
-    if (client.inforUser.status === 'playing game')
+    if (document.getElementById('invitationPlayLayer') !== null) {
         return ;
-
-    if (document.getElementById('invitationPlayLayer') !== null)
-        return ;
+    }
 
     (document.getElementById('createMatchLayer') === null) ?
     display_create_match_layer() : setup_content_add_player_button();
 
-    if (match.mode === 'ranked' || match.mode === 'tournament')
+    if ((match.mode === 'ranked' || match.mode === 'tournament') && (match.listUser.length > 1))
     {
-        if (match.listUser.length > 1)
-        {
-            document.getElementById("cancelCreateMatchButton").style.display = 'none';
-            document.getElementById("startCreateMatchButton").style.display = 'none';
-        }
+        document.getElementById("cancelCreateMatchButton").style.display = 'none';
+        document.getElementById("startCreateMatchButton").style.display = 'none';
     }
 }
 
