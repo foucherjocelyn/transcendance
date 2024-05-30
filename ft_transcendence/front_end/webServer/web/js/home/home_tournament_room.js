@@ -4,7 +4,7 @@ import { noticeInvitePlayer } from "./home_game.js";
 import { loadChat } from "../chat/load-chat.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_tournament } from "./home_tournament.js";
-import { join_the_tournament } from "../createMatch/createMatch.js";
+//import { join_the_tournament } from "../createMatch/createMatch.js";
 
 async function  drawWaitingRoom(callback)
 {

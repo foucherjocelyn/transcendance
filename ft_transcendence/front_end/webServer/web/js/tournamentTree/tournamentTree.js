@@ -1,4 +1,4 @@
-export const renderTournamentTree = () => {
+export const renderTournamentTree = (tournament) => {
     document.getElementById("tournament_tree").innerHTML = `
     <div class="bracket" id="bracket">
     </div>`;
@@ -6,7 +6,7 @@ export const renderTournamentTree = () => {
         /*"Player 9", "Player 10", "Player 11", "Player 12", "Player 13", "Player 14", "Player 15", "Player 16"*/
     ]; // Example participants
 
-    createBracket(participants);
+    createBracket(tournament.player_usernames);
 }
 
 function createBracket(participants) {
