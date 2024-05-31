@@ -59,7 +59,7 @@ function    define_user(socket)
 
 function    create_match(user, mode)
 {
-    if (mode !== 'ranked' && mode !== 'with friends' && mode !== 'offline')
+    if (mode !== 'ranked' && mode !== 'tournament' && mode !== 'with friends' && mode !== 'offline')
         return ;
 
     const   match = new formMatch();

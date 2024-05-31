@@ -51,6 +51,9 @@ function    handle_requirements(title, content, sender, recipient)
         else if (title === 'message') {
             send_data(title, content, sender, recipient);
         }
+        else if (title === 'join the tournament') {
+            join_the_tournament(sender);
+        }
         else {
             send_data(title, content, sender, recipient);
         }
@@ -180,4 +183,4 @@ const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
-
+const { join_the_tournament } = require("../match/tournament");

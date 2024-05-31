@@ -55,7 +55,9 @@ function    add_user_in_match(user, newPlayer, match)
         if (player.type === 'none')
         {
             match.listPlayer[i] = new inforPlayer(newPlayer.id, newPlayer.username, newPlayer.avatarPath, newPlayer.level, 'player');
-            send_data('display invitation play layer', '', 'server', user);
+            if (match.mode === 'with friends') {
+                send_data('display invitation play layer', '', 'server', user);
+            }
             update_match(user);
             return ;
         }
