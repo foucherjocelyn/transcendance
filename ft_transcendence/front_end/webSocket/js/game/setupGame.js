@@ -18,6 +18,7 @@ function    update_status_user(match, status)
     match.listUser.forEach(player => {
         const user = define_user_by_ID(player.id);
         user.status = status;
+        user.matchID = match.id;
     })
 }
 

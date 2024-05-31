@@ -1,3 +1,4 @@
+const { update_status_user } = require("../game/setupGame");
 const { webSocket } = require("../webSocket/webSocket");
 const { update_match } = require("./updateMatch");
 
@@ -86,5 +87,7 @@ function    create_match(user, mode)
 module.exports = {
     create_match,
     define_user,
+    create_match_ID,
+    formMatch,
     inforPlayer
 };

@@ -1,7 +1,7 @@
+const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
 const { setup_game } = require("../game/setupGame");
-const { accept_invitation_to_play } = require("./acceptInvitationPlay");
-const { create_match } = require("./createMatch");
-const { define_match } = require("./updateMatch");
+const { formMatch, create_match_ID, inforPlayer } = require("./createMatch");
+const { define_match, update_match } = require("./updateMatch");
 
 class MatchMaking {
     constructor(players) {
@@ -38,10 +38,8 @@ class MatchMaking {
     simulateMatch(player1, player2) {
 
         // create match + run
-        create_match(player1, 'tournament');
+        create_match_tournament(player1, player2);
         const   match = define_match(player1);
-        match.listInvite.push(player2);
-        accept_invitation_to_play(player2, player1);
         setup_game(match);
 
         // get winner
@@ -55,6 +53,39 @@ class MatchMaking {
             }
         }, 1000);
     }
+}
+
+function    create_match_tournament(player1, player2)
+{
+    const   match = new formMatch();
+    match.id = create_match_ID();
+    match.mode = 'tournament';
+
+    for (let i = 0; i < 4; i++)
+    {
+        let   player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+        if (i === 0) {
+            player = new inforPlayer(player1.id, player1.username, player1.avatarPath, player1.level, 'player');
+        }
+        else if (i === 1) {
+            player = new inforPlayer(player2.id, player2.username, player2.avatarPath, player2.level, 'player');
+        }
+        match.listPlayer.push(player);
+    }
+
+    const   user = define_user_by_ID(player1.id);
+    const   user2 = define_user_by_ID(player2.id);
+
+    user.matchID = match.id;
+    user2.matchID = match.id;
+
+    user.status = 'creating match';
+    user2.status = 'creating match';
+
+    match.admin = match.listPlayer[0];
+    webSocket.listMatch.push(match);
+
+    update_match(user);
 }
 
 const   listPlayer = [];
