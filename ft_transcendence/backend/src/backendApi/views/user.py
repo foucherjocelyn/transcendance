@@ -82,12 +82,39 @@ class UserViewSet(viewsets.ModelViewSet):
         payload = json.dumps(data)
         headers = {"Content-Type": "application/json"}
         response = requests.request("POST", url, headers=headers, data=payload)
-        logger.info(response.json())
         access_token = response.json().get("access_token")
-        exprires_in = response.json().get("expires_in")
+        logger.info(access_token)
         if not access_token:
             return Response({"error": "Failed to get access token"}, status=400)
-        return Response({"access_token": access_token}, status=200)
+        # Get user data from 42 API
+        url = "https://api.intra.42.fr/v2/me"
+        headers = {"Authorization": f"Bearer {access_token}"}
+        response = requests.request("GET", url, headers=headers)
+        logger.info(response.json())
+        user_data = response.json().get("cursus_users")[0].get("user")
+        if not user_data:
+            return Response({"error": "Failed to get user data"}, status=400)
+        id42 = user_data.get("id")
+        email42 = user_data.get("email")
+        username = user_data.get("login")
+        first_name = user_data.get("first_name")
+        last_name = user_data.get("last_name")
+        # Create user or update user data
+        user, created = User.objects.get_or_create(
+            id42=id42,
+            username=username,
+            email=email42,
+            first_name=first_name,
+            last_name=last_name,
+        )
+        token = JwtTokenGenerator.generateJwtToken(user.id)
+        return Response(
+            {
+                "message": f"User {user.username} login",
+                "access": token.key,
+            },
+            status=200,
+        )
 
     @action(detail=True, methods=["post"])
     def logOut(self, request):
