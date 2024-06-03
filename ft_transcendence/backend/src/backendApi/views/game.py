@@ -1,6 +1,6 @@
 from backendApi.serializers.game import GameSerializer
 from backendApi.serializers.game_score import GameScoreSerializer
-from backendApi.models import Game, User, GameScore
+from backendApi.models import Game, User, GameScore, Tournament
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -189,6 +189,16 @@ class GameViewSet(viewsets.ModelViewSet):
         scores = GameScore.objects.filter(player=user)
         serializer = GameScoreSerializer(scores, many=True)
         return Response(serializer.data, status=200)
+    
+    @action(detail=True, methods=["get"])
+    def listGamesByTournament(self, request, tournament_id):
+        try:
+            tournament = Tournament.objects.get(id=tournament_id)
+        except Tournament.DoesNotExist:
+            return Response({"error": "Tournament not found"}, status=404)
+        games = Game.objects.filter(tournament=tournament)
+        serializer = self.get_serializer(games, many=True)
+        return Response(serializer.data, status=200)
 
     def get_permissions(self):
         if self.action in [
@@ -202,6 +212,7 @@ class GameViewSet(viewsets.ModelViewSet):
             "levelUpWinner",
             "listAllGamesByUser",
             "listAllScoresByUser",
+            "listGamesByTournament",
         ]:
             self.permission_classes = [IsAuthenticated]
         else:
