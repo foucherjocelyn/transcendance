@@ -9,7 +9,7 @@ class MatchMaking {
         this.matches = [];
     }
 
-    generateMatches() {
+    async generateMatches() {
         if (this.players.length === 1) {
             return this.players[0];
         }
@@ -20,7 +20,7 @@ class MatchMaking {
             const player1 = this.players[i];
             const player2 = this.players[i + 1] || null;
             this.matches.push([player1, player2]);
-            const winner = this.simulateMatch(player1, player2);
+            const winner = await this.simulateMatch(player1, player2);
             winners.push(winner);
         }
 
@@ -35,7 +35,7 @@ class MatchMaking {
         }
     }
 
-    simulateMatch(player1, player2) {
+    async simulateMatch(player1, player2) {
 
         // create match + run
         create_match_tournament(player1, player2);
@@ -43,15 +43,29 @@ class MatchMaking {
         setup_game(match);
 
         // get winner
-        const intervalId = setInterval(function()
-        {
-            if (match.pongGame.gameOver)
-            {
-                clearInterval(intervalId);
-                const   winner = match.result[0]
-                return winner;
-            }
-        }, 1000);
+        function checkGameOver() {
+            return new Promise((resolve) => {
+                const intervalId = setInterval(() => {
+                    if (match.pongGame.gameOver) {
+                        clearInterval(intervalId);
+                        const winner = match.result[0];
+                        resolve(winner);
+                    }
+                }, 1000);
+            });
+        }
+        
+        async function getWinner() {
+            const winner = await checkGameOver();
+            return winner;
+        }
+        try {    
+            const winner = await getWinner();
+            return winner
+        }
+        catch(e) {
+            console.log(e);
+        }
     }
 }
 
@@ -90,7 +104,7 @@ function    create_match_tournament(player1, player2)
 
 const   listPlayer = [];
 
-function    join_the_tournament(user)
+async function    join_the_tournament(user)
 {
     listPlayer.push(user);
     if (listPlayer.length !== 2) {
@@ -98,7 +112,7 @@ function    join_the_tournament(user)
     }
 
     const matchMaker = new MatchMaking(listPlayer);
-    const champion = matchMaker.generateMatches();
+    const champion = await matchMaker.generateMatches();
     console.log(`The champion is: ${champion}`);
 }
 

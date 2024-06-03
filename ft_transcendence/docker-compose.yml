@@ -65,29 +65,29 @@ services:
             - transcendence
         restart: always
     
-    nginx-back:
-        image: nginx
-        build: ./nginx-back
-        container_name: nginx-back
-        depends_on:
-            - backend
-        env_file:
-            - .env
-        ports:
-            - "443:443"
-        volumes:
-            - ./ssl:/etc/nginx/ssl
-        networks:
-            - transcendence
-        restart: always
+    # nginx-back:
+    #     image: nginx
+    #     build: ./nginx-back
+    #     container_name: nginx-back
+    #     depends_on:
+    #         - backend
+    #     env_file:
+    #         - .env
+    #     ports:
+    #         - "443:443"
+    #     volumes:
+    #         - ./ssl:/etc/nginx/ssl
+    #     networks:
+    #         - transcendence
+    #     restart: always
 
 volumes:
     postgres-data:
         driver: local
     backend:
         driver: local
-    nginx-back:
-        driver: local
+    # nginx-back:
+    #     driver: local
     webserver:
         driver: local
 

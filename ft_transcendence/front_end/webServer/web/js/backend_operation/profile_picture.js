@@ -5,7 +5,7 @@ export async function uploadAvatar(formData) {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/profile/me/avatar", {
+		const response = await fetch("https://localhost:8000/api/v1/profile/me/avatar", {
 			method: "POST",
 			body: formData,
 			headers: {
@@ -29,7 +29,7 @@ export async function getAvatar(elemImageId) {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/profile/me/avatar", {
+		const response = await fetch("https://localhost:8000/api/v1/profile/me/avatar", {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
