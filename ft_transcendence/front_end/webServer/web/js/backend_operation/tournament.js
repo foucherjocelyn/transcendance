@@ -86,9 +86,43 @@ export async function	joinTournament(tour_id)
 		console.log("Token is null");
 		return;
 	}
-	//await createAlias(player_id);
 	try {
 		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/join`, {
+			method: "POST",
+			headers: {
+				"Authorization": `Bearer ${f_token}`
+			}
+		})
+		if (!r.ok)
+		{
+			console.log("joinTournament: Client/Server error");
+			return;
+			//throw new Error("fetch POST op failed");
+		}
+		const data = await r.json();
+		console.log("joinTournament data:");
+		console.log(data);
+		if (data !== undefined)
+		{
+			return data;
+		}
+		console.log("-");
+	} catch(error) {
+		console.error("joinTournament: ", error);
+	}
+}
+
+export async function	leaveTournament(tour_id)
+{
+	console.log("-Joining a tournament");
+	let f_token = getCookie("token");
+	if (f_token === null || f_token === "")
+	{
+		console.log("Token is null");
+		return;
+	}
+	try {
+		const r = await fetch(`https://localhost/api/v1/tournament/${tour_id}/leave`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
