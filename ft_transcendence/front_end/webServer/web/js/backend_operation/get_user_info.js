@@ -8,7 +8,7 @@ export async function getUserById(user_id) {
 		return;
 	}
 	try {
-		const response = await fetch(`https://localhost/api/v1/users/${user_id}`, {
+		const response = await fetch(`https://localhost:8000/api/v1/users/${user_id}`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -35,7 +35,7 @@ export async function getUserIdByUsername(username) {
 		return;
 	}
 	try {
-		const response = await fetch(`https://localhost/api/v1/users/id/${username}`, {
+		const response = await fetch(`https://localhost:8000/api/v1/users/id/${username}`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -64,7 +64,7 @@ export async function getMyInfo() {
 		return;
 	}
 	try {
-		const response = await fetch("https://localhost/api/v1/profile/me", {
+		const response = await fetch("https://localhost:8000/api/v1/profile/me", {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -102,7 +102,7 @@ export async function getListUsers() {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/users", {
+		const response = await fetch("https://localhost:8000/api/v1/users", {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",
@@ -127,7 +127,7 @@ export const getListFriends = async () => {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/user/friendship", {
+		const response = await fetch("https://localhost:8000/api/v1/user/friendship", {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",
@@ -150,7 +150,7 @@ export const getListMutedUsers = async () => {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/user/friendship/mute/list", {
+		const response = await fetch("https://localhost:8000/api/v1/user/friendship/mute/list", {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",
@@ -173,7 +173,7 @@ export async function getAllMyGames(username)
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/game/list", {
+		const response = await fetch("https://localhost:8000/api/v1/game/list", {
 			method: "POST",
 			body: JSON.stringify(username),
 			headers: {
@@ -197,7 +197,7 @@ export async function getAllMyScores(username)
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/game/score/list", {
+		const response = await fetch("https://localhost:8000/api/v1/game/score/list", {
 			method: "POST",
 			body: JSON.stringify(username),
 			headers: {
@@ -221,7 +221,7 @@ export const getAllMyGames = async () => {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/game/me", {
+		const response = await fetch("https://localhost:8000/api/v1/game/me", {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",
@@ -243,7 +243,7 @@ export const getAllMyScores = async () => {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost/api/v1/game/me/score", {
+		const response = await fetch("https://localhost:8000/api/v1/game/me/score", {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",

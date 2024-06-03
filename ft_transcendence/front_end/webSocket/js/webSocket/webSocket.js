@@ -51,9 +51,12 @@ function    handle_requirements(title, content, sender, recipient)
         else if (title === 'message') {
             send_data(title, content, sender, recipient);
         }
-        // else {
-        //     send_data(title, content, sender, recipient);
-        // }
+        else if (title === 'join the tournament') {
+            join_the_tournament(sender);
+        }
+        else {
+            send_data(title, content, sender, recipient);
+        }
     }
     else if (sender.status === 'creating match')
     {
@@ -129,6 +132,9 @@ function    check_requirements(data, socket)
     }
 }
 
+// Ignorer les erreurs de certificat pour les tests locaux
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 async function loadCertificates() {
     const key = await fs.readFile('./src/ssl/private.key');
     const cert = await fs.readFile('./src/ssl/certificate.crt');
@@ -137,35 +143,27 @@ async function loadCertificates() {
 
 async function setup_web_socket()
 {
-    // Create a simple HTTPS server
-    // const options = await loadCertificates();
-    // const server = https.createServer(options, (req, res) => {
-    //     // Do nothing for now
-    // });
+    const options = await loadCertificates();
+    const server = https.createServer(options);
 
-    // Connect WebSocket with HTTPS server
-    // const wsServer = new WebSocket.Server({ server });
-    const wsServer = new WebSocket.Server({ port: 5555, secure: true });
+    const wsServer = new WebSocket.Server({ server });
 
     wsServer.on('connection', (socket) => {
         console.log('New WebSocket connection established.');
 
-        // Handle messages from clients
         socket.on('message', (message) => {
             check_requirements(message, socket);
         });
 
-        // Handle event when client closes connection
         socket.on('close', () => {
             disconnect(socket);
             console.log('WebSocket connection closed.');
         });
     });
 
-    // Run server on port 5555
-    // const PORT = process.env.PORT || 5555;
-    // server.listen(PORT, () => console.log(`WebSocket server running on port ${PORT}`));
-    console.log(`WebSocket server running on port 5555`)
+    server.listen(5555, () => {
+        console.log('HTTPS and WebSocket server running on port 5555');
+    });
 }
 
 setup_web_socket();
@@ -185,4 +183,4 @@ const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
-
+const { join_the_tournament } = require("../match/tournament");

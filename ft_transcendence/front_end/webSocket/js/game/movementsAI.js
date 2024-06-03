@@ -5,12 +5,10 @@ function    vertical_movement_AI(paddle, pongGame)
 {
     const   directionBall = (pongGame.ball.vector.y < 0) ? 'top' : 'bottom';
 
-    if (pongGame.ball.position.z < paddle.position.z && directionBall === 'top')
-    {
+    if (pongGame.ball.position.z < paddle.position.z && directionBall === 'top') {
         vertical_movement(paddle, -1, pongGame);
     }
-    else if (pongGame.ball.position.z > paddle.position.z && directionBall === 'bottom')
-    {
+    else if (pongGame.ball.position.z > paddle.position.z && directionBall === 'bottom') {
         vertical_movement(paddle, 1, pongGame);
     }
 
@@ -21,12 +19,10 @@ function    horizontal_movement_AI(paddle, pongGame)
 {
     const   directionBall = (pongGame.ball.vector.x < 0) ? 'left' : 'right';
 
-    if (pongGame.ball.position.x < paddle.position.x && directionBall === 'left')
-    {
+    if (pongGame.ball.position.x < paddle.position.x && directionBall === 'left') {
         horizontal_movement(paddle, -1, pongGame);
     }
-    else if (pongGame.ball.position.x > paddle.position.x && directionBall === 'right')
-    {
+    else if (pongGame.ball.position.x > paddle.position.x && directionBall === 'right') {
         horizontal_movement(paddle, 1, pongGame);
     }
 
@@ -42,12 +38,10 @@ function    movement_AI(pongGame)
 
         if (paddle !== undefined && player.type === 'AI')
         {
-            if (paddle.name === 'left paddle' || paddle.name === 'right paddle')
-            {
+            if (paddle.name === 'left paddle' || paddle.name === 'right paddle') {
                 vertical_movement_AI(paddle, pongGame);
             }
-            else
-            {
+            else {
                 horizontal_movement_AI(paddle, pongGame);
             }
         }

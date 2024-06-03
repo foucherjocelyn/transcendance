@@ -49,9 +49,9 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'message') {
             receiveMessage(receivedData);
         }
-        if (receivedData.title === 'update list users') {
+        if (receivedData.title === 'update list connection') {
             client.listUser = receivedData.content;
-            // console.table(client.inforUser);
+            // console.table('-------------> nbr connections: ' + client.listUser.length);
         }
         if (receivedData.title === 'invite to play') {
             notice_invitation_play(receivedData);
@@ -122,12 +122,12 @@ function    get_data_from_server(socket)
 
 function    connection()
 {
-    // Connect to web socket
-    const socket = new WebSocket("ws://127.0.0.1:5555");
-    // const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    // const socket = new WebSocket(`${protocol}://127.0.0.1:5555`);
-    
-    socket.onopen = function() {
+    // Connect to WebSocket with secure connection
+    const protocol = (window.location.protocol === 'https:') ? 'wss' : 'ws';
+    const socket = new WebSocket(`${protocol}://localhost:5555`);
+
+    socket.onopen = function()
+    {
         console.log('Connected to WebSocket server');
         get_data_from_server(socket);
         authCheck();

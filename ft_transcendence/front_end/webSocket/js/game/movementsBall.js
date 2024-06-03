@@ -1,10 +1,13 @@
+const { send_to_DB } = require("../dataToDB/dataToDB");
 const { send_data } = require("../webSocket/dataToClient");
 const { check_collision } = require("./collision");
 const { define_paddle } = require("./createPaddle");
 const { create_score } = require("./createScore");
 
-function    last_touch(lostPaddle, pongGame, gameSettings)
+function    last_touch(lostPaddle, match)
 {
+    const   pongGame = match.pongGame;
+
     pongGame.listTouch = pongGame.listTouch.reverse();
     for (let i = 0; i < pongGame.listTouch.length; i++)
     {
@@ -13,7 +16,8 @@ function    last_touch(lostPaddle, pongGame, gameSettings)
         {
             const   player = pongGame.listPlayer[paddle.id];
             player.score++;
-            create_score(paddle, pongGame, gameSettings);
+            create_score(paddle, match);
+            send_to_DB(`/api/v1/game/${match.id}/score`, match, player);
             return ;
         }
     }
@@ -32,8 +36,9 @@ function    handled_anyone_touching_ball(lostPaddle, pongGame)
     }
 }
 
-function    check_lost_point(pongGame, gameSettings)
+function    check_lost_point(match)
 {
+    const   pongGame = match.pongGame;
     const   touch = pongGame.ball.collision.who;
     
     let   paddle = define_paddle(touch.id, pongGame);
@@ -49,10 +54,11 @@ function    check_lost_point(pongGame, gameSettings)
         paddle = pongGame.listPaddle[i];
         if (border.name === touch.name && paddle !== undefined)
         {
-            if (pongGame.listTouch.length === 0)
+            if (pongGame.listTouch.length === 0) {
                 handled_anyone_touching_ball(paddle, pongGame);
+            }
 
-            last_touch(paddle, pongGame, gameSettings);
+            last_touch(paddle, match);
             pongGame.lostPoint = true;
             return ;
         }
@@ -120,16 +126,15 @@ function    increase_ball_speed(ball, pongGame)
     let speedY = (ball.vector.y > 0) ? ball.vector.y : -ball.vector.y;
     let speed = (speedX > speedY) ? speedX : speedY;
 
-    // console.log('max: ' + pongGame.maxSpeed);
-    // console.log(speed + pongGame.ballSpeed);
-
     pongGame.ballSpeed += 0.01;
-    if (speed + pongGame.ballSpeed > pongGame.maxSpeed)
+    if (speed + pongGame.ballSpeed > pongGame.maxSpeed) {
         pongGame.ballSpeed = pongGame.maxSpeed - speed;
+    }
 }
 
-function    movements_ball(pongGame, gameSettings)
+function    movements_ball(match)
 {
+    const   pongGame = match.pongGame;
     const   ball = pongGame.ball;
 
     let speedX = ball.vector.x;
@@ -138,7 +143,7 @@ function    movements_ball(pongGame, gameSettings)
     check_collisions(ball, pongGame, (result) => {
         if (result)
         {
-            check_lost_point(pongGame, gameSettings);
+            check_lost_point(match);
             increase_ball_speed(ball, pongGame);
             
             const   distance = ball.collision.distance;
