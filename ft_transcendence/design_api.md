@@ -105,6 +105,7 @@
     -   [Leave a tournament](#leave-a-tournament)
     -   [Delete a tournament](#delete-a-tournament)
     -   [Update the champion of a tournament](#update-the-champion-of-a-tournament)
+    -   [List all games in a tournament](#list-all-games-in-a-tournament)
 
 -   **Notifications**
     -   [Create a new notification](#create-a-new-notification)
@@ -1214,6 +1215,19 @@ authorization Bearer <token>
 
 -   The updated tournament object ([Tournament](#tournament))
 
+## List all games in a tournament
+
+Get information of all games in a tournament. Every on authenticated user is allowed access.
+
+```typescript
+GET /api/v1/tournament/<tournament_id>/game/list
+authorization Bearer <token>
+```
+
+### Return
+
+-   A list of game objects ([Game](#game))
+
 # Notifications
 
 ## Create a new notification
@@ -1379,7 +1393,7 @@ authorization Bearer <token>
     owner_username: string,
     start_time: DateTime,
     max_players: number,
-    status: "registering" | "progressing",
+    status: "registering" | "progressing" | "finished",
     player_usernames: string[],
 	champion_username: string,
     created_at: DateTime,
