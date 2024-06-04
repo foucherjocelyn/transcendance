@@ -133,6 +133,44 @@
 	height: 100%;
 }
 
+#htb_create_button {
+	color: white;
+}
+
+#htb_create_menu {
+	position: absolute;
+	top: 15%;
+	left: 30%;
+	background-color: gray;
+	border-radius: 4px;
+	height: 180px;
+	width: 250px;
+}
+
+#hcm_create_menu_close {
+	background-image: url(../../img/icon/close.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-color: transparent;
+	height: 20px;
+	width: 20px;
+	border: none;
+	margin-left: 90%;
+}
+
+#hcm_create_menu_create {
+	position: relative;
+	color: green;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#hcm_name, #hcm_description, #hcm_start {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
 [id^="tour_detailsbox"] {
 	position: absolute;
 	height: 200px;

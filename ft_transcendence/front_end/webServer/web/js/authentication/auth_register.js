@@ -1,6 +1,7 @@
 import { to_connectForm } from "./auth_connect.js";
 import { loadSpinner } from "./spinner.js"
 import { postUser } from "../backend_operation/authentication.js"
+import { notice } from "./auth_main.js";
 
 export async function sendForm()
 {
@@ -67,9 +68,9 @@ async function load_regisForm(callback)
         <hr id="r_line2">
 	<p id="rb_signin" name="rb_signin" class="textlink">Already have an account ?</
 p>
-</div>
-</div>
-</div>
+			</div>
+		</div>
+	</div>
 <div class="r_successinfo hide"></div>`;
 	document.getElementById("r_registration").addEventListener("submit", function(event) { event.preventDefault(); sendForm(); });
 	document.getElementById("rb_signin").addEventListener("click", to_connectForm);
