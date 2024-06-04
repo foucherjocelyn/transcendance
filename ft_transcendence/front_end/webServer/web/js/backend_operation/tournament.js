@@ -34,15 +34,6 @@ export async function	getTournamentsList()
 
 export async function	createTournament(tour_info)
 {
-/*
-	//tour_info requires:
-name: string,
-description: string, // optional
-start_date: Date, // Format: YYYY-MM-DD
-end_date: Date, // Format: YYYY-MM-DD
-status: "upcoming" | "ongoing" | "completed", // optional
-will return a tournament object
-*/
 //	console.log("-creating a new tournament");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "")
@@ -55,7 +46,9 @@ will return a tournament object
 			method: "POST",
 			body: JSON.stringify(tour_info),
 			headers: {
-				"Authorization": `Bearer ${f_token}`
+				"Accept": "application/json",
+				"Authorization": `Bearer ${f_token}`,
+				"Content-type": "application/json; charset=UTF-8",
 			}
 		})
 		if (!r.ok)

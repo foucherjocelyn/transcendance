@@ -2,7 +2,7 @@ import { loadSpinner } from "../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { noticeInvitePlayer } from "./home_game.js";
 import { loadChat } from "../chat/load-chat.js";
-import { getTournamentsList } from "../backend_operation/tournament.js";
+import { createTournament, getTournamentsList } from "../backend_operation/tournament.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
@@ -63,6 +63,32 @@ function searchLabel(tour_list, search_value) {
 	}
 }
 
+async function create_ATournament() {
+	document.getElementById("htb_create").innerHTML = `
+	<div id="htb_create_menu">
+		<input type="button" id="hcm_create_menu_close">
+		<br>
+		<input id="hcm_name" type="text" placeholder="Name" required>
+		<input id="hcm_description" type="text" placeholder="Description">
+		<input id="hcm_start" type="date" min="2020-01-01" max="2050-12-31" required>
+		<br>
+		<input id="hcm_create_menu_create" type="button" value="Create" class="button-img">
+	</div>
+`;
+	document.getElementById(`hcm_create_menu_create`).addEventListener("click", () => {
+		console.log(document.getElementById("hcm_start").value);
+		let newtour_obj = {
+			name: document.getElementById("hcm_name").value,
+			description: document.getElementById("hcm_description").value,
+			start_time: document.getElementById("hcm_start").value,
+		};
+		createTournament(newtour_obj);
+		document.getElementById(`htb_create_menu`).outerHTML = ``;
+		to_tournament("true");
+		});
+	document.getElementById(`hcm_create_menu_close`).addEventListener("click", () => { document.getElementById(`htb_create_menu`).outerHTML = ``; });
+}
+
 async function drawTournament(callback) {
 	document.getElementById("frontpage").outerHTML =
 		`<div id="frontpage">
@@ -91,6 +117,8 @@ async function drawTournament(callback) {
             <tbody id="htb_info">
             </tbody>
           </table>
+		  <input id ="htb_create_button" class="button-img" type="button" value="Create tournament">
+		  <div id="htb_create"></div>
 				</div>
 			</div>
 			<br>
@@ -106,6 +134,9 @@ async function drawTournament(callback) {
 			addLabel(tour_list, i);
 	}
 	upperPanelEventListener("tournament");
+	document.getElementById("htb_create_button").addEventListener("click", () => {
+		create_ATournament();
+	});
 	document.getElementById("htb_dropdown").addEventListener("change", () => {
 		sortThisTable(tour_list, document.querySelector('#htb_dropdown').value);
 	});
@@ -116,8 +147,8 @@ async function drawTournament(callback) {
 }
 
 function detailsTournament(tour_obj) {
-	console.log("Here is the tour_obj");
-	console.log(tour_obj);
+	//console.log("Here is the tour_obj");
+	//console.log(tour_obj);
 	let player_nb = tour_obj.player_usernames.length;
 	document.getElementById("tour_expanddetails").innerHTML = `
 <div id="tour_detailsbox">
