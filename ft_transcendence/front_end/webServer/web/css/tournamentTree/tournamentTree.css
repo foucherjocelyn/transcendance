@@ -1,7 +1,7 @@
 #tournament_tree {
     position: absolute;
-    width: 50vw;
-    height: 50vh;
+    //width: 50vw;
+    //height: 50vh;
 }
 
 .bracket {
@@ -94,6 +94,14 @@
     left: 11px;
 }
 
+.match-bye {
+    position: relative;
+    top: 50%;
+    background: #36404e;
+    width: 240px;
+    height: 1px;
+}
+
 .match-lines.alt {
     left: -12px;
 }
@@ -123,7 +131,7 @@
 }
 
 .round:nth-child(4) .match-lines .line.two {
-    height: 262px;
+    height: 352px;
 }
 
 .round:nth-child(5) .match-lines .line.two {
@@ -171,13 +179,6 @@
     background: #182026;
     border-color: #232c36;
     color: #6b798c;
-}
-
-.bracket .match-bye {
-    background: #232c36;
-    color: #e3e8ef;
-    border-color: #36404e;
-    z-index: 1;
 }
 
 .bracket .winner-top .match-top,
