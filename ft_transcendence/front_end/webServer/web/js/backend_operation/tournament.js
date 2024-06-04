@@ -90,7 +90,6 @@ export async function	joinTournament(tour_id)
 		{
 			console.log("joinTournament: Client/Server error");
 			return;
-			//throw new Error("fetch POST op failed");
 		}
 		const data = await r.json();
 		console.log("joinTournament data:");
@@ -105,9 +104,8 @@ export async function	joinTournament(tour_id)
 	}
 }
 
-export async function	leaveTournament(tour_id)
+export async function	endTournament(tour_id)
 {
-	console.log("-Joining a tournament");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "")
 	{
@@ -115,20 +113,56 @@ export async function	leaveTournament(tour_id)
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost/api/v1/tournament/${tour_id}/leave`, {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}`, {
 			method: "POST",
 			headers: {
-				"Authorization": `Bearer ${f_token}`
+				"Accept": "application/json",
+				"Authorization": `Bearer ${f_token}`,
+				"Content-type": "application/json; charset=UTF-8",
 			}
 		})
 		if (!r.ok)
 		{
-			console.log("joinTournament: Client/Server error");
+			console.log("deleteTournament: Client/Server error");
 			return;
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await r.json();
-		console.log("joinTournament data:");
+		console.log("deleteTournament data:");
+		console.log(data);
+		if (data !== undefined)
+		{
+			return data;
+		}
+//		console.log("-");
+	} catch(error) {
+		console.error("deleteTournament: ", error);
+	}
+}
+
+export async function	leaveTournament(tour_id)
+{
+	console.log("-Leaving a tournament");
+	let f_token = getCookie("token");
+	if (f_token === null || f_token === "")
+	{
+		console.log("Token is null");
+		return;
+	}
+	try {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/leave`, {
+			method: "POST",
+			headers: {
+				"Authorization": `Bearer ${f_token}`,
+			}
+		})
+		if (!r.ok)
+		{
+			console.log("leaveTournament: Client/Server error");
+			return;
+		}
+		const data = await r.json();
+		console.log("leaveTournament data:");
 		console.log(data);
 		if (data !== undefined)
 		{
@@ -136,7 +170,79 @@ export async function	leaveTournament(tour_id)
 		}
 		console.log("-");
 	} catch(error) {
-		console.error("joinTournament: ", error);
+		console.error("leaveTournament: ", error);
+	}
+}
+
+export async function	deleteTournament(tour_id)
+{
+	let f_token = getCookie("token");
+	if (f_token === null || f_token === "")
+	{
+		console.log("Token is null");
+		return;
+	}
+	try {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}`, {
+			method: "DELETE",
+			headers: {
+				"Authorization": `Bearer ${f_token}`
+			}
+		})
+		if (!r.ok)
+		{
+			console.log("deleteTournament: Client/Server error");
+			return;
+			//throw new Error("fetch POST op failed");
+		}
+		const data = await r.json();
+		console.log("deleteTournament data:");
+		console.log(data);
+		if (data !== undefined)
+		{
+			return data;
+		}
+//		console.log("-");
+	} catch(error) {
+		console.error("deleteTournament: ", error);
+	}
+}
+
+export async function	setChampionTournament(tour_username)
+{
+//	console.log("-creating a new tournament");
+	let f_token = getCookie("token");
+	if (f_token === null || f_token === "")
+	{
+		console.log("Token is null");
+		return;
+	}
+	try {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/champion/update`, {
+			method: "POST",
+			body: JSON.stringify(tour_username),
+			headers: {
+				"Accept": "application/json",
+				"Authorization": `Bearer ${f_token}`,
+				"Content-type": "application/json; charset=UTF-8",
+			}
+		})
+		if (!r.ok)
+		{
+			console.log("setChampionTournament: Client/Server error");
+			return;
+			//throw new Error("fetch POST op failed");
+		}
+		const data = await r.json();
+		console.log("setChampionTournament data:");
+		console.log(data);
+		if (data !== undefined)
+		{
+			return data;
+		}
+//		console.log("-");
+	} catch(error) {
+		console.error("setChampionTournament: ", error);
 	}
 }
 
