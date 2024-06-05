@@ -32,6 +32,11 @@
     margin-bottom: 1em;
 }
 
+#twr_admin_delete_button {
+    margin-top: auto;
+    margin-bottom: 0.5em;
+}
+
 #twr_ready, #twr_leave {
     margin-top: auto;
 }
