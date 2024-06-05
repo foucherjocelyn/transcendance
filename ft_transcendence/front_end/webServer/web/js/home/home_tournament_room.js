@@ -7,7 +7,7 @@ import { deleteTournament, joinTournament, leaveTournament } from "../backend_op
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { notice } from "../authentication/auth_main.js";
-import { to_tournament } from "./home_tournament.js";
+import { formatDate, to_tournament } from "./home_tournament.js";
 
 async function checkTournamentAvailability(tour_obj) {
 	console.log("tour_obj start here");
@@ -55,6 +55,16 @@ export async function aliasJoinTournament(tour_obj) {
 		notice("An error occured when trying to join this tournament", 3, "#d1060d");
 }
 
+function	loadTournamentAdminPanel(tour_obj)
+{
+	document.querySelector("#twr_admin_panel").innerHTML = `
+		<input type="button" id="twr_admin_delete_button" class="button-img" value="Delete Tournament">
+	`;
+	document.getElementById("twr_admin_delete_button").addEventListener("click", () => {
+		deleteTournament(tour_obj.id);
+	});
+}
+
 async function drawWaitingRoom(callback, tour_obj) {
 	document.getElementById("frontpage").outerHTML =
 		`<div id="frontpage">
@@ -64,11 +74,12 @@ async function drawWaitingRoom(callback, tour_obj) {
 				<div id="twr_board">
 					<p id="twr_tour_name">Tournament Name :${tour_obj.name}</p>
 					<p id="twr_tour_description">Description :${tour_obj.description}</p>
-					<p id="twr_tour_start">Starting date :${tour_obj.start_time}</p>
+					<p id="twr_tour_start">Starting date :${formatDate(tour_obj.start_time, 1)}</p>
 					<p id="twr_tour_player_count">Registered players :${tour_obj.player_usernames.length}/${tour_obj.max_players}</p>
 					<div id="twr_tree">
 						//Tree here
 					</div>
+					<div id="twr_admin_panel"></div>
 					<input type="button" id="twr_ready" class="button-img" value="Ready">
 					<br>
 					<input type="button" id="twr_leave" class="button-img" value="Leave tournament">
@@ -81,6 +92,8 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${noticeInvitePlayer()}
 		</div>
 `;
+	if (tour_obj.owner_username === getCookie("username"))
+		loadTournamentAdminPanel(tour_obj);
 	document.querySelector("#twr_back").addEventListener("click", () => {
 		to_tournament();
 	});
