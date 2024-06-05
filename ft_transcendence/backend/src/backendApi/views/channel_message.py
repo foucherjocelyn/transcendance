@@ -1,6 +1,7 @@
 from backendApi.models import Channel, ChannelMessage, User, ChannelMutedUser
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from backendApi.permissions import IsWebSocketServer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from backendApi.serializers.channel_message import ChannelMessageSerializer
@@ -96,7 +97,7 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
             "listMessages",
             "listLastMessages",
         ]:
-            permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
-            permission_classes = [IsAdminUser]
+            self.permission_classes = [IsAdminUser]
         return super().get_permissions()

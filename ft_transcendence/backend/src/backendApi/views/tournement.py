@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.utils import timezone
 from rest_framework.decorators import action
 from backend.settings import logger
+from backendApi.permissions import IsWebSocketServer
 
 
 class TournamentViewSet(viewsets.ModelViewSet):
@@ -192,7 +193,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
             "deleteTournament",
             "updateChampion",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from backendApi.permissions import IsWebSocketServer
 
 
 class UserMessageViewSet(viewsets.ModelViewSet):
@@ -124,7 +125,7 @@ class UserMessageViewSet(viewsets.ModelViewSet):
             "listMessagesReceivedFromFriend",
             "updateMessageContentToFriend",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

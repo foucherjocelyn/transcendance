@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
+from backendApi.permissions import IsWebSocketServer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from utils.hash import verify_password
@@ -422,7 +423,7 @@ class ChannelViewSet(viewsets.ModelViewSet):
             "inviteMember",
             "updateInviteStatus",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

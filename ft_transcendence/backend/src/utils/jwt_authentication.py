@@ -5,6 +5,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
 from .jwt_token import JwtTokenGenerator
+from backend.settings import WEBSOCKET_TOKEN
 
 
 class JwtAuthentication(BaseAuthentication):
@@ -19,6 +20,8 @@ class JwtAuthentication(BaseAuthentication):
             key = authorization.split(" ")[1]
             if prefix != "Bearer":
                 raise AuthenticationFailed("Invalid prefix")
+            if key == WEBSOCKET_TOKEN:
+                return None
             decoded_token = JwtTokenGenerator.decodedJwtToken(key)
             sub = decoded_token.get("sub")
             userId = decoded_token.get("userId")

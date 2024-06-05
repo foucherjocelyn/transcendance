@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from backendApi.permissions import IsWebSocketServer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from backendApi.models import Notification, User
@@ -59,7 +60,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
             "getAllNotifications",
             "readNotification",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

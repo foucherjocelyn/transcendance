@@ -10,6 +10,7 @@ from django.utils.dateparse import parse_date
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from backendApi.permissions import IsWebSocketServer
 from rest_framework.response import Response
 
 
@@ -303,7 +304,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             "listFriends",
             "listMutedUser",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

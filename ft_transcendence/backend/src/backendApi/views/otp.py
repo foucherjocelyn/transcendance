@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
+from backendApi.permissions import IsWebSocketServer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 import qrcode
@@ -106,7 +107,7 @@ class OtpViewSet(viewsets.ModelViewSet):
         if self.action in ['postOtpStatus']:
             self.permission_classes = [AllowAny]
         elif self.action in ['getOtpStatus', 'switchOtpStatus', 'getOtpCode', 'checkOtpCode', 'getQRcode']:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

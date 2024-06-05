@@ -15,6 +15,7 @@ import requests
 from ..models import Otp, User, Token
 from ..serializers.user import UserSerializer
 from backend.settings import logger
+from backendApi.permissions import IsWebSocketServer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -222,7 +223,7 @@ class UserViewSet(viewsets.ModelViewSet):
             "isAdmin",
             "updateStatus",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()
