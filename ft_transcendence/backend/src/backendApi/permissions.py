@@ -1,6 +1,7 @@
 from rest_framework import permissions
 from .models import Channel, ChannelInvitedUser
 from backend.settings import WEBSOCKET_TOKEN
+from rest_framework.permissions import IsAuthenticated
 
 
 class IsChannelAdmin(permissions.BasePermission):
@@ -93,8 +94,10 @@ class IsChannelMember(permissions.BasePermission):
 class IsWebSocketServer(permissions.BasePermission):
     def has_permission(self, request, view):
         bearerToken = request.headers.get("Authorization", "").split(" ")[-1]
-        if not bearerToken:
-            return False
-        if bearerToken == WEBSOCKET_TOKEN:
+        if bearerToken and bearerToken == WEBSOCKET_TOKEN:
             return True
         return False
+
+class IsAuthenticatedOrIsWebSocketServer(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return IsAuthenticated().has_permission(request, view) or IsWebSocketServer().has_permission(request, view)

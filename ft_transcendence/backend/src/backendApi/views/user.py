@@ -15,7 +15,8 @@ import requests
 from ..models import Otp, User, Token
 from ..serializers.user import UserSerializer
 from backend.settings import logger
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
+from django.contrib.auth.models import AnonymousUser
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -120,6 +121,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def logOut(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         # Update user status to 'offline'
         user.status = "offline"
         user.save()
@@ -134,12 +137,16 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def getMe(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=200)
 
     @action(detail=True, methods=["put"])
     def updateMe(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         # Update user data
         serializer = self.get_serializer(user, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -151,6 +158,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def uploadAvatarPicture(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         avatar = request.FILES.get("avatar")
         if avatar:
             avatarPath = default_storage.save(
@@ -165,6 +174,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def getAvatarPicture(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         avatarPath = user.avatarPath
         if avatarPath:
             return FileResponse(default_storage.open(avatarPath, "rb"))
@@ -190,6 +201,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def isAdmin(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if user.is_superuser:
             return Response({"isAdmin": True}, status=200)
         else:
@@ -198,6 +211,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def updateStatus(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         status = request.data.get("status", None)
         if not status:
             return Response({"error": "Status not provided"}, status=400)
@@ -223,7 +238,7 @@ class UserViewSet(viewsets.ModelViewSet):
             "isAdmin",
             "updateStatus",
         ]:
-            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

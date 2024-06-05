@@ -10,7 +10,8 @@ from django.utils.dateparse import parse_date
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
 
 
@@ -24,6 +25,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def inviteFriend(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -82,6 +85,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             friendship = Friendship.objects.get(id=friendship_id)
         except Friendship.DoesNotExist:
             return Response({"error": "Friendship not found"}, status=404)
+        if isinstance(request.user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if not friendship.receiver == request.user:
             return Response(
                 {"error": "You are not the receiver of this friendship"}, status=403
@@ -100,6 +105,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listFriendshipsSent(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         friendships = Friendship.objects.filter(sender=sender)
         serializer = self.get_serializer(friendships, many=True)
         return Response(serializer.data, status=200)
@@ -108,6 +115,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listFriendshipsReceived(self, request):
         receiver = request.user
+        if isinstance(receiver, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         friendships = Friendship.objects.filter(receiver=receiver)
         serializer = self.get_serializer(friendships, many=True)
         return Response(serializer.data, status=200)
@@ -116,6 +125,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listFriends(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         friendships = Friendship.objects.filter(
             Q(sender=user) | Q(receiver=user), status="accepted"
         )
@@ -132,6 +143,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["post"])
     def banUser(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -195,6 +208,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def unbanUser(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -222,6 +237,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["post"])
     def muteUser(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -259,6 +276,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def unmuteUser(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -285,6 +304,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"])
     def listMutedUser(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         muteds = MutedUser.objects.filter(
             Q(sender=user) | Q(receiver=user), until__gte=datetime.now().date()
         )
@@ -304,7 +325,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             "listFriends",
             "listMutedUser",
         ]:
-            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

@@ -4,7 +4,7 @@ from backendApi.models import Game, User, GameScore, Tournament
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
@@ -215,7 +215,7 @@ class GameViewSet(viewsets.ModelViewSet):
             "listAllScoresByUser",
             "listGamesByTournament",
         ]:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

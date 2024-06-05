@@ -2,6 +2,7 @@ from backendApi.invalid_input import InputValidationError
 from backendApi.models import Tournament
 from django.utils import timezone
 from rest_framework import serializers
+from django.contrib.auth.models import AnonymousUser
 
 
 class TournamentSerializer(serializers.ModelSerializer):
@@ -48,8 +49,10 @@ class TournamentSerializer(serializers.ModelSerializer):
         owner = self.context["request"].user
         # Create the tournament
         tournement = Tournament.objects.create(**validated_data)
-        tournement.owner = owner
-        tournement.players.add(owner)
+        # Check if owner isn't Anonymous
+        if not isinstance(owner, AnonymousUser):
+            tournement.owner = owner
+            tournement.players.add(owner)
         # Set the status by compared to the start time
         if tournement.start_time > timezone.now():
             tournement.status = "registering"

@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from backendApi.models import Notification, User
@@ -33,6 +34,8 @@ class NotificationViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def getAllNotifications(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         notifications = Notification.objects.filter(user=user)
         serializer = self.get_serializer(notifications, many=True)
         return Response(serializer.data, status=200)
@@ -44,6 +47,8 @@ class NotificationViewSet(viewsets.ModelViewSet):
         except Notification.DoesNotExist:
             return Response({"error": "Notification not found"}, status=404)
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         # Check is the notification belongs to the user
         if notification.user != user:
             return Response(
@@ -60,7 +65,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
             "getAllNotifications",
             "readNotification",
         ]:
-            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

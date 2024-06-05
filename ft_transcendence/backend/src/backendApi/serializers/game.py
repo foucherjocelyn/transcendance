@@ -1,6 +1,6 @@
 from backendApi.invalid_input import InputValidationError
 from rest_framework import serializers
-
+from django.contrib.auth.models import AnonymousUser
 from ..models import Game, Tournament, User
 
 
@@ -65,8 +65,10 @@ class GameSerializer(serializers.ModelSerializer):
         owner = self.context["request"].user
         tournament_name = validated_data.pop("tournament_name", None)
         game = Game.objects.create(**validated_data)
-        game.owner = owner
-        game.players.add(owner)
+        # Check if owner isn't Anonymous
+        if not isinstance(owner, AnonymousUser):
+            game.owner = owner
+            game.players.add(owner)
         if tournament_name:
             try:
                 tournament = Tournament.objects.get(name=tournament_name)
@@ -74,7 +76,7 @@ class GameSerializer(serializers.ModelSerializer):
                 raise InputValidationError(detail="Tournament not found")
             game.tournament = tournament
             # Check if the owner is part of the tournament
-            if not tournament.players.filter(id=owner.id).exists():
+            if not isinstance(owner, AnonymousUser) and not tournament.players.filter(id=owner.id).exists():
                 raise InputValidationError(detail="Owner is not part of the tournament")
         game.save()
         return game

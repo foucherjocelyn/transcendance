@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
 from rest_framework.decorators import action
 import qrcode
@@ -24,6 +25,8 @@ class OtpViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getOtpStatus(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({'error': 'You are anonymous'}, status=403)
         if user is None:
             return Response({'error': 'User not found'}, status=404)
         try:
@@ -53,6 +56,8 @@ class OtpViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def switchOtpStatus(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({'error': 'You are anonymous'}, status=403)
         instance = Otp.objects.get(user=user)
         instance.otpStatus = not instance.otpStatus
         instance.save()
@@ -61,6 +66,8 @@ class OtpViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def getOtpCode(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({'error': 'You are anonymous'}, status=403)
         if user is None:
             return Response({'error': 'User not found'}, status=404)
         instance = Otp.objects.get(user=user)
@@ -70,6 +77,8 @@ class OtpViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def checkOtpCode(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({'error': 'You are anonymous'}, status=403)
         otp = request.data.get('otp')
         instance = Otp.objects.get(user=user)
         if instance.verifyOtp(otp):
@@ -80,6 +89,8 @@ class OtpViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getQRcode(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({'error': 'You are anonymous'}, status=403)
         if user is None:
             return Response({'error': 'User not found'}, status=404)
         # Generate the OTP QR code
@@ -107,7 +118,7 @@ class OtpViewSet(viewsets.ModelViewSet):
         if self.action in ['postOtpStatus']:
             self.permission_classes = [AllowAny]
         elif self.action in ['getOtpStatus', 'switchOtpStatus', 'getOtpCode', 'checkOtpCode', 'getQRcode']:
-            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

@@ -6,7 +6,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
+from django.contrib.auth.models import AnonymousUser
 
 
 class UserMessageViewSet(viewsets.ModelViewSet):
@@ -20,6 +21,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["post"])
     def sendMessageToFriend(self, request):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Receiver username not provided"}, status=400)
@@ -71,6 +74,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listMessagesSentToFriend(self, request, friend_id):
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         try:
             receiver = User.objects.get(id=friend_id)
         except User.DoesNotExist:
@@ -85,6 +90,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listMessagesReceivedFromFriend(self, request, friend_id):
         receiver = request.user
+        if isinstance(receiver, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         try:
             sender = User.objects.get(id=friend_id)
         except User.DoesNotExist:
@@ -101,6 +108,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
         message = UserMessage.objects.get(id=message_id)
         # Check if user is sender and friend is receiver
         sender = request.user
+        if isinstance(sender, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         try:
             receiver = User.objects.get(id=friend_id)
         except User.DoesNotExist:
@@ -125,7 +134,7 @@ class UserMessageViewSet(viewsets.ModelViewSet):
             "listMessagesReceivedFromFriend",
             "updateMessageContentToFriend",
         ]:
-            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

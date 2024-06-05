@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
-from backendApi.permissions import IsWebSocketServer
+from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from utils.hash import verify_password
@@ -42,6 +43,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listMyChannels(self, request):
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         channelAlls = Channel.objects.all()
         channels = []
         for channel in channelAlls:
@@ -64,6 +67,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.owner == user:
             return Response(
                 {"error": "You are not the owner of this channel"}, status=403
@@ -83,6 +88,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if (
             not channel.visibility == "public"
             and not channel.members.filter(id=user.id).exists()
@@ -107,6 +114,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         owner = request.user
+        if isinstance(owner, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.owner == owner:
             return Response(
                 {"error": "You are not the owner of this channel"}, status=403
@@ -134,6 +143,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         owner = request.user
+        if isinstance(owner, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.owner == owner:
             return Response(
                 {"error": "You are not the owner of this channel"}, status=403
@@ -160,6 +171,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if channel.members.filter(id=user.id).exists():
             return Response({"error": "You are already in this channel"}, status=400)
         # Check if the user is banned from the channel
@@ -197,6 +210,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
+        if isinstance(user, AnonymousUser):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         channel.members.remove(user)
@@ -213,6 +228,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         admin = request.user
+        if not isinstance(admin, User):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.admins.filter(id=admin.id).exists():
             return Response({"error": "You are not an admin"}, status=403)
         username = request.data.get("username", None)
@@ -260,6 +277,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         admin = request.user
+        if not isinstance(admin, User):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.admins.filter(id=admin.id).exists():
             return Response({"error": "You are not an admin"}, status=403)
         username = request.data.get("username", None)
@@ -290,6 +309,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         admin = request.user
+        if not isinstance(admin, User):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.admins.filter(id=admin.id).exists():
             return Response({"error": "You are not an admin"}, status=403)
         username = request.data.get("username", None)
@@ -333,6 +354,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         admin = request.user
+        if not isinstance(admin, User):
+            return Response({"error": "You are anonymous"}, status=403)
         if not channel.admins.filter(id=admin.id).exists():
             return Response({"error": "You are not an admin"}, status=403)
         username = request.data.get("username", None)
@@ -423,7 +446,7 @@ class ChannelViewSet(viewsets.ModelViewSet):
             "inviteMember",
             "updateInviteStatus",
         ]:
-            self.permission_classes = [IsAuthenticated, IsWebSocketServer]
+            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()
