@@ -2,6 +2,7 @@ const { webSocket, define_user_by_ID } = require("./webSocket");
 const { leave_match } = require("../match/acceptInvitationPlay");
 const { define_socket_by_user, send_data } = require("./dataToClient");
 const { isNumeric } = require("../gameSettings/checkInputSize");
+const { create_request } = require("../dataToDB/createRequest");
 
 class   connection {
     constructor(user, socket) {
@@ -10,14 +11,19 @@ class   connection {
     }
 };
 
-function    add_new_connection(inforUser, socket)
+async function    add_new_connection(userID, socket)
 {
-    if (inforUser === undefined || inforUser.id === undefined || !isNumeric(inforUser.id)) {
+    if (userID === undefined || !isNumeric(userID)) {
+        return ;
+    }
+
+    const   inforUser = JSON.parse(await create_request('GET', `/api/v1/users/${userID}`, ''));
+    if (inforUser.id === undefined) {
         return ;
     }
 
     // check same user
-    const   checkConnection = define_user_by_ID(inforUser.id);
+    const   checkConnection = define_user_by_ID(userID);
     if (checkConnection !== undefined)
     {
         // const   oldSocket = define_socket_by_user(inforUser);
@@ -31,6 +37,7 @@ function    add_new_connection(inforUser, socket)
     const   user = new connection(inforUser, socket);
     webSocket.listConnection.push(user);
     webSocket.listUser.push(inforUser);
+    
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
 }
 
