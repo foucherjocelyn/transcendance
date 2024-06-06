@@ -226,3 +226,36 @@ will return a tournament object
 		console.error("getTournamentsList: ", error);
 	};
 }
+
+
+export async function	getTournamentsGames(tournamentId)
+{
+	let f_token = getCookie("token");
+	if (f_token === null || f_token === "")
+	{
+		console.log("Token is null");
+		return;
+	}
+	try {
+//		console.log("-Listing all tournaments games");
+		const r = await fetch(`https://localhost/api/v1/tournament/${tournamentId}/game/list`, {
+			method: "GET",
+			headers: {
+				"Authorization": `Bearer ${f_token}`
+			}
+		})
+		if (!r.ok)
+		{
+			console.log("getTournamentsGames: Client/Server error");
+			return;
+			//throw new Error("fetch POST op failed");
+		}
+		const data = await r.json();
+		if (data !== undefined)
+			return (data);
+//		console.log("-");
+	} catch(error)
+	{
+		console.error(`error caught: ${error}`);
+	}
+}

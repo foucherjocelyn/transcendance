@@ -1,4 +1,6 @@
-export const renderTournamentTree = (tournament) => {
+import { getTournamentsGames } from "../backend_operation/tournament.js";
+
+export const renderTournamentTree = async (tournament) => {
     document.getElementById("tournament_tree").innerHTML = `
     <div class="bracket" id="bracket">
     </div>`;
@@ -33,7 +35,23 @@ export const renderTournamentTree = (tournament) => {
 
     updateBracket(5, 1, "Player 17");*/
 
-    //createBracket(tournament.player_usernames);
+    createBracket(tournament.player_usernames);
+    const numberOfPlayers = tournament.player_usernames.length;
+    const tournamentGames = await getTournamentsGames(tournament.id);
+    const tournamentGamesEnded = tournamentGames.filter(game => game.status === "end");
+    console.log(tournamentGames);
+    let currentRound = 1;
+    let numberOfMatchesInCurrentRound = Math.floor(numberOfPlayers / 2);
+    let currentMatch = 1;
+    for (let i = 0; i < tournamentGamesEnded.length; i++) {
+        updateBracket(currentRound, currentMatch, tournamentGamesEnded[i].winner_username);
+        currentMatch++;
+        if (currentMatch === numberOfMatchesInCurrentRound) {
+            currentRound++;
+            let numberOfMatchesInCurrentRound = Math.floor(numberOfMatchesInCurrentRound / 2);
+            currentMatch = 1;
+        }
+    }
 }
 
 function createBracket(participants) {
