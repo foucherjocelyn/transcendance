@@ -40,8 +40,8 @@ class GameSerializer(serializers.ModelSerializer):
                 tournament = Tournament.objects.get(name=tournament_name)
             except Tournament.DoesNotExist:
                 raise InputValidationError(detail="Tournament not found")
-            if tournament.status != "ongoing":
-                raise InputValidationError(detail="Tournament is not ongoing")
+            if tournament.status != "progressing":
+                raise InputValidationError(detail="Tournament is not progressing")
         else:
             if tournament_name:
                 raise InputValidationError(

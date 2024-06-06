@@ -1,0 +1,204 @@
+#tournament_tree {
+    position: absolute;
+    //width: 50vw;
+    //height: 50vh;
+}
+
+.bracket {
+    padding: 40px;
+    margin: 5px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.bracket {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.round {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-around;
+    align-content: center;
+}
+
+.match {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 240px;
+    max-width: 240px;
+    height: 62px;
+    margin: 12px 24px 12px 0;
+}
+
+.match .match-top {
+    border-radius: 2px 2px 0 0;
+}
+
+.match .match-bottom {
+    border-radius: 0 0 2px 2px;
+}
+
+.match .team {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    position: relative;
+}
+
+.match .team span {
+    padding-left: 8px;
+}
+
+.match .team span:last-child {
+    padding-right: 8px;
+}
+
+.match .team .score {
+    margin-left: auto;
+}
+
+.match .team:first-child {
+    margin-bottom: -1px;
+}
+
+.match-lines {
+    display: block;
+    position: absolute;
+    top: 50%;
+    bottom: 0;
+    margin-top: 0px;
+    right: -1px;
+}
+
+.match-lines .line {
+    background: red;
+    position: absolute;
+}
+
+.match-lines .line.one {
+    height: 1px;
+    width: 12px;
+}
+
+.match-lines .line.two {
+    height: 44px;
+    width: 1px;
+    left: 11px;
+}
+
+.match-bye {
+    position: relative;
+    top: 50%;
+    background: #36404e;
+    width: 240px;
+    height: 1px;
+}
+
+.match-lines.alt {
+    left: -12px;
+}
+
+.match:nth-child(even) .match-lines .line.two {
+    transform: translate(0, -100%);
+}
+
+.round:first-child .match-lines.alt {
+    display: none;
+}
+
+.round:last-child .match-lines {
+    display: none;
+}
+
+.round:last-child .match-lines.alt {
+    display: block;
+}
+
+.round:nth-child(2) .match-lines .line.two {
+    height: 88px;
+}
+
+.round:nth-child(3) .match-lines .line.two {
+    height: 175px;
+}
+
+.round:nth-child(4) .match-lines .line.two {
+    height: 352px;
+}
+
+.round:nth-child(5) .match-lines .line.two {
+    height: 349px;
+}
+
+.disable-image .image,
+.disable-seed .seed,
+.disable-name .name,
+.disable-score .score {
+    display: none !important;
+}
+
+.disable-borders {
+    border-width: 0px !important;
+}
+
+.disable-borders .team {
+    border-width: 0px !important;
+}
+
+.disable-seperator .match-top {
+    border-bottom: 0px !important;
+}
+
+.disable-seperator .match-bottom {
+    border-top: 0px !important;
+}
+
+.disable-seperator .team:first-child {
+    margin-bottom: 0px;
+}
+
+/* Dark Theme */
+.bracket {
+    background: #0e1217;
+    border-color: #040607;
+}
+
+.bracket .match-lines .line {
+    background: #36404e;
+}
+
+.bracket .team {
+    background: #182026;
+    border-color: #232c36;
+    color: #6b798c;
+}
+
+.bracket .winner-top .match-top,
+.bracket .winner-bottom .match-bottom {
+    background: #232c36;
+    color: #e3e8ef;
+    border-color: #36404e;
+    z-index: 1;
+}
+
+.bracket .winner-top .match-top .score,
+.bracket .winner-bottom .match-bottom .score {
+    color: #03d9ce;
+}
+
+.bracket .match .seed {
+    font-size: 12px;
+    min-width: 10px;
+}
+
+.bracket .match .score {
+    font-size: 14px;
+}
