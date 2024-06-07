@@ -6,8 +6,9 @@ import { getListFriends } from "./friend-list.js";
 
 async function refreshChat() {
     if (document.getElementById("chat-list")) {
-        const listFriends = await getListFriends();
-        renderFriendList(listFriends);
+        // const listFriends = await getListFriends();
+        // renderFriendList(listFriends);
+        searchFriendList();
         setTimeout(refreshChat, 5000);
     }
 }
@@ -52,10 +53,11 @@ const loadChat = () => {
     const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
     const friendsListSearchButton = document.querySelector("#c-search-friend-list button");
     const addNewFriendButton = document.getElementById("c-add-new-friend-button");
-    const listFriends = getListFriends();
-    listFriends.then(list => {
-        renderFriendList(list);
-    });
+    searchFriendList();
+    // const listFriends = getListFriends();
+    // listFriends.then(list => {
+    //     renderFriendList(list);
+    // });
     friendsListSearchButton.addEventListener("click", searchFriendList);
     friendsListSearchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
