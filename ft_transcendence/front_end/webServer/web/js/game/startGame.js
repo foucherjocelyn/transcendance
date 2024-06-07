@@ -2,7 +2,7 @@ import { screen } from "../screen/screen.js";
 import { setup_game_instructions } from "../gameInstructions/gameInstructions.js";
 import { setup_game_settings } from "../gameSettings/gameSetting.js";
 import { setup_game_windows } from "./gameWindows.js";
-import { gameLayerHTML } from "../home/home_gamewindows.js";
+import { gameLayerHTML } from "../home/game/home_gamewindows.js";
 import { client } from "../client/client.js";
 
 class   formDisplay {

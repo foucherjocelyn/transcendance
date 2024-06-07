@@ -1,12 +1,12 @@
-import { getCookie } from "../authentication/auth_cookie.js";
-import { getMyInfo, getUserById, getUserIdByUsername } from "../backend_operation/get_user_info.js";
-import { to_connectForm } from "../authentication/auth_connect.js";
-import { updateMyInfo } from "../backend_operation/data_update.js";
-import { loadChat } from "../chat/load-chat.js";
-import { noticeInvitePlayer } from "./home_game.js";
-import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { renderMatchHistory } from "./home_homeboard.js";
+import { getCookie } from "../../authentication/auth_cookie.js";
+import { getMyInfo, getUserById, getUserIdByUsername } from "../../backend_operation/get_user_info.js";
+import { to_connectForm } from "../../authentication/auth_connect.js";
+import { updateMyInfo } from "../../backend_operation/data_update.js";
+import { loadChat } from "../../chat/load-chat.js";
+import { noticeInvitePlayer } from "../game/home_game.js";
+import { loadSpinner } from "../../authentication/spinner.js";
+import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
+import { renderMatchHistory } from "../home_homeboard.js";
 
 export async function	inspectProfile(username)
 {
