@@ -1,4 +1,4 @@
-const { send_to_DB } = require("../dataToDB/dataToDB");
+const { request_game_DB } = require("../dataToDB/requestGame");
 const { send_data } = require("../webSocket/dataToClient");
 
 function    create_result(match)
@@ -19,7 +19,7 @@ function    create_result(match)
     match.result.reverse();
     const   winner = match.result.filter(player => player.type === 'player')[0];
 
-    send_to_DB(`/api/v1/game/${match.id}/end`, match, winner);
+    request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
     send_data('game over', match.result, 'server', match.listUser);
     send_data('update pongGame', match.pongGame, 'server', match.listUser);
 }

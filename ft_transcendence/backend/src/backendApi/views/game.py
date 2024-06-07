@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
 from rest_framework.response import Response
 from rest_framework.decorators import action
-
+from backend.settings import logger
 
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
@@ -37,6 +37,7 @@ class GameViewSet(viewsets.ModelViewSet):
     # Add player to game
     @action(detail=True, methods=["post"])
     def addPlayerToGame(self, request, game_id):
+        logger.info(request.data)
         try:
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:

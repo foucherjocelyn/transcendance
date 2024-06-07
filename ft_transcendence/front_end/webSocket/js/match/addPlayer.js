@@ -23,7 +23,7 @@ function    add_player_mode_friend(user, match, position)
     else
     {
         (player.type === 'AI') ?
-        send_data('display invitation play layer', '', 'server', user):
+        send_data('display invitation play layer', 'flex', 'server', user):
         kick_out_of_the_match(user, match, player);
         
         match.listPlayer[position] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
