@@ -5,7 +5,7 @@ const { movements_ball } = require("./movementsBall");
 const { movement_AI } = require("./movementsAI");
 const { create_paddles } = require("./createPaddle");
 const { check_game_over } = require("./gameOver");
-const { send_to_DB } = require("../dataToDB/dataToDB");
+const { request_game_DB } = require("../dataToDB/requestGame");
 
 function calculate_ball_speed(gameSettings)
 {
@@ -48,12 +48,10 @@ function    handle_player_leave_match(match)
 
     const   playerLeave = (oldListPlayer.filter(player => !newListPlayer.includes(player)))[0];
     match.result.push(playerLeave);
+    match.pongGame.listUser = match.listUser;
 
     create_paddles(match);
     send_data('draw paddles', '', 'server', match.listUser);
-
-    match.pongGame.listUser = match.listUser;
-    send_to_DB(`/api/v1/game/${match.id}/player/remove`, match, playerLeave);
 }
 
 function    start_game_ws(match)

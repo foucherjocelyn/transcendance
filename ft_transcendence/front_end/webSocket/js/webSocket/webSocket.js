@@ -39,14 +39,14 @@ function    handle_requirements(title, content, sender, recipient)
         if (title === 'disconnect') {
             disconnect(socket);
         }
-        else if (title === 'create match') {
-            create_match(sender, content);
-        }
         else if (title === 'accept invitation to play') {
             accept_invitation_to_play(sender, recipient);
         }
         else if (title === 'reject invitation to play') {
             reject_invitation_to_play(sender, recipient);
+        }
+        else if (title === 'create match') {
+            create_match(sender, content);
         }
         else if (title === 'message') {
             send_data(title, content, sender, recipient);
@@ -60,11 +60,8 @@ function    handle_requirements(title, content, sender, recipient)
     }
     else if (sender.status === 'creating match')
     {
-        if (title === 'add player') {
-            add_player(sender, content);
-        }
-        else if (title === 'invite to play') {
-            request_invitation_to_play(sender, recipient);
+        if (title === 'disconnect') {
+            disconnect(socket);
         }
         else if (title === 'accept invitation to play') {
             accept_invitation_to_play(sender, recipient);
@@ -75,20 +72,29 @@ function    handle_requirements(title, content, sender, recipient)
         else if (title === 'leave match') {
             leave_match(sender);
         }
+        else if (title === 'add player') {
+            add_player(sender, content);
+        }
+        else if (title === 'invite to play') {
+            request_invitation_to_play(sender, recipient);
+        }
         else if (title === 'start game') {
             sign_start_game(sender);
         }
     }
     else if (sender.status === 'playing game')
     {
-        if (title === 'update game settings') {
+        if (title === 'disconnect') {
+            disconnect(socket);
+        }
+        else if (title === 'leave match') {
+            leave_match(sender);
+        }
+        else if (title === 'update game settings') {
             update_game_settings(sender, content);
         }
         else if (title === 'movement paddle') {
             get_sign_movement_paddle(sender, content);
-        }
-        else if (title === 'leave match') {
-            leave_match(sender);
         }
     }
 }
@@ -109,17 +115,19 @@ function    check_requirements(data, socket)
         return ;
     }
 
-    if (data.title === 'connection') {
-        add_new_connection(data.content, socket);
+    const   sender = define_user_by_socket(socket);
+    if (sender === undefined) {
+        if (data.title === 'connection') {
+            add_new_connection(data.content.id, socket);
+        }
     }
     else
     {
-        const   sender = define_user_by_socket(socket);
-        if (sender === undefined) {
+        let   recipient = data.to;
+        if (recipient === undefined) {
             return ;
         }
 
-        let   recipient = data.to;
         if (recipient !== 'socket server')
         {
             recipient = define_user_by_ID(recipient.id);
