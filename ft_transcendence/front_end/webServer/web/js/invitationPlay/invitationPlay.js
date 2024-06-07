@@ -1,5 +1,5 @@
-import { display_create_match_layer } from "../createMatch/createMatch.js";
-import { invitationPlayLayerHTML } from "../home/home_creatematch.js";
+import { display_create_match_layer, match } from "../createMatch/createMatch.js";
+import { invitationPlayLayerHTML } from "../home/game/home_creatematch.js";
 import { screen } from "../screen/screen.js";
 import { get_sign_buttons_in_invitation_play_layer } from "./getSignButtonsInInvitationPlay.js";
 

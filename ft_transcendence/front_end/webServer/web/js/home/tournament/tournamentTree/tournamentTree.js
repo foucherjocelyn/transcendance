@@ -1,4 +1,4 @@
-import { getTournamentsGames } from "../backend_operation/tournament.js";
+import { getTournamentsGames } from "../../../backend_operation/tournament.js";
 
 export const renderTournamentTree = async (tournament) => {
     document.getElementById("tournament_tree").innerHTML = `

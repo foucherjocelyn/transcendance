@@ -1,7 +1,7 @@
 import { to_homePage } from "./home_homeboard.js";
-import { to_game } from "./home_game.js";
-import { to_profilePage } from "./home_changeprofile.js";
-import { to_tournament } from "./home_tournament.js";
+import { to_game } from "./game/home_game.js";
+import { to_profilePage } from "./profile/home_changeprofile.js";
+import { to_tournament } from "./tournament/home_tournament.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 
 export function upperPanel()
