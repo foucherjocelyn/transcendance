@@ -171,7 +171,7 @@ async function drawTournament(callback) {
               <tr id="htb_filter">
                 <th scope="col">Match Name</th>
 				<th scope="col">Player</th>
-                <th scope="col">Time</th>
+                <th scope="col">Planned Starting Date</th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
