@@ -3,7 +3,7 @@ import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { noticeInvitePlayer } from "./home_game.js";
 import { loadChat } from "../chat/load-chat.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
-import { deleteTournament, joinTournament, leaveTournament } from "../backend_operation/tournament.js";
+import { deleteTournament, endTournament, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../backend_operation/tournament.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { notice } from "../authentication/auth_main.js";
@@ -55,13 +55,30 @@ export async function aliasJoinTournament(tour_obj) {
 		notice("An error occured when trying to join this tournament", 3, "#d1060d");
 }
 
-function	loadTournamentAdminPanel(tour_obj)
-{
+function loadTournamentAdminPanel(tour_obj) {
 	document.querySelector("#twr_admin_panel").innerHTML = `
+		<input type="button" id="twr_admin_start_button" class="button-img" value="Start Tournament">
 		<input type="button" id="twr_admin_delete_button" class="button-img" value="Delete Tournament">
+		<hr>
 	`;
+	document.getElementById("twr_admin_start_button").addEventListener("click", () => {
+		if (tour_obj.status === "registering") {
+			startTournament(tour_obj.id);
+			//Start tournament here
+			notice("The tournament has now started", 2, "#00a33f");
+		}
+		else {
+			notice("This tournament has already started", 2, "#9e7400");
+		}
+	});
 	document.getElementById("twr_admin_delete_button").addEventListener("click", () => {
-		deleteTournament(tour_obj.id);
+		if (tour_obj.status === "registering") {
+			deleteTournament(tour_obj.id);
+			to_tournament();
+		}
+		else {
+			notice("You cannot delete an ongoing tournament", 2, "#d11706");
+		}
 	});
 }
 
@@ -72,13 +89,12 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${upperPanel()}
 			<div id="tournament_waiting_room" class="hide">
 				<div id="twr_board">
-					<p id="twr_tour_name">Tournament Name :${tour_obj.name}</p>
-					<p id="twr_tour_description">Description :${tour_obj.description}</p>
-					<p id="twr_tour_start">Starting date :${formatDate(tour_obj.start_time, 1)}</p>
-					<p id="twr_tour_player_count">Registered players :${tour_obj.player_usernames.length}/${tour_obj.max_players}</p>
-					<div id="twr_tree">
-						//Tree here
-					</div>
+					<p id="twr_tour_name"></p>
+					<p id="twr_tour_description"></p>
+					<p id="twr_tour_start"></p>
+					<p id="twr_tour_playernb"></p>
+					<p id="twr_tour_status"></p>
+					<div id="twr_tree"></div>
 					<div id="twr_admin_panel"></div>
 					<input type="button" id="twr_ready" class="button-img" value="Ready">
 					<br>
@@ -92,6 +108,11 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${noticeInvitePlayer()}
 		</div>
 `;
+	document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
+	document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
+	document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
+	document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
+	document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 	if (tour_obj.owner_username === getCookie("username"))
 		loadTournamentAdminPanel(tour_obj);
 	document.querySelector("#twr_back").addEventListener("click", () => {
@@ -99,8 +120,6 @@ async function drawWaitingRoom(callback, tour_obj) {
 	});
 	document.querySelector("#twr_leave").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
-			//if (tour_obj.owner_username === getCookie("username"))
-			//	deleteTournament();
 			leaveTournament(tour_obj.id);
 			to_tournament();
 		}

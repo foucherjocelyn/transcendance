@@ -15,7 +15,7 @@
     justify-content: space-between; 
 }
 
-#twr_tour_name, #twr_tour_description, #twr_tour_start, #twr_tour_player_count {
+#twr_tour_name, #twr_tour_description, #twr_tour_start, #twr_tour_playernb, #twr_tour_status {
     margin: 0.5em 0;
     font-weight: bold;
     color: white;
@@ -30,13 +30,22 @@
     align-self: flex-start;
     margin-left: 10px;
     margin-bottom: 1em;
+    color: white;
 }
 
-#twr_admin_delete_button {
+#twr_admin_start_button, #twr_admin_delete_button {
     margin-top: auto;
     margin-bottom: 0.5em;
 }
 
 #twr_ready, #twr_leave {
     margin-top: auto;
+}
+
+#twr_ready {
+    color: green;
+}
+
+#twr_leave {
+    color:yellow;
 }
