@@ -46,9 +46,9 @@ export const renderTournamentTree = async (tournament) => {
     for (let i = 0; i < tournamentGamesEnded.length; i++) {
         updateBracket(currentRound, currentMatch, tournamentGamesEnded[i].winner_username);
         currentMatch++;
-        if (currentMatch === numberOfMatchesInCurrentRound) {
+        if (currentMatch > numberOfMatchesInCurrentRound) {
             currentRound++;
-            let numberOfMatchesInCurrentRound = Math.floor(numberOfMatchesInCurrentRound / 2);
+            numberOfMatchesInCurrentRound = Math.floor(numberOfMatchesInCurrentRound / 2);
             currentMatch = 1;
         }
     }

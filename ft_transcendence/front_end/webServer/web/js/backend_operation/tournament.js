@@ -360,7 +360,7 @@ export async function	getTournamentsGames(tournamentId)
 	}
 	try {
 //		console.log("-Listing all tournaments games");
-		const r = await fetch(`https://localhost/api/v1/tournament/${tournamentId}/game/list`, {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tournamentId}/game/list`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`

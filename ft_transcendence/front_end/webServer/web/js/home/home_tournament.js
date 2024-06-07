@@ -7,11 +7,8 @@ import { getMyInfo } from "../backend_operation/get_user_info.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { aliasJoinTournament } from "./home_tournament_room.js";
-<<<<<<< HEAD
 import { notice } from "../authentication/auth_main.js";
-=======
 import { renderTournamentTree } from "../tournamentTree/tournamentTree.js";
->>>>>>> tournament_tree
 
 function addLabel(tour_list, index) {
 	//	label_index++;
