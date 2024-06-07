@@ -1,13 +1,14 @@
-import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { noticeInvitePlayer } from "./home_game.js";
-import { loadChat } from "../chat/load-chat.js";
-import { to_connectForm } from "../authentication/auth_connect.js";
-import { deleteTournament, endTournament, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../backend_operation/tournament.js";
-import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { notice } from "../authentication/auth_main.js";
-import { formatDate, to_tournament } from "./home_tournament.js";
+import { loadSpinner } from "../../authentication/spinner.js";
+import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
+import { noticeInvitePlayer } from "../game/home_game.js";
+import { loadChat } from "../../chat/load-chat.js";
+import { to_connectForm } from "../../authentication/auth_connect.js";
+import { deleteTournament, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
+import { getMyInfo } from "../../backend_operation/get_user_info.js";
+import { getCookie } from "../../authentication/auth_cookie.js";
+import { notice } from "../../authentication/auth_main.js";
+import { detailsTournamentPlayers, formatDate, to_tournament } from "./home_tournament.js";
+import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 async function checkTournamentAvailability(tour_obj) {
 	console.log("tour_obj start here");
@@ -92,9 +93,10 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
-					<p id="twr_tour_playernb"></p>
+					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
+					<p id="twr_player_details"></p>
 					<p id="twr_tour_status"></p>
-					<div id="twr_tree"></div>
+					<!-- <div id="tournament_tree"></div> -->
 					<div id="twr_admin_panel"></div>
 					<input type="button" id="twr_ready" class="button-img" value="Ready">
 					<br>
@@ -108,6 +110,8 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${noticeInvitePlayer()}
 		</div>
 `;
+	//renderTournamentTree(tour_obj);
+	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
 	document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 	document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
 	document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;

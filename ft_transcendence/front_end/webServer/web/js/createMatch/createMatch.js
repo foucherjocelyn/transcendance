@@ -2,7 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { screen } from "../screen/screen.js";
 import { display_add_player_buttons, setup_content_add_player_button } from "./createPlayers.js";
 import { get_signe_buttons_in_create_match } from "./getSignButtonsInCreateMatch.js";
-import { createMatchHTML } from "../home/home_creatematch.js";
+import { createMatchHTML } from "../home/game/home_creatematch.js";
 
 export let match = undefined;
 

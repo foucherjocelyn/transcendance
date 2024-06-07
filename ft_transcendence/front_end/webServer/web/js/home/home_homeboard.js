@@ -1,6 +1,6 @@
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { loadSpinner } from "../authentication/spinner.js";
-import { noticeInvitePlayer, to_game } from "./home_game.js";
+import { noticeInvitePlayer } from "./game/home_game.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";

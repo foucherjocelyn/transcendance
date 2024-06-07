@@ -1,11 +1,11 @@
-import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { updateMyInfo } from "../backend_operation/data_update.js";
-import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { to_connectForm } from "../authentication/auth_connect.js";
-import { create_match } from "../createMatch/createMatch.js";
-import { client, dataToServer } from "../client/client.js";
+import { loadSpinner } from "../../authentication/spinner.js";
+import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
+import { updateMyInfo } from "../../backend_operation/data_update.js";
+import { getMyInfo } from "../../backend_operation/get_user_info.js";
+import { getCookie } from "../../authentication/auth_cookie.js";
+import { to_connectForm } from "../../authentication/auth_connect.js";
+import { create_match } from "../../createMatch/createMatch.js";
+import { client, dataToServer } from "../../client/client.js";
 
 export function noticeInvitePlayer() {
     return (

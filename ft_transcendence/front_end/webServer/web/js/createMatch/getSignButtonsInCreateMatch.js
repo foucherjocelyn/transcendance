@@ -1,6 +1,6 @@
 import { match } from "./createMatch.js";
 import { client, dataToServer } from "../client/client.js";
-import { to_game } from "../home/home_game.js";
+import { to_game } from "../home/game/home_game.js";
 
 function    get_sign_cancel_create_match_button()
 {

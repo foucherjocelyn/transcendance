@@ -1,7 +1,7 @@
 import { client, dataToServer } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
-import { to_game } from "../home/home_game.js";
-import { gameOverHTML } from "../home/home_gamewindows.js";
+import { to_game } from "../home/game/home_game.js";
+import { gameOverHTML } from "../home/game/home_gamewindows.js";
 import { screen } from "../screen/screen.js";
 
 function    create_results_bar_html(player)

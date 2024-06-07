@@ -52,7 +52,7 @@
 }
 
 #tour_detailsbox {
-	background-color: grey;
+	background-color: black;
 	border-radius: 4px;
 	width: 240px;
 	height: auto;
@@ -61,10 +61,11 @@
 	left: 72%;
 	transform: translateX(-50%);
 	top: 37%;
+	color: gray;
 }
 
-#tour_details_close {
-	background-image: url(../../img/icon/close.png);
+#tpd_close, #tour_details_close {
+	background-image: url(../../img/icon/close_white.jpg);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-color: transparent;
