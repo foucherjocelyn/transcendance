@@ -1,22 +1,27 @@
+/*
 #tournament_tree {
     position: absolute;
-    //width: 50vw;
-    //height: 50vh;
+    width: 50vw;
+    height: 50vh;
 }
+*/
 
-.bracket {
-    padding: 40px;
+#bracket {
+    /*padding: 40px;*/
     margin: 5px;
     height: 100%;
     width: 100%;
-    position: absolute;
+    position: relative;
+    /*position: absolute;*/
 }
 
+/*
 .bracket {
     display: flex;
     flex-direction: row;
     position: relative;
 }
+*/
 
 .round {
     display: flex;

@@ -8,7 +8,7 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { aliasJoinTournament } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
-import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
+//import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 function addLabel(tour_list, index) {
 	//	label_index++;
@@ -22,13 +22,13 @@ function addLabel(tour_list, index) {
 <td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${formatDate(tour_list[index].start_time, 1)}</td>
 <td>${tour_list[index].status}</td>
-<td><button id="t_joinbutton${index}">Join</button></td>
-<td><button id="t_infobutton${index}">Details</button></td>
+<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>
+<!-- <td><input type="button" id="t_infobutton${index}" value="Details"></td> -->
 <div id="tour_expanddetails"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
 	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
-	document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
+	//document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
 }
 
 /* Sorting tournament  */
@@ -173,6 +173,7 @@ async function drawTournament(callback) {
             <tbody id="htb_info">
             </tbody>
           </table>
+		  <hr>
 		  <input id ="htb_create_button" class="button-img" type="button" value="Create tournament">
 		  <div id="htb_create"></div>
 		  <div id="tournament_tree"></div>
@@ -206,23 +207,7 @@ async function drawTournament(callback) {
 	callback(true);
 }
 
-export function detailsTournamentPlayers(tour_obj, html_id_element) {
-	let player_nb = tour_obj.player_usernames.length;
-	document.getElementById(html_id_element).innerHTML = `
-	<div id="tournament_player_details">
-	<button id="tpd_close"></button>
-	</div>
-	`;
-	for (let i = 0; i < player_nb; i++)
-		{
-			document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
-			<p>${tour_obj.player_usernames[i]}</p>
-			<br>
-			`);
-		}
-	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
-}
-
+/*
 function detailsTournament(tour_obj) {
 	//console.log("Here is the tour_obj");
 	//console.log(tour_obj);
@@ -231,22 +216,22 @@ function detailsTournament(tour_obj) {
 <div id="tour_detailsbox">
 <button id="tour_details_close"></button>
 <p id="tour_details_name"></p>
-<p id="tour_details_players"></p><button id="tour_details_more">...</button>
+<p id="tour_details_players"></p>
 <p id="tour_details_startdate"></p>
 <p id="tour_details_enddate"></p>
 <p id="tour_details_status"></p>
-<td><button id="t_treebutton">Tree</button></td>
+<!-- <td><button id="t_treebutton">Tree</button></td> -->
 </div>
 `;
-	document.getElementById(`t_treebutton`).addEventListener("click", () => { renderTournamentTree(tour_obj); });
+	//document.getElementById(`t_treebutton`).addEventListener("click", () => { renderTournamentTree(tour_obj); });
 	document.getElementById(`tour_details_name`).textContent = `Name: ${tour_obj.name}`;
 	document.getElementById(`tour_details_players`).textContent = `Nb of players: ${player_nb}/${tour_obj.max_players}`;
 	document.getElementById(`tour_details_startdate`).textContent = `Starting: ${tour_obj.start_time}`;
 	document.getElementById(`tour_details_enddate`).textContent = `Ending: ${tour_obj.end_date}`;//Remove?
 	document.getElementById(`tour_details_status`).textContent = `Status: ${tour_obj.status}`;
 	document.getElementById(`tour_details_close`).addEventListener("click", () => { document.getElementById(`tour_detailsbox`).outerHTML = ``; });
-	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "tour_detailsbox"); });
 }
+*/
 
 export async function to_tournament(nohistory = "false") {
 	await getMyInfo();

@@ -15,16 +15,17 @@
     justify-content: space-between; 
 }
 
-#twr_player_details {
+#tournament_player_details {
+    z-index: 4;
     background-color: black;
 	border-radius: 4px;
 	width: 240px;
 	height: auto;
 	padding: 5px;
-	position: absolute;
-	left: 50%;
+    position: absolute;
+    left: 50%;
 	transform: translateX(-50%);
-	top: 37%;
+	top: 25%;
 	color: gray;
 }
 
@@ -46,12 +47,20 @@
     color: white;
 }
 
-#twr_admin_panel {
+#twr_ownerpanel_info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: red;
+}
+
+#twr_owner_panel {
     margin-top: auto;
 }
 
 #twr_ready {
-    margin-top: auto;
+    margin-top: 1em;
     color: green;
 }
 
