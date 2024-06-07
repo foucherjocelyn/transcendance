@@ -31,7 +31,7 @@ export async function	renderMatchHistory(username) {
 	const myScores = await getAllMyScores(username_obj);
 	console.log(myScores);
 	const matchTableBody = myGamesSorted.map(game => `
-		<tr class="${game.winner_username === username_obj ? 'win' : 'loss'}">
+		<tr class="${game.winner_username === username_obj.username ? 'win' : 'loss'}">
 			<td>${game.mode}</td>
 			<td>${game.player_usernames.join('<br />')}</td>
 			<td>${game.winner_username}</td>
