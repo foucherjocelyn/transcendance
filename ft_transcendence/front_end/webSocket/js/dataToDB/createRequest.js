@@ -44,8 +44,11 @@ function sendRequest(options, postData)
             reject(error);
         });
 
-        if (postData !== '') {
-            req.write(postData);
+        if (postData && Object.keys(postData).length !== 0)
+        {
+            const postDataString = JSON.stringify(postData);
+            console.log("Sending data:", postDataString); // Log data being sent
+            req.write(postDataString);
         }
 
         req.end();
@@ -58,7 +61,7 @@ async function  create_request(method, path, postData)
     const   options = createRequestOptions(websocket_token, method, path);
 
     const   responseDB = await sendRequest(options, postData);
-    console.table(responseDB);
+    // console.table(responseDB);
     return responseDB;
 }
 
