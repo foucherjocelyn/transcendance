@@ -1191,7 +1191,7 @@ authorization Bearer <token>
 Only the owner of the tournament can delete it and it can be deleted only if the tournament's status is 'registering'.
 
 ```typescript
-DELETE /api/v1/tournament/<tournament_id>
+DELETE /api/v1/tournament/<tournament_id>/delete
 authorization Bearer <token>
 ```
 

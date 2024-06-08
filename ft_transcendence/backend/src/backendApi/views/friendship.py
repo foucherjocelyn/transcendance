@@ -15,6 +15,7 @@ from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
 
 
+
 class FriendshipViewSet(viewsets.ModelViewSet):
     queryset = Friendship.objects.all()
     serializer_class = FriendshipSerializer
