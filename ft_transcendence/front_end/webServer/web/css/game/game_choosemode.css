@@ -1,5 +1,5 @@
 #g_choose_mode {
-	background-image: url(../../img/background/card3_head.png);
+	background-image: url(../../img/background/card2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	width: 350px;
@@ -22,11 +22,13 @@
 }
 
 #g_rankedmatch, #g_creatematch, #g_localmatch {
-	background-image: url(../../img/background/bar.png);
+	/*
+	background-image: url(../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-color: transparent;
 	border: none;
+	*/
 	padding: 10px;
 	margin-top: 0.6em;
 	margin-bottom: 0.6em;

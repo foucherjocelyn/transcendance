@@ -47,7 +47,7 @@
 */
 
 #h_scoreboard {
-	background-image: url(../../img/background/card3_head.png);
+	background-image: url(../../img/background/card2.png);
 	background-size: cover;
 	border-radius: 4px;
 	min-width:380px;
@@ -71,7 +71,7 @@
 #hs_filter {
 	color: gray;
 	font-weight: bold;
-	background-image: url(../../img/background/bar.png);
+	background-image: url(../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 2px;

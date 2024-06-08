@@ -40,21 +40,21 @@ async function load_regisForm(callback)
         <div id="r_connect_info">
           <form method="post" id="r_registration">
             <div id="r_regis_form">
-              <input type="text" id="r_username" name="r_username" placeholder="Username" required>
+              <input type="text" id="r_username" name="r_username" placeholder="Username" maxlength="20" title="This will be your usename" required>
               <br>
-              <input type="password" id="r_password" name="r_password" placeholder="Password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,12}$" title="Must contains at least one number, one uppercase and one lowercase letter, and 6 to 12 characters" required>
+              <input type="password" maxlength="30" id="r_password" name="r_password" placeholder="Password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,30}$" title="Must contains at least one number, one uppercase and one lowercase letter, and 6 to 30 characters" required>
               <br>
-			  <input type="password" id="r_passwordconfirm" placeholder="Confirm your password" title="Must be the same as the password" required>
+			  <input type="password" maxlength="30" id="r_passwordconfirm" placeholder="Confirm your password" title="Must be the same as the password" required>
 			  <br>
-              <input type="text" id="r_firstname" name="r_firstname" placeholder="Firstname" title="Cannot be changed later" required>
+              <input type="text" id="r_firstname" maxlength="20" name="r_firstname" placeholder="Firstname" title="Cannot be changed later" required>
               <br>
-              <input type="text" id="r_lastname" name="r_lastname" placeholder="Lastname" title="Cannot be changed later" required>
+              <input type="text" id="r_lastname" maxlength="20" name="r_lastname" placeholder="Lastname" title="Cannot be changed later" required>
 <!--
               <br>
               <input type="date" id="r_dob" name="r_dob" title="Cannot be changed later" required>
 -->
               <br>
-              <input type="text" id="r_email" name="r_email" pattern="[^@]+@[^@]+\.[^@]+" title="Must be a mail address" placeholder="E-mail" required>
+              <input type="text" id="r_email" name="r_email" pattern="[^@]+@[^@]+\.[^@]+" title="Must be a mail address" placeholder="E-mail" maxlength="320" required>
 <!--
               <label for="bio" style="white-space: nowrap; display: block; margin-left: 48px; margin-bottom: 5px;">Write something about yourself(optional):<br>
                 <textarea id="bio" rows="3" cols="30" maxlength="90"  style="margin-left: 30px; resize: none;" placeholder="Mama told me time is an illusion so I hit her with an hourglass and asked if pain was an illusion"></textarea>

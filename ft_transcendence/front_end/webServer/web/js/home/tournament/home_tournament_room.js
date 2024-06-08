@@ -43,7 +43,7 @@ export async function aliasJoinTournament(tour_obj) {
 			//join_the_tournament(document.getElementById("tour_inputalias").value, tour_obj.id); //  Join the tournament with an alias in client side
 			to_tournamentWaitingRoom("true", tour_obj);
 		});
-		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament(); });
+		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
 		return (false);
 	}
 	else if (join_status === "can join")
@@ -77,7 +77,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 	document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
 			deleteTournament(tour_obj.id);
-			to_tournament();
+			to_tournament("false");
 		}
 		else {
 			notice("You cannot delete an ongoing tournament", 2, "#d11706");
@@ -139,12 +139,12 @@ async function drawWaitingRoom(callback, tour_obj) {
 	if (tour_obj.owner_username === getCookie("username"))
 		loadTournamentOwnerPanel(tour_obj);
 	document.querySelector("#twr_back").addEventListener("click", () => {
-		to_tournament();
+		to_tournament("false");
 	});
 	document.querySelector("#twr_leave").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
 			leaveTournament(tour_obj.id);
-			to_tournament();
+			to_tournament("false");
 		}
 		else {
 			notice("You cannot leave a tournament once it has started", 2, "#d11706")
