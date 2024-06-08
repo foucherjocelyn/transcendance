@@ -70,10 +70,9 @@ const displayFindNewFriendWindow = () => {
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list").innerHTML = "";
     document.querySelector("#c-find-new-friend-window input").value = "";
     findNewFriendWindow.classList.remove("hidden");
-    document.querySelector("#c-find-new-friend-window .search").addEventListener("click", searchFindNewFriendWindow);
     document.querySelector("#c-find-new-friend-window .c-close-button").addEventListener("click", closeFindNewFriendWindow);
 };
 
 export {
-    displayFindNewFriendWindow,
+    displayFindNewFriendWindow
 };

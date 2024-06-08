@@ -1,7 +1,7 @@
 import { getListFriendInvitationsReceived, updateFriendInviteStatus } from "../backend_operation/friend_invite.js";
 import { getListNotifications, markNotificationAsRead, postNotification } from "../backend_operation/notification.js";
 import { client, userMessages } from "../client/client.js";
-import { renderFriendList } from "./friend-list.js";
+import { renderFriendList, searchFriendList } from "./friend-list.js";
 import { getListFriends } from "./friend-list.js";
 
 const renderNotificationCount = async (count = 0) => {
