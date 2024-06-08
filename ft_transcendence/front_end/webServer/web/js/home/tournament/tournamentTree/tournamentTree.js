@@ -1,39 +1,9 @@
-import { getTournamentsGames } from "../backend_operation/tournament.js";
+import { getTournamentsGames } from "../../../backend_operation/tournament.js";
 
 export const renderTournamentTree = async (tournament) => {
     document.getElementById("tournament_tree").innerHTML = `
     <div class="bracket" id="bracket">
     </div>`;
-    /*const participants = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6", "Player 7", "Player 8",
-        "Player 9", "Player 10", "Player 11", "Player 12", "Player 13", "Player 14", "Player 15", "Player 16",
-        "Player 17", "Player 18", "Player 19"/*, "Player 20", "Player 21", "Player 22", "Player 23", "Player 24",
-        "Player 25", "Player 26", "Player 27", "Player 28", "Player 29", "Player 30", "Player 31", "Player 32"
-    ]; // Example participants
-
-    createBracket(participants);
-    //createBracket(tournament.player_usernames);
-    updateBracket(1, 1, "Player 1");
-    updateBracket(1, 2, "Player 4");
-    updateBracket(1, 3, "Player 5");
-    updateBracket(1, 4, "Player 7");
-    updateBracket(1, 5, "Player 10");
-    updateBracket(1, 6, "Player 12");
-    updateBracket(1, 7, "Player 13");
-    updateBracket(1, 8, "Player 15");
-    updateBracket(1, 9, "Player 17");
-
-    updateBracket(2, 1, "Player 4");
-    updateBracket(2, 2, "Player 5");
-    updateBracket(2, 3, "Player 12");
-    updateBracket(2, 4, "Player 13");
-    updateBracket(2, 5, "Player 17");
-
-    updateBracket(3, 1, "Player 4");
-    updateBracket(3, 2, "Player 13");
-
-    updateBracket(4, 1, "Player 13");
-
-    updateBracket(5, 1, "Player 17");*/
 
     createBracket(tournament.player_usernames);
     const numberOfPlayers = tournament.player_usernames.length;
@@ -46,9 +16,9 @@ export const renderTournamentTree = async (tournament) => {
     for (let i = 0; i < tournamentGamesEnded.length; i++) {
         updateBracket(currentRound, currentMatch, tournamentGamesEnded[i].winner_username);
         currentMatch++;
-        if (currentMatch === numberOfMatchesInCurrentRound) {
+        if (currentMatch > numberOfMatchesInCurrentRound) {
             currentRound++;
-            let numberOfMatchesInCurrentRound = Math.floor(numberOfMatchesInCurrentRound / 2);
+            numberOfMatchesInCurrentRound = Math.floor(numberOfMatchesInCurrentRound / 2);
             currentMatch = 1;
         }
     }
@@ -83,12 +53,6 @@ function createBracket(participants) {
                             <div class="line one"></div>
                         </div>
                     `;
-                matchDiv.addEventListener('click', () => {
-                    const winner = prompt('Enter winner:', `${currentRoundParticipants[i]} or ${currentRoundParticipants[i + 1]}`);
-                    if (winner) {
-                        updateBracket(matchDiv.id, winner);
-                    }
-                });
                 nextRoundParticipants.push('');
             } else {
                 if (round === 1) {

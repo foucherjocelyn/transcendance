@@ -3,7 +3,7 @@ const { formPongGameWS } = require("./formBox");
 const { send_data } = require("../webSocket/dataToClient");
 const { countdown } = require("./countdown");
 const { setup_game_settings, create_object_pong_game } = require("../gameSettings/gameSettings");
-const { send_to_DB } = require("../dataToDB/dataToDB");
+const { request_game_DB } = require("../dataToDB/requestGame");
 
 function    start_game(match)
 {
@@ -22,13 +22,19 @@ function    update_status_user(match, status)
     })
 }
 
-function    setup_game(match)
+async function    setup_game(match)
 {
-    send_to_DB('/api/v1/game', match, '');
+    await request_game_DB('/api/v1/game', match, '');
+    match.listPlayer.forEach(player => {
+        if (player.type === 'player') {
+            request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
+        }
+    })
+
     update_status_user(match, 'playing game');
 
     match.pongGame = new formPongGameWS();
-    match.pongGame.maxPoint = 1; // max = 5
+    match.pongGame.maxPoint = 10; // max = 5
     match.pongGame.listPlayer = match.listPlayer;
     match.pongGame.listUser = match.listUser;
 

@@ -69,7 +69,7 @@ function    get_data_from_server(socket)
             update_match_informations(receivedData);
         }
         if (receivedData.title === 'display invitation play layer') {
-            display_invitation_play_layer();
+            display_invitation_play_layer(receivedData.content);
         }
         if (receivedData.title === 'create match') {
 			create_match("with friends");

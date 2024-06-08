@@ -1,7 +1,7 @@
 import { getListFriends } from "../backend_operation/get_user_info.js";
 import { client } from "../client/client.js";
 import { create_match } from "../createMatch/createMatch.js";
-import { inspectProfile } from "../home/home_profile.js";
+import { inspectProfile } from "../home/profile/home_profile.js";
 import { send_invitation_to_play } from "../invitationPlay/displayResultsSearchInvitationPlay.js";
 import { searchFindNewFriendWindow } from "./add-friend.js";
 import { openChatBox } from "./chatbox.js";

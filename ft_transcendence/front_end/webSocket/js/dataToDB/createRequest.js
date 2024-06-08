@@ -1,9 +1,9 @@
 const https = require("https");
 
-function    createRequestOptions(websocket_token, path)
+function    createRequestOptions(websocket_token, method, path)
 {
     return {
-        method: "POST",
+        method: method,
         hostname: "backend",
         port: 8000,
         path: `${path}`,
@@ -18,42 +18,51 @@ function    createRequestOptions(websocket_token, path)
     };
 }
 
-function    sendRequest(options, postData)
+function sendRequest(options, postData)
 {
-    const req = https.request(options, function (res) {
-        let chunks = [];
+    return new Promise((resolve, reject) => {
+        const req = https.request(options, (res) => {
+            let chunks = [];
 
-        res.on("data", function (chunk) {
-            chunks.push(chunk);
+            res.on("data", (chunk) => {
+                chunks.push(chunk);
+            });
+
+            res.on("end", () => {
+                const responseDB = Buffer.concat(chunks).toString();
+                resolve(responseDB);
+            });
+
+            res.on("error", (error) => {
+                console.error(error);
+                reject(error);
+            });
         });
 
-        res.on("end", function () {
-            const body = Buffer.concat(chunks);
-            console.log(body.toString());
+        req.on("error", (error) => {
+            console.error(`Problem with request: ${error.message}`);
+            reject(error);
         });
 
-        res.on("error", function (error) {
-            console.error(error);
-        });
+        if (postData && Object.keys(postData).length !== 0)
+        {
+            const postDataString = JSON.stringify(postData);
+            console.log("Sending data:", postDataString); // Log data being sent
+            req.write(postDataString);
+        }
+
+        req.end();
     });
-
-    req.on("error", function (error) {
-        console.error(`Problem with request: ${error.message}`);
-    });
-
-    if (postData !== '') {
-        req.write(postData);
-    }
-    
-    req.end();
 }
 
-function    create_request(path, postData)
+async function  create_request(method, path, postData)
 {
     const   websocket_token = process.env.WEBSOCKET_TOKEN;
-    const   options = createRequestOptions(websocket_token, path);
-    
-    sendRequest(options, postData);
+    const   options = createRequestOptions(websocket_token, method, path);
+
+    const   responseDB = await sendRequest(options, postData);
+    // console.table(responseDB);
+    return responseDB;
 }
 
 module.exports = {

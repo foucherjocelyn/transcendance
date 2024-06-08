@@ -1,5 +1,5 @@
 import { display_create_match_layer, match } from "../createMatch/createMatch.js";
-import { invitationPlayLayerHTML } from "../home/home_creatematch.js";
+import { invitationPlayLayerHTML } from "../home/game/home_creatematch.js";
 import { screen } from "../screen/screen.js";
 import { get_sign_buttons_in_invitation_play_layer } from "./getSignButtonsInInvitationPlay.js";
 
@@ -17,10 +17,9 @@ function    setup_size_invitation_play_panel()
     invitationPlayPanel.style.width = `${screen.width / 4}px`;
 }
 
-export function    display_invitation_play_layer()
+export function    display_invitation_play_layer(status)
 {
-    const   createMatchLayer = document.getElementById('createMatchLayer');
-    if (createMatchLayer === null)
+    if (status === 'none')
     {
         display_create_match_layer();
         return ;

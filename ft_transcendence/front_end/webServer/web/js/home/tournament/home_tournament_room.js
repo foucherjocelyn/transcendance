@@ -1,13 +1,14 @@
-import { loadSpinner } from "../authentication/spinner.js";
-import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { noticeInvitePlayer } from "./home_game.js";
-import { loadChat } from "../chat/load-chat.js";
-import { to_connectForm } from "../authentication/auth_connect.js";
-import { deleteTournament, joinTournament, leaveTournament } from "../backend_operation/tournament.js";
-import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { notice } from "../authentication/auth_main.js";
+import { loadSpinner } from "../../authentication/spinner.js";
+import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
+import { noticeInvitePlayer } from "../game/home_game.js";
+import { loadChat } from "../../chat/load-chat.js";
+import { to_connectForm } from "../../authentication/auth_connect.js";
+import { deleteTournament, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
+import { getMyInfo } from "../../backend_operation/get_user_info.js";
+import { getCookie } from "../../authentication/auth_cookie.js";
+import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
+import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 async function checkTournamentAvailability(tour_obj) {
 	console.log("tour_obj start here");
@@ -55,14 +56,50 @@ export async function aliasJoinTournament(tour_obj) {
 		notice("An error occured when trying to join this tournament", 3, "#d1060d");
 }
 
-function	loadTournamentAdminPanel(tour_obj)
-{
-	document.querySelector("#twr_admin_panel").innerHTML = `
-		<input type="button" id="twr_admin_delete_button" class="button-img" value="Delete Tournament">
+function loadTournamentOwnerPanel(tour_obj) {
+	document.querySelector("#twr_owner_panel").innerHTML = `
+		<hr>
+		<p id="twr_ownerpanel_info">Owner Panel</p>
+		<input type="button" id="twr_owner_start_button" class="button-img" value="Start Tournament">
+		<input type="button" id="twr_owner_delete_button" class="button-img" value="Delete Tournament">
+		<hr>
 	`;
-	document.getElementById("twr_admin_delete_button").addEventListener("click", () => {
-		deleteTournament(tour_obj.id);
+	document.getElementById("twr_owner_start_button").addEventListener("click", () => {
+		if (tour_obj.status === "registering") {
+			startTournament(tour_obj.id);
+			//Start tournament here
+			notice("The tournament has now started", 2, "#00a33f");
+		}
+		else {
+			notice("This tournament has already started", 2, "#9e7400");
+		}
 	});
+	document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
+		if (tour_obj.status === "registering") {
+			deleteTournament(tour_obj.id);
+			to_tournament();
+		}
+		else {
+			notice("You cannot delete an ongoing tournament", 2, "#d11706");
+		}
+	});
+}
+
+function detailsTournamentPlayers(tour_obj, html_id_element) {
+	let player_nb = tour_obj.player_usernames.length;
+	document.getElementById(html_id_element).innerHTML = `
+	<div id="tournament_player_details">
+	<button id="tpd_close"></button>
+	</div>
+	`;
+	for (let i = 0; i < player_nb; i++)
+		{
+			document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
+			<p>${tour_obj.player_usernames[i]}</p>
+			<br>
+			`);
+		}
+	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
 }
 
 async function drawWaitingRoom(callback, tour_obj) {
@@ -72,14 +109,14 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${upperPanel()}
 			<div id="tournament_waiting_room" class="hide">
 				<div id="twr_board">
-					<p id="twr_tour_name">Tournament Name :${tour_obj.name}</p>
-					<p id="twr_tour_description">Description :${tour_obj.description}</p>
-					<p id="twr_tour_start">Starting date :${formatDate(tour_obj.start_time, 1)}</p>
-					<p id="twr_tour_player_count">Registered players :${tour_obj.player_usernames.length}/${tour_obj.max_players}</p>
-					<div id="twr_tree">
-						//Tree here
-					</div>
-					<div id="twr_admin_panel"></div>
+					<p id="twr_tour_name"></p>
+					<p id="twr_tour_description"></p>
+					<p id="twr_tour_start"></p>
+					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
+					<div id="twr_player_details"></div>
+					<p id="twr_tour_status"></p>
+					<div id="tournament_tree"></div>
+					<div id="twr_owner_panel"></div>
 					<input type="button" id="twr_ready" class="button-img" value="Ready">
 					<br>
 					<input type="button" id="twr_leave" class="button-img" value="Leave tournament">
@@ -92,15 +129,20 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${noticeInvitePlayer()}
 		</div>
 `;
+	renderTournamentTree(tour_obj);
+	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
+	document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
+	document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
+	document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
+	document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
+	document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 	if (tour_obj.owner_username === getCookie("username"))
-		loadTournamentAdminPanel(tour_obj);
+		loadTournamentOwnerPanel(tour_obj);
 	document.querySelector("#twr_back").addEventListener("click", () => {
 		to_tournament();
 	});
 	document.querySelector("#twr_leave").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
-			//if (tour_obj.owner_username === getCookie("username"))
-			//	deleteTournament();
 			leaveTournament(tour_obj.id);
 			to_tournament();
 		}

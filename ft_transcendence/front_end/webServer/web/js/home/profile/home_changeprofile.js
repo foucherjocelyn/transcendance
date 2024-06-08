@@ -1,15 +1,15 @@
-import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
-import { loadSpinner } from "../authentication/spinner.js";
-import { getCookie } from "../authentication/auth_cookie.js";
-import { checkInput2FA } from "../authentication/auth_otp.js";
-import { updateMyOtp, updateMyAvatar, updateMyAccount } from "../authentication/auth_change_info.js";
-import { to_homePage } from "./home_homeboard.js";
-import { noticeInvitePlayer, to_game } from "./home_game.js";
-import { to_tournament } from "./home_tournament.js";
-import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { getAvatar } from "../backend_operation/profile_picture.js";
-import { classy_signOut, to_connectForm } from "../authentication/auth_connect.js";
-import { loadChat } from "../chat/load-chat.js";
+import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
+import { loadSpinner } from "../../authentication/spinner.js";
+import { getCookie } from "../../authentication/auth_cookie.js";
+import { checkInput2FA } from "../../authentication/auth_otp.js";
+import { updateMyOtp, updateMyAvatar, updateMyAccount } from "../../authentication/auth_change_info.js";
+import { to_homePage } from "../home_homeboard.js";
+import { noticeInvitePlayer, to_game } from "../game/home_game.js";
+import { to_tournament } from "../tournament/home_tournament.js";
+import { getMyInfo } from "../../backend_operation/get_user_info.js";
+import { getAvatar } from "../../backend_operation/profile_picture.js";
+import { classy_signOut, to_connectForm } from "../../authentication/auth_connect.js";
+import { loadChat } from "../../chat/load-chat.js";
 
 function	enableInputReq(event, element_name)
 {

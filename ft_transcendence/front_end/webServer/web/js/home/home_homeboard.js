@@ -1,6 +1,6 @@
 import { upperPanel, upperPanelEventListener } from "./upper_panel.js";
 import { loadSpinner } from "../authentication/spinner.js";
-import { noticeInvitePlayer, to_game } from "./home_game.js";
+import { noticeInvitePlayer } from "./game/home_game.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
@@ -31,7 +31,7 @@ export async function	renderMatchHistory(username) {
 	const myScores = await getAllMyScores(username_obj);
 	console.log(myScores);
 	const matchTableBody = myGamesSorted.map(game => `
-		<tr class="${game.winner_username === username_obj ? 'win' : 'loss'}">
+		<tr class="${game.winner_username === username_obj.username ? 'win' : 'loss'}">
 			<td>${game.mode}</td>
 			<td>${game.player_usernames.join('<br />')}</td>
 			<td>${game.winner_username}</td>

@@ -116,9 +116,7 @@ export async function	endTournament(tour_id)
 		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}`, {
 			method: "POST",
 			headers: {
-				"Accept": "application/json",
 				"Authorization": `Bearer ${f_token}`,
-				"Content-type": "application/json; charset=UTF-8",
 			}
 		})
 		if (!r.ok)
@@ -137,6 +135,40 @@ export async function	endTournament(tour_id)
 //		console.log("-");
 	} catch(error) {
 		console.error("deleteTournament: ", error);
+	}
+}
+
+export async function	startTournament(tour_id)
+{
+	let f_token = getCookie("token");
+	if (f_token === null || f_token === "")
+	{
+		console.log("Token is null");
+		return;
+	}
+	try {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/start`, {
+			method: "POST",
+			headers: {
+				"Authorization": `Bearer ${f_token}`,
+			}
+		})
+		if (!r.ok)
+		{
+			console.log("startTournament: Client/Server error");
+			return;
+			//throw new Error("fetch POST op failed");
+		}
+		const data = await r.json();
+		console.log("startTournament data:");
+		console.log(data);
+		if (data !== undefined)
+		{
+			return data;
+		}
+//		console.log("-");
+	} catch(error) {
+		console.error("startTournament: ", error);
 	}
 }
 
@@ -183,7 +215,7 @@ export async function	deleteTournament(tour_id)
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}`, {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/delete`, {
 			method: "DELETE",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -283,15 +315,6 @@ export async function	getTournamentInfoById(tour_id)
 
 export async function	updateTournamentsById(tour_id, tour_info)
 {
-/*
-		//tour_info requires:
-name: string,
-description: string, // optional
-start_date: Date, // Format: YYYY-MM-DD
-end_date: Date, // Format: YYYY-MM-DD
-status: "upcoming" | "ongoing" | "completed", // optional
-will return a tournament object
-*/
 	console.log("-Updating tournaments by id");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "")
@@ -337,7 +360,7 @@ export async function	getTournamentsGames(tournamentId)
 	}
 	try {
 //		console.log("-Listing all tournaments games");
-		const r = await fetch(`https://localhost/api/v1/tournament/${tournamentId}/game/list`, {
+		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tournamentId}/game/list`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
