@@ -6,32 +6,30 @@ import { send_invitation_to_play } from "../invitationPlay/displayResultsSearchI
 import { searchFindNewFriendWindow } from "./add-friend.js";
 import { openChatBox } from "./chatbox.js";
 import { renderNotifications } from "./notifications.js";
+import { removeFriend } from "./remove-friend.js";
 
 const renderFriendList = (list) => {
     //console.log(list);
     const friendsList = document.getElementById("c-friends-list");
     friendsList.innerHTML = "";
-    list.forEach((user) => {
-        friendsList.innerHTML += `<div id="c-list-user-${user.username}" class="c-user c-friend">
-                    <div class="user-avatar">
-                        <img src="../img/avatar/avatar_default.png" alt="profile-picture">
-                        <div id="c-list-friend-status-${user.username}" class="c-list-friend-status ${user.status}"></div>
-                    </div>
-                    <div class="user-name">${user.username}</div>
-                    <button id="c-invite-match${user.username}" class="c-invite-match-button"></button>
-                    <button id="c-inspectprofile${user.username}" class="c-inspectprofile-button"></button>
-                </div>`;
-    });
-    document.querySelectorAll(".c-friend").forEach(friendDiv => {
-        const friendUsername = friendDiv.id.slice(12);
-        //console.log("friends");
-        //console.log(friendUsername);
-        //console.log(friendDiv);
-        friendDiv.addEventListener("click", (e) => openChatBox(friendUsername));
+    list.forEach((friend) => {
+        friendsList.insertAdjacentHTML("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
+        <div class="user-avatar">
+            <img src="../img/avatar/avatar_default.png" alt="profile-picture">
+            <div id="c-list-friend-status-${friend.username}" class="c-list-friend-status ${friend.status}"></div>
+        </div>
+        <div class="user-name">${friend.username}</div>
+        <button id="c-invite-match${friend.username}" class="c-invite-match-button"></button>
+        <button id="c-inspectprofile${friend.username}" class="c-inspectprofile-button"></button>
+        <button id="c-remove-friend${friend.username}" class="c-remove-friend-button"></button>
+    </div>`);
+
+        const friendDiv = document.getElementById(`c-list-user-${friend.username}`);
+        friendDiv.addEventListener("click", (e) => openChatBox(friend.username));
         friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
             
-            const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
+            const receiverUser = client.listUser.filter(user => user.username === friend.username)[0];
             if (receiverUser === undefined || receiverUser.status === 'playing game')
                 return ;
             
@@ -40,16 +38,13 @@ const renderFriendList = (list) => {
         })
         friendDiv.querySelector(".c-inspectprofile-button").addEventListener("click", (e) => {
             e.stopPropagation();
-            /*
-            console.log("inspect button clicked");
-            const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
-            if (receiverUser === undefined)
-                {
-                    console.log("receiverUser is undefined");
-                return ;
-                }
-                */
-            inspectProfile(friendUsername);
+            inspectProfile(friend.username);
+        })
+        friendDiv.querySelector(".c-remove-friend-button").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (confirm(`Are you sure want to remove ${friend.username} from your friends ?`)) {
+                removeFriend(friend.username);
+            }
         })
     });
     renderNotifications();
