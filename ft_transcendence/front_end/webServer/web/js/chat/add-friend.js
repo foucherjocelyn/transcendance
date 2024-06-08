@@ -60,7 +60,6 @@ export const searchFindNewFriendWindow = async () => {
 const closeFindNewFriendWindow = () => {
     const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
     findNewFriendWindow.classList.add("hidden");
-    document.querySelector("#c-find-new-friend-window .search").removeEventListener("click", searchFindNewFriendWindow);
     document.querySelector("#c-find-new-friend-window .c-close-button").removeEventListener("click", closeFindNewFriendWindow);
 };
 

@@ -147,7 +147,7 @@ const unmuteUser = async (username) => {
 
     const connectedReceiver = client.listUser.find(user => user.username == username)
     if (connectedReceiver) {
-        const sendData = new dataToServer('unmute', '', client.inforUser, connectedReceiver);
+        const sendData = new dataToServer('unmute', '', connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
     }
 }
@@ -160,7 +160,7 @@ const muteUser = async (username) => {
 
     const connectedReceiver = client.listUser.find(user => user.username == username)
     if (connectedReceiver) {
-        const sendData = new dataToServer('mute', '', client.inforUser, connectedReceiver);
+        const sendData = new dataToServer('mute', '', connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
     }
 }
