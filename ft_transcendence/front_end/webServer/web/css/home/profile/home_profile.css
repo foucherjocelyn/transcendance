@@ -1,5 +1,5 @@
 #inspectprofile {
-    background-image: url(../../img/background/card2.png);
+    background-image: url(../../../img/background/card2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
     position: absolute;
@@ -19,7 +19,7 @@
 }
 
 #inspectprofile_close {
-    background-image: url(../../img/icon/close.png);
+    background-image: url(../../../img/icon/close.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-color: transparent;

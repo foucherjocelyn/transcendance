@@ -22,7 +22,7 @@
 }
 
 #h_tournament_board {
-	background-image: url(../../img/background/card3_head.png);
+	background-image: url(../../../img/background/card2.png);
 	background-size: cover;
 	border-radius: 4px;
 	min-width:380px;
@@ -36,7 +36,7 @@
 }
 
 #h_tournament_aliasjoin {
-	background-image: url(../../img/background/card3.png);
+	background-image: url(../../../img/background/card2.png);
 	background-size: cover;
 	border-radius: 4px;
 	width: 350px;
@@ -65,7 +65,7 @@
 }
 
 #tpd_close, #tour_details_close {
-	background-image: url(../../img/icon/close_white.png);
+	background-image: url(../../../img/icon/close_white.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-color: transparent;
@@ -78,7 +78,7 @@
 #htb_search {
 	position: relative;
 	left: 2%;
-	background-image: url(../../img/background/bar.png);
+	background-image: url(../../../img/background/bar2.png);
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	width: 30%;
@@ -97,7 +97,7 @@
 	right: auto;
 	left: 60%;
 	transform: translateX(-90%);
-	background-image: url(../../img/background/bar.png);
+	background-image: url(../../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	color: gray;
@@ -113,7 +113,7 @@
 #htb_filter {
 	color: gray;
 	font-weight: bold;
-	background-image: url(../../img/background/bar.png);
+	background-image: url(../../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 2px;
@@ -150,7 +150,7 @@
 }
 
 #hcm_create_menu_close {
-	background-image: url(../../img/icon/close.png);
+	background-image: url(../../../img/icon/close.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-color: transparent;

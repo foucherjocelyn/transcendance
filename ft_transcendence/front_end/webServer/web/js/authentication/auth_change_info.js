@@ -1,6 +1,6 @@
 import { getCookie } from "./auth_cookie.js";
 import { notice } from "./auth_main.js";
-import { to_profilePage } from "../home/profile/home_changeprofile.js";
+import { to_change2fa, to_changeAvatar, to_changeInfo, } from "../home/profile/home_changeprofile.js";
 import { getOtpStatusToken, toggleOtpStatus } from "../backend_operation/one_time_password.js";
 import { uploadAvatar } from "../backend_operation/profile_picture.js";
 import { dataUpdate } from "../backend_operation/data_update.js";
@@ -25,7 +25,7 @@ export async function	updateMyAvatar()
 		let avatarForm = new FormData();
 		avatarForm.append("avatar", document.getElementById("p_avatar").files[0]);
 		await uploadAvatar(avatarForm);
-		to_profilePage();
+		to_changeAvatar();
 		notice("Changes applied", 2, "#2c456e");
 	}
 	console.log("----");
@@ -62,12 +62,11 @@ export async function	updateMyAccount()
 		newInfo.username = document.getElementById("p_username").value;
 		changes = 5;
 	}
-	if (changes > 0)
-		await dataUpdate(newInfo);
-
+	console.log(changes);
 	if (changes > 0)
 	{
-		to_profilePage();
+		await dataUpdate(newInfo);
+		to_changeInfo();
 		notice("Changes applied", 2, "#2c456e");
 	}
 	console.log("----");
@@ -83,8 +82,8 @@ export async function	updateMyOtp()
 	const OtpStatus = await getOtpStatusToken();
 	if (OtpStatus != status)
 	{
-		toggleOtpStatus();
-		to_profilePage();
+		await toggleOtpStatus();
+		to_change2fa();
 		notice("Changes applied", 2, "#2c456e");
 	}
 	console.log("----");

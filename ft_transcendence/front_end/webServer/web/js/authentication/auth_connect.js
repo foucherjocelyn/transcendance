@@ -53,10 +53,8 @@ async function checkConnect()
 	}
 	else
 	{
-		if (otpStatus === 404)
-            notice("Wrong Username/Password combination", 0, "#D20000");
-		else if (otpStatus >= 400 && otpStatus < 500)
-			notice("Unknown client side error", 0, "#D20000");
+		if (otpStatus >= 400 && otpStatus < 500)
+			notice("Wrong Username/Password combination", 0, "#D20000");
 		document.getElementById("r_connect_page").classList.remove("hide");
 		document.getElementById("loadspinner").classList.add("hide");		
 	}
