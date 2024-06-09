@@ -2,6 +2,8 @@ const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
 const { setup_game } = require("../game/setupGame");
 const { formMatch, create_match_ID, inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
+const { create_request } = require("../dataToDB/createRequest");
+const { isNumeric } = require("../gameSettings/checkInputSize");
 
 class MatchMaking {
     constructor(players) {
@@ -9,7 +11,7 @@ class MatchMaking {
         this.matches = [];
     }
 
-    async generateMatches() {
+    async generateMatches(tournamentName) {
         if (this.players.length === 1) {
             return this.players[0];
         }
@@ -20,7 +22,7 @@ class MatchMaking {
             const player1 = this.players[i];
             const player2 = this.players[i + 1] || null;
             this.matches.push([player1, player2]);
-            const winner = await this.simulateMatch(player1, player2);
+            const winner = await this.simulateMatch(player1, player2, tournamentName);
             winners.push(winner);
         }
 
@@ -35,11 +37,12 @@ class MatchMaking {
         }
     }
 
-    async simulateMatch(player1, player2) {
+    async simulateMatch(player1, player2, tournamentName) {
 
         // create match + run
         create_match_tournament(player1, player2);
         const   match = define_match(player1);
+        match.tournamentName = tournamentName;
         setup_game(match);
 
         // get winner
@@ -48,7 +51,7 @@ class MatchMaking {
                 const intervalId = setInterval(() => {
                     if (match.pongGame.gameOver) {
                         clearInterval(intervalId);
-                        const winner = match.result[0];
+                        const winner = define_user_by_ID(match.winner.id);
                         resolve(winner);
                     }
                 }, 1000);
@@ -102,20 +105,44 @@ function    create_match_tournament(player1, player2)
     update_match(user);
 }
 
-const   listPlayer = [];
+function create_list_player_tournament(listName) {
+    return new Promise((resolve, reject) => {
+        try {
+            const listPlayer = [];
+            listName.forEach((name, index) => {
+                const user = webSocket.listUser[index];
+                if (user.username === name) {
+                    listPlayer.push(user);
+                }
+            });
+            resolve(listPlayer);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 
-async function    join_the_tournament(user)
+async function    start_tournament(tournamentID)
 {
-    listPlayer.push(user);
-    if (listPlayer.length !== 2) {
+    if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return ;
     }
 
+    const   tournament = await create_request('GET', `/api/v1/tournament/${tournamentID}`, '');
+    const   tournamentName = tournament.name;
+    const   listPlayer = await create_list_player_tournament(tournament.player_usernames);
+
+    // sign start tournament
+    await create_request('POST', `/api/v1/tournament/${tournament.id}/start`, '');
+
     const matchMaker = new MatchMaking(listPlayer);
-    const champion = await matchMaker.generateMatches();
-    console.log(`The champion is: ${champion}`);
+    const champion = await matchMaker.generateMatches(tournamentName);
+
+    // sign end tournament
+    await create_request('POST', `/api/v1/tournament/${tournament.id}/end`, '');
+    console.log(`The champion is: ${champion.username}`);
 }
 
 module.exports = {
-    join_the_tournament
+    start_tournament
 }

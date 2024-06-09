@@ -68,7 +68,7 @@ export function gameEventListener() {
     console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
         // create_match('ranked');
-        const sendData = new dataToServer('join the tournament', client.inforUser, 'socket server');
+        const sendData = new dataToServer('start tournament', 1, 'socket server');
 	    client.socket.send(JSON.stringify(sendData));
     });
     document.getElementById("g_creatematch").addEventListener("click", () => {

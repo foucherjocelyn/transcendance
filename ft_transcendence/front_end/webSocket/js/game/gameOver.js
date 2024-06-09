@@ -8,6 +8,7 @@ function    create_result(match)
         if (match.result.length === 4) {
             break ;
         }
+        
         const   player = match.listPlayer[i];
         if (player.type !== 'none') {
             match.result.push(player);
@@ -17,7 +18,9 @@ function    create_result(match)
     // Arranged from smallest to largest
     match.result.sort((a, b) => a.score - b.score);
     match.result.reverse();
+
     const   winner = match.result.filter(player => player.type === 'player')[0];
+    match.winner = winner;
 
     request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
     send_data('game over', match.result, 'server', match.listUser);

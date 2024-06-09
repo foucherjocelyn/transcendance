@@ -40,7 +40,7 @@ export async function aliasJoinTournament(tour_obj) {
 `;
 		document.getElementById("tour_inputsend").addEventListener("click", () => {
 			event.preventDefault();
-			//join_the_tournament(document.getElementById("tour_inputalias").value, tour_obj.id); //  Join the tournament with an alias in client side
+			//start_tournament(document.getElementById("tour_inputalias").value, tour_obj.id); //  Join the tournament with an alias in client side
 			to_tournamentWaitingRoom("true", tour_obj);
 		});
 		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });

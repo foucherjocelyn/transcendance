@@ -51,8 +51,8 @@ function    handle_requirements(title, content, sender, recipient)
         else if (title === 'message') {
             send_data(title, content, sender, recipient);
         }
-        else if (title === 'join the tournament') {
-            join_the_tournament(sender);
+        else if (title === 'start tournament') {
+            start_tournament(content);
         }
         else {
             send_data(title, content, sender, recipient);
@@ -118,7 +118,7 @@ function    check_requirements(data, socket)
     const   sender = define_user_by_socket(socket);
     if (sender === undefined) {
         if (data.title === 'connection') {
-            add_new_connection(data.content.id, socket);
+            connect(data.content.id, socket);
         }
     }
     else
@@ -139,9 +139,6 @@ function    check_requirements(data, socket)
         handle_requirements(data.title, data.content, sender, recipient);
     }
 }
-
-// Ignorer les erreurs de certificat pour les tests locaux
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 async function loadCertificates() {
     const key = await fs.readFile('./src/ssl/private.key');
@@ -182,7 +179,7 @@ module.exports = {
     define_user_by_ID
 };
 
-const { add_new_connection, disconnect } = require('./addNewConnection');
+const { connect, disconnect } = require('./addNewConnection');
 const { send_data } = require('./dataToClient');
 const { accept_invitation_to_play, leave_match, reject_invitation_to_play } = require('../match/acceptInvitationPlay');
 const { sign_start_game } = require('../match/signStartGame');
@@ -191,4 +188,4 @@ const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
-const { join_the_tournament } = require("../match/tournament");
+const { start_tournament } = require("../match/tournament");

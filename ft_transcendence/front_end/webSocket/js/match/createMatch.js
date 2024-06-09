@@ -5,17 +5,14 @@ const { update_match } = require("./updateMatch");
 class formMatch
 {
     constructor() {
-        this.admin = undefined,
         this.id = undefined,
         this.mode = undefined,
+        this.admin = undefined,
+        this.tournamentName = undefined,
         this.listUser = [],
         this.listPlayer = [],
         this.listInvite = [],
-        this.result = [],
-        this.timeStart = undefined,
-        this.timeStop = undefined,
-        this.dateStart = undefined,
-        this.dateStop = undefined
+        this.result = []
     }
 };
 
