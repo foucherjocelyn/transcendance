@@ -147,6 +147,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 			to_tournament("false");
 		}
 		else {
+			//send warning and disqualify if continue?
 			notice("You cannot leave a tournament once it has started", 2, "#d11706")
 		}
 	});

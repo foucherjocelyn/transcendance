@@ -1,8 +1,9 @@
 #h_player_bar {
 	background-color: #002f69;
 	position: relative;
-	height: 3.5em;
-	margin-bottom: 3em;
+	height: 65px;
+	margin-top: 60px;
+	margin-bottom: 60px;
 }
 
 #hpb_player_img {
@@ -11,7 +12,7 @@
 	border-radius: 60px;
 	position: relative;
 	margin-top: -2em;
-	left: 4%;
+	left: 70px;
 	width: auto;
 	height: auto;
 	max-width: 80px;
@@ -19,23 +20,22 @@
 }
 
 #hpb_username, #hpb_level {
-	display: inline-block;
-	position: relative;
-	margin-top: -2em;
 	color: white;
 	font-weight: bold;
 }
 
 #hpb_username {
-	margin-bottom: -1%;
-	top: -2em;
-	left: 130px;
+	position: relative;
+	top: -52px;
+	left: 170px;
 }
 
 #hpb_level {
-	top: -30%;
-	left: 70%;
-	transform: translateX(-70%);
+	position: relative;
+    top: -28px;
+    display: flex;
+    justify-content: right;
+    right: 300px;
 }
 
 /*
