@@ -27,7 +27,7 @@ class MatchMaking {
         }
 
         this.players = winners;
-        return this.generateMatches();
+        return this.generateMatches(tournamentName);
     }
 
     shufflePlayers() {
@@ -37,7 +37,14 @@ class MatchMaking {
         }
     }
 
-    async simulateMatch(player1, player2, tournamentName) {
+    async simulateMatch(player1, player2, tournamentName)
+    {
+        if (player1 === null) {
+            return player2;
+        }
+        else if (player2 === null) {
+            return player1;
+        }
 
         // create match + run
         create_match_tournament(player1, player2);
@@ -51,7 +58,7 @@ class MatchMaking {
                 const intervalId = setInterval(() => {
                     if (match.pongGame.gameOver) {
                         clearInterval(intervalId);
-                        const winner = define_user_by_ID(match.winner.id);
+                        let   winner = (player1.id === match.winner.id) ? player1 : player2;
                         resolve(winner);
                     }
                 }, 1000);
@@ -140,6 +147,12 @@ async function    start_tournament(tournamentID)
 
     // sign end tournament
     await create_request('POST', `/api/v1/tournament/${tournament.id}/end`, '');
+    
+    // Update the champion of a tournament
+    const   postData = {
+        username: `${champion.username}`
+    };
+    await create_request('POST', `/api/v1/tournament/${tournament.id}/champion/update`, postData);
     console.log(`The champion is: ${champion.username}`);
 }
 
