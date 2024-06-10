@@ -65,7 +65,7 @@
 }
 
 #tpd_close, #tour_details_close {
-	background-image: url(../../../img/icon/close_white.png);
+	background-image: url(../../../img/icon/close.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-color: transparent;
@@ -81,7 +81,7 @@
 	background-image: url(../../../img/background/bar2.png);
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
-	width: 30%;
+	width: 18em;
 	height: 2em;
 	font-weight: bold;
 	color: white;

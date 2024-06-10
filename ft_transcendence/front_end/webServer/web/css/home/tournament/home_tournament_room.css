@@ -17,7 +17,8 @@
 
 #tournament_player_details {
     z-index: 4;
-    background-color: black;
+    background-image: url(../../../img/background/card.png);
+    background-size: cover;
 	border-radius: 4px;
 	width: 240px;
 	height: auto;
@@ -27,6 +28,7 @@
 	transform: translateX(-50%);
 	top: 25%;
 	color: gray;
+    text-align: center;
 }
 
 #twr_tour_name, #twr_tour_description, #twr_tour_start, #twr_tour_playernb, #twr_tour_status {
