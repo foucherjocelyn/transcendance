@@ -29,19 +29,24 @@ class   inforPlayer {
     }
 };
 
-function    create_match_ID()
-{
-    const now = new Date();
-    
-    const day = now.getDate().toString().padStart(2, '0');
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const year = now.getFullYear().toString();
-    const hour = now.getHours().toString().padStart(2, '0');
-    const minute = now.getMinutes().toString().padStart(2, '0');
-    const second = now.getSeconds().toString().padStart(2, '0');
+function create_match_ID() {
+    return new Promise((resolve, reject) => {
+        try {
+            const now = new Date();
 
-    const dateTimeStr = `${day}${month}${year}${hour}${minute}${second}`;
-    return dateTimeStr;
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear().toString();
+            const hour = now.getHours().toString().padStart(2, '0');
+            const minute = now.getMinutes().toString().padStart(2, '0');
+            const second = now.getSeconds().toString().padStart(2, '0');
+
+            const dateTimeStr = `${day}${month}${year}${hour}${minute}${second}`;
+            resolve(dateTimeStr);
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
 function    define_user(socket)
@@ -55,13 +60,13 @@ function    define_user(socket)
     return undefined;
 }
 
-function    create_match(user, mode)
+async function    create_match(user, mode)
 {
     if (mode !== 'ranked' && mode !== 'tournament' && mode !== 'with friends' && mode !== 'offline')
         return ;
 
     const   match = new formMatch();
-    match.id = create_match_ID();
+    match.id = await create_match_ID();
     match.mode = mode;
 
     for (let i = 0; i < 4; i++)
