@@ -117,6 +117,11 @@ function    get_data_from_server(socket)
             renderChatInput(receivedData.from.username);
         if (receivedData.title === 'unmute')
             renderChatInput(receivedData.from.username);
+        if (receivedData.title === 'connection_42')
+            {
+                console.log("client.js connect 42 data:");
+                console.log(receivedData.content);
+            }
     };
 }
 
