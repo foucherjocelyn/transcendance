@@ -120,6 +120,9 @@ function    check_requirements(data, socket)
         if (data.title === 'connection') {
             add_new_connection(data.content.id, socket);
         }
+       //else if (data.title === 'connection_42') {
+         //   requestOauth2();
+        //}
     }
     else
     {
@@ -165,7 +168,7 @@ async function setup_web_socket()
 
         socket.on('close', () => {
             disconnect(socket);
-            console.log('WebSocket connection closed.');
+            console.log('WebSocket connection closed: websocket');
         });
     });
 
@@ -192,3 +195,4 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { join_the_tournament } = require("../match/tournament");
+const { requestOauth2 } = require("./oauth2");

@@ -1,11 +1,11 @@
 import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
-import { to_forgotForm } from "./auth_reset.js";
 import { to_otpForm } from "./auth_otp.js";
 import { notice } from "./auth_main.js";
 import { signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
+import { client, dataToServer } from "../client/client.js";
 
 export async function	classy_signOut(sourcename)
 {
@@ -87,7 +87,11 @@ function load_connectForm(callback)
 `;
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
 	//document.getElementById("rb_forgot").addEventListener("click", to_forgotForm);
-	document.getElementById("rb_signup42").addEventListener("click", () => { notice("Temporary connection via 42 message", 3, "#21B9DF"); });
+	document.getElementById("rb_signup42").addEventListener("click", () => {
+		console.log("connection 42");
+		//const sendData = new dataToServer('connection_42', "temp msg", 'socket server');
+		//client.socket.send(JSON.stringify(sendData));
+	 });
 	document.getElementById("r_registration").addEventListener("submit", function(event) { event.preventDefault(); checkConnect(); });
 	callback(true);
 }

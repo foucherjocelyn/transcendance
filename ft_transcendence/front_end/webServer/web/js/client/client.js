@@ -136,7 +136,7 @@ function    connection()
     client.socket = socket;
 
     socket.onclose = function() {
-        console.log('WebSocket connection closed');
+        console.log('WebSocket connection closed: client');
     };
 }
 
