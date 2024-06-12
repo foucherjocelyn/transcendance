@@ -1,11 +1,12 @@
 const { create_request } = require("./createRequest");
 
-function    createPostData(admin, modeMatch)
+function    createPostData(admin, modeMatch, tournamentName)
 {
     const   postData = {
         owner_username: `${admin}`,
         visibility: "public",
         mode: `${modeMatch}`,
+        tournament_name: tournamentName,
         maxScore: 5,
         status: "progressing"
     };
@@ -37,8 +38,8 @@ async function  request_game_DB(path, match, player)
     {
         // create game
         console.table('------> create match: ' + match.admin.name);
-        const   postData = createPostData(match.admin.name, modeMatch);
-        const   responseDB = JSON.parse(await create_request('POST', path, postData));
+        const   postData = createPostData(match.admin.name, modeMatch, match.tournamentName);
+        const   responseDB = await create_request('POST', path, postData);
         match.id = responseDB.id;
     }
     else if (path === `/api/v1/game/${match.id}/player/add`)
@@ -61,7 +62,9 @@ async function  request_game_DB(path, match, player)
         console.table('------> winner: ' + player.name);
         await create_request('POST', path, '');
         await create_request('POST', `/api/v1/game/${match.id}/winner`, '');
-        await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
+        if (match.mode !== 'tournament') {
+            await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
+        }
     }
 }
 

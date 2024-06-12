@@ -11,13 +11,13 @@ class   connection {
     }
 };
 
-async function    add_new_connection(userID, socket)
+async function    connect(userID, socket)
 {
     if (userID === undefined || !isNumeric(userID)) {
         return ;
     }
 
-    const   inforUser = JSON.parse(await create_request('GET', `/api/v1/users/${userID}`, ''));
+    const   inforUser = await create_request('GET', `/api/v1/users/${userID}`, '');
     if (inforUser.id === undefined) {
         return ;
     }
@@ -62,7 +62,7 @@ function    disconnect(socket)
 }
 
 module.exports = {
-    add_new_connection,
+    connect,
     disconnect
 };
 

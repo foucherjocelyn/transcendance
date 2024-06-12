@@ -62,15 +62,18 @@ function    get_sign_buttons_game_over_layer()
 {
     const   button = document.querySelectorAll('#buttonsGameOver > div > button');
 
+    if (match.mode === 'tournament') {
+        button[0].style.display = 'none';
+        button[1].style.display = 'none';
+        return ;
+    }
+
     // exit button
     button[0].onclick = () => {
         const  sendData = new dataToServer('leave match', '', 'socket server');
         client.socket.send(JSON.stringify(sendData));
         to_game();
     }
-
-    if (match.mode === 'tournament')
-        button[1].style.display = 'none';
     
     // play again button
     button[1].onclick = () => {
