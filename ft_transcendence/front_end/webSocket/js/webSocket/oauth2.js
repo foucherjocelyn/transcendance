@@ -1,3 +1,6 @@
+const oauth2 = require('simple-oauth2');
+const tokenConfig = {};
+
 const credentials = {
     client: {
         id: 'u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d',
@@ -8,19 +11,15 @@ const credentials = {
     }
 };
 
-const oauth2 = require('simple-oauth2').create(credentials);
-const tokenConfig = {};
-
 function requestOauth2() {
-    oauth2.clientCredentials
-        .getToken(tokenConfig)
-        .then((result) => {
-            const token = oauth2.accessToken.create(result);
-            return (token);
-        })
-        .catch((error) => {
-            console.log('Access Token error', error.message);
-        });
+    oauth2.create(credentials);
+    oauth2.clientCredentials.getToken(tokenConfig, (error, result) => {
+      if (error) {
+        return console.log('Access Token Error', error.message);
+      }
+     
+      const token = oauth2.accessToken.create(result);
+    });
 }
 
 module.exports = {

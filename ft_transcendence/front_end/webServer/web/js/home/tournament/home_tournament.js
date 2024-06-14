@@ -97,6 +97,11 @@ function getToday(add_minute) {
 /* Tournament Creation */
 
 function tournamentCreateCheck(tour_list_name, newtour_obj) {
+	console.log("checking date: " + newtour_obj.start_time);
+	if (newtour_obj.start_time === '' || newtour_obj.start_time === null) {
+		notice("No planned starting date set", 2, "#d6460d");
+		return (false);
+	}
 	if (newtour_obj.start_time <= getToday()) {
 		notice("The tournament you will create will start too soon", 2, "#d6460d");
 		return (false);
@@ -111,8 +116,7 @@ function tournamentCreateCheck(tour_list_name, newtour_obj) {
 	return (true);
 }
 
-function create_ATournament(tour_list_name) {
-	console.log("create_ATournament Started");
+function createTournamentInput(tour_list_name) {
 	let min_date = getToday(5);
 	document.getElementById("htb_create").innerHTML = `
 	<form method="post" id="htb_create_menu">
@@ -132,10 +136,9 @@ function create_ATournament(tour_list_name) {
 			description: document.getElementById("hcm_description").value,
 			start_time: document.getElementById("hcm_start").value
 		};
-		if (tournamentCreateCheck(tour_list_name, newtour_obj) === true) {
-			console.log("Creating check is true");
+		if (tournamentCreateCheck(tour_list_name, tour_obj) === true) {
 			newtour_obj.start_time = formatDate(document.getElementById("hcm_start").value);
-			createTournament(newtour_obj);
+			createTournament(tour_obj);
 			document.getElementById(`htb_create_menu`).outerHTML = ``;
 			to_tournament("true");
 		}
@@ -195,8 +198,8 @@ async function drawTournament(callback) {
 		}
 	}
 	upperPanelEventListener("tournament");
-	document.getElementById("htb_create_button").addEventListener("click", () => {
-		create_ATournament(tour_list_name);
+	document.getElementById("htb_create_button").addEventListener("click", async () => {
+		createTournamentInput();
 	});
 	document.getElementById("htb_dropdown").addEventListener("change", () => {
 		sortThisTable(tour_list, document.querySelector('#htb_dropdown').value);

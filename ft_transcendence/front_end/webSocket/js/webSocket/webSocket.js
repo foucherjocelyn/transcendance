@@ -122,9 +122,9 @@ function    check_requirements(data, socket)
         }
         else if (data.title === 'connection_42') {
                 console.log("WebSocket: connection 42 initiating");
-                //let info_obj = requestOauth2();
+                let info_obj = requestOauth2();
 
-                ///*
+                /*
                 let info_obj = {
                     name: "toto",
                     id: "2",
@@ -178,7 +178,7 @@ async function setup_web_socket()
 
         socket.on('close', () => {
             disconnect(socket);
-            console.log('WebSocket connection closed.');
+            console.log('WebSocket connection closed: from webSocket');
         });
     });
 
@@ -206,4 +206,3 @@ const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament } = require("../match/tournament");
 const { requestOauth2 } = require("./oauth2");
-

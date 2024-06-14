@@ -9,11 +9,14 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
 import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
+import { client, dataToServer } from "../../client/client.js";
 
 async function checkTournamentAvailability(tour_obj) {
+	console.log("checkTournamentAvailability started");
 	console.log("tour_obj start here");
 	console.log(tour_obj);
 	let my_username = getCookie("username");
+	//let my_username = getAlias("username");
 	if (!my_username) {
 		to_connectForm();
 		return (false);
@@ -29,6 +32,7 @@ async function checkTournamentAvailability(tour_obj) {
 }
 
 export async function aliasJoinTournament(tour_obj) {
+	console.log("User is joining, requesting alias");
 	let join_status = await checkTournamentAvailability(tour_obj);
 	if (join_status === true) {
 		document.getElementById("h_tournament_page").innerHTML = `
@@ -67,7 +71,9 @@ function loadTournamentOwnerPanel(tour_obj) {
 	document.getElementById("twr_owner_start_button").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
 			startTournament(tour_obj.id);
-			//Start tournament here
+			//Start Tournament here
+			const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
+			client.socket.send(JSON.stringify(sendData));
 			notice("The tournament has now started", 2, "#00a33f");
 		}
 		else {
@@ -115,6 +121,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
+					<input type="button" id="twr_refresh_tree" class="button-img" value="Refresh tree">
 					<div id="tournament_tree"></div>
 					<div id="twr_owner_panel"></div>
 					<input type="button" id="twr_ready" class="button-img" value="Ready">
@@ -130,6 +137,8 @@ async function drawWaitingRoom(callback, tour_obj) {
 		</div>
 `;
 	renderTournamentTree(tour_obj);
+	//add refresh button for tournament tree, only shows it when the tournament is confirmed
+	document.getElementById("twr_refresh_tree").addEventListener("click", () => { renderTournamentTree(tour_obj); });
 	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
 	document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 	document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
@@ -138,6 +147,10 @@ async function drawWaitingRoom(callback, tour_obj) {
 	document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 	if (tour_obj.owner_username === getCookie("username"))
 		loadTournamentOwnerPanel(tour_obj);
+	document.querySelector("#twr_ready").addEventListener("click", () => {
+		console.log("Ready confirmed");
+		//ready up user: if match is progressing then make the players available for matchmaking
+	});
 	document.querySelector("#twr_back").addEventListener("click", () => {
 		to_tournament("false");
 	});
