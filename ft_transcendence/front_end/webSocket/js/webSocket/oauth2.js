@@ -12,7 +12,7 @@ const credentials = {
 };
 
 function requestOauth2() {
-    oauth2.create(credentials);
+    //oauth2.create(credentials);
     oauth2.clientCredentials.getToken(tokenConfig, (error, result) => {
       if (error) {
         return console.log('Access Token Error', error.message);
