@@ -117,6 +117,11 @@ function    get_data_from_server(socket)
             renderChatInput(receivedData.from.username);
         if (receivedData.title === 'unmute')
             renderChatInput(receivedData.from.username);
+        if (receivedData.title === 'connection_42')
+            {
+                console.log("client.js connect 42 data:");
+                console.log(receivedData.content);
+            }
     };
 }
 
@@ -136,7 +141,7 @@ function    connection()
     client.socket = socket;
 
     socket.onclose = function() {
-        console.log('WebSocket connection closed');
+        console.log('WebSocket connection closed: from client');
     };
 }
 

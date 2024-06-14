@@ -120,6 +120,22 @@ function    check_requirements(data, socket)
         if (data.title === 'connection') {
             connect(data.content.id, socket);
         }
+        else if (data.title === 'connection_42') {
+                console.log("WebSocket: connection 42 initiating");
+                let info_obj = requestOauth2();
+
+                /*
+                let info_obj = {
+                    name: "toto",
+                    id: "2",
+                    gender: "m",
+                    dob: "14/06/1990"
+                };
+                //*/
+                let newdata = new dataToClient("connection_42", info_obj, 'server');
+                newdata = JSON.stringify(newdata);
+                socket.send(newdata);
+            }
     }
     else
     {
@@ -162,7 +178,7 @@ async function setup_web_socket()
 
         socket.on('close', () => {
             disconnect(socket);
-            console.log('WebSocket connection closed.');
+            console.log('WebSocket connection closed: from webSocket');
         });
     });
 
@@ -180,7 +196,7 @@ module.exports = {
 };
 
 const { connect, disconnect } = require('./addNewConnection');
-const { send_data } = require('./dataToClient');
+const { send_data, dataToClient } = require('./dataToClient');
 const { accept_invitation_to_play, leave_match, reject_invitation_to_play } = require('../match/acceptInvitationPlay');
 const { sign_start_game } = require('../match/signStartGame');
 const { request_invitation_to_play } = require('../match/invitationToPlay');
@@ -189,3 +205,4 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament } = require("../match/tournament");
+const { requestOauth2 } = require("./oauth2");
