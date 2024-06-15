@@ -55,6 +55,13 @@ async function checkConnect() {
 	console.log("-=");
 }
 
+function getAuthCodeFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const authCode = params.get('code');
+	console.log("the generated code is : " + authCode);
+	return(authCode);
+}
+
 ///*
 function request42Login() {
 	let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
@@ -81,6 +88,7 @@ function request42Login() {
 
 	document.body.appendChild(form);
 	form.submit();
+	getAuthCodeFromUrl();
 }
 //*/
 
