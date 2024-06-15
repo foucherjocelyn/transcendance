@@ -122,7 +122,7 @@ function    check_requirements(data, socket)
         }
         else if (data.title === 'connection_42') {
                 console.log("WebSocket: connection 42 initiating");
-                let info_obj = requestOauth2();
+                let info_obj = request42Login();
 
                 /*
                 let info_obj = {
@@ -132,9 +132,9 @@ function    check_requirements(data, socket)
                     dob: "14/06/1990"
                 };
                 //*/
-                let newdata = new dataToClient("connection_42", info_obj, 'server');
-                newdata = JSON.stringify(newdata);
-                socket.send(newdata);
+                //let newdata = new dataToClient("connection_42", info_obj, 'server');
+                //newdata = JSON.stringify(newdata);
+                //socket.send(newdata);
             }
     }
     else
@@ -205,4 +205,4 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament } = require("../match/tournament");
-const { requestOauth2 } = require("./oauth2");
+const { request42Login } = require("./oauth2");

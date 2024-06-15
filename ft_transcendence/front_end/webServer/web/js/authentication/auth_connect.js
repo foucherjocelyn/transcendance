@@ -7,9 +7,8 @@ import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { client, dataToServer } from "../client/client.js";
 
-export async function	classy_signOut(sourcename)
-{
-	let	source;
+export async function classy_signOut(sourcename) {
+	let source;
 	if (sourcename === "game")
 		source = "g_game";
 	else if (sourcename === "tournament")
@@ -23,46 +22,102 @@ export async function	classy_signOut(sourcename)
 	if (document.getElementById(source) !== undefined
 		&& document.getElementById("loadspinner") !== undefined
 		&& document.getElementById(source) !== null
-		&& document.getElementById("loadspinner") !== null)
-	{
+		&& document.getElementById("loadspinner") !== null) {
 		document.getElementById(source).classList.add("hide");
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
 }
 
-async function checkConnect()
-{
+async function checkConnect() {
 	console.log("-=Attempting to connect user");
 	document.getElementById("r_connect_page").classList.add("hide");
 	document.getElementById("loadspinner").classList.remove("hide");
 	let connect_user = {
 		username: document.getElementById("rc_username").value,
 		password: document.getElementById("rc_password").value
-    };
+	};
 	const otpStatus = await getOtpStatusPw(connect_user);
-//	console.log("otpStatus = " + otpStatus);
+	//	console.log("otpStatus = " + otpStatus);
 	updateMyInfo();
-	if (otpStatus === false)
-	{
+	if (otpStatus === false) {
 		await signIn(connect_user);
 	}
-	else if (otpStatus === true)
-	{
+	else if (otpStatus === true) {
 		await to_otpForm(connect_user);
 	}
-	else
-	{
+	else {
 		if (otpStatus >= 400 && otpStatus < 500)
 			notice("Wrong Username/Password combination", 0, "#D20000");
 		document.getElementById("r_connect_page").classList.remove("hide");
-		document.getElementById("loadspinner").classList.add("hide");		
+		document.getElementById("loadspinner").classList.add("hide");
 	}
 	console.log("-=");
 }
 
-function load_connectForm(callback)
-{
+///*
+function request42Login() {
+	let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
+
+	let form = document.createElement('form');
+	form.setAttribute('method', 'GET');
+	form.setAttribute('action', oauth2Endpoint);
+
+	let params = {
+		"client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
+		"redirect_uri": "https://127.0.0.1:5500",
+		"scope": "",
+		"state": "pass-through-value",
+		"response_type": "code"
+	};
+
+	for (var p in params) {
+		let input = document.createElement("input");
+		input.setAttribute('type', 'hidden');
+		input.setAttribute('name', p);
+		input.setAttribute('value', params[p]);
+		form.appendChild(input);
+	}
+
+	document.body.appendChild(form);
+	form.submit();
+}
+//*/
+
+/*
+const config = {
+    "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
+    "redirect_uri": "https://localhost:5500/#homepage",
+	"scope": "",
+    "response_type": "code",
+    "state": "pass-through-value"
+};
+
+async function request42Login() {
+    const query = new URLSearchParams(config).toString();
+    try {
+        //const response = await fetch(`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.FOURTWO_CLIENT_ID}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=${response}`, {
+        const response = await fetch(`https://api.intra.42.fr/oauth/authorize?${query}`, {
+			mode: "no-cors",
+            method: "GET"
+        })
+		console.log("request42Login status =");
+		console.log(response.status);
+        if (!response.ok) {
+            console.log("request42Login: Client/Server error");
+            return;
+        }
+        const data = await response.json();
+        //console.log("request42Login:");
+        //console.log(data);
+        //return (data);
+    } catch (error) {
+        console.error("request42Login: ", error);
+    }
+}
+//*/
+
+function load_connectForm(callback) {
 	document.querySelector("#frontpage").outerHTML =
 		`<div id="frontpage">
 		${loadSpinner()}
@@ -86,26 +141,24 @@ function load_connectForm(callback)
 <div class="r_successinfo hide"></div>
 `;
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
-	document.getElementById("rb_signup42").addEventListener("click", () => { 
+	document.getElementById("rb_signup42").addEventListener("click", () => {
 		console.log("42 button");
-		const sendData = new dataToServer('connection_42', "custom info", 'socket server');
-		client.socket.send(JSON.stringify(sendData));
-	 });
-	document.getElementById("r_registration").addEventListener("submit", function(event) { event.preventDefault(); checkConnect(); });
+		request42Login();
+		//const sendData = new dataToServer('connection_42', "custom info", 'socket server');
+		//client.socket.send(JSON.stringify(sendData));
+	});
+	document.getElementById("r_registration").addEventListener("submit", function (event) { event.preventDefault(); checkConnect(); });
 	callback(true);
 }
 
-export function to_connectForm(nohistory = "false")
-{
+export function to_connectForm(nohistory = "false") {
 	if (nohistory === "false")
-		history.pushState( { url: "connection" }, "", "#connection");
-	load_connectForm((result) =>
-		{
-			if (result)
-			{
-				document.getElementById("loadspinner").classList.add("hide");
-				document.getElementById("r_connect_page").classList.remove("hide");
-			}
+		history.pushState({ url: "connection" }, "", "#connection");
+	load_connectForm((result) => {
+		if (result) {
+			document.getElementById("loadspinner").classList.add("hide");
+			document.getElementById("r_connect_page").classList.remove("hide");
 		}
+	}
 	);
 }
