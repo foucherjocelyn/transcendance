@@ -66,8 +66,6 @@ class MatchMaking {
             let   player = (player1 !== null) ? player1 : player2;
             player1 = player;
             player2 = null;
-            console.table(player);
-            return player;
         }
 
         // create match + run
