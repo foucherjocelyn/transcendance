@@ -52,7 +52,7 @@ function    handle_requirements(title, content, sender, recipient)
             send_data(title, content, sender, recipient);
         }
         else if (title === 'start tournament') {
-            start_tournament(content);
+            start_tournament(content, sender);
         }
         else {
             send_data(title, content, sender, recipient);

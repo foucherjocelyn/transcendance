@@ -70,8 +70,8 @@ function loadTournamentOwnerPanel(tour_obj) {
 	`;
 	document.getElementById("twr_owner_start_button").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
-			startTournament(tour_obj.id);
-			//Start Tournament here
+			// startTournament(tour_obj.id);
+			// Start Tournament here
 			const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 			client.socket.send(JSON.stringify(sendData));
 			notice("The tournament has now started", 2, "#00a33f");

@@ -8,26 +8,6 @@ const { isNumeric } = require("../gameSettings/checkInputSize");
 class MatchMaking {
     constructor(players) {
         this.players = players;
-        this.matches = [];
-    }
-
-    generateMatches(tournamentName) {
-        if (this.players.length === 1) {
-            return this.players[0];
-        }
-
-        this.shufflePlayers();
-        const winners = [];
-        for (let i = 0; i < this.players.length; i += 2) {
-            const player1 = this.players[i];
-            const player2 = this.players[i + 1] || null;
-            this.matches.push([player1, player2]);
-            const winner = this.simulateMatch(player1, player2, tournamentName);
-            winners.push(winner);
-        }
-
-        this.players = winners;
-        return this.generateMatches(tournamentName);
     }
 
     shufflePlayers() {
@@ -37,37 +17,70 @@ class MatchMaking {
         }
     }
 
-    checkGameOver() {
+    async generateMatches(tournamentName) {
+        let roundNumber = 1;
+
+        // Shuffle players before the first round
+        if (roundNumber === 1) {
+            this.shufflePlayers();
+            console.log("Players have been shuffled for the first round.");
+        }
+
+        let currentRound = this.players;
+        while (currentRound.length > 1) {
+            console.log(`\nRound ${roundNumber}:`);
+            console.log(`Current round players: ${currentRound.join(", ")}`);
+
+            const matches = [];
+            for (let i = 0; i < currentRound.length; i += 2) {
+                const player1 = currentRound[i];
+                const player2 = i + 1 < currentRound.length ? currentRound[i + 1] : null;
+                matches.push(this.simulateMatch(player1, player2, tournamentName));
+            }
+
+            // Wait for all matches in the current round to complete
+            const winners = await Promise.all(matches);
+            currentRound = winners.filter((winner) => winner !== null);
+            roundNumber++;
+        }
+
+        console.log("\nTournament completed!");
+        return currentRound[0]; // Return the champion
+    }
+
+    checkGameOver(match, player1, player2) {
         return new Promise((resolve) => {
             const intervalId = setInterval(() => {
                 if (match.pongGame.gameOver) {
                     clearInterval(intervalId);
-                    let   winner = (player1.id === match.winner.id) ? player1 : player2;
+                    let winner = (player1.id === match.winner.id) ? player1 : player2;
                     resolve(winner);
                 }
             }, 1000);
         });
     }
 
-    async simulateMatch(player1, player2, tournamentName)
-    {
+    async simulateMatch(player1, player2, tournamentName) {
         if (player1 === null || player2 === null)
         {
             let   player = (player1 !== null) ? player1 : player2;
             player1 = player;
             player2 = null;
-            return player;
         }
 
         // create match + run
-        create_match_tournament(player1, player2);
+        await create_match_tournament(player1, player2);
         const   match = define_match(player1);
         match.tournamentName = tournamentName;
         setup_game(match);
 
         // get winner
-        const winner = await this.checkGameOver();
+        const winner = await this.checkGameOver(match, player1, player2);
         return winner;
+    }
+
+    delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 }
 
@@ -128,7 +141,7 @@ function create_list_player_tournament(listName) {
     });
 }
 
-async function    start_tournament(tournamentID)
+async function    start_tournament(tournamentID, sender)
 {
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return ;
@@ -138,9 +151,15 @@ async function    start_tournament(tournamentID)
     const   tournamentName = tournament.name;
     const   listPlayer = await create_list_player_tournament(tournament.player_usernames);
 
+    if (sender.username !== tournament.owner_username) {
+        console.log('------> not owner_username: ' + sender.username);
+        return ;
+    }
+    
     // sign start tournament
     await create_request('POST', `/api/v1/tournament/${tournament.id}/start`, '');
 
+    // call matchmaking
     const matchMaker = new MatchMaking(listPlayer);
     const champion = await matchMaker.generateMatches(tournamentName);
 
