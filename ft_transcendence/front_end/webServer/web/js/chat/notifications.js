@@ -6,11 +6,13 @@ import { getListFriends } from "./friend-list.js";
 
 const renderNotificationCount = async (count = 0) => {
     const notificationCountElem = document.getElementById("c-notification-count");
-    if (count === 0) {
-        notificationCountElem.classList.add("hidden");
-    } else {
-        notificationCountElem.innerText = count;
-        notificationCountElem.classList.remove("hidden");
+    if (notificationCountElem) {
+        if (count === 0) {
+            notificationCountElem.classList.add("hidden");
+        } else {
+            notificationCountElem.innerText = count;
+            notificationCountElem.classList.remove("hidden");
+        }
     }
 }
 
@@ -100,7 +102,7 @@ const renderNotifications = async () => {
         });
     })
     listOfPendingFriendInvitations.forEach(invitation => {
-            receiveFriendInvite(invitation.id, invitation.sender_username);
+        receiveFriendInvite(invitation.id, invitation.sender_username);
     });
 };
 

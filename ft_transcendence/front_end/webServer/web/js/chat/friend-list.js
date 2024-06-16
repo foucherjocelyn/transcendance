@@ -11,6 +11,8 @@ import { removeFriend } from "./remove-friend.js";
 const renderFriendList = (list) => {
     //console.log(list);
     const friendsList = document.getElementById("c-friends-list");
+    if (!friendsList)
+        return ;
     friendsList.innerHTML = "";
     list.forEach((friend) => {
         friendsList.insertAdjacentHTML("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
@@ -25,8 +27,8 @@ const renderFriendList = (list) => {
     </div>`);
 
         const friendDiv = document.getElementById(`c-list-user-${friend.username}`);
-        friendDiv.addEventListener("click", (e) => openChatBox(friend.username));
-        friendDiv.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
+        friendDiv?.addEventListener("click", (e) => openChatBox(friend.username));
+        friendDiv?.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
             
             const receiverUser = client.listUser.filter(user => user.username === friend.username)[0];
@@ -56,6 +58,8 @@ const searchFriendList = () => {
     const regex = /([A-Za-z0-9]+)/g;
     const listFriends = getListFriends();
 
+    if (!friendsListSearchInput)
+        return;
     listFriends.then(list => {
         if (friendsListSearchInput.value === "") {
             renderFriendList(list);
