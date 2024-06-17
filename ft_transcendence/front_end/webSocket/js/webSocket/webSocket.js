@@ -8,11 +8,9 @@ const webSocket = {
     listMatch: []
 };
 
-function    define_user_by_socket(socket)
-{
-    for (let i = 0; i < webSocket.listConnection.length; i++)
-    {
-        const   connection = webSocket.listConnection[i];
+function define_user_by_socket(socket) {
+    for (let i = 0; i < webSocket.listConnection.length; i++) {
+        const connection = webSocket.listConnection[i];
         if (connection.socket === socket) {
             return connection.user;
         }
@@ -20,11 +18,9 @@ function    define_user_by_socket(socket)
     return undefined;
 }
 
-function    define_user_by_ID(userID)
-{
-    for (let i = 0; i < webSocket.listConnection.length; i++)
-    {
-        const   connection = webSocket.listConnection[i];
+function define_user_by_ID(userID) {
+    for (let i = 0; i < webSocket.listConnection.length; i++) {
+        const connection = webSocket.listConnection[i];
         if (connection.user.id === userID) {
             return connection.user;
         }
@@ -32,10 +28,8 @@ function    define_user_by_ID(userID)
     return undefined;
 }
 
-function    handle_requirements(title, content, sender, recipient)
-{
-    if (sender.status === 'online')
-    {
+function handle_requirements(title, content, sender, recipient) {
+    if (sender.status === 'online') {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -58,8 +52,7 @@ function    handle_requirements(title, content, sender, recipient)
             send_data(title, content, sender, recipient);
         }
     }
-    else if (sender.status === 'creating match')
-    {
+    else if (sender.status === 'creating match') {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -82,8 +75,7 @@ function    handle_requirements(title, content, sender, recipient)
             sign_start_game(sender);
         }
     }
-    else if (sender.status === 'playing game')
-    {
+    else if (sender.status === 'playing game') {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -99,56 +91,47 @@ function    handle_requirements(title, content, sender, recipient)
     }
 }
 
-function    check_form_data_client(obj)
-{
+function check_form_data_client(obj) {
     return obj && typeof obj === 'object' &&
-           'title' in obj &&
-           'content' in obj &&
-           'to' in obj;
+        'title' in obj &&
+        'content' in obj &&
+        'to' in obj;
 }
 
-function    check_requirements(data, socket)
-{
+function check_requirements(data, socket) {
     data = JSON.parse(data);
 
     if (!check_form_data_client(data)) {
-        return ;
+        return;
     }
 
-    const   sender = define_user_by_socket(socket);
+    const sender = define_user_by_socket(socket);
     if (sender === undefined) {
         if (data.title === 'connection') {
             connect(data.content.id, socket);
         }
         else if (data.title === 'connection_42') {
-                console.log("WebSocket: connection 42 initiating");
-                let info_obj = request42Login();
-
-                /*
-                let info_obj = {
-                    name: "toto",
-                    id: "2",
-                    gender: "m",
-                    dob: "14/06/1990"
-                };
-                //*/
-                //let newdata = new dataToClient("connection_42", info_obj, 'server');
-                //newdata = JSON.stringify(newdata);
-                //socket.send(newdata);
-            }
+            console.log("WebSocket: connection 42 initiating");
+            console.log(data);
+            /*
+            console.log("getauthcode from requestListener");
+            let code = getAuthCodeFromUrl(req.url);
+            let newdata = new dataToClient("connection_42", code, 'server');
+            newdata = JSON.stringify(newdata);
+            socket.send(newdata);
+            */
+        }
     }
-    else
-    {
-        let   recipient = data.to;
+    else {
+        let recipient = data.to;
         if (recipient === undefined) {
-            return ;
+            return;
         }
 
-        if (recipient !== 'socket server')
-        {
+        if (recipient !== 'socket server') {
             recipient = define_user_by_ID(recipient.id);
             if (recipient === undefined) {
-                return ;
+                return;
             }
         }
 
@@ -162,8 +145,7 @@ async function loadCertificates() {
     return { key, cert };
 }
 
-async function setup_web_socket()
-{
+async function setup_web_socket() {
     const options = await loadCertificates();
     const server = https.createServer(options);
 
@@ -205,4 +187,5 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament } = require("../match/tournament");
-const { request42Login } = require("./oauth2");
+const { request42Login, getAuthCodeFromUrl } = require("./oauth2");
+const { url } = require("inspector");

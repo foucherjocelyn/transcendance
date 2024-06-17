@@ -47,6 +47,8 @@ export function	authCheck()
 	console.log("---authCheck(): Checking if user is connected");
 	console.log("The user is " + getCookie("status"));
 	updateMyInfo();
+	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
+	//console.log("the bar(search) contains: [" + window.location.search + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);

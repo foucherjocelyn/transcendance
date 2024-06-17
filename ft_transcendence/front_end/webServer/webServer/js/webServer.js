@@ -23,6 +23,39 @@ const getContentType = (filePath) => {
     }
 };
 
+const config = {
+    "grant_type": "authorization_code",
+    "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
+    "client_secret": process.env.FOURTWO_CLIENT_SECRET,
+    "code": "",
+    "redirect_uri": "https://127.0.0.1:5500/"
+};
+
+function request42Token() {
+    var request = require('request');
+
+    console.log(config);
+
+    request.post(
+        //First parameter API to make post request
+        'https://api.intra.42.fr/oauth/token',
+
+        //Second parameter DATA which has to be sent to API
+        //JSON.stringify(config),
+        { json: config},
+
+        //Third parameter Callback function  
+        function (error, response, body) {
+            if (!error && response.statusCode == 201) {
+                console.log(body);
+                return (response.data);
+            }
+            console.log(body);
+            return (response.data);
+        }
+    );
+}
+
 // Request listener function for the HTTPS server
 const requestListener = async function (req, res) {
     let filePath = '';
@@ -35,9 +68,24 @@ const requestListener = async function (req, res) {
 
     if (req.url === '/') {
         filePath = path.join(__dirname, "./web/index.html");
-    } else if (req.url.startsWith('/node_modules/')) {
+    }
+    else if (req.url.startsWith('/node_modules/')) {
         filePath = path.join(__dirname, req.url);
-    } else {
+    }
+    else if (req.url.startsWith('/?code')) {
+        filePath = path.join(__dirname, "./web/index.html");
+        console.log("requestListener code and token exec");
+        var query = require("url").parse(req.url, true).query;
+        config.code = query.code;
+        console.log("code = " + config.code);
+        request42Token();
+
+        //const token = request42Token();
+        //  let newdata = new dataToClient("connection_42", token, 'server');
+        //newdata = JSON.stringify(newdata);
+        //socket.send(newdata);
+    }
+    else {
         filePath = path.join(__dirname, `./web/${req.url}`);
     }
 
@@ -50,7 +98,7 @@ const requestListener = async function (req, res) {
     } catch (err) {
         console.error(`Could not read file: ${filePath}`);
         res.writeHead(404);
-        res.end('Not Found');
+        res.end('Not Found 404');
     }
 };
 
@@ -65,7 +113,7 @@ async function loadCertificates() {
 async function startServer() {
     const options = await loadCertificates();
     const server = https.createServer(options, requestListener);
-    
+
     // Specify the port for the server to listen on
     const PORT = process.env.PORT || 5500;
     server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

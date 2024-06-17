@@ -6,6 +6,7 @@ import { signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { client, dataToServer } from "../client/client.js";
+import { request42Login } from "../backend_operation/forty_two_login.js";
 
 export async function classy_signOut(sourcename) {
 	let source;
@@ -55,76 +56,6 @@ async function checkConnect() {
 	console.log("-=");
 }
 
-function getAuthCodeFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const authCode = params.get('code');
-	console.log("the generated code is : " + authCode);
-	return(authCode);
-}
-
-///*
-function request42Login() {
-	let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
-
-	let form = document.createElement('form');
-	form.setAttribute('method', 'GET');
-	form.setAttribute('action', oauth2Endpoint);
-
-	let params = {
-		"client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
-		"redirect_uri": "https://127.0.0.1:5500",
-		"scope": "",
-		"state": "pass-through-value",
-		"response_type": "code"
-	};
-
-	for (var p in params) {
-		let input = document.createElement("input");
-		input.setAttribute('type', 'hidden');
-		input.setAttribute('name', p);
-		input.setAttribute('value', params[p]);
-		form.appendChild(input);
-	}
-
-	document.body.appendChild(form);
-	form.submit();
-	getAuthCodeFromUrl();
-}
-//*/
-
-/*
-const config = {
-    "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
-    "redirect_uri": "https://localhost:5500/#homepage",
-	"scope": "",
-    "response_type": "code",
-    "state": "pass-through-value"
-};
-
-async function request42Login() {
-    const query = new URLSearchParams(config).toString();
-    try {
-        //const response = await fetch(`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.FOURTWO_CLIENT_ID}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=${response}`, {
-        const response = await fetch(`https://api.intra.42.fr/oauth/authorize?${query}`, {
-			mode: "no-cors",
-            method: "GET"
-        })
-		console.log("request42Login status =");
-		console.log(response.status);
-        if (!response.ok) {
-            console.log("request42Login: Client/Server error");
-            return;
-        }
-        const data = await response.json();
-        //console.log("request42Login:");
-        //console.log(data);
-        //return (data);
-    } catch (error) {
-        console.error("request42Login: ", error);
-    }
-}
-//*/
-
 function load_connectForm(callback) {
 	document.querySelector("#frontpage").outerHTML =
 		`<div id="frontpage">
@@ -150,10 +81,11 @@ function load_connectForm(callback) {
 `;
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
 	document.getElementById("rb_signup42").addEventListener("click", () => {
-		console.log("42 button");
+		console.log("login42 clicked");
 		request42Login();
-		//const sendData = new dataToServer('connection_42', "custom info", 'socket server');
-		//client.socket.send(JSON.stringify(sendData));
+		//window.location.search = "?code=toto"
+		const sendData = new dataToServer('connection_42', "", 'socket server');
+		client.socket.send(JSON.stringify(sendData));
 	});
 	document.getElementById("r_registration").addEventListener("submit", function (event) { event.preventDefault(); checkConnect(); });
 	callback(true);
