@@ -24,68 +24,25 @@ const getContentType = (filePath) => {
 };
 
 const config = {
+    "grant_type": "authorization_code",
     "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
     "client_secret": process.env.FOURTWO_CLIENT_SECRET,
     "code": "",
-    "redirect_uri": "https://127.0.0.1:5500/#homepage"
+    "redirect_uri": "https://127.0.0.1:5500/"
 };
-/*
-async function request42Token() {
-    const query = new URLSearchParams(config).toString();
-    try {
-        const response = await fetch(`https://api.intra.42.fr/oauth/token`, {
-            method: "POST",
-            body: JSON.stringify(config),
-            headers: {
-                "Accept": "application/json",
-                "Content-type": "application/json; charset=UTF-8",
-            }
-        })
-        console.log("request42Login status =");
-        console.log(response.status);
-        if (!response.ok) {
-            console.log("request42Login: Client/Server error");
-            return;
-        }
-        const data = await response.json();
-        //console.log("request42Login:");
-        //console.log(data);
-        //return (data);
-    } catch (error) {
-        console.error("request42Login: ", error);
-    }
-}
-*/
-/*
-function request42Token() {
-    let oauth2Endpoint = "https://api.intra.42.fr/oauth/token";
-
-    let form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', oauth2Endpoint);
-
-    for (var p in config) {
-        let input = document.createElement("input");
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', p);
-        input.setAttribute('value', params[p]);
-        form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-}
-*/
 
 function request42Token() {
     var request = require('request');
+
+    console.log(config);
 
     request.post(
         //First parameter API to make post request
         'https://api.intra.42.fr/oauth/token',
 
         //Second parameter DATA which has to be sent to API
-        JSON.stringify(config),
+        //JSON.stringify(config),
+        { json: config},
 
         //Third parameter Callback function  
         function (error, response, body) {
