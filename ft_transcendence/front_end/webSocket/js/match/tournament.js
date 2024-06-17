@@ -4,6 +4,7 @@ const { formMatch, create_match_ID, inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
 const { create_request } = require("../dataToDB/createRequest");
 const { isNumeric } = require("../gameSettings/checkInputSize");
+const { send_data } = require("../webSocket/dataToClient");
 
 class MatchMaking {
     constructor(players) {
@@ -165,7 +166,6 @@ async function    start_tournament(tournamentID, sender)
     const   listPlayer = await create_list_player_tournament(tournament.player_usernames);
 
     if (sender.username !== tournament.owner_username || listPlayer.length < 2) {
-        console.log('------> not owner_username: ' + sender.username);
         return ;
     }
     
@@ -185,6 +185,9 @@ async function    start_tournament(tournamentID, sender)
     };
     await create_request('POST', `/api/v1/tournament/${tournament.id}/champion/update`, postData);
     console.log(`The champion is: ${champion.username}`);
+
+    // display button exit match
+    send_data('display exit match', 'flex', 'server', champion);
 }
 
 module.exports = {

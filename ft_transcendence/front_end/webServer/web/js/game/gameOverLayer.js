@@ -25,7 +25,7 @@ function    create_results_bar_html(player)
         else if (i === 1)
             span.textContent = player.name;
         else if (i === 2)
-            span.textContent = player.paddle.name;
+            span.textContent = player.paddle;
         else
             span.textContent = player.score;
         spans.push(span);
@@ -58,15 +58,15 @@ function    setup_size_game_over_layer()
     gameOverLayer.style.width = `${screen.width}px`;
 }
 
+export function    display_button_game_over(status)
+{
+    const   button = document.querySelectorAll('#buttonsGameOver > div > button')[0];
+    button.style.display = status;
+}
+
 function    get_sign_buttons_game_over_layer()
 {
     const   button = document.querySelectorAll('#buttonsGameOver > div > button');
-
-    if (match.mode === 'tournament') {
-        button[0].style.display = 'none';
-        button[1].style.display = 'none';
-        return ;
-    }
 
     // exit button
     button[0].onclick = () => {
@@ -75,6 +75,11 @@ function    get_sign_buttons_game_over_layer()
         to_game();
     }
     
+    if (match.mode === 'tournament') {
+        button[1].style.display = 'none';
+        return ;
+    }
+
     // play again button
     button[1].onclick = () => {
         const   mode = match.mode;

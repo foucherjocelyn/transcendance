@@ -20,6 +20,8 @@ function    create_result(match)
     if (match.mode === 'tournament') {
         match.listUser.forEach((player, index) => {
             const user = define_user_by_ID(player.id);
+            let status_exit_button = (user.id !== winner.id) ? 'flex' : 'none';
+            send_data('display exit match', status_exit_button, 'server', user);
             Object.assign(match.listPlayer[index], match.listPlayer[3]);
             update_match(user);
         })

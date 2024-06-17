@@ -8,7 +8,7 @@ import { update_game_settings } from "../gameSettings/updateGameSetting.js";
 import { draw_score } from "../game/drawScore.js";
 import { draw_paddle } from "../game/drawPaddles.js";
 import { display_countdown } from "../game/displayCountdown.js";
-import { display_game_over_layer } from "../game/gameOverLayer.js";
+import { display_button_game_over, display_game_over_layer } from "../game/gameOverLayer.js";
 import { change_color_border } from "../game/drawBorders.js";
 
 class   userNotifications {
@@ -113,15 +113,20 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'game over') {
             display_game_over_layer(receivedData.content);
         }
-        if (receivedData.title === 'mute')
+        if (receivedData.title === 'display exit match') {
+            display_button_game_over(receivedData.content);
+        }
+        if (receivedData.title === 'mute') {
             renderChatInput(receivedData.from.username);
-        if (receivedData.title === 'unmute')
+        }
+        if (receivedData.title === 'unmute') {
             renderChatInput(receivedData.from.username);
+        }
         if (receivedData.title === 'connection_42')
-            {
-                console.log("client.js connect 42 data:");
-                console.log(receivedData.content);
-            }
+        {
+            console.log("client.js connect 42 data:");
+            console.log(receivedData.content);
+        }
     };
 }
 
