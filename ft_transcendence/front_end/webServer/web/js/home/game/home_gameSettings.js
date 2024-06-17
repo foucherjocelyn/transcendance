@@ -140,7 +140,7 @@ function gameSettingsSpeedPanelHTML()
             <div class="gameSettingInput" id="gameSettingSpeedPaddle">
                 <div>
                     <span>Speed:</span>
-                    <input type="range" value="0.488" min="0.488" max="1.608" step="0.01">
+                    <input type="range" value="1.608" min="0.488" max="1.608" step="0.01">
                 </div>
             </div>
 

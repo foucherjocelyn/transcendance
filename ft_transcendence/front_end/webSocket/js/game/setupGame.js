@@ -37,7 +37,7 @@ async function    setup_game(match)
     update_status_user(match, 'playing game');
 
     match.pongGame = new formPongGameWS();
-    match.pongGame.maxPoint = 2; // max = 5
+    match.pongGame.maxPoint = (match.mode === 'tournament') ? 3 : 5;
     match.pongGame.listPlayer = match.listPlayer;
     match.pongGame.listUser = match.listUser;
 
@@ -49,7 +49,7 @@ async function    setup_game(match)
     {
         setTimeout(function() {
             start_game(match);
-        }, 3000); // 3 secondes
+        }, 5000); // 5 secondes
     }
 }
 

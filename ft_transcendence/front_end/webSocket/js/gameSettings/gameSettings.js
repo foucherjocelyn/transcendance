@@ -1,5 +1,4 @@
 const { send_data } = require("../webSocket/dataToClient");
-const { webSocket } = require("../webSocket/webSocket");
 const { define_match } = require("../match/updateMatch");
 
 const { create_ball } = require("../game/createBall");
@@ -37,7 +36,7 @@ class formGameSetting {
             ball: '#ff0000'
         },
         this.speed = {
-            paddle: 0.488,
+            paddle: 1.608,
             ball: 0.001
         },
         this.control = {
