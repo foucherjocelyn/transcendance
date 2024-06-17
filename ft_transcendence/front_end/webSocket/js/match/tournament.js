@@ -4,6 +4,7 @@ const { formMatch, create_match_ID, inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
 const { create_request } = require("../dataToDB/createRequest");
 const { isNumeric } = require("../gameSettings/checkInputSize");
+const { send_data } = require("../webSocket/dataToClient");
 
 class MatchMaking {
     constructor(players) {
@@ -23,13 +24,13 @@ class MatchMaking {
         // Shuffle players before the first round
         if (roundNumber === 1) {
             this.shufflePlayers();
-            console.log("Players have been shuffled for the first round.");
+            // console.log("Players have been shuffled for the first round.");
         }
 
         let currentRound = this.players;
         while (currentRound.length > 1) {
-            console.log(`\nRound ${roundNumber}:`);
-            console.log(`Current round players: ${currentRound.join(", ")}`);
+            // console.log(`\nRound ${roundNumber}:`);
+            // console.log(`Current round players: ${currentRound.join(", ")}`);
 
             const matches = [];
             for (let i = 0; i < currentRound.length; i += 2) {
@@ -51,7 +52,7 @@ class MatchMaking {
     checkGameOver(match, player1, player2) {
         return new Promise((resolve) => {
             const intervalId = setInterval(() => {
-                if (match.pongGame.gameOver) {
+                if (match.pongGame.gameOver && match.winner !== undefined) {
                     clearInterval(intervalId);
                     let winner = (player1.id === match.winner.id) ? player1 : player2;
                     resolve(winner);
@@ -76,6 +77,19 @@ class MatchMaking {
 
         // get winner
         const winner = await this.checkGameOver(match, player1, player2);
+
+        // stop match AI
+        const   list_match_in_tournament = webSocket.listMatch.filter(match => match.tournamentName === tournamentName);
+        if (list_match_in_tournament.length > 0)
+        {
+            const   list_match_AI = list_match_in_tournament.filter(match => match.listUser.length === 1);
+            if (list_match_AI.length > 0)
+            {
+                const   matchAI = list_match_AI[0];
+                matchAI.pongGame.gameOver = true;
+            }
+        }
+
         return winner;
     }
 
@@ -151,8 +165,7 @@ async function    start_tournament(tournamentID, sender)
     const   tournamentName = tournament.name;
     const   listPlayer = await create_list_player_tournament(tournament.player_usernames);
 
-    if (sender.username !== tournament.owner_username) {
-        console.log('------> not owner_username: ' + sender.username);
+    if (sender.username !== tournament.owner_username || listPlayer.length < 2) {
         return ;
     }
     
@@ -172,6 +185,9 @@ async function    start_tournament(tournamentID, sender)
     };
     await create_request('POST', `/api/v1/tournament/${tournament.id}/champion/update`, postData);
     console.log(`The champion is: ${champion.username}`);
+
+    // display button exit match
+    send_data('display exit match', 'flex', 'server', champion);
 }
 
 module.exports = {

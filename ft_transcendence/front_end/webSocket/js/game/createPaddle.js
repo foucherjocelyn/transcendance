@@ -140,7 +140,7 @@ function    create_paddles(match)
     match.listPlayer.forEach((player, index) => {
         const   paddle = match.pongGame.listPaddle[index];
         if (paddle !== undefined) {
-            player.paddle = paddle;
+            player.paddle = paddle.name;
         }
     })
 

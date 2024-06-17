@@ -1,4 +1,3 @@
-const { update_status_user } = require("../game/setupGame");
 const { webSocket } = require("../webSocket/webSocket");
 const { update_match } = require("./updateMatch");
 
@@ -8,6 +7,7 @@ class formMatch
         this.id = undefined,
         this.mode = undefined,
         this.admin = undefined,
+        this.winner = undefined,
         this.tournamentName = undefined,
         this.listUser = [],
         this.listPlayer = [],
@@ -62,8 +62,9 @@ function    define_user(socket)
 
 async function    create_match(user, mode)
 {
-    if (mode !== 'ranked' && mode !== 'tournament' && mode !== 'with friends' && mode !== 'offline')
+    if (mode !== 'ranked' && mode !== 'tournament' && mode !== 'with friends' && mode !== 'offline') {
         return ;
+    }
 
     const   match = new formMatch();
     match.id = await create_match_ID();

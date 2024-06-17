@@ -1,11 +1,9 @@
-const { webSocket } = require("../webSocket/webSocket");
 const { send_data } = require("../webSocket/dataToClient");
 const { update_status_objects } = require("./collisionsPoint");
 const { movements_ball } = require("./movementsBall");
 const { movement_AI } = require("./movementsAI");
 const { create_paddles } = require("./createPaddle");
 const { check_game_over } = require("./gameOver");
-const { request_game_DB } = require("../dataToDB/requestGame");
 
 function calculate_ball_speed(gameSettings)
 {
@@ -86,7 +84,7 @@ function    start_game_ws(match)
 
 function    countdown(match)
 {
-    let count = (match.pongGame.lostPoint === false) ? 1 : 3;
+    let count = (match.pongGame.lostPoint === false) ? 15 : 3;
     const countdownInterval = setInterval(function() {
         if (count < -1)
         {

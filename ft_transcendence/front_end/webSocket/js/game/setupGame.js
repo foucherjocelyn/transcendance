@@ -25,16 +25,19 @@ function    update_status_user(match, status)
 async function    setup_game(match)
 {
     await request_game_DB('/api/v1/game', match, '');
-    match.listPlayer.forEach(player => {
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
         if (player.type === 'player') {
-            request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
+            await request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
+            await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
         }
-    })
+    }
 
     update_status_user(match, 'playing game');
 
     match.pongGame = new formPongGameWS();
-    match.pongGame.maxPoint = 2; // max = 5
+    match.pongGame.maxPoint = (match.mode === 'tournament') ? 3 : 5;
     match.pongGame.listPlayer = match.listPlayer;
     match.pongGame.listUser = match.listUser;
 
@@ -46,7 +49,7 @@ async function    setup_game(match)
     {
         setTimeout(function() {
             start_game(match);
-        }, 3000); // 3 secondes
+        }, 5000); // 5 secondes
     }
 }
 

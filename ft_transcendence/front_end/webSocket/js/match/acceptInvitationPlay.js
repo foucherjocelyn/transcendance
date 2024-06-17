@@ -1,11 +1,9 @@
-const { webSocket } = require("../webSocket/webSocket");
 const { send_data } = require("../webSocket/dataToClient");
 const { inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
 
 function    change_match_admin(match)
 {
-    const   admin = match.admin;
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
