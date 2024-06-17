@@ -8,7 +8,7 @@ export function request42Login() {
 
 	let params = {
 		"client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
-		"redirect_uri": "https://127.0.0.1:5500",
+		"redirect_uri": "https://127.0.0.1:5500/",
 		"scope": "",
 		"state": "pass-through-value",
 		"response_type": "code"

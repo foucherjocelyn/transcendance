@@ -35,9 +35,14 @@ const requestListener = async function (req, res) {
 
     if (req.url === '/') {
         filePath = path.join(__dirname, "./web/index.html");
-    } else if (req.url.startsWith('/node_modules/')) {
+    }
+    else if (req.url.startsWith('/node_modules/')) {
         filePath = path.join(__dirname, req.url);
-    } else {
+    }
+    else if (req.url.startsWith('/?code')) {
+        filePath = path.join(__dirname, "./web/index.html");
+    }
+    else {
         filePath = path.join(__dirname, `./web/${req.url}`);
     }
 
@@ -50,7 +55,7 @@ const requestListener = async function (req, res) {
     } catch (err) {
         console.error(`Could not read file: ${filePath}`);
         res.writeHead(404);
-        res.end('Not Found');
+        res.end('Not Found 404');
     }
 };
 

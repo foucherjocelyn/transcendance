@@ -82,9 +82,9 @@ function load_connectForm(callback) {
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
 	document.getElementById("rb_signup42").addEventListener("click", () => {
 		console.log("42 button");
-		//request42Login();
+		request42Login();
 		//let code = getAuthCodeFromUrl();
-		const sendData = new dataToServer('connection_42', code, 'socket server');
+		const sendData = new dataToServer('connection_42', "", 'socket server');
 		client.socket.send(JSON.stringify(sendData));
 	});
 	document.getElementById("r_registration").addEventListener("submit", function (event) { event.preventDefault(); checkConnect(); });

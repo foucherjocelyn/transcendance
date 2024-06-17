@@ -122,7 +122,7 @@ function    check_requirements(data, socket)
         }
         else if (data.title === 'connection_42') {
                 console.log("WebSocket: connection 42 initiating");
-                let code = data.content;
+                let code = getAuthCodeFromUrl();
                 console.log(data);
                 /*
                 let info_obj = {
@@ -205,4 +205,4 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament } = require("../match/tournament");
-const { request42Login } = require("./oauth2");
+const { request42Login, getAuthCodeFromUrl } = require("./oauth2");
