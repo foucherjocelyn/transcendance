@@ -1,13 +1,5 @@
 // need to get token from code and send to backend
 
-function getAuthCodeFromUrl() {
-    console.log("getAuthCodeFromUrl = " + window.location.search);
-    const params = new URLSearchParams(window.location.search);
-    const auth_code = params.get('code');
-	console.log("the generated code is : " + auth_code);
-	return(auth_code);
-}
-
 const config = {
     "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
     "client_secret": process.env.FOURTWO_CLIENT_SECRET,
@@ -135,6 +127,5 @@ oauth2.authorizationCode.getToken(tokenConfig)
 
 
 module.exports = {
-    request42Token,
-    getAuthCodeFromUrl
+    request42Token
 };

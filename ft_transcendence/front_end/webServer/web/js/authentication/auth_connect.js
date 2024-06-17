@@ -81,9 +81,9 @@ function load_connectForm(callback) {
 `;
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
 	document.getElementById("rb_signup42").addEventListener("click", () => {
-		console.log("42 button");
+		console.log("login42 clicked");
 		request42Login();
-		//let code = getAuthCodeFromUrl();
+		//window.location.search = "?code=toto"
 		const sendData = new dataToServer('connection_42', "", 'socket server');
 		client.socket.send(JSON.stringify(sendData));
 	});
