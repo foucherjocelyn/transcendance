@@ -1,7 +1,47 @@
-//require('dotenv').config();
+// need to get token from code and send to backend
 
-//    "client_secret": process.env.FOURTWO_CLIENT_SECRET
+function getAuthCodeFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const auth_code = params.get('code');
+	console.log("the generated code is : " + auth_code);
+	return(auth_code);
+}
 
+const config = {
+    "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
+    "client_secret": process.env.FOURTWO_CLIENT_SECRET,
+    "code": "",
+    "redirect_uri": "https://127.0.0.1:5500/#homepage"
+};
+
+async function request42Token() {
+    const query = new URLSearchParams(config).toString();
+    try {
+        const response = await fetch(`https://api.intra.42.fr/oauth/token`, {
+            method: "POST",
+            body: JSON.stringify(config),
+            headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json; charset=UTF-8",
+			}
+        })
+		console.log("request42Login status =");
+		console.log(response.status);
+        if (!response.ok) {
+            console.log("request42Login: Client/Server error");
+            return;
+        }
+        const data = await response.json();
+        //console.log("request42Login:");
+        //console.log(data);
+        //return (data);
+    } catch (error) {
+        console.error("request42Login: ", error);
+    }
+}
+
+
+/*
 const config = {
     "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
     "redirect_uri": "https://localhost:5500/#homepage",
@@ -9,10 +49,6 @@ const config = {
     "scope": "",
     "state": "pass-through-value"
 };
-
-//const oauth2 = require('simple-oauth2').create(credentials);
-//const tokenConfig = {};
-
 
 async function request42Login() {
     const query = new URLSearchParams(config).toString();
@@ -33,7 +69,7 @@ async function request42Login() {
         console.error("request42Login: ", error);
     }
 }
-
+*/
 /*
 const credentials = {
     client: {
@@ -98,5 +134,5 @@ oauth2.authorizationCode.getToken(tokenConfig)
 
 
 module.exports = {
-    request42Login
+    request42Token
 };

@@ -123,8 +123,8 @@ function createTournamentInput(tour_list_name) {
 	<form method="post" id="htb_create_menu">
 		<input type="button" id="hcm_create_menu_close">
 		<br>
-		<input id="hcm_name" type="text" placeholder="Name" required>
-		<input id="hcm_description" type="text" placeholder="Description (optional)">
+		<input id="hcm_name" type="text" placeholder="Name" maxlength="30" required>
+		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
 		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59" required>
 		<br>
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">

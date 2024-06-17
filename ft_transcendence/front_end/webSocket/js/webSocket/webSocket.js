@@ -122,8 +122,8 @@ function    check_requirements(data, socket)
         }
         else if (data.title === 'connection_42') {
                 console.log("WebSocket: connection 42 initiating");
-                let info_obj = request42Login();
-
+                let code = data.content;
+                console.log(data);
                 /*
                 let info_obj = {
                     name: "toto",
@@ -132,9 +132,9 @@ function    check_requirements(data, socket)
                     dob: "14/06/1990"
                 };
                 //*/
-                //let newdata = new dataToClient("connection_42", info_obj, 'server');
-                //newdata = JSON.stringify(newdata);
-                //socket.send(newdata);
+                let newdata = new dataToClient("connection_42", code, 'server');
+                newdata = JSON.stringify(newdata);
+                socket.send(newdata);
             }
     }
     else

@@ -22,10 +22,12 @@ async function checkTournamentAvailability(tour_obj) {
 		return (false);
 	}
 	if (!tour_obj.player_usernames.includes(my_username) && tour_obj.status === "registering") {
-		joinTournament(tour_obj.id);
+		console.log("checkTournamentAvailability: true");
+		await joinTournament(tour_obj.id);
 		return (true);
 	}
 	else if (tour_obj.player_usernames.includes(my_username)) {
+		console.log("checkTournamentAvailability: can join");
 		return ("can join");
 	}
 	return (false);
@@ -38,20 +40,24 @@ export async function aliasJoinTournament(tour_obj) {
 		document.getElementById("h_tournament_page").innerHTML = `
 <div id="h_tournament_aliasjoin">
 	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
-	<input type="submit" class="button-img" type="button" id="tour_inputsend" value="Confirm">
+	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
 	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
 </div>
 `;
 		document.getElementById("tour_inputsend").addEventListener("click", () => {
 			event.preventDefault();
 			//start_tournament(document.getElementById("tour_inputalias").value, tour_obj.id); //  Join the tournament with an alias in client side
+			console.log("sending alias, to_tournament waiting room from aliasJointournament");
 			to_tournamentWaitingRoom("true", tour_obj);
 		});
 		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
 		return (false);
 	}
 	else if (join_status === "can join")
+		{
+			console.log("can join, to_tournament waiting room from aliasJointournament");
 		to_tournamentWaitingRoom("true", tour_obj);
+		}
 	else if (tour_obj.status === "progressing")
 		notice("You cannot join an ongoing tournament", 2, "#cc7314");
 	else if (tour_obj.status === "completed")
@@ -98,14 +104,27 @@ function detailsTournamentPlayers(tour_obj, html_id_element) {
 	<button id="tpd_close"></button>
 	</div>
 	`;
-	for (let i = 0; i < player_nb; i++)
-		{
-			document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
+	for (let i = 0; i < player_nb; i++) {
+		document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
 			<p>${tour_obj.player_usernames[i]}</p>
 			<br>
 			`);
-		}
+	}
 	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
+}
+
+function loadTournamentDetails(tour_obj) {
+	///*
+	console.log("-------------");
+	console.log(tour_obj);
+	console.log(tour_obj.player_usernames.length);
+	console.log("-------------");
+	//*/
+	document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
+	document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
+	document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
+	document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
+	document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 }
 
 async function drawWaitingRoom(callback, tour_obj) {
@@ -123,8 +142,9 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_status"></p>
 					<input type="button" id="twr_refresh_tree" class="button-img" value="Refresh tree">
 					<div id="tournament_tree"></div>
-					<div id="twr_owner_panel"></div>
 					<input type="button" id="twr_ready" class="button-img" value="Ready">
+					<div id="twr_owner_panel"></div>
+					<input type="button" id="twr_refresh_tour" class="button-img" value="Refresh tour details (debug)">
 					<br>
 					<input type="button" id="twr_leave" class="button-img" value="Leave tournament">
 					<input type="button" id="twr_back" class="button-img" value="Back">
@@ -140,11 +160,8 @@ async function drawWaitingRoom(callback, tour_obj) {
 	//add refresh button for tournament tree, only shows it when the tournament is confirmed
 	document.getElementById("twr_refresh_tree").addEventListener("click", () => { renderTournamentTree(tour_obj); });
 	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
-	document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
-	document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
-	document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
-	document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
-	document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
+	loadTournamentDetails(tour_obj);
+	document.getElementById("twr_refresh_tour").addEventListener("click", () => { loadTournamentDetails(tour_obj); });
 	if (tour_obj.owner_username === getCookie("username"))
 		loadTournamentOwnerPanel(tour_obj);
 	document.querySelector("#twr_ready").addEventListener("click", () => {
