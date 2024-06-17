@@ -46,11 +46,11 @@ function request42Token() {
 
         //Third parameter Callback function  
         function (error, response, body) {
-            if (!error && response.statusCode == 201) {
+            if (!error && response.statusCode == 200) {
                 console.log(body);
-                return (response.data);
             }
             console.log(body);
+            console.log(response.statusCode);
             return (response.data);
         }
     );
