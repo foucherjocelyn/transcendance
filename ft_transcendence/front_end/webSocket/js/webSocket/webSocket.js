@@ -187,5 +187,4 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament } = require("../match/tournament");
-const { request42Login, getAuthCodeFromUrl } = require("./oauth2");
 const { url } = require("inspector");
