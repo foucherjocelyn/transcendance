@@ -5,19 +5,8 @@ const { define_user_by_ID } = require("../webSocket/webSocket");
 
 function    create_result(match)
 {
-    for (let i = 0; i < 4; i++)
-    {
-        if (match.result.length === 4) {
-            break ;
-        }
-        
-        const   player = match.listPlayer[i];
-        if (player.type !== 'none') {
-            match.result.push(player);
-        }
-    }
-
     // Arranged from smallest to largest
+    match.result = match.listPlayer.filter(player => player.type !== 'none');
     match.result.sort((a, b) => a.score - b.score);
     match.result.reverse();
 

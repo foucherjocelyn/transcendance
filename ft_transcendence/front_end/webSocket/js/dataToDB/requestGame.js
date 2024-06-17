@@ -37,7 +37,7 @@ async function  request_game_DB(path, match, player)
     if (path === '/api/v1/game')
     {
         // create game
-        console.table('------> create match: ' + match.admin.name);
+        // console.table('------> create match: ' + match.admin.name);
         const   postData = createPostData(match.admin.name, modeMatch, match.tournamentName);
         const   responseDB = await create_request('POST', path, postData);
         match.id = responseDB.id;
@@ -45,21 +45,21 @@ async function  request_game_DB(path, match, player)
     else if (path === `/api/v1/game/${match.id}/player/add`)
     {
         // add player
-        console.table('------> add player: ' + player.name);
+        // console.table('------> add player: ' + player.name);
         const   postData = createPostData2(player.name);
         await create_request('POST', path, postData);
     }
     else if (path === `/api/v1/game/${match.id}/score`)
     {
         // add score
-        console.table('------> add score: ' + player.name + ' score: ' + player.score);
+        // console.table('------> add score: ' + player.name + ' score: ' + player.score);
         const postData = createPostData3(player.name, player.score);
         await create_request('POST', path, postData);
     }
     else
     {
         // end game
-        console.table('------> winner: ' + player.name);
+        // console.table('------> winner: ' + player.name);
         await create_request('POST', path, '');
         await create_request('POST', `/api/v1/game/${match.id}/winner`, '');
         if (match.mode !== 'tournament') {

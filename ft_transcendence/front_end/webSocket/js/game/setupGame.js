@@ -25,11 +25,14 @@ function    update_status_user(match, status)
 async function    setup_game(match)
 {
     await request_game_DB('/api/v1/game', match, '');
-    match.listPlayer.forEach(player => {
+    for (let i = 0; i < match.listPlayer.length; i++)
+    {
+        const   player = match.listPlayer[i];
         if (player.type === 'player') {
-            request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
+            await request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
+            await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
         }
-    })
+    }
 
     update_status_user(match, 'playing game');
 
