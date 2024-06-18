@@ -2,6 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { postMuteUser, postNewMessage, postUnmuteUser } from "../backend_operation/messages.js";
 import { getListMutedUsers } from "../backend_operation/get_user_info.js";
+import { postNotification } from "../backend_operation/notification.js";
 
 const renderMessages = async (friendUsername) => {
     let f_token = getCookie("token");
@@ -110,6 +111,7 @@ const sendMessage = async (friendUsername) => {
         const sendData = new dataToServer('message', newMessage.content, connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
     }
+    postNotification({ username: friendUsername, content: `New message from ${client.inforUser.username}` });
 };
 
 const receiveMessage = (receivedData) => {
@@ -121,12 +123,6 @@ const receiveMessage = (receivedData) => {
     if (chattingWith === senderName) {
         renderMessages(senderName);
     }
-    /*    const messages = client.inforUser.listChat.filter(el => el.user.id === senderId)[0].listMessages;
-    const newMessage = {
-        type: "incoming",
-        content: receivedData.content,
-    }
-    messages.push(newMessage);*/
 };
 
 const renderUnmuteButton = (username) => {
