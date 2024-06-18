@@ -321,7 +321,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             "listFriends",
             "listMutedUser",
         ]:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

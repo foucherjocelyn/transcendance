@@ -118,7 +118,7 @@ class OtpViewSet(viewsets.ModelViewSet):
         if self.action in ['postOtpStatus']:
             self.permission_classes = [AllowAny]
         elif self.action in ['getOtpStatus', 'switchOtpStatus', 'getOtpCode', 'checkOtpCode', 'getQRcode']:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

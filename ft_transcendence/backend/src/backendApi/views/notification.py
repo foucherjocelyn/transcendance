@@ -64,7 +64,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
             "getAllNotifications",
             "readNotification",
         ]:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

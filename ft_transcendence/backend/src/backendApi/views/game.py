@@ -216,7 +216,7 @@ class GameViewSet(viewsets.ModelViewSet):
             "listAllScoresByUser",
             "listGamesByTournament",
         ]:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()
