@@ -12,10 +12,10 @@ const renderFriendList = (list) => {
     //console.log(list);
     const friendsList = document.getElementById("c-friends-list");
     if (!friendsList)
-        return ;
+        return;
     friendsList.innerHTML = "";
-    list.forEach((friend) => {
-        friendsList.insertAdjacentHTML("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
+    const listHTML = list.map((friend) => {
+        return ("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
         <div class="user-avatar">
             <img src="../img/avatar/avatar_default.png" alt="profile-picture">
             <div id="c-list-friend-status-${friend.username}" class="c-list-friend-status ${friend.status}"></div>
@@ -25,28 +25,31 @@ const renderFriendList = (list) => {
         <button id="c-inspectprofile${friend.username}" class="c-inspectprofile-button"></button>
         <button id="c-remove-friend${friend.username}" class="c-remove-friend-button"></button>
     </div>`);
+    });
+    friendsList.innerHTML = listHTML;
 
-        const friendDiv = document.getElementById(`c-list-user-${friend.username}`);
-        friendDiv?.addEventListener("click", (e) => openChatBox(friend.username));
+    document.querySelectorAll(".c-friend").forEach(friendDiv => {
+        const friendUsername = friendDiv.id.slice(12);
+
+        //const friendDiv = document.getElementById(`c-list-user-${friendUsername}`);
+        friendDiv?.addEventListener("click", (e) => openChatBox(friendUsername));
         friendDiv?.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
-            
-            const receiverUser = client.listUser.filter(user => user.username === friend.username)[0];
+
+            const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
             if (receiverUser === undefined || receiverUser.status === 'playing game')
-                return ;
-            
+                return;
+
             create_match("with friends");
             send_invitation_to_play(receiverUser);
         })
         friendDiv.querySelector(".c-inspectprofile-button").addEventListener("click", (e) => {
             e.stopPropagation();
-            inspectProfile(friend.username);
+            inspectProfile(friendUsername);
         })
         friendDiv.querySelector(".c-remove-friend-button").addEventListener("click", (e) => {
             e.stopPropagation();
-            if (confirm(`Are you sure want to remove ${friend.username} from your friends ?`)) {
-                removeFriend(friend.username);
-            }
+            removeFriend(friendUsername);
         })
     });
     renderNotifications();

@@ -9,7 +9,7 @@ async function refreshChat() {
         // const listFriends = await getListFriends();
         // renderFriendList(listFriends);
         searchFriendList();
-        setTimeout(refreshChat, 5000);
+        setTimeout(refreshChat, 2000);
     }
 }
 

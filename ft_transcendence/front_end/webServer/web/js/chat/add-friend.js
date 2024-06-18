@@ -17,7 +17,6 @@ export const searchFindNewFriendWindow = async () => {
     if (searchInput.value) {
         const parsedSearchInput = searchInput.value.match(regex).join("");
 
-        console.log(listUsers);
         let listFriendInvitationPending = [{}];
         if (listFriendInvitationSent) {
             listFriendInvitationPending = listFriendInvitationSent.filter(invitation => invitation.status === "pending");
