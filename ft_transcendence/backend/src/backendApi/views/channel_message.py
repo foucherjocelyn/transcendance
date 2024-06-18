@@ -1,12 +1,19 @@
-from backendApi.models import Channel, ChannelMessage, User, ChannelMutedUser
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
-from django.contrib.auth.models import AnonymousUser
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from backendApi.serializers.channel_message import ChannelMessageSerializer
 from datetime import datetime
+
+from backendApi.models import (
+    Channel,
+    ChannelMessage,
+    ChannelMutedUser,
+    User,
+    WebSocketUser,
+)
+from backendApi.permissions import IsAuthenticatedOrIsWebSocketServer, IsWebSocketServer
+from backendApi.serializers.channel_message import ChannelMessageSerializer
+from django.contrib.auth.models import AnonymousUser
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 
 
 class ChannelMessageViewSet(viewsets.ModelViewSet):
@@ -24,8 +31,8 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         if ChannelMutedUser.objects.filter(channel=channel, user=user).exists():
@@ -51,8 +58,8 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
         message = ChannelMessage.objects.get(id=channelmessage_id)
         if message.receiver != channel:
             return Response({"error": "Message not found in this channel"}, status=404)
-        if isinstance(request.user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(request.user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if message.sender != request.user:
             return Response(
                 {"error": "You are not authorized to update this message"}, status=403
@@ -73,8 +80,8 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         messages = ChannelMessage.objects.filter(receiver=channel, sender=user)
@@ -89,8 +96,8 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
         except Channel.DoesNotExist:
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         messages = ChannelMessage.objects.filter(receiver=channel).order_by(

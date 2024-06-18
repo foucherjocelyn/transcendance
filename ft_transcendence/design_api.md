@@ -19,6 +19,7 @@
 -   **Auth**
 
     -   [Login](#login)
+    -   [Login using 42 token](#login-using-42-token)
     -   [Register](#register)
     -   [Logout](#logout)
     -   [Switch OTP status](#switch-otp-status)
@@ -38,6 +39,9 @@
     -   [Get my profile avatar](#get-my-profile-avatar)
     -   [Upload my profile avatar](#upload-my-profile-avatar)
     -   [Update my status](#update-my-status)
+    -   [Add alias to user](#add-alias-to-user)
+    -   [Update alias of user](#update-alias-of-user)
+    -   [Remove alias of user](#remove-alias-of-user)
 
 -   **Channels**
 
@@ -150,18 +154,36 @@ POST /api/v1/auth/login
 	otp: string (optional)
 }
 ```
+### Return
+
+```typescript
+{
+	message: string
+	access: string
+}
+```
 
 Login with this username, password and an optional TOTP
+
+## Login using 42 token
+
+```typescript
+POST /api/v1/auth/login42
+{
+	token42: string
+}
+```
 
 ### Return
 
 ```typescript
 {
 	message: string
-	refresh: string,
 	access: string
 }
 ```
+
+
 
 ## Register
 
@@ -405,6 +427,46 @@ authorization Bearer <token>
 {
 	status: string
 }
+```
+
+### Return
+
+-   The updated user profile ([User](#user))
+
+## Add alias to user
+
+```typescript
+POST /api/v1/profile/me/alias/add
+authorization Bearer <token>
+{
+	alias: string
+}
+```
+
+### Return
+
+-   The updated user profile ([User](#user))
+
+## Update alias of user
+
+```typescript
+POST /api/v1/profile/me/alias/update
+authorization Bearer <token>
+{
+	alias: string
+}
+```
+
+### Return
+
+-   The updated user profile ([User](#user))
+
+## Remove alias of user
+
+```typescript
+
+POST /api/v1/profile/me/alias/remove
+authorization Bearer <token>
 ```
 
 ### Return

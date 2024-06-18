@@ -1,13 +1,12 @@
 from datetime import datetime
 
-from backendApi.models import Friendship, MutedUser, User, UserMessage
+from backendApi.models import Friendship, MutedUser, User, UserMessage, WebSocketUser
+from backendApi.permissions import IsAuthenticatedOrIsWebSocketServer, IsWebSocketServer
 from backendApi.serializers.user_message import UserMessageSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
-from django.contrib.auth.models import AnonymousUser
 
 
 class UserMessageViewSet(viewsets.ModelViewSet):
@@ -21,8 +20,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["post"])
     def sendMessageToFriend(self, request):
         sender = request.user
-        if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(sender, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Receiver username not provided"}, status=400)
@@ -74,8 +73,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listMessagesSentToFriend(self, request, friend_id):
         sender = request.user
-        if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(sender, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         try:
             receiver = User.objects.get(id=friend_id)
         except User.DoesNotExist:
@@ -85,13 +84,13 @@ class UserMessageViewSet(viewsets.ModelViewSet):
         ).order_by("-created_at")[:50]
         serializer = self.get_serializer(messages, many=True)
         return Response(serializer.data, status=200)
-    
+
     # Get list of last 50 messages received from a friend
     @action(detail=True, methods=["get"])
     def listMessagesReceivedFromFriend(self, request, friend_id):
         receiver = request.user
-        if isinstance(receiver, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(receiver, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         try:
             sender = User.objects.get(id=friend_id)
         except User.DoesNotExist:
@@ -108,8 +107,8 @@ class UserMessageViewSet(viewsets.ModelViewSet):
         message = UserMessage.objects.get(id=message_id)
         # Check if user is sender and friend is receiver
         sender = request.user
-        if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(sender, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         try:
             receiver = User.objects.get(id=friend_id)
         except User.DoesNotExist:
@@ -134,7 +133,7 @@ class UserMessageViewSet(viewsets.ModelViewSet):
             "listMessagesReceivedFromFriend",
             "updateMessageContentToFriend",
         ]:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

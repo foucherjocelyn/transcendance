@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "email",
             "password",
+            "alias",
             "level",
             "status",
             "avatarPath",

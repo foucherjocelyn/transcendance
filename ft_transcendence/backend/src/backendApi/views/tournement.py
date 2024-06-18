@@ -1,13 +1,13 @@
-from backendApi.models import Tournament, User
+from backend.settings import logger
+from backendApi.models import Tournament, User, WebSocketUser
+from backendApi.permissions import IsAuthenticatedOrIsWebSocketServer, IsWebSocketServer
 from backendApi.serializers.tournement import TournamentSerializer
+from django.contrib.auth.models import AnonymousUser
+from django.utils import timezone
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from django.utils import timezone
-from rest_framework.decorators import action
-from backend.settings import logger
-from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
-from django.contrib.auth.models import AnonymousUser
 
 
 class TournamentViewSet(viewsets.ModelViewSet):
@@ -36,7 +36,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         except Tournament.DoesNotExist:
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
-        if not isinstance(user, AnonymousUser) and not tournament.owner == user:
+        if not isinstance(user, WebSocketUser) and not tournament.owner == user:
             return Response(
                 {"error": "You are not the owner of this tournament"}, status=403
             )
@@ -72,8 +72,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
         except Tournament.DoesNotExist:
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if tournament.players.filter(id=user.id).exists():
             return Response({"error": "User already joined"}, status=400)
         # Check is the tournament status is ongoing
@@ -92,8 +92,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
         except Tournament.DoesNotExist:
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if not tournament.players.filter(id=user.id).exists():
             return Response({"error": "User not joined"}, status=400)
         # Check is the tournament status is registering
@@ -112,7 +112,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         except Tournament.DoesNotExist:
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
-        if not isinstance(user, AnonymousUser) and not tournament.owner == user:
+        if not isinstance(user, WebSocketUser) and not tournament.owner == user:
             return Response(
                 {"error": "You are not the owner of this tournament"}, status=403
             )
@@ -132,7 +132,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         except Tournament.DoesNotExist:
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
-        if not isinstance(user, AnonymousUser) and not tournament.owner == user:
+        if not isinstance(user, WebSocketUser) and not tournament.owner == user:
             return Response(
                 {"error": "You are not the owner of this tournament"}, status=403
             )
@@ -150,7 +150,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         except Tournament.DoesNotExist:
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
-        if not isinstance(user, AnonymousUser) and not tournament.owner == user:
+        if not isinstance(user, WebSocketUser) and not tournament.owner == user:
             return Response(
                 {"error": "You are not the owner of this tournament"}, status=403
             )
@@ -172,7 +172,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         if not username:
             return Response({"error": "Champion username not provided"}, status=400)
         user = request.user
-        if not isinstance(user, AnonymousUser) and not tournament.owner == user:
+        if not isinstance(user, WebSocketUser) and not tournament.owner == user:
             return Response(
                 {"error": "You are not the owner of this tournament"}, status=403
             )
@@ -198,7 +198,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
             "deleteTournament",
             "updateChampion",
         ]:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

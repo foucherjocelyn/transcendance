@@ -1,19 +1,18 @@
 from datetime import datetime
 
-from backendApi.models import BannedUser, Friendship, MutedUser, User
+from backendApi.models import BannedUser, Friendship, MutedUser, User, WebSocketUser
+from backendApi.permissions import IsAuthenticatedOrIsWebSocketServer, IsWebSocketServer
 from backendApi.serializers.banned_user import BannedUserSerializer
 from backendApi.serializers.friendship import FriendshipSerializer
 from backendApi.serializers.muted_user import MutedUserSerializer
 from backendApi.serializers.user import UserSerializer
+from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q
 from django.utils.dateparse import parse_date
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
-from django.contrib.auth.models import AnonymousUser
 from rest_framework.response import Response
-
 
 
 class FriendshipViewSet(viewsets.ModelViewSet):
@@ -27,7 +26,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def inviteFriend(self, request):
         sender = request.user
         if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -86,12 +85,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             friendship = Friendship.objects.get(id=friendship_id)
         except Friendship.DoesNotExist:
             return Response({"error": "Friendship not found"}, status=404)
-        if isinstance(request.user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
-        if not friendship.receiver == request.user:
-            return Response(
-                {"error": "You are not the receiver of this friendship"}, status=403
-            )
+        if isinstance(request.user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         status = request.data.get("status", None)
         if not status:
             return Response({"error": "Status not provided"}, status=400)
@@ -107,7 +102,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def listFriendshipsSent(self, request):
         sender = request.user
         if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         friendships = Friendship.objects.filter(sender=sender)
         serializer = self.get_serializer(friendships, many=True)
         return Response(serializer.data, status=200)
@@ -117,7 +112,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def listFriendshipsReceived(self, request):
         receiver = request.user
         if isinstance(receiver, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         friendships = Friendship.objects.filter(receiver=receiver)
         serializer = self.get_serializer(friendships, many=True)
         return Response(serializer.data, status=200)
@@ -126,8 +121,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def listFriends(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         friendships = Friendship.objects.filter(
             Q(sender=user) | Q(receiver=user), status="accepted"
         )
@@ -145,7 +140,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def banUser(self, request):
         sender = request.user
         if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -210,7 +205,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def unbanUser(self, request):
         sender = request.user
         if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -239,7 +234,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def muteUser(self, request):
         sender = request.user
         if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -278,7 +273,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def unmuteUser(self, request):
         sender = request.user
         if isinstance(sender, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         receiver_username = request.data.get("username", None)
         if not receiver_username:
             return Response({"error": "Username not provided"}, status=400)
@@ -305,8 +300,8 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"])
     def listMutedUser(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         muteds = MutedUser.objects.filter(
             Q(sender=user) | Q(receiver=user), until__gte=datetime.now().date()
         )

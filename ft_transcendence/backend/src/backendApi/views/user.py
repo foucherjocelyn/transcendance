@@ -7,16 +7,14 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from utils.hash import verify_password
 from utils.jwt_token import JwtTokenGenerator
-import os
-import json
-from django.shortcuts import redirect
 import requests
 
 from ..models import Otp, User, Token
 from ..serializers.user import UserSerializer
 from backend.settings import logger
 from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
-from django.contrib.auth.models import AnonymousUser
+from backendApi.models import WebSocketUser
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -64,35 +62,15 @@ class UserViewSet(viewsets.ModelViewSet):
             status=200,
         )
 
-    @action(detail=True, methods=["get"])
+    @action(detail=True, methods=["post"])
     def logIn42(self, request):
-        client_id = os.getenv("CLIENT_ID_42")
-        client_secret = os.getenv("CLIENT_SECRET_42")
-        redirect_uri = "https://localhost/api/v1/auth/login42"
-        authorization_url = f"https://api.intra.42.fr/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
-        if "code" not in request.GET:
-            return redirect(authorization_url)
-        authorization_code = request.GET.get("code")
-        data = {
-            "grant_type": "authorization_code",
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "code": authorization_code,
-            "redirect_uri": redirect_uri,
-        }
-        url = "https://api.intra.42.fr/oauth/token"
-        payload = json.dumps(data)
-        headers = {"Content-Type": "application/json"}
-        response = requests.request("POST", url, headers=headers, data=payload)
-        access_token = response.json().get("access_token")
-        logger.info(access_token)
-        if not access_token:
-            return Response({"error": "Failed to get access token"}, status=400)
+        token42 = request.data.get("token42", None)
+        if not token42:
+            return Response({"error": "No token provided"}, status=400)
         # Get user data from 42 API
         url = "https://api.intra.42.fr/v2/me"
-        headers = {"Authorization": f"Bearer {access_token}"}
+        headers = {"Authorization": f"Bearer {token42}"}
         response = requests.request("GET", url, headers=headers)
-        logger.info(response.json())
         user_data = response.json().get("cursus_users")[0].get("user")
         if not user_data:
             return Response({"error": "Failed to get user data"}, status=400)
@@ -121,8 +99,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def logOut(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         # Update user status to 'offline'
         user.status = "offline"
         user.save()
@@ -137,16 +115,16 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def getMe(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=200)
 
     @action(detail=True, methods=["put"])
     def updateMe(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         # Update user data
         serializer = self.get_serializer(user, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -158,8 +136,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def uploadAvatarPicture(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         avatar = request.FILES.get("avatar")
         if avatar:
             avatarPath = default_storage.save(
@@ -174,8 +152,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def getAvatarPicture(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         avatarPath = user.avatarPath
         if avatarPath:
             return FileResponse(default_storage.open(avatarPath, "rb"))
@@ -191,6 +169,13 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"error": "User not found"}, status=404)
         return Response({"user_id": user.id}, status=200)
 
+    def getUserById(self, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+        return user
+
     # Get list non super user
     @action(detail=True, methods=["get"])
     def getListNonSuperUser(self, request):
@@ -201,8 +186,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def isAdmin(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         if user.is_superuser:
             return Response({"isAdmin": True}, status=200)
         else:
@@ -211,14 +196,50 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def updateStatus(self, request):
         user = request.user
-        if isinstance(user, AnonymousUser):
-            return Response({"error": "You are anonymous"}, status=403)
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         status = request.data.get("status", None)
         if not status:
             return Response({"error": "Status not provided"}, status=400)
         if status not in ["online", "offline"]:
             return Response({"error": "Invalid status"}, status=400)
         user.status = status
+        user.save()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=200)
+
+    @action(detail=True, methods=["post"])
+    def addAliasToUser(self, request):
+        user = request.user
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+        alias = request.data.get("alias", None)
+        if not alias:
+            return Response({"error": "Alias not provided"}, status=400)
+        user.alias = alias
+        user.save()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=200)
+
+    @action(detail=True, methods=["post"])
+    def updateAliasToUser(self, request):
+        user = request.user
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+        alias = request.data.get("alias", None)
+        if not alias:
+            return Response({"error": "Alias not provided"}, status=400)
+        user.alias = alias
+        user.save()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=200)
+
+    @action(detail=True, methods=["post"])
+    def removeAliasToUser(self, request):
+        user = request.user
+        if isinstance(user, WebSocketUser):
+            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+        user.alias = None
         user.save()
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=200)
@@ -235,10 +256,14 @@ class UserViewSet(viewsets.ModelViewSet):
             "getAvatarPicture",
             "uploadAvatarPicture",
             "getUserIdByUsername",
+            "getUserById",
             "isAdmin",
             "updateStatus",
+            "addAliasToUser",
+            "updateAliasToUser",
+            "removeAliasToUser",
         ]:
-            self.permission_classes = [IsAuthenticatedOrIsWebSocketServer]
+            self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()

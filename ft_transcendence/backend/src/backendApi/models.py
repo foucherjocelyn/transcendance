@@ -2,15 +2,18 @@ from collections.abc import Iterable
 
 import pyotp
 from utils.hash import hash_password, verify_password
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, AnonymousUser
 from django.db import models
 
 
 class User(AbstractUser, PermissionsMixin):
     id42 = models.IntegerField(null=True, blank=True)
-    username = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
+    username = models.CharField(max_length=20, unique=True)
+    email = models.EmailField(max_length=320, unique=True)
     password = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    alias = models.CharField(max_length=30, null=True, blank=True, default=None)
     level = models.DecimalField(max_digits=4, decimal_places=2, default=1)
     statusChoices = [("online", "Online"), ("offline", "Offline")]
     status = models.CharField(max_length=100, choices=statusChoices, default="offline")
@@ -109,7 +112,7 @@ class Tournament(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True, default=None)
     start_time = models.DateTimeField(default=None)
-    max_players = models.PositiveIntegerField(default=100)
+    max_players = models.PositiveIntegerField(default=32)
     status_choices = [
         ("registering", "Registering"),
         ("progressing", "Progressing"),
@@ -327,3 +330,34 @@ class Token(models.Model):
 
     def __str__(self):
         return f"Token : {self.user.username} : {self.key}"
+
+
+class WebSocketUser(AnonymousUser):
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(WebSocketUser, cls).__new__(cls)
+        return cls._instance
+
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_staff(self):
+        return False
+
+    @property
+    def is_superuser(self):
+        return False
+
+    def __str__(self):
+        return f"WebSocketUser"

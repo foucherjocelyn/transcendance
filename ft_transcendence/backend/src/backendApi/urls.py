@@ -31,10 +31,11 @@ urlpatterns = [
     path(
         "users/id/<str:username>", UserViewSet.as_view({"get": "getUserIdByUsername"})
     ),
+    path("users/id/<int:user_id>", UserViewSet.as_view({"get": "getUserById"})),
     # Auth
     path("auth/register", UserViewSet.as_view({"post": "register"})),
     path("auth/login", UserViewSet.as_view({"post": "logIn"})),
-    path("auth/login42", UserViewSet.as_view({"get": "logIn42"})),
+    path("auth/login42", UserViewSet.as_view({"post": "logIn42"})),
     path("auth/logout", UserViewSet.as_view({"post": "logOut"})),
     path("profile/me", UserViewSet.as_view({"get": "getMe", "put": "updateMe"})),
     path(
@@ -43,6 +44,9 @@ urlpatterns = [
     ),
     path("profile/me/is-admin", UserViewSet.as_view({"post": "isAdmin"})),
     path("profile/me/status", UserViewSet.as_view({"post": "updateStatus"})),
+    path("profile/me/alias/add", UserViewSet.as_view({"post": "addAliasToUser"})),
+    path("profile/me/alias/update", UserViewSet.as_view({"post": "updateAliasToUser"})),
+    path("profile/me/alias/remove", UserViewSet.as_view({"post": "removeAliasToUser"})),
     # OTP
     path("otps", OtpViewSet.as_view({"get": "list", "post": "create"})),
     path(
@@ -308,7 +312,10 @@ urlpatterns = [
         "tournament/<int:tournament_id>/champion/update",
         TournamentViewSet.as_view({"post": "updateChampion"}),
     ),
-    path("tournament/<int:tournament_id>/game/list", GameViewSet.as_view({"get": "listGamesByTournament"})),
+    path(
+        "tournament/<int:tournament_id>/game/list",
+        GameViewSet.as_view({"get": "listGamesByTournament"}),
+    ),
     # Notification
     path(
         "notifications", NotificationViewSet.as_view({"get": "list", "post": "create"})
