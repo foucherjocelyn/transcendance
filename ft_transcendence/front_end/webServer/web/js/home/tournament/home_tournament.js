@@ -6,30 +6,38 @@ import { createTournament, getTournamentsList } from "../../backend_operation/to
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { to_aliasTournament } from "./home_tournament_room.js";
+import { aliasJoinTournament } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
-import { addAlias } from "../../backend_operation/alias.js";
 //import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
-export function aliasJoinTournament() {
+/*
+export function aliasJoinTournament() {//add route for this
 	console.log("User is going in tournament page, requesting alias");
-		document.getElementById("frontpage").innerHTML = `
-<div id="h_tournament_aliasjoin">
+	document.getElementById("frontpage").outerHTML = `
+		<div id="frontpage">
+			${upperPanel()}
+			<div id="h_tournament_aliasjoin">
 	<!-- <p id="tour_inputalias_info">To participate in a tournament, you must enter an alias</p> -->
 	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
 	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
 </div>
+			<div id="chat"></div>
+			<div class="r_successinfo hide"></div>
+			${noticeInvitePlayer()}
+		</div>
 `;
-		document.getElementById("tour_inputsend").addEventListener("click", () => {
-			event.preventDefault();
-			console.log("sending alias, to_tournament waiting room from aliasJointournament");
-			let alias = {
-				"alias": document.getElementById("tour_inputalias").value
-			};
-			addAlias(alias);
-			to_tournament("false");
-		});
+	upperPanelEventListener("tournament");
+	document.getElementById("tour_inputsend").addEventListener("click", () => {
+		event.preventDefault();
+		console.log("sending alias, to_tournament waiting room from aliasJointournament");
+		let alias = {
+			"alias": document.getElementById("tour_inputalias").value
+		};
+		addAlias(alias);
+		to_tournament("false");
+	});
 }
+*/
 
 function addLabel(tour_list, index) {
 	//	label_index++;
@@ -48,7 +56,7 @@ function addLabel(tour_list, index) {
 <div id="tour_expanddetails"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { to_aliasTournament(tour_list[index]); });
+	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
 	//document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
 }
 

@@ -9,36 +9,41 @@ async function retrieveCodeCreateAccount(req) {
         "client_secret": process.env.FOURTWO_CLIENT_SECRET,
         "code": query.code,
         "redirect_uri": "https://127.0.0.1:5500/"
-    };    
+    };
     //console.log(config_42);
     let token42 = await request42Token(config_42);
     let token42_obj = {
         "token42": token42
     };
-    console.log("the retrieved token = ");
-    console.log(token42_obj);
+    //console.log("the retrieved token = ");
+    //console.log(token42_obj);
     let info = await create_request("POST", "/api/v1/auth/login42", token42_obj);
-    console.log(info);
+    //console.log("here is the info");
+    //console.log(info);
+    let token_client = info.access;
 }
 
 async function request42Token(config_42) {
-        console.log("starting request42token-------------");
-        let response_request = await axios.post('https://api.intra.42.fr/oauth/token', config_42,
-            {
+    console.log("starting request42token-------------");
+    let response_request = await axios.post('https://api.intra.42.fr/oauth/token', config_42,
+        {
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             }
-            })
-            .then(function (response, body) {
-                //console.log("then request42Token------");
-                //console.log(response.status);
-                if (response.status === 200)
-                    return (response.data.access_token);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-            return (response_request);
+        })
+        .then(function (response, body) {
+            //console.log("then request42Token------");
+            //console.log(response.status);
+            if (response.status === 200) {
+                console.log("response is good, info here: ");
+                console.log(response);
+                return (response.data.access_token);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    return (response_request);
 }
 
 module.exports = {

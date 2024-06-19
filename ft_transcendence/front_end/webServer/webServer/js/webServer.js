@@ -40,7 +40,7 @@ const requestListener = async function (req, res) {
     else if (req.url.startsWith('/node_modules/')) {
         filePath = path.join(__dirname, req.url);
     }
-    else if (req.url.startsWith('/?code')) {
+    else if (req.url.startsWith('/?code')) {//redirection infini?
         filePath = path.join(__dirname, "./web/index.html");
         await retrieveCodeCreateAccount(req);
     }
