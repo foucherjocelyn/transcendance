@@ -15,8 +15,7 @@ export function aliasJoinTournament() {
 	console.log("User is going in tournament page, requesting alias");
 		document.getElementById("frontpage").innerHTML = `
 <div id="h_tournament_aliasjoin">
-	<p id="tour_inputalias_info">To participate in a tournament, you must enter an alias</p>
-	<br>
+	<!-- <p id="tour_inputalias_info">To participate in a tournament, you must enter an alias</p> -->
 	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
 	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
 </div>
