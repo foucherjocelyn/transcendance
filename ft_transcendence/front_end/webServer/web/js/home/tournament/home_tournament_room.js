@@ -10,60 +10,15 @@ import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
 import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
+import { getAliasFromUsername } from "../../backend_operation/alias.js";
 
-async function checkTournamentAvailability(tour_obj) {
-	console.log("checkTournamentAvailability started");
-	console.log("tour_obj start here");
-	console.log(tour_obj);
-	let my_username = getCookie("username");
-	//let my_username = getAlias("username");
-	if (!my_username) {
-		to_connectForm();
-		return (false);
-	}
-	if (!tour_obj.player_usernames.includes(my_username) && tour_obj.status === "registering") {
-		console.log("checkTournamentAvailability: true");
-		await joinTournament(tour_obj.id);
-		return (true);
-	}
-	else if (tour_obj.player_usernames.includes(my_username)) {
-		console.log("checkTournamentAvailability: can join");
-		return ("can join");
-	}
-	return (false);
-}
-
-export async function aliasJoinTournament(tour_obj) {
-	console.log("User is joining, requesting alias");
-	let join_status = await checkTournamentAvailability(tour_obj);
-	if (join_status === true) {
-		document.getElementById("h_tournament_page").innerHTML = `
-<div id="h_tournament_aliasjoin">
-	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
-	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
-	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
-</div>
-`;
-		document.getElementById("tour_inputsend").addEventListener("click", () => {
-			event.preventDefault();
-			//start_tournament(document.getElementById("tour_inputalias").value, tour_obj.id); //  Join the tournament with an alias in client side
-			console.log("sending alias, to_tournament waiting room from aliasJointournament");
-			to_tournamentWaitingRoom("true", tour_obj);
-		});
-		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
-		return (false);
-	}
-	else if (join_status === "can join")
-		{
-			console.log("can join, to_tournament waiting room from aliasJointournament");
-		to_tournamentWaitingRoom("true", tour_obj);
-		}
-	else if (tour_obj.status === "progressing")
+export function to_aliasTournament(tour_obj) {
+	if (tour_obj.status === "progressing")
 		notice("You cannot join an ongoing tournament", 2, "#cc7314");
 	else if (tour_obj.status === "completed")
 		notice("This tournament is over", 2, "#cc7314");
 	else
-		notice("An error occured when trying to join this tournament", 3, "#d1060d");
+		to_tournamentWaitingRoom("true", tour_obj);
 }
 
 function loadTournamentOwnerPanel(tour_obj) {
@@ -97,7 +52,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 	});
 }
 
-function detailsTournamentPlayers(tour_obj, html_id_element) {
+async function detailsTournamentPlayers(tour_obj, html_id_element) {
 	let player_nb = tour_obj.player_usernames.length;
 	document.getElementById(html_id_element).innerHTML = `
 	<div id="tournament_player_details">
@@ -105,8 +60,9 @@ function detailsTournamentPlayers(tour_obj, html_id_element) {
 	</div>
 	`;
 	for (let i = 0; i < player_nb; i++) {
+		let alias = await getAliasFromUsername(tour_obj.player_usernames[i]);
 		document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
-			<p>${tour_obj.player_usernames[i]}</p>
+			<p>${alias}</p>
 			<br>
 			`);
 	}
@@ -191,7 +147,7 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
 		to_connectForm();
 	}
 	if (nohistory === "false")
-		history.pushState({ url: `room#${tour_obj.id}` }, "", `#room#${tour_obj.id}`);//Must add route to handle this
+		history.pushState({ url: `room#${tour_obj.id}` }, "", `#room#${tour_obj.id}`);//temp, route not available
 	if (!tour_obj) {
 		console.log("to_tournamentWaitingRoom need an a tour_obj");
 		return;

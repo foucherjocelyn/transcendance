@@ -1,4 +1,4 @@
-FROM	debian:buster
+FROM    node:bookworm
 
 LABEL	maintainer="xuluu <xuluu@student.42.fr>"
 
@@ -16,9 +16,9 @@ WORKDIR	./webServer
 COPY	./web ./web
 COPY	./webServer ./webServer
 
-# Install THREE
+# Install THREE + AXIOS
 RUN	npm init -y && \
-	npm install -y three
+	npm install -y three axios
 
 # Make certificate SSL
 RUN mkdir ./ssl && \
@@ -33,3 +33,4 @@ EXPOSE	5500
 
 # Start web server
 CMD	["node", "./webServer/js/webServer.js"]
+

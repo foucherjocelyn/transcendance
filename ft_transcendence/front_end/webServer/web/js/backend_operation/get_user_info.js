@@ -76,13 +76,14 @@ export async function getMyInfo() {
 			return;
 		}
 		const data = await response.json();
-		//				  console.log("getMyInfo data:");
-		//				  console.table(data);
+		// console.log("getMyInfo data:");
+		// console.table(data);
 		if (data !== undefined) {
 			document.cookie = `username=${data.username}; SameSite=Strict`;
 			document.cookie = `firstname=${data.first_name}; SameSite=Strict`;
 			document.cookie = `lastname=${data.last_name}; SameSite=Strict`;
 			document.cookie = `email=${data.email}; SameSite=Strict`;
+			document.cookie = `alias=${data.alias}; SameSite=Strict`;
 			document.cookie = `level=${data.level}; SameSite=Strict`;
 			document.cookie = `avatar=${data.avatarPath}; SameSite=Strict`;
 			document.cookie = `id=${data.id}; SameSite=Strict`;
@@ -168,8 +169,7 @@ export const getListMutedUsers = async () => {
 	}
 }
 
-export async function getAllMyGames(username)
-{
+export async function getAllMyGames(username) {
 	let f_token = getCookie("token");
 
 	try {
@@ -192,8 +192,7 @@ export async function getAllMyGames(username)
 	}
 }
 
-export async function getAllMyScores(username)
-{
+export async function getAllMyScores(username) {
 	let f_token = getCookie("token");
 
 	try {
