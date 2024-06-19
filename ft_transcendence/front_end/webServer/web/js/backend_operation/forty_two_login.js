@@ -1,3 +1,31 @@
+export async function	createAccount42Api(token42)
+{
+	console.log("-Creating account with 42 token");
+	try {
+		const response = await fetch("https://localhost:8000/api/v1/auth/login42", {
+			method: "POST",
+			body: JSON.stringify(token42),
+			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json; charset=UTF-8",
+			}
+		});
+		if (!response.ok) {
+//			document.cookie = `token=; SameSite=Strict`;
+			console.log("createAccount42Api: Client or Server error");
+			throw new Error("fetch POST createAccount42Api");
+		}
+		const data = await response.json();
+		console.log("createAccount42Api data = ");
+		console.log(data);
+		//console.log("New token generated:\n" + data.access);
+		//document.cookie = `token=; SameSite=Strict`;
+		//document.cookie = `token=${data.access}; SameSite=Strict`;
+	} catch (error) {
+		console.error("createAccount42Api: ", error);
+	}
+}
+
 ///*
 export function request42Login() {
 	let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
