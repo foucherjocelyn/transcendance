@@ -1,8 +1,7 @@
 const https = require("https");
 const fs = require('fs').promises;
 const path = require('path');
-const { config, request42Token } = require("./oauth2.js");
-const { createAccount42Api } = require("../../web/js/backend_operation/forty_two_login.js");
+const { retrieveCodeCreateAccount } = require("./oauth2.js");
 
 const getContentType = (filePath) => {
     const ext = path.extname(filePath);
@@ -43,17 +42,7 @@ const requestListener = async function (req, res) {
     }
     else if (req.url.startsWith('/?code')) {
         filePath = path.join(__dirname, "./web/index.html");
-        console.log("requestListener code and token exec");
-        var query = require("url").parse(req.url, true).query;
-        config.code = query.code;
-        //console.log("code = " + config.code);
-        let token42 = request42Token();
-        createAccount42Api(token42);
-
-        //const token = request42Token();
-        //  let newdata = new dataToClient("connection_42", token, 'server');
-        //newdata = JSON.stringify(newdata);
-        //socket.send(newdata);
+        await retrieveCodeCreateAccount(req);
     }
     else {
         filePath = path.join(__dirname, `./web/${req.url}`);
