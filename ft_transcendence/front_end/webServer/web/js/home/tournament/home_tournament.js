@@ -8,13 +8,15 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { to_aliasTournament } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
+import { addAlias } from "../../backend_operation/alias.js";
 //import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 export function aliasJoinTournament() {
 	console.log("User is going in tournament page, requesting alias");
-		document.getElementById("h_tournament_page").innerHTML = `
+		document.getElementById("frontpage").innerHTML = `
 <div id="h_tournament_aliasjoin">
 	<p id="tour_inputalias_info">To participate in a tournament, you must enter an alias</p>
+	<br>
 	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
 	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
 </div>

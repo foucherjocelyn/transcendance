@@ -147,7 +147,7 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
 		to_connectForm();
 	}
 	if (nohistory === "false")
-		history.pushState({ url: `room#${tour_obj.id}` }, "", `#room#${tour_obj.id}`);//Must add route to handle this
+		history.pushState({ url: `room#${tour_obj.id}` }, "", `#room#${tour_obj.id}`);//temp, route not available
 	if (!tour_obj) {
 		console.log("to_tournamentWaitingRoom need an a tour_obj");
 		return;
