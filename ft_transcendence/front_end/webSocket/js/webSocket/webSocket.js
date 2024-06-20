@@ -113,13 +113,10 @@ function check_requirements(data, socket) {
         else if (data.title === 'connection_42') {
             console.log("WebSocket: connection 42 initiating");
             console.log(data);
-            /*
-            console.log("getauthcode from requestListener");
-            let code = getAuthCodeFromUrl(req.url);
-            let newdata = new dataToClient("connection_42", code, 'server');
+            let exstr = "This should display in console=========================";
+            let newdata = new dataToClient("connection_42", exstr, 'server');
             newdata = JSON.stringify(newdata);
             socket.send(newdata);
-            */
         }
     }
     else {

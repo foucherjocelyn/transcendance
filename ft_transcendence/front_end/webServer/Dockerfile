@@ -18,7 +18,7 @@ COPY	./webServer ./webServer
 
 # Install THREE + AXIOS
 RUN	npm init -y && \
-	npm install -y three axios
+	npm install -y three axios express
 
 # Make certificate SSL
 RUN mkdir ./ssl && \

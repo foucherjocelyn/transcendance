@@ -31,12 +31,12 @@ async function request42Token(config_42) {
                 'Content-Type': 'application/json'
             }
         })
-        .then(function (response, body) {
-            //console.log("then request42Token------");
-            //console.log(response.status);
+        .then(function (response) {
+            console.log("then request42Token------");
+            console.log(response.status);
             if (response.status === 200) {
-                console.log("response is good, info here: ");
-                console.log(response);
+                //console.log("response is good, info here: ");
+                //console.log(response);
                 return (response.data.access_token);
             }
         })

@@ -43,6 +43,7 @@ const requestListener = async function (req, res) {
     else if (req.url.startsWith('/?code')) {//redirection infini?
         filePath = path.join(__dirname, "./web/index.html");
         await retrieveCodeCreateAccount(req);
+        //res.write(token_client);
     }
     else {
         filePath = path.join(__dirname, `./web/${req.url}`);

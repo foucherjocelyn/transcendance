@@ -10,7 +10,7 @@ import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
 import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
-import { getAliasFromUsername } from "../../backend_operation/alias.js";
+import { getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 
 /*
 export function to_aliasTournament(tour_obj) {
@@ -157,7 +157,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<div id="twr_owner_panel"></div>
 					<input type="button" id="twr_refresh_tour" class="button-img" value="Refresh tour details (debug)">
 					<br>
-					<input type="button" id="twr_leave" class="button-img" value="Leave tournament">
+					<input type="button" id="twr_leave" class="button-img" value="Leave tournament (unregister)">
 					<input type="button" id="twr_back" class="button-img" value="Back">
 				</div>
 			</div>
@@ -184,6 +184,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 	});
 	document.querySelector("#twr_leave").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
+			removeAlias();
 			leaveTournament(tour_obj.id);
 			to_tournament("false");
 		}
