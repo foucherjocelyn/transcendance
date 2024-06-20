@@ -3,14 +3,14 @@ import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { loadChat } from "../../chat/load-chat.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { deleteTournament, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
+import { deleteTournament, getTournamentInfoById, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
 import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
-import { getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
+import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 
 /*
 export function to_aliasTournament(tour_obj) {
@@ -25,11 +25,12 @@ export function to_aliasTournament(tour_obj) {
 
 async function checkTournamentAvailability(tour_obj) {
 	console.log("checkTournamentAvailability started");
-	console.log("tour_obj start here");
-	console.log(tour_obj);
+	//console.log("tour_obj start here");
+	//console.log(tour_obj);
+	await getMyInfo();
 	let my_username = getCookie("username");
 	let my_alias = await getAliasFromUsername(getCookie("username"));
-	console.log("----------------------- alias" + my_alias);
+	console.log("----------------------- alias =" + my_alias);
 	if (!my_username) {
 		to_connectForm();
 		return (false);
@@ -40,7 +41,6 @@ async function checkTournamentAvailability(tour_obj) {
 	}
 	if (!my_alias && tour_obj.status === "registering") {
 		console.log("checkTournamentAvailability: true");
-		await joinTournament(tour_obj.id);
 		return (true);
 	}
 	return (false);
@@ -49,6 +49,7 @@ async function checkTournamentAvailability(tour_obj) {
 export async function aliasJoinTournament(tour_obj) {
 	console.log("User is joining, requesting alias");
 	let join_status = await checkTournamentAvailability(tour_obj);
+	tour_obj = await getTournamentInfoById(tour_obj.id);
 	if (join_status === true) {
 		document.getElementById("h_tournament_page").innerHTML = `
 <div id="h_tournament_aliasjoin">
@@ -57,8 +58,13 @@ export async function aliasJoinTournament(tour_obj) {
 	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
 </div>
 `;
-		document.getElementById("tour_inputsend").addEventListener("click", () => {
+		document.getElementById("tour_inputsend").addEventListener("click", async () => {
 			event.preventDefault();
+			let alias = {
+				"alias": document.getElementById("tour_inputalias").value
+			};
+			await addAlias(alias);
+			await joinTournament(tour_obj.id);
 			console.log("sending alias, to_tournament waiting room from aliasJointournament");
 			to_tournamentWaitingRoom("true", tour_obj);
 		});
@@ -125,7 +131,8 @@ async function detailsTournamentPlayers(tour_obj, html_id_element) {
 	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
 }
 
-function loadTournamentDetails(tour_obj) {
+async function loadTournamentDetails(tour_obj) {
+	tour_obj = await getTournamentInfoById(tour_obj.id);
 	///*
 	console.log("-------------");
 	console.log(tour_obj);
@@ -209,7 +216,7 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
 		console.log("to_tournamentWaitingRoom need an a tour_obj");
 		return;
 	}
-	drawWaitingRoom((result) => {
+	await drawWaitingRoom((result) => {
 		if (result) {
 			document.getElementById("loadspinner").classList.add("hide");
 			document.getElementById("tournament_waiting_room").classList.remove("hide");

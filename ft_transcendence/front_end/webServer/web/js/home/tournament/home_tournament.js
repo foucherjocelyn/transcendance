@@ -8,6 +8,7 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { aliasJoinTournament } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
+import { addAlias } from "../../backend_operation/alias.js";
 //import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 /*
@@ -152,6 +153,7 @@ function createTournamentInput(tour_list_name) {
 	<form method="post" id="htb_create_menu">
 		<input type="button" id="hcm_create_menu_close">
 		<br>
+		<input id="hcm_alias" type="text" placeholder="Your alias" maxlength="30" required>
 		<input id="hcm_name" type="text" placeholder="Name" maxlength="30" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
 		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59" required>
@@ -159,8 +161,12 @@ function createTournamentInput(tour_list_name) {
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
 `;
-	document.getElementById(`hcm_create_menu_create`).addEventListener("click", function (event) {
+	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function(event) {
 		event.preventDefault();
+		let alias = {
+			"alias": document.getElementById("hcm_alias").value
+		};
+		await addAlias(alias);
 		let newtour_obj = {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value,
