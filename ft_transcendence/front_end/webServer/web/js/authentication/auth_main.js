@@ -30,12 +30,8 @@ function checkAddress()
 {
 	let	url = window.location.href;
 
-	console.log("here---------------");
-	console.log(url);
 	let	pagename = url.split("#")[1];
-//	console.log(pagename);
 	let found = Object.keys(urlRoutes).includes(pagename);
-//	console.log("found = " + found);
 	if (found)
 		urlRoutes[pagename]();
 	else
@@ -44,15 +40,12 @@ function checkAddress()
 
 export function	authCheck()
 {
-	console.log("---authCheck(): Checking if user is connected");
-	console.log("The user is " + getCookie("status"));
 	updateMyInfo();
 	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
 	//console.log("the bar(search) contains: [" + window.location.search + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		updateMyInfo(true);
-//		to_homePage();
 		checkAddress();
 		return ("true");
 	}
@@ -61,8 +54,6 @@ export function	authCheck()
 		to_connectForm();
 		return ("false");
 	}
-	console.log("---");
-	return ("false");
 }
 
 const urlRoutes = {
@@ -76,8 +67,8 @@ const urlRoutes = {
 };
 
 window.onpopstate = function(event) {
-	console.log("popstate detected");
-	console.log(event.state);
+//	console.log("popstate detected");
+//	console.log(event.state);
 	if (event.state)
 	{
 		let url = event.state.url;
@@ -89,17 +80,3 @@ window.onpopstate = function(event) {
 	else
 		authCheck();
 };
-
-/*
-function clearInputs(elemName) {
-	var divElem = document.querySelector(elemName);
-	var inputElem = divElem.getElementsByTagName("input");
-
-	for (var i = 0; i < inputElem.length; i++) {
-		if (inputElem[i].type != "submit" && inputElem[i].type != "button")
-        inputElem[i].value = "";
-    }
-}
-*/
-
-//addEventListener("DOMContentLoaded", authCheck);

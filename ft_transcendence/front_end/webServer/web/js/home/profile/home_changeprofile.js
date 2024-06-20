@@ -156,6 +156,7 @@ export async function to_profilePage(nohistory = "false")
 				document.getElementById("loadspinner").classList.add("hide");
 				document.getElementById("h_myprofile").classList.remove("hide");
 				loadChat();
+				document.querySelector("#c-hide-friend-list").click();
 			}
 		});
 }

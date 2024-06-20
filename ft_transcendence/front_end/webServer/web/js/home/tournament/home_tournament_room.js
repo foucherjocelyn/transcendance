@@ -12,17 +12,6 @@ import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
 import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 
-/*
-export function to_aliasTournament(tour_obj) {
-	if (tour_obj.status === "progressing")
-		notice("You cannot join an ongoing tournament", 2, "#cc7314");
-	else if (tour_obj.status === "completed")
-		notice("This tournament is over", 2, "#cc7314");
-	else
-		to_tournamentWaitingRoom("true", tour_obj);
-}
-*/
-
 async function checkTournamentAvailability(tour_obj) {
 	console.log("checkTournamentAvailability started");
 	//console.log("tour_obj start here");
@@ -36,11 +25,11 @@ async function checkTournamentAvailability(tour_obj) {
 		return (false);
 	}
 	if (my_alias && tour_obj.player_usernames.includes(my_username)) {
-		console.log("checkTournamentAvailability: can join");
+		//console.log("checkTournamentAvailability: can join");
 		return ("can join");
 	}
 	if (!my_alias && tour_obj.status === "registering") {
-		console.log("checkTournamentAvailability: true");
+		//console.log("checkTournamentAvailability: true");
 		return (true);
 	}
 	return (false);
@@ -65,14 +54,14 @@ export async function aliasJoinTournament(tour_obj) {
 			};
 			await addAlias(alias);
 			await joinTournament(tour_obj.id);
-			console.log("sending alias, to_tournament waiting room from aliasJointournament");
+			//console.log("sending alias, to_tournament waiting room from aliasJointournament");
 			to_tournamentWaitingRoom("true", tour_obj);
 		});
 		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
 		return (false);
 	}
 	else if (join_status === "can join") {
-		console.log("can join, to_tournament waiting room from aliasJointournament");
+		//console.log("can join, to_tournament waiting room from aliasJointournament");
 		to_tournamentWaitingRoom("true", tour_obj);
 	}
 	else if (tour_obj.status === "progressing")
