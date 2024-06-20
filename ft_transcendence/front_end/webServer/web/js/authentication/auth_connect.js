@@ -33,7 +33,6 @@ export async function classy_signOut(sourcename) {
 }
 
 async function checkConnect() {
-	console.log("-=Attempting to connect user");
 	document.getElementById("r_connect_page").classList.add("hide");
 	document.getElementById("loadspinner").classList.remove("hide");
 	let connect_user = {
@@ -41,7 +40,6 @@ async function checkConnect() {
 		password: document.getElementById("rc_password").value
 	};
 	const otpStatus = await getOtpStatusPw(connect_user);
-	//	console.log("otpStatus = " + otpStatus);
 	updateMyInfo();
 	if (otpStatus === false) {
 		await signIn(connect_user);
@@ -55,7 +53,6 @@ async function checkConnect() {
 		document.getElementById("r_connect_page").classList.remove("hide");
 		document.getElementById("loadspinner").classList.add("hide");
 	}
-	console.log("-=");
 }
 
 async function request42Login() {
