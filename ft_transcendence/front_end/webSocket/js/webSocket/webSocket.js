@@ -101,6 +101,7 @@ function check_form_data_client(obj) {
 function check_requirements(data, socket) {
     data = JSON.parse(data);
 
+    console.log('--------------> ici');
     if (!check_form_data_client(data)) {
         return;
     }

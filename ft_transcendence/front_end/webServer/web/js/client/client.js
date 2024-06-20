@@ -40,6 +40,7 @@ export class   dataToServer {
 }
 
 export let pongGame;
+
 function    get_data_from_server(socket)
 {
     socket.onmessage = function(event) {

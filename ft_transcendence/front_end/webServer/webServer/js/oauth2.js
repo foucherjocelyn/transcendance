@@ -1,5 +1,7 @@
 const axios = require("axios");
 const { create_request } = require('./createRequest.js');
+const express = require('express');
+const app = express();
 
 async function retrieveCodeCreateAccount(req) {
     var query = require("url").parse(req.url, true).query;
@@ -21,6 +23,9 @@ async function retrieveCodeCreateAccount(req) {
     //console.log("here is the info");
     //console.log(info);
     let token_client = info.access;
+    app.get('/json', (req, res) => {
+        res.json({ message: 'Hello, this is a JSON response!', status: 'success' });
+    });
 }
 
 async function request42Token(config_42) {
@@ -32,8 +37,8 @@ async function request42Token(config_42) {
             }
         })
         .then(function (response) {
-            console.log("then request42Token------");
-            console.log(response.status);
+            //console.log("then request42Token------");
+            //console.log(response.status);
             if (response.status === 200) {
                 //console.log("response is good, info here: ");
                 //console.log(response);

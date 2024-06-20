@@ -28,7 +28,8 @@ async function checkTournamentAvailability(tour_obj) {
 	console.log("tour_obj start here");
 	console.log(tour_obj);
 	let my_username = getCookie("username");
-	let my_alias = getCookie("alias");
+	let my_alias = await getAliasFromUsername(getCookie("username"));
+	console.log("----------------------- alias" + my_alias);
 	if (!my_username) {
 		to_connectForm();
 		return (false);

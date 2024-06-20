@@ -12,6 +12,8 @@ export async function addAlias(alias)
 			method: "POST",
             body: JSON.stringify(alias),
 			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json; charset=UTF-8",
 				"Authorization": `Bearer ${getCookie("token")}`
 			}
 		})
@@ -36,6 +38,8 @@ export async function updateAlias(alias)
 			method: "POST",
             body: JSON.stringify(alias),
 			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json; charset=UTF-8",
 				"Authorization": `Bearer ${getCookie("token")}`
 			}
 		})
