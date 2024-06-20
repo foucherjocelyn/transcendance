@@ -48,6 +48,10 @@ function handle_requirements(title, content, sender, recipient) {
         else if (title === 'start tournament') {
             start_tournament(content, sender);
         }
+        else if (title === 'create tournament') {
+            console.log('--------> ici');
+            send_data(title, content, sender, recipient);
+        }
         else {
             send_data(title, content, sender, recipient);
         }
@@ -101,7 +105,6 @@ function check_form_data_client(obj) {
 function check_requirements(data, socket) {
     data = JSON.parse(data);
 
-    console.log('--------------> ici');
     if (!check_form_data_client(data)) {
         return;
     }

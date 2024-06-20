@@ -28,6 +28,8 @@ export async function classy_signOut(sourcename) {
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
+	const send_data = new dataToServer('disconnect', "", 'socket server');
+	client.socket.send(JSON.stringify(send_data));
 }
 
 async function checkConnect() {

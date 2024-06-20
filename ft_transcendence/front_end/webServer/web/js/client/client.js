@@ -10,41 +10,43 @@ import { draw_paddle } from "../game/drawPaddles.js";
 import { display_countdown } from "../game/displayCountdown.js";
 import { display_button_game_over, display_game_over_layer } from "../game/gameOverLayer.js";
 import { change_color_border } from "../game/drawBorders.js";
+import { removeAlias } from "../backend_operation/alias.js";
+import { to_tournamentWaitingRoom } from "../home/tournament/home_tournament_room.js";
+import { to_tournament } from "../home/tournament/home_tournament.js";
 
-class   userNotifications {
+class userNotifications {
     constructor() {
         this.from = data.from,
-        this.type = data.content;
+            this.type = data.content;
     }
 };
 
-export class   userMessages {
+export class userMessages {
     constructor() {
         this.user = undefined,
-        this.listMessages = [];
+            this.listMessages = [];
     }
 };
 
-export const   client = {
+export const client = {
     socket: undefined,
     inforUser: undefined,
     listUser: []
 };
 
-export class   dataToServer {
+export class dataToServer {
     constructor(title, content, to) {
         this.title = title,
-        this.content = content,
-        this.to = to
+            this.content = content,
+            this.to = to
     }
 }
 
 export let pongGame;
 
-function    get_data_from_server(socket)
-{
-    socket.onmessage = function(event) {
-        let   receivedData = JSON.parse(event.data);
+function get_data_from_server(socket) {
+    socket.onmessage = function (event) {
+        let receivedData = JSON.parse(event.data);
         // console.log(receivedData.title);
 
         if (receivedData.title === 'message') {
@@ -73,7 +75,7 @@ function    get_data_from_server(socket)
             display_invitation_play_layer(receivedData.content);
         }
         if (receivedData.title === 'create match') {
-			create_match("with friends");
+            create_match("with friends");
         }
         if (receivedData.title === 'display loader') {
             display_loader(receivedData.content);
@@ -114,6 +116,13 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'game over') {
             display_game_over_layer(receivedData.content);
         }
+        if (receivedData.title === 'create tournament') {
+            console.log("====================================================creating a tournament signal");
+            to_tournament();
+        }
+        if (receivedData.title === 'delete alias') {
+            removeAlias();
+        }
         if (receivedData.title === 'display exit match') {
             display_button_game_over(receivedData.content);
         }
@@ -123,22 +132,19 @@ function    get_data_from_server(socket)
         if (receivedData.title === 'unmute') {
             renderChatInput(receivedData.from.username);
         }
-        if (receivedData.title === 'connection_42')
-        {
+        if (receivedData.title === 'connection_42') {
             console.log("client.js connect 42 data:");
             console.log(receivedData.content);
         }
     };
 }
 
-function    connection()
-{
+function connection() {
     // Connect to WebSocket with secure connection
     const protocol = (window.location.protocol === 'https:') ? 'wss' : 'ws';
     const socket = new WebSocket(`${protocol}://localhost:5555`);
 
-    socket.onopen = function()
-    {
+    socket.onopen = function () {
         console.log('Connected to WebSocket server');
         get_data_from_server(socket);
         authCheck();
@@ -146,7 +152,7 @@ function    connection()
 
     client.socket = socket;
 
-    socket.onclose = function() {
+    socket.onclose = function () {
         console.log('WebSocket connection closed: from client');
     };
 }

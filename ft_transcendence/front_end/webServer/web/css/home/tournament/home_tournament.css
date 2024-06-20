@@ -167,7 +167,7 @@
 	transform: translateX(-50%);
 }
 
-#hcm_name, #hcm_description, #hcm_start {
+#hcm_alias, #hcm_name, #hcm_description, #hcm_start {
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);

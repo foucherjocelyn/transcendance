@@ -6,9 +6,10 @@ import { createTournament, getTournamentsList } from "../../backend_operation/to
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { aliasJoinTournament } from "./home_tournament_room.js";
+import { aliasJoinTournament, to_tournamentWaitingRoom } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
-import { addAlias } from "../../backend_operation/alias.js";
+import { addAlias, removeAlias } from "../../backend_operation/alias.js";
+import { client, dataToServer } from "../../client/client.js";
 //import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 /*
@@ -52,10 +53,14 @@ function addLabel(tour_list, index) {
 <td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${formatDate(tour_list[index].start_time, 1)}</td>
 <td>${tour_list[index].status}</td>
-<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>
 <!-- <td><input type="button" id="t_infobutton${index}" value="Details"></td> -->
 <div id="tour_expanddetails"></div>
 </tr>`;
+	if (tour_list[index].status === "registering")
+		document.getElementById("htb_info").insertAdjacentHTML("beforeend",
+	`<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>`);
+	//if (tour_list[index].status === "finished")
+		//document.getElementById(`t_joinbutton${index}`).remove();
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
 	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
 	//document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
@@ -161,7 +166,7 @@ function createTournamentInput(tour_list_name) {
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
 `;
-	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function(event) {
+	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
 		event.preventDefault();
 		let alias = {
 			"alias": document.getElementById("hcm_alias").value
@@ -176,7 +181,11 @@ function createTournamentInput(tour_list_name) {
 			newtour_obj.start_time = formatDate(document.getElementById("hcm_start").value);
 			createTournament(newtour_obj);
 			document.getElementById(`htb_create_menu`).outerHTML = ``;
-			to_tournament("true");
+			to_tournamentWaitingRoom();
+		}
+		else {
+			const send_data = new dataToServer('create tournament', "", 'socket server');
+			client.socket.send(JSON.stringify(send_data));
 		}
 	});
 	document.getElementById(`hcm_create_menu_close`).addEventListener("click", () => { document.getElementById(`htb_create_menu`).outerHTML = ``; });
@@ -194,9 +203,9 @@ async function drawTournament(callback) {
 					<div class="t_sort_head">
 				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
        		    <select id="htb_dropdown" name="options">
-	              <option value="registering" selected>Upcoming</option>
-       		      <option value="progressing">Ongoing</option>
-           		  <option value="finished">Completed</option>
+	              <option value="registering" selected>Registering</option>
+       		      <option value="progressing">Progressing</option>
+           		  <option value="finished">Finished</option>
 	            </select>
        				</div>
 	        <hr id="htb_sep" name="t_sep" class="t_separator">
@@ -214,6 +223,7 @@ async function drawTournament(callback) {
           </table>
 		  <hr>
 		  <input id ="htb_create_button" class="button-img" type="button" value="Create tournament">
+		  <input id ="htb_delete_alias" class="button-img" type="button" value="delete alias (debug)">
 		  <div id="htb_create"></div>
 		  <div id="tournament_tree"></div>
 				</div>
@@ -224,13 +234,17 @@ async function drawTournament(callback) {
 			${noticeInvitePlayer()}
 		</div>
 `;
+
+	//document.querySelector("#c-hide-friend-list").click();
 	let tour_list = await getTournamentsList();
 	let tour_list_name = [];
 
 	if (tour_list != undefined) {
 		for (let i = 0; i < tour_list.length; i++) {
-			tour_list_name.push(tour_list[i].name);
-			addLabel(tour_list, i);
+			if (tour_list[i].status !== "finished") {
+				tour_list_name.push(tour_list[i].name);
+				addLabel(tour_list, i);
+			}
 		}
 	}
 	upperPanelEventListener("tournament");
@@ -243,6 +257,9 @@ async function drawTournament(callback) {
 	document.getElementById("htb_search").addEventListener("input", () => {
 		searchLabel(tour_list, document.querySelector('#htb_search').value);
 	});
+
+	document.getElementById("htb_delete_alias").addEventListener("click", removeAlias);//DEBUG: REMOVE WHEN DONE
+
 	callback(true);
 }
 

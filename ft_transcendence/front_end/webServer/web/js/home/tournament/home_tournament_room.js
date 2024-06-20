@@ -30,7 +30,7 @@ async function checkTournamentAvailability(tour_obj) {
 	await getMyInfo();
 	let my_username = getCookie("username");
 	let my_alias = await getAliasFromUsername(getCookie("username"));
-	console.log("----------------------- alias =" + my_alias);
+	//console.log("----------------------- alias =" + my_alias);
 	if (!my_username) {
 		to_connectForm();
 		return (false);
@@ -47,7 +47,7 @@ async function checkTournamentAvailability(tour_obj) {
 }
 
 export async function aliasJoinTournament(tour_obj) {
-	console.log("User is joining, requesting alias");
+	//console.log("User is joining, requesting alias");
 	let join_status = await checkTournamentAvailability(tour_obj);
 	tour_obj = await getTournamentInfoById(tour_obj.id);
 	if (join_status === true) {
@@ -93,14 +93,15 @@ function loadTournamentOwnerPanel(tour_obj) {
 	`;
 	document.getElementById("twr_owner_start_button").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
-			// startTournament(tour_obj.id);
-			// Start Tournament here
 			const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 			client.socket.send(JSON.stringify(sendData));
 			notice("The tournament has now started", 2, "#00a33f");
 		}
-		else {
+		else if (tour_obj.status === "progressing") {
 			notice("This tournament has already started", 2, "#9e7400");
+		}
+		else if (tour_obj.status === "finished") {
+			notice("This tournament is over", 2, "#bd0606");
 		}
 	});
 	document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
