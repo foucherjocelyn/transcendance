@@ -25,26 +25,16 @@
 }
 
 #hpb_username {
-	position: relative;
-	top: -80px;
+	position: absolute;
+	top: -35px;
 	left: 170px;
 }
 
 #hpb_level {
-	position: relative;
-    top: -56px;
-    display: flex;
-    justify-content: right;
+	position: absolute;
     right: 300px;
+	top: 29px;
 }
-
-/*
-#hpb_div1 {
-	position: relative;
-	background-color: black;
-	height: 1px;
-}
-*/
 
 #h_scoreboard {
 	background-image: url(../../img/background/card2.png);

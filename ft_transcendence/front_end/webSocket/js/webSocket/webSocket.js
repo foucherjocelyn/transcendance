@@ -28,7 +28,7 @@ function define_user_by_ID(userID) {
     return undefined;
 }
 
-function handle_requirements(title, content, sender, recipient) {
+function handle_requirements(socket, title, content, sender, recipient) {
     if (sender.status === 'online') {
         if (title === 'disconnect') {
             disconnect(socket);
@@ -105,7 +105,7 @@ function check_form_data_client(obj) {
 function check_requirements(data, socket) {
     data = JSON.parse(data);
 
-    if (!check_form_data_client(data)) {
+    if (!check_form_data_client(data) || socket === undefined) {
         return;
     }
 
@@ -136,7 +136,7 @@ function check_requirements(data, socket) {
             }
         }
 
-        handle_requirements(data.title, data.content, sender, recipient);
+        handle_requirements(socket, data.title, data.content, sender, recipient);
     }
 }
 
