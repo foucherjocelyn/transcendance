@@ -1,7 +1,7 @@
 import { to_homePage } from "./home_homeboard.js";
 import { to_game } from "./game/home_game.js";
 import { to_profilePage } from "./profile/home_changeprofile.js";
-import { aliasJoinTournament, to_tournament } from "./tournament/home_tournament.js";
+import { to_tournament } from "./tournament/home_tournament.js";
 import { classy_signOut } from "../authentication/auth_connect.js";
 
 export function upperPanel()
@@ -30,8 +30,7 @@ export function	upperPanelEventListener(source)
 		to_homePage();
 	});
 	document.getElementById("h_to_tournament").addEventListener("click", function() {
-		//to_tournament();
-		aliasJoinTournament();
+		to_tournament();
 	});
 	document.getElementById("h_to_myprofile").addEventListener("click", function() {
 		to_profilePage();

@@ -3,22 +3,73 @@ import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { loadChat } from "../../chat/load-chat.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { deleteTournament, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
+import { deleteTournament, getTournamentInfoById, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
 import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
-import { getAliasFromUsername } from "../../backend_operation/alias.js";
+import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 
-export function to_aliasTournament(tour_obj) {
-	if (tour_obj.status === "progressing")
+async function checkTournamentAvailability(tour_obj) {
+	console.log("checkTournamentAvailability started");
+	//console.log("tour_obj start here");
+	//console.log(tour_obj);
+	await getMyInfo();
+	let my_username = getCookie("username");
+	let my_alias = await getAliasFromUsername(getCookie("username"));
+	//console.log("----------------------- alias =" + my_alias);
+	if (!my_username) {
+		to_connectForm();
+		return (false);
+	}
+	if (my_alias && tour_obj.player_usernames.includes(my_username)) {
+		//console.log("checkTournamentAvailability: can join");
+		return ("can join");
+	}
+	if (!my_alias && tour_obj.status === "registering") {
+		//console.log("checkTournamentAvailability: true");
+		return (true);
+	}
+	return (false);
+}
+
+export async function aliasJoinTournament(tour_obj) {
+	//console.log("User is joining, requesting alias");
+	let join_status = await checkTournamentAvailability(tour_obj);
+	tour_obj = await getTournamentInfoById(tour_obj.id);
+	if (join_status === true) {
+		document.getElementById("h_tournament_page").innerHTML = `
+<div id="h_tournament_aliasjoin">
+	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
+	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
+	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
+</div>
+`;
+		document.getElementById("tour_inputsend").addEventListener("click", async () => {
+			event.preventDefault();
+			let alias = {
+				"alias": document.getElementById("tour_inputalias").value
+			};
+			await addAlias(alias);
+			await joinTournament(tour_obj.id);
+			//console.log("sending alias, to_tournament waiting room from aliasJointournament");
+			to_tournamentWaitingRoom("true", tour_obj);
+		});
+		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
+		return (false);
+	}
+	else if (join_status === "can join") {
+		//console.log("can join, to_tournament waiting room from aliasJointournament");
+		to_tournamentWaitingRoom("true", tour_obj);
+	}
+	else if (tour_obj.status === "progressing")
 		notice("You cannot join an ongoing tournament", 2, "#cc7314");
 	else if (tour_obj.status === "completed")
 		notice("This tournament is over", 2, "#cc7314");
 	else
-		to_tournamentWaitingRoom("true", tour_obj);
+		notice("An error occured when trying to join this tournament", 3, "#d1060d");
 }
 
 function loadTournamentOwnerPanel(tour_obj) {
@@ -31,14 +82,15 @@ function loadTournamentOwnerPanel(tour_obj) {
 	`;
 	document.getElementById("twr_owner_start_button").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
-			// startTournament(tour_obj.id);
-			// Start Tournament here
 			const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 			client.socket.send(JSON.stringify(sendData));
 			notice("The tournament has now started", 2, "#00a33f");
 		}
-		else {
+		else if (tour_obj.status === "progressing") {
 			notice("This tournament has already started", 2, "#9e7400");
+		}
+		else if (tour_obj.status === "finished") {
+			notice("This tournament is over", 2, "#bd0606");
 		}
 	});
 	document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
@@ -69,7 +121,8 @@ async function detailsTournamentPlayers(tour_obj, html_id_element) {
 	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
 }
 
-function loadTournamentDetails(tour_obj) {
+async function loadTournamentDetails(tour_obj) {
+	tour_obj = await getTournamentInfoById(tour_obj.id);
 	///*
 	console.log("-------------");
 	console.log(tour_obj);
@@ -102,7 +155,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<div id="twr_owner_panel"></div>
 					<input type="button" id="twr_refresh_tour" class="button-img" value="Refresh tour details (debug)">
 					<br>
-					<input type="button" id="twr_leave" class="button-img" value="Leave tournament">
+					<input type="button" id="twr_leave" class="button-img" value="Leave tournament (unregister)">
 					<input type="button" id="twr_back" class="button-img" value="Back">
 				</div>
 			</div>
@@ -129,6 +182,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 	});
 	document.querySelector("#twr_leave").addEventListener("click", () => {
 		if (tour_obj.status === "registering") {
+			removeAlias();
 			leaveTournament(tour_obj.id);
 			to_tournament("false");
 		}
@@ -152,7 +206,7 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
 		console.log("to_tournamentWaitingRoom need an a tour_obj");
 		return;
 	}
-	drawWaitingRoom((result) => {
+	await drawWaitingRoom((result) => {
 		if (result) {
 			document.getElementById("loadspinner").classList.add("hide");
 			document.getElementById("tournament_waiting_room").classList.remove("hide");

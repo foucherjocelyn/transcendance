@@ -109,14 +109,14 @@ async function    create_match_tournament(player1, player2)
     {
         let   player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
         if (i === 0) {
-            player = new inforPlayer(player1.id, player1.username, player1.avatarPath, player1.level, 'player');
+            player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, 'player');
         }
         else if (i === 1) {
             if (player2 === null) {
                 player = new inforPlayer('#42', 'AI', "../../img/avatar/AI.png", 42, 'AI');
             }
             else {
-                player = new inforPlayer(player2.id, player2.username, player2.avatarPath, player2.level, 'player');
+                player = new inforPlayer(player2.id, player2.alias, player2.avatarPath, player2.level, 'player');
             }
         }
         match.listPlayer.push(player);
@@ -144,7 +144,7 @@ function create_list_player_tournament(listName) {
             const listPlayer = [];
             listName.forEach((name, index) => {
                 const user = webSocket.listUser[index];
-                if (user.username === name) {
+                if (user !== undefined && user.username === name) {
                     listPlayer.push(user);
                 }
             });
@@ -188,6 +188,10 @@ async function    start_tournament(tournamentID, sender)
 
     // display button exit match
     send_data('display exit match', 'flex', 'server', champion);
+    for (let i = 0; i < listPlayer.length; i++) {
+        let user = listPlayer[i];
+        send_data('delete alias', '', 'server', user);
+    }
 }
 
 module.exports = {

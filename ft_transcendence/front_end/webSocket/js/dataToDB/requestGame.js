@@ -32,7 +32,11 @@ function    createPostData3(userName, userScore)
 
 async function  request_game_DB(path, match, player)
 {
-    const modeMatch = (match.mode === 'offline' || match.mode === 'with friends') ? 'classic' : match.mode;
+    if (match.mode === 'offline') {
+        return ;
+    }
+
+    const modeMatch = (match.mode === 'with friends') ? 'classic' : match.mode;
 
     if (path === '/api/v1/game')
     {

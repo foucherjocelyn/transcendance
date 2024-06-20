@@ -3,6 +3,7 @@ import { getUserById, getUserIdByUsername } from "./get_user_info.js";
 
 export async function addAlias(alias)
 {
+	console.log("adding alias:" + alias);
 	if (getCookie("token") === null || getCookie("token") === "") {
 		console.log("addAlias ERROR: no token found");
 		return;
@@ -12,6 +13,8 @@ export async function addAlias(alias)
 			method: "POST",
             body: JSON.stringify(alias),
 			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json; charset=UTF-8",
 				"Authorization": `Bearer ${getCookie("token")}`
 			}
 		})
@@ -36,6 +39,8 @@ export async function updateAlias(alias)
 			method: "POST",
             body: JSON.stringify(alias),
 			headers: {
+				"Accept": "application/json",
+				"Content-type": "application/json; charset=UTF-8",
 				"Authorization": `Bearer ${getCookie("token")}`
 			}
 		})

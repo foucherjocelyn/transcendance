@@ -28,6 +28,8 @@ export async function classy_signOut(sourcename) {
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
+	const send_data = new dataToServer('disconnect', "", 'socket server');
+	client.socket.send(JSON.stringify(send_data));
 }
 
 async function checkConnect() {
@@ -56,32 +58,42 @@ async function checkConnect() {
 	console.log("-=");
 }
 
-function request42Login() {
-	let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
+async function request42Login() {
+    return new Promise((resolve, reject) => {
+		//let response = await axios.get();
 
-	let form = document.createElement('form');
-	form.setAttribute('method', 'GET');
-	form.setAttribute('action', oauth2Endpoint);
+        let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
 
-	let params = {
-		"client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
-		"redirect_uri": "https://127.0.0.1:5500/",
-		"scope": "",
-		"state": "pass-through-value",
-		"response_type": "code"
-	};
+        let form = document.createElement('form');
+        form.setAttribute('method', 'GET');
+        form.setAttribute('action', oauth2Endpoint);
 
-	for (var p in params) {
-		let input = document.createElement("input");
-		input.setAttribute('type', 'hidden');
-		input.setAttribute('name', p);
-		input.setAttribute('value', params[p]);
-		form.appendChild(input);
-	}
+        let params = {
+            "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
+            "redirect_uri": "https://127.0.0.1:5500/",
+            "scope": "",
+            "state": "pass-through-value",
+            "response_type": "code"
+        };
 
-	document.body.appendChild(form);
-	form.submit();
+        for (var p in params) {
+            let input = document.createElement("input");
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', p);
+            input.setAttribute('value', params[p]);
+            form.appendChild(input);
+        }
+
+        // Écouter l'événement de soumission du formulaire
+        form.addEventListener('submit', () => {
+            resolve(); // Résoudre la promesse lorsque le formulaire est soumis
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+    });
 }
+
 
 function load_connectForm(callback) {
 	document.querySelector("#frontpage").outerHTML =
@@ -107,12 +119,14 @@ function load_connectForm(callback) {
 <div class="r_successinfo hide"></div>
 `;
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
-	document.getElementById("rb_signup42").addEventListener("click", () => {
+	document.getElementById("rb_signup42").addEventListener("click", async () => {
 		console.log("login42 clicked");
-		request42Login();
-		//window.location.search = "?code=toto"
+		await request42Login();
 		const sendData = new dataToServer('connection_42', "", 'socket server');
 		client.socket.send(JSON.stringify(sendData));
+		//let data = await axios.get("https://localhost:5500/json");
+		//console.log(data);
+		console.log("The login 42 click ended------------------------");
 	});
 	document.getElementById("r_registration").addEventListener("submit", function (event) { event.preventDefault(); checkConnect(); });
 	callback(true);

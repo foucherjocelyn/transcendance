@@ -6,36 +6,13 @@ import { createTournament, getTournamentsList } from "../../backend_operation/to
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { to_aliasTournament } from "./home_tournament_room.js";
+import { aliasJoinTournament, to_tournamentWaitingRoom } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
 import { addAlias } from "../../backend_operation/alias.js";
+import { client, dataToServer } from "../../client/client.js";
 //import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
-export function aliasJoinTournament() {
-	console.log("User is going in tournament page, requesting alias");
-		document.getElementById("frontpage").innerHTML = `
-<div id="h_tournament_aliasjoin">
-	<!-- <p id="tour_inputalias_info">To participate in a tournament, you must enter an alias</p> -->
-	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
-	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
-</div>
-`;
-		document.getElementById("tour_inputsend").addEventListener("click", () => {
-			event.preventDefault();
-			console.log("sending alias, to_tournament waiting room from aliasJointournament");
-			let alias = {
-				"alias": document.getElementById("tour_inputalias").value
-			};
-			addAlias(alias);
-			to_tournament("false");
-		});
-}
-
 function addLabel(tour_list, index) {
-	//	label_index++;
-	//	console.log(`adding new label: ${label_index}`);
-
-	//console.table(tour_list[0]);
 	let player_nb = tour_list[index].player_usernames.length;
 	let newLabel;
 	newLabel = `<tr id="t_tourlabel${index}">
@@ -43,13 +20,15 @@ function addLabel(tour_list, index) {
 <td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${formatDate(tour_list[index].start_time, 1)}</td>
 <td>${tour_list[index].status}</td>
-<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>
 <!-- <td><input type="button" id="t_infobutton${index}" value="Details"></td> -->
 <div id="tour_expanddetails"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
-	document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { to_aliasTournament(tour_list[index]); });
-	//document.getElementById(`t_infobutton${index}`).addEventListener("click", () => { detailsTournament(tour_list[index], index); });
+	if (tour_list[index].status === "registering") {
+		document.getElementById(`t_tourlabel${index}`).insertAdjacentHTML("beforeend",
+			`<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>`);
+			document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
+	}
 }
 
 /* Sorting tournament  */
@@ -144,6 +123,7 @@ function createTournamentInput(tour_list_name) {
 	<form method="post" id="htb_create_menu">
 		<input type="button" id="hcm_create_menu_close">
 		<br>
+		<input id="hcm_alias" type="text" placeholder="Your alias" maxlength="30" required>
 		<input id="hcm_name" type="text" placeholder="Name" maxlength="30" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
 		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59" required>
@@ -151,8 +131,12 @@ function createTournamentInput(tour_list_name) {
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
 `;
-	document.getElementById(`hcm_create_menu_create`).addEventListener("click", function (event) {
+	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
 		event.preventDefault();
+		let alias = {
+			"alias": document.getElementById("hcm_alias").value
+		};
+		await addAlias(alias);
 		let newtour_obj = {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value,
@@ -162,7 +146,11 @@ function createTournamentInput(tour_list_name) {
 			newtour_obj.start_time = formatDate(document.getElementById("hcm_start").value);
 			createTournament(newtour_obj);
 			document.getElementById(`htb_create_menu`).outerHTML = ``;
-			to_tournament("true");
+			to_tournamentWaitingRoom();
+		}
+		else {
+			const send_data = new dataToServer('create tournament', "", 'socket server');
+			client.socket.send(JSON.stringify(send_data));
 		}
 	});
 	document.getElementById(`hcm_create_menu_close`).addEventListener("click", () => { document.getElementById(`htb_create_menu`).outerHTML = ``; });
@@ -180,9 +168,9 @@ async function drawTournament(callback) {
 					<div class="t_sort_head">
 				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
        		    <select id="htb_dropdown" name="options">
-	              <option value="registering" selected>Upcoming</option>
-       		      <option value="progressing">Ongoing</option>
-           		  <option value="finished">Completed</option>
+	              <option value="registering" selected>Registering</option>
+       		      <option value="progressing">Progressing</option>
+           		  <option value="finished">Finished</option>
 	            </select>
        				</div>
 	        <hr id="htb_sep" name="t_sep" class="t_separator">
@@ -229,34 +217,9 @@ async function drawTournament(callback) {
 	document.getElementById("htb_search").addEventListener("input", () => {
 		searchLabel(tour_list, document.querySelector('#htb_search').value);
 	});
+
 	callback(true);
 }
-
-/*
-function detailsTournament(tour_obj) {
-	//console.log("Here is the tour_obj");
-	//console.log(tour_obj);
-	let player_nb = tour_obj.player_usernames.length;
-	document.getElementById("tour_expanddetails").innerHTML = `
-<div id="tour_detailsbox">
-<button id="tour_details_close"></button>
-<p id="tour_details_name"></p>
-<p id="tour_details_players"></p>
-<p id="tour_details_startdate"></p>
-<p id="tour_details_enddate"></p>
-<p id="tour_details_status"></p>
-<!-- <td><button id="t_treebutton">Tree</button></td> -->
-</div>
-`;
-	//document.getElementById(`t_treebutton`).addEventListener("click", () => { renderTournamentTree(tour_obj); });
-	document.getElementById(`tour_details_name`).textContent = `Name: ${tour_obj.name}`;
-	document.getElementById(`tour_details_players`).textContent = `Nb of players: ${player_nb}/${tour_obj.max_players}`;
-	document.getElementById(`tour_details_startdate`).textContent = `Starting: ${tour_obj.start_time}`;
-	document.getElementById(`tour_details_enddate`).textContent = `Ending: ${tour_obj.end_date}`;//Remove?
-	document.getElementById(`tour_details_status`).textContent = `Status: ${tour_obj.status}`;
-	document.getElementById(`tour_details_close`).addEventListener("click", () => { document.getElementById(`tour_detailsbox`).outerHTML = ``; });
-}
-*/
 
 export async function to_tournament(nohistory = "false") {
 	await getMyInfo();
@@ -271,6 +234,7 @@ export async function to_tournament(nohistory = "false") {
 			document.getElementById("loadspinner").classList.add("hide");
 			document.getElementById("h_tournament_page").classList.remove("hide");
 			loadChat();
+			document.querySelector("#c-hide-friend-list").click();
 		}
 	});
 }

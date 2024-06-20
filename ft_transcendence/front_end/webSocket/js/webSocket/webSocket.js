@@ -48,6 +48,10 @@ function handle_requirements(title, content, sender, recipient) {
         else if (title === 'start tournament') {
             start_tournament(content, sender);
         }
+        else if (title === 'create tournament') {
+            console.log('--------> ici');
+            send_data(title, content, sender, recipient);
+        }
         else {
             send_data(title, content, sender, recipient);
         }
@@ -113,13 +117,10 @@ function check_requirements(data, socket) {
         else if (data.title === 'connection_42') {
             console.log("WebSocket: connection 42 initiating");
             console.log(data);
-            /*
-            console.log("getauthcode from requestListener");
-            let code = getAuthCodeFromUrl(req.url);
-            let newdata = new dataToClient("connection_42", code, 'server');
+            let exstr = "This should display in console=========================";
+            let newdata = new dataToClient("connection_42", exstr, 'server');
             newdata = JSON.stringify(newdata);
             socket.send(newdata);
-            */
         }
     }
     else {
