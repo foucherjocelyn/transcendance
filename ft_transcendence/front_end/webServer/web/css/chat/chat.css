@@ -17,6 +17,7 @@ body {
 }
 
 #c-notifications-window {/* NEED TO REPLACE THAT */
+    z-index: 5;
     position: absolute;
     right: 20%;
     top: 5%;
@@ -161,20 +162,20 @@ body {
 }
 
 .c-inspectprofile-button {
-    background-image: url(../../img/chat/maglens.png);
+    background-image: url(../../img/chat/inspect.png);
     background-size: 100% 100%;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background-color: transparent;
     border: none;
-    margin-top: 2px;
+    margin-top: 6px;
 }
 
 .c-remove-friend-button {
     background-image: url(../../img/chat/remove.png);
     background-size: 100% 100%;
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
     background-color: transparent;
     border: none;
     margin-top: 7px;
@@ -230,13 +231,12 @@ body {
 }
 
 #chat_upperpanel {
-    position: fixed;
-    z-index: 300;
+    z-index: 2;
+    position: fixed;   
     top: 0;
     right: 0;
     background-color: #333;
-    padding: 30px;
-    padding-top: 15px;
+    padding: 15px 40px 0 30px;
     color: #DDD;
     height: 65px;
     min-width: var(--chat-list-width);

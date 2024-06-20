@@ -149,13 +149,11 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
-					<input type="button" id="twr_refresh_tree" class="button-img" value="Refresh tree">
 					<div id="tournament_tree"></div>
-					<input type="button" id="twr_ready" class="button-img" value="Ready">
 					<div id="twr_owner_panel"></div>
-					<input type="button" id="twr_refresh_tour" class="button-img" value="Refresh tour details (debug)">
+					<input type="button" id="twr_refresh_tour" class="button-img" value="Refresh">
 					<br>
-					<input type="button" id="twr_leave" class="button-img" value="Leave tournament (unregister)">
+					<input type="button" id="twr_leave" class="button-img" value="Unregister">
 					<input type="button" id="twr_back" class="button-img" value="Back">
 				</div>
 			</div>
@@ -166,17 +164,14 @@ async function drawWaitingRoom(callback, tour_obj) {
 		</div>
 `;
 	renderTournamentTree(tour_obj);
-	//add refresh button for tournament tree, only shows it when the tournament is confirmed
-	document.getElementById("twr_refresh_tree").addEventListener("click", () => { renderTournamentTree(tour_obj); });
 	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
 	loadTournamentDetails(tour_obj);
-	document.getElementById("twr_refresh_tour").addEventListener("click", () => { loadTournamentDetails(tour_obj); });
+	document.getElementById("twr_refresh_tour").addEventListener("click", () => {
+		renderTournamentTree(tour_obj);
+		loadTournamentDetails(tour_obj);
+	});
 	if (tour_obj.owner_username === getCookie("username"))
 		loadTournamentOwnerPanel(tour_obj);
-	document.querySelector("#twr_ready").addEventListener("click", () => {
-		console.log("Ready confirmed");
-		//ready up user: if match is progressing then make the players available for matchmaking
-	});
 	document.querySelector("#twr_back").addEventListener("click", () => {
 		to_tournament("false");
 	});
@@ -211,6 +206,7 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
 			document.getElementById("loadspinner").classList.add("hide");
 			document.getElementById("tournament_waiting_room").classList.remove("hide");
 			loadChat();
+			document.querySelector("#c-hide-friend-list").click();
 		}
 	}, tour_obj);
 }

@@ -1,14 +1,3 @@
-/*
-.tour_link {
-	text-align: center;
-}
-
-.t_label {
-	color: red;
-	font-weight: bold;
-}
-*/
-
 .t_separator {
 	border-color: grey;
 	height: 1px;
@@ -94,9 +83,7 @@
 
 #htb_dropdown {
 	position: relative;
-	right: auto;
-	left: 60%;
-	transform: translateX(-90%);
+	margin-left: 25%;
 	background-image: url(../../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -172,53 +159,3 @@
 	left: 50%;
 	transform: translateX(-50%);
 }
-
-
-/*
-
-[id^="t_joinbutton"] {
-	width: 80px;
-	height: 1.5em;
-}
-
-[id^="tour_detailsbox"] {
-	position: absolute;
-	height: 200px;
-	width: 120px;
-}
-
-[id^="t_infobutton"] {
-	width: 80px;
-	height: 1.5em;
-}
-
-#t_alias {
-	width: 40%;
-	height: 2em;
-	text-align: center;
-	color: green;
-	font-weight: bold;
-	position: relative;
-	left: 30%;
-	margin-top: 1em;
-	background-color: black;
-	border-radius: 2px;
-}
-
-#t_alias::placeholder {
-	color: green;
-	font-weight: bold;
-}
-*/
-
-/*
-.t_info_border {
-	position: relative;
-	left: 32%;
-	width: 15em;
-	background-color: white;
-	padding: 3px;
-	border: 1px solid pink;
-	border-radius: 15px;
-}
-*/
