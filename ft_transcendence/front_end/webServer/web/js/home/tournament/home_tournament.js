@@ -117,7 +117,7 @@ function tournamentCreateCheck(tour_list_name, newtour_obj) {
 }
 
 function createTournamentInput(tour_list_name) {
-	console.log("createTournamentInput started :" + tour_list_name);
+	//console.log("createTournamentInput started :" + tour_list_name);
 	let min_date = getToday(5);
 	document.getElementById("htb_create").innerHTML = `
 	<form method="post" id="htb_create_menu">
@@ -137,16 +137,16 @@ function createTournamentInput(tour_list_name) {
 			"alias": document.getElementById("hcm_alias").value
 		};
 		await addAlias(alias);
-		let newtour_obj = {
+		let createtour_info = {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value,
 			start_time: document.getElementById("hcm_start").value
 		};
-		if (tournamentCreateCheck(tour_list_name, newtour_obj) === true) {
-			newtour_obj.start_time = formatDate(document.getElementById("hcm_start").value);
-			createTournament(newtour_obj);
+		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
+			createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
+			let newtour_obj = createTournament(createtour_info);
 			document.getElementById(`htb_create_menu`).outerHTML = ``;
-			to_tournamentWaitingRoom();
+			to_tournamentWaitingRoom("false", newtour_obj);
 		}
 		else {
 			const send_data = new dataToServer('create tournament', "", 'socket server');

@@ -49,8 +49,11 @@ function handle_requirements(socket, title, content, sender, recipient) {
             start_tournament(content, sender);
         }
         else if (title === 'create tournament') {
-            console.log('--------> ici');
-            send_data(title, content, sender, recipient);
+            send_sign_create_tournament(title);
+        }
+        else if (title === 'joining tournament') {
+            console.log('-----> ici');
+            send_sign_join_tournament(title, content);
         }
         else {
             send_data(title, content, sender, recipient);
@@ -187,5 +190,5 @@ const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
-const { start_tournament } = require("../match/tournament");
+const { start_tournament, send_sign_join_tournament, send_sign_create_tournament } = require("../match/tournament");
 const { url } = require("inspector");

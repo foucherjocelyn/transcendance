@@ -53,6 +53,8 @@ export async function aliasJoinTournament(tour_obj) {
 				"alias": document.getElementById("tour_inputalias").value
 			};
 			await addAlias(alias);
+			const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
+			client.socket.send(JSON.stringify(send_data));
 			await joinTournament(tour_obj.id);
 			//console.log("sending alias, to_tournament waiting room from aliasJointournament");
 			to_tournamentWaitingRoom("true", tour_obj);
@@ -104,6 +106,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 	});
 }
 
+/*
 async function detailsTournamentPlayers(tour_obj, html_id_element) {
 	let player_nb = tour_obj.player_usernames.length;
 	document.getElementById(html_id_element).innerHTML = `
@@ -120,6 +123,7 @@ async function detailsTournamentPlayers(tour_obj, html_id_element) {
 	}
 	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
 }
+*/
 
 async function loadTournamentDetails(tour_obj) {
 	tour_obj = await getTournamentInfoById(tour_obj.id);
@@ -146,7 +150,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
-					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
+				<!--	<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button> -->
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
 					<div id="tournament_tree"></div>
@@ -164,7 +168,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 		</div>
 `;
 	renderTournamentTree(tour_obj);
-	document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
+	//document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
 	loadTournamentDetails(tour_obj);
 	document.getElementById("twr_refresh_tour").addEventListener("click", () => {
 		renderTournamentTree(tour_obj);

@@ -142,10 +142,14 @@ function create_list_player_tournament(listName) {
     return new Promise((resolve, reject) => {
         try {
             const listPlayer = [];
-            listName.forEach((name, index) => {
-                const user = webSocket.listUser[index];
-                if (user !== undefined && user.username === name) {
-                    listPlayer.push(user);
+            listName.forEach(name => {
+                for (let i = 0; i < webSocket.listUser.length; i++)
+                {
+                    const   user = webSocket.listUser[i];
+                    if (user !== undefined && user.username === name) {
+                        listPlayer.push(user);
+                        break ;
+                    }
                 }
             });
             resolve(listPlayer);
@@ -153,6 +157,36 @@ function create_list_player_tournament(listName) {
             reject(error);
         }
     });
+}
+
+function    send_sign_create_tournament(title)
+{
+    for (let i = 0; i < webSocket.listUser.length; i++)
+    {
+        const   user = webSocket.listUser[i];
+        if (user !== undefined) {
+            send_data(title, '', 'server', user);
+        }
+    }
+}
+
+async function    send_sign_join_tournament(title, tournamentID)
+{
+    if (tournamentID === undefined || !isNumeric(tournamentID)) {
+        return ;
+    }
+
+    const   tournament = await create_request('GET', `/api/v1/tournament/${tournamentID}`, '');
+    tournament.player_usernames.forEach(userName => {
+        for (let i = 0; i < webSocket.listUser.length; i++)
+        {
+            const   user = webSocket.listUser[i];
+            if (user !== undefined && user.username === userName) {
+                send_data(title, tournament, 'server', user);
+                break ;
+            }
+        }
+    })
 }
 
 async function    start_tournament(tournamentID, sender)
@@ -195,5 +229,7 @@ async function    start_tournament(tournamentID, sender)
 }
 
 module.exports = {
-    start_tournament
+    start_tournament,
+    send_sign_create_tournament,
+    send_sign_join_tournament
 }
