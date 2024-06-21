@@ -1,7 +1,5 @@
 const axios = require("axios");
 const { create_request } = require('./createRequest.js');
-const express = require('express');
-const app = express();
 
 async function retrieveCodeCreateAccount(req) {
     var query = require("url").parse(req.url, true).query;
@@ -17,15 +15,23 @@ async function retrieveCodeCreateAccount(req) {
     let token42_obj = {
         "token42": token42
     };
-    //console.log("the retrieved token = ");
-    //console.log(token42_obj);
+    console.log("the retrieved token = ");
+    console.log(token42_obj);
     let info = await create_request("POST", "/api/v1/auth/login42", token42_obj);
     //console.log("here is the info");
     //console.log(info);
-    let token_client = info.access;
-    app.get('/json', (req, res) => {
-        res.json({ message: 'Hello, this is a JSON response!', status: 'success' });
-    });
+    let token42_to_client = info.access;
+    //const send_data = new dataToServer('connection_42', token42_to_client, 'socket server');
+    //client.socket.send(JSON.stringify(send_data));
+    //retrieveToken42(token42_to_client);
+    /*
+    response.writeHead(301, {
+        Location: "https://google.com/"
+      });
+    */
+    //app.get('/json', (req, res) => {
+      //  res.json({ message: 'Hello, this is a JSON response!', status: 'success' });
+    //});
 }
 
 async function request42Token(config_42) {

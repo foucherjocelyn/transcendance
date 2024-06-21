@@ -119,10 +119,30 @@ function load_connectForm(callback) {
 	document.getElementById("rb_signup42").addEventListener("click", async () => {
 		console.log("login42 clicked");
 		await request42Login();
+
+		/////
+		console.log("THIS DOES NOT SHOWS ON CONSOLE");
 		const sendData = new dataToServer('connection_42', "", 'socket server');
 		client.socket.send(JSON.stringify(sendData));
-		//let data = await axios.get("https://localhost:5500/json");
-		//console.log(data);
+
+		/*
+		let data = await fetch("https://localhost:5500/json", { method: "GET"} )
+		.then(response => {
+		  // Vérifier si la réponse est ok (statut 200-299)
+		  if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		  }
+		  // Convertir la réponse en JSON
+		  return response.json();
+		})
+		.then(data => {
+		  // Traiter les données reçues
+		  console.log(data);
+		});
+		console.log(data);
+		//*/
+
+
 		console.log("The login 42 click ended------------------------");
 	});
 	document.getElementById("r_registration").addEventListener("submit", function (event) { event.preventDefault(); checkConnect(); });

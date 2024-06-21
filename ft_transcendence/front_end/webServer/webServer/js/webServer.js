@@ -2,6 +2,7 @@ const https = require("https");
 const fs = require('fs').promises;
 const path = require('path');
 const { retrieveCodeCreateAccount } = require("./oauth2.js");
+const { URLSearchParams } = require("url");
 
 const getContentType = (filePath) => {
     const ext = path.extname(filePath);
@@ -43,6 +44,15 @@ const requestListener = async function (req, res) {
     else if (req.url.startsWith('/?code')) {//redirection infini?
         filePath = path.join(__dirname, "./web/index.html");
         await retrieveCodeCreateAccount(req);
+
+        /*
+        let url = window.location.search;
+        let params = new URLSearchParams(url.search.slice(1));
+        params.delete("code");
+        console.log(url);
+        */
+
+        //res.redirect('https://google.com');
         //res.write(token_client);
     }
     else {

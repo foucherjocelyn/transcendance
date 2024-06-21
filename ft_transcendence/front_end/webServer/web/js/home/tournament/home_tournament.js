@@ -38,7 +38,7 @@ async function sortThisTable(tour_list, sort_type) {
 	if (tour_list != undefined) {
 		let i = 0;
 		for (; i < tour_list.length; i++) {
-			if (sort_type === tour_list[i].status)
+			if (sort_type === tour_list[i].status || sort_type === "all")
 				addLabel(tour_list, i);
 		}
 	}
@@ -130,6 +130,8 @@ function createTournamentInput(tour_list_name) {
 	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
 		event.preventDefault();
 		let alias = await getAliasFromUsername(getCookie("username"));
+		console.log("Alias is:");
+		console.log(alias);
 		if (!alias) {
 			let alias = {
 				"alias": document.getElementById("hcm_alias").value
@@ -173,9 +175,10 @@ async function drawTournament(callback) {
 					<div class="t_sort_head">
 				<input id="htb_search" name="search" type="text" placeholder="Search for a Tournament">
        		    <select id="htb_dropdown" name="options">
-	              <option value="registering" selected>Registering</option>
-       		      <option value="progressing">Progressing</option>
-           		  <option value="finished">Finished</option>
+					<option value="all" selected>All</option>
+	            	<option value="registering">Registering</option>
+       		    	<option value="progressing">Progressing</option>
+           			<option value="finished">Finished</option>
 	            </select>
        				</div>
 	        <hr id="htb_sep" name="t_sep" class="t_separator">

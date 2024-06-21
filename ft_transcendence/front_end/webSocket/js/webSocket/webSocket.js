@@ -120,8 +120,8 @@ function check_requirements(data, socket) {
         else if (data.title === 'connection_42') {
             console.log("WebSocket: connection 42 initiating");
             console.log(data);
-            let exstr = "This should display in console=========================";
-            let newdata = new dataToClient("connection_42", exstr, 'server');
+            // let exstr = "This should display in console=========================";
+            let newdata = new dataToClient("connection_42", data.content, 'server');
             newdata = JSON.stringify(newdata);
             socket.send(newdata);
         }

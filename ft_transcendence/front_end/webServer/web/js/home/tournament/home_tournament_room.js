@@ -183,6 +183,8 @@ async function drawWaitingRoom(callback, tour_obj) {
 		if (tour_obj.status === "registering") {
 			removeAlias();
 			leaveTournament(tour_obj.id);
+			const send_data = new dataToServer('create tournament', "", 'socket server');
+			client.socket.send(JSON.stringify(send_data));
 			to_tournament("false");
 		}
 		else {
