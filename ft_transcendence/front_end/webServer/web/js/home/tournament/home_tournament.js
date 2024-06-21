@@ -130,8 +130,7 @@ function createTournamentInput(tour_list_name) {
 	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
 		event.preventDefault();
 		let alias = await getAliasFromUsername(getCookie("username"));
-		console.log("Alias is:");
-		console.log(alias);
+		console.log("Alias is: " + alias);
 		if (!alias) {
 			let alias = {
 				"alias": document.getElementById("hcm_alias").value
@@ -150,8 +149,7 @@ function createTournamentInput(tour_list_name) {
 				console.log(newtour_obj);
 				document.getElementById(`htb_create_menu`).outerHTML = ``;
 				to_tournamentWaitingRoom("false", newtour_obj);
-			}
-			else {
+
 				console.log("createTournament: sending data to socket");
 				const send_data = new dataToServer('create tournament', "", 'socket server');
 				client.socket.send(JSON.stringify(send_data));

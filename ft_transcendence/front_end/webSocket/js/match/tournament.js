@@ -159,12 +159,12 @@ function create_list_player_tournament(listName) {
     });
 }
 
-function    send_sign_create_tournament(title)
+function    send_sign_create_tournament(title, sender)
 {
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
         const   user = webSocket.listUser[i];
-        if (user !== undefined) {
+        if (user !== undefined && user.username !== sender.username) {
             send_data(title, '', 'server', user);
         }
     }
