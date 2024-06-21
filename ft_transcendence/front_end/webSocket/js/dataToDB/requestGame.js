@@ -69,9 +69,7 @@ async function  request_game_DB(path, match, player)
         // console.table('------> winner: ' + user.username);
         await create_request('POST', path, '');
         await create_request('POST', `/api/v1/game/${match.id}/winner`, '');
-        if (match.mode !== 'tournament') {
-            await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
-        }
+        await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
     }
 }
 
