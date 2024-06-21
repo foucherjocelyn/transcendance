@@ -149,8 +149,6 @@ function createTournamentInput(tour_list_name) {
 				console.log(newtour_obj);
 				document.getElementById(`htb_create_menu`).outerHTML = ``;
 				to_tournamentWaitingRoom("false", newtour_obj);
-
-				console.log("createTournament: sending data to socket");
 				const send_data = new dataToServer('create tournament', "", 'socket server');
 				client.socket.send(JSON.stringify(send_data));
 			}
