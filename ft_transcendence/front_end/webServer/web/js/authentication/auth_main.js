@@ -7,7 +7,8 @@ import { to_regisForm } from "./auth_register.js";
 import { to_forgotForm } from "./auth_reset.js";
 import { getCookie } from "./auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
-
+import { getMyInfo } from "../backend_operation/get_user_info.js";
+import { client, dataToServer } from "../client/client.js";
 
 export function notice(str, time, color)
 {
@@ -38,14 +39,24 @@ function checkAddress()
 		to_homePage();
 }
 
-export function	authCheck()
+export async function	authCheck()
 {
-	updateMyInfo();
+	await updateMyInfo();
+	const url = window.location.search;
+	if (url.startsWith("?token="))
+		{
+			const params = new URLSearchParams(url);
+			const token = params.get("token");
+			document.cookie = `token=${token}; SameSite=Strict`;
+			await getMyInfo();
+			const sendData = new dataToServer('connection_42', "", 'socket server');
+			client.socket.send(JSON.stringify(sendData));
+		}
 	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
 	//console.log("the bar(search) contains: [" + window.location.search + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
-		updateMyInfo(true);
+		await updateMyInfo(true);
 		checkAddress();
 		return ("true");
 	}

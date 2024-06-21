@@ -1,7 +1,8 @@
 const axios = require("axios");
 const { create_request } = require('./createRequest.js');
+const { requestListener } = require("./webServer.js");
 
-async function retrieveCodeCreateAccount(req) {
+async function retrieveCodeCreateAccount(req, res) {
     var query = require("url").parse(req.url, true).query;
     const config_42 = {
         "grant_type": "authorization_code",
@@ -21,6 +22,19 @@ async function retrieveCodeCreateAccount(req) {
     //console.log("here is the info");
     //console.log(info);
     let token42_to_client = info.access;
+    console.log(req);
+    const params = new URLSearchParams(req.url.slice(1));
+    console.log(params);
+    params.delete("code");
+    console.log(params);
+    req.url = "/?token=" + token42_to_client;
+    console.log(req.url);
+    res.writeHead(302, {
+        'Location': req.url // Utilisez req.url pour spécifier la nouvelle URL
+    });
+    res.end();
+    //requestListener(req, res);
+    //changer l'url avec token42
     //const send_data = new dataToServer('connection_42', token42_to_client, 'socket server');
     //client.socket.send(JSON.stringify(send_data));
     //retrieveToken42(token42_to_client);
@@ -30,7 +44,7 @@ async function retrieveCodeCreateAccount(req) {
       });
     */
     //app.get('/json', (req, res) => {
-      //  res.json({ message: 'Hello, this is a JSON response!', status: 'success' });
+    //  res.json({ message: 'Hello, this is a JSON response!', status: 'success' });
     //});
 }
 
