@@ -27,7 +27,7 @@ async function retrieveCodeCreateAccount(req, res) {
     //console.log(params);
     params.delete("code");
     //console.log(params);
-    req.url = "/?token=" + token42_to_client;
+    req.url = "https://127.0.0.1:5500/?token=" + token42_to_client;
     console.log(req.url);
     res.writeHead(301, {
         'Location': req.url,
