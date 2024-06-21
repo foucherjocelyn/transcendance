@@ -16,21 +16,22 @@ async function retrieveCodeCreateAccount(req, res) {
     let token42_obj = {
         "token42": token42
     };
-    console.log("the retrieved token = ");
-    console.log(token42_obj);
+    //console.log("the retrieved token = ");
+    //console.log(token42_obj);
     let info = await create_request("POST", "/api/v1/auth/login42", token42_obj);
     //console.log("here is the info");
     //console.log(info);
     let token42_to_client = info.access;
-    console.log(req);
+    //console.log(req);
     const params = new URLSearchParams(req.url.slice(1));
-    console.log(params);
+    //console.log(params);
     params.delete("code");
-    console.log(params);
+    //console.log(params);
     req.url = "/?token=" + token42_to_client;
     console.log(req.url);
-    res.writeHead(302, {
-        'Location': req.url // Utilisez req.url pour spécifier la nouvelle URL
+    res.writeHead(301, {
+        'Location': req.url,
+        'Content-Type': "text/html"// Utilisez req.url pour spécifier la nouvelle URL
     });
     res.end();
     //requestListener(req, res);

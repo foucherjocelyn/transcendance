@@ -48,6 +48,9 @@ const requestListener = async function (req, res) {
     else if (req.url.startsWith('/?token')) {
         filePath = path.join(__dirname, "./web/index.html");
     }
+    else if (req.url.startsWith('/?')) {
+        filePath = path.join(__dirname, "./web/index.html");
+    }
     else {
         filePath = path.join(__dirname, `./web/${req.url}`);
     }

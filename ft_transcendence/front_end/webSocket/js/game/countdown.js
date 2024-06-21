@@ -37,8 +37,6 @@ function    setup_start_game_ws(pongGame, gameSettings)
 
     ball.vector.x = (Math.random() < 0.5) ? minSpeed : -minSpeed;
     ball.vector.y = (Math.random() < 0.5) ? minSpeed : -minSpeed;
-
-    create_paddles(match);
 }
 
 function    handle_player_leave_match(match)
@@ -92,6 +90,7 @@ function    countdown(match)
         {
             clearInterval(countdownInterval);
             setup_start_game_ws(match.pongGame, match.gameSettings);
+            create_paddles(match);
             start_game_ws(match);
             return ;
         }

@@ -51,6 +51,7 @@ export async function	authCheck()
 			await getMyInfo();
 			const sendData = new dataToServer('connection_42', "", 'socket server');
 			client.socket.send(JSON.stringify(sendData));
+			window.location.search = "";
 		}
 	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
 	//console.log("the bar(search) contains: [" + window.location.search + "]");
