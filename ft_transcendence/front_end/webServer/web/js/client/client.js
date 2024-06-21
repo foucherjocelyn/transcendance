@@ -11,7 +11,7 @@ import { display_countdown } from "../game/displayCountdown.js";
 import { display_button_game_over, display_game_over_layer } from "../game/gameOverLayer.js";
 import { change_color_border } from "../game/drawBorders.js";
 import { removeAlias } from "../backend_operation/alias.js";
-import { to_tournamentWaitingRoom } from "../home/tournament/home_tournament_room.js";
+import { refresh_tour_waiting_room, to_tournamentWaitingRoom } from "../home/tournament/home_tournament_room.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 
 class userNotifications {
@@ -123,9 +123,11 @@ function get_data_from_server(socket) {
             }
         }
         if (receivedData.title === 'joining tournament') {
-            console.log("JOINING tournament signal-----------");
-            console.log(receivedData.content);
-            to_tournamentWaitingRoom("true", receivedData.content);
+            //console.log("JOINING tournament signal-----------");
+            //console.log(receivedData.content);
+            //to_tournamentWaitingRoom("true", receivedData.content);
+            refresh_tour_waiting_room(receivedData.content);
+
         }
         if (receivedData.title === 'delete alias') {
             removeAlias();
