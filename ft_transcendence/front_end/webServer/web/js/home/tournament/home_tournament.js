@@ -8,9 +8,8 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { aliasJoinTournament, to_tournamentWaitingRoom } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
-import { addAlias } from "../../backend_operation/alias.js";
+import { addAlias, getAliasFromUsername } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
-//import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 
 function addLabel(tour_list, index) {
 	let player_nb = tour_list[index].player_usernames.length;
@@ -27,7 +26,7 @@ function addLabel(tour_list, index) {
 	if (tour_list[index].status === "registering") {
 		document.getElementById(`t_tourlabel${index}`).insertAdjacentHTML("beforeend",
 			`<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>`);
-			document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
+		document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
 	}
 }
 
@@ -37,7 +36,6 @@ async function sortThisTable(tour_list, sort_type) {
 	document.getElementById("htb_info").innerHTML = "";
 
 	if (tour_list != undefined) {
-		console.log(tour_list.length);
 		let i = 0;
 		for (; i < tour_list.length; i++) {
 			if (sort_type === tour_list[i].status)
@@ -97,7 +95,6 @@ function getToday(add_minute) {
 /* Tournament Creation */
 
 function tournamentCreateCheck(tour_list_name, newtour_obj) {
-	console.log("checking date: " + newtour_obj.start_time);
 	if (newtour_obj.start_time === '' || newtour_obj.start_time === null) {
 		notice("No planned starting date set", 2, "#d6460d");
 		return (false);
@@ -107,7 +104,6 @@ function tournamentCreateCheck(tour_list_name, newtour_obj) {
 		return (false);
 	}
 	for (let i = 0; i < tour_list_name.length; i++) {
-		console.log("tour_list_name[" + i + "] = " + tour_list_name[i]);
 		if (tour_list_name[i] === document.getElementById("hcm_name").value) {
 			notice("A tournament with this name already exists", 2, "#d6460d");
 			return (false);
@@ -124,7 +120,7 @@ function createTournamentInput(tour_list_name) {
 		<input type="button" id="hcm_create_menu_close">
 		<br>
 		<input id="hcm_alias" type="text" placeholder="Your alias" maxlength="30" required>
-		<input id="hcm_name" type="text" placeholder="Name" maxlength="30" required>
+		<input id="hcm_name" type="text" placeholder="Tournament name" maxlength="30" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
 		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59" required>
 		<br>
@@ -133,25 +129,34 @@ function createTournamentInput(tour_list_name) {
 `;
 	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
 		event.preventDefault();
-		let alias = {
-			"alias": document.getElementById("hcm_alias").value
-		};
-		await addAlias(alias);
-		let createtour_info = {
-			name: document.getElementById("hcm_name").value,
-			description: document.getElementById("hcm_description").value,
-			start_time: document.getElementById("hcm_start").value
-		};
-		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
-			createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
-			let newtour_obj = createTournament(createtour_info);
-			document.getElementById(`htb_create_menu`).outerHTML = ``;
-			to_tournamentWaitingRoom("false", newtour_obj);
+		let alias = await getAliasFromUsername(getCookie("username"));
+		if (!alias) {
+			let alias = {
+				"alias": document.getElementById("hcm_alias").value
+			};
+			await addAlias(alias);
+			let createtour_info = {
+				name: document.getElementById("hcm_name").value,
+				description: document.getElementById("hcm_description").value,
+				start_time: document.getElementById("hcm_start").value
+			};
+			if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
+				console.log("createTournament: if 1");
+				createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
+				let newtour_obj = await createTournament(createtour_info);
+				console.log("the returned tour object:");
+				console.log(newtour_obj);
+				document.getElementById(`htb_create_menu`).outerHTML = ``;
+				to_tournamentWaitingRoom("false", newtour_obj);
+			}
+			else {
+				console.log("createTournament: sending data to socket");
+				const send_data = new dataToServer('create tournament', "", 'socket server');
+				client.socket.send(JSON.stringify(send_data));
+			}
 		}
-		else {
-			const send_data = new dataToServer('create tournament', "", 'socket server');
-			client.socket.send(JSON.stringify(send_data));
-		}
+		else
+			notice("You cannot create more than one tournament", 2, "#d11706");
 	});
 	document.getElementById(`hcm_create_menu_close`).addEventListener("click", () => { document.getElementById(`htb_create_menu`).outerHTML = ``; });
 }

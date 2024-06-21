@@ -71,7 +71,7 @@ export async function aliasJoinTournament(tour_obj) {
 	else if (tour_obj.status === "completed")
 		notice("This tournament is over", 2, "#cc7314");
 	else
-		notice("An error occured when trying to join this tournament", 3, "#d1060d");
+		notice("You can only register to one tournament", 3, "#d1060d");
 }
 
 function loadTournamentOwnerPanel(tour_obj) {
@@ -127,7 +127,7 @@ async function detailsTournamentPlayers(tour_obj, html_id_element) {
 
 async function loadTournamentDetails(tour_obj) {
 	tour_obj = await getTournamentInfoById(tour_obj.id);
-	///*
+	/*
 	console.log("-------------");
 	console.log(tour_obj);
 	console.log(tour_obj.player_usernames.length);
@@ -150,7 +150,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
-				<!--	<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button> -->
+					<p id="twr_tour_playernb"></p><!--	<button id="tour_details_more">...</button> -->
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
 					<div id="tournament_tree"></div>
