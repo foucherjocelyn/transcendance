@@ -118,7 +118,14 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'create tournament') {
             console.log("====================================================creating a tournament signal");
-            to_tournament();
+            if (document.querySelector("#h_tournament_board")) {
+                to_tournament("true");
+            }
+        }
+        if (receivedData.title === 'joining tournament') {
+            console.log("JOINING tournament signal-----------");
+            console.log(receivedData.content);
+            to_tournamentWaitingRoom("true", receivedData.content);
         }
         if (receivedData.title === 'delete alias') {
             removeAlias();

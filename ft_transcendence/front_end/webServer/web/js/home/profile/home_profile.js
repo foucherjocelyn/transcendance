@@ -14,19 +14,16 @@ export async function	inspectProfile(username)
 	let user_info = await getUserById(user_id_obj.user_id);
 	let	inspect_content = `<div id="inspectprofile">
 	<button id="inspectprofile_close""></button>
-	<img id="ip_avatar" src="../../img/${user_info.avatarPath}">
+	<img id="ip_avatar" src="../../${user_info.avatarPath}">
 	<p>Name : ${user_info.username}</p>
 	<p>Nb of games : ${user_info.nb_games}</p>
 	<p>Average score : ${user_info.avg_score}</p>
 	<p>Level : ${user_info.level}</p>
-	<button id="inspectprofile_more">More details</button>
+	<button id="inspectprofile_more">Inspect profile</button>
 	</div>
 `;
 	let inspect_selector = document.querySelector("#inspectprofile");
 	let frontpage_selector = document.getElementById("frontpage");
-	console.log("inspectProfile content:");
-	console.log(inspect_selector);
-	console.log(frontpage_selector);
 	if (inspect_selector === undefined || inspect_selector === null || inspect_selector === ``)
 	{
 		frontpage_selector.insertAdjacentHTML("beforeend", inspect_content);

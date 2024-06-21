@@ -3,7 +3,6 @@ import { getUserById, getUserIdByUsername } from "./get_user_info.js";
 
 export async function addAlias(alias)
 {
-	console.log("adding alias:" + alias);
 	if (getCookie("token") === null || getCookie("token") === "") {
 		console.log("addAlias ERROR: no token found");
 		return;
