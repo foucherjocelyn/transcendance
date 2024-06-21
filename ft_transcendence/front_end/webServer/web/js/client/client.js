@@ -117,7 +117,6 @@ function get_data_from_server(socket) {
             display_game_over_layer(receivedData.content);
         }
         if (receivedData.title === 'create tournament') {
-            console.log("====================================================creating a tournament signal");
             if (document.querySelector("#h_tournament_board")) {
                 to_tournament("true");
             }
