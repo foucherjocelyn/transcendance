@@ -55,6 +55,10 @@ body {
 }
 */
 
+.button-decline {
+    color:#f00;
+}
+
 #c-notifications-window .c-close-button {
     margin-left: 92%;
 }

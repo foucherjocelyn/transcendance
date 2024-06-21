@@ -115,11 +115,8 @@ const sendMessage = async (friendUsername) => {
 };
 
 const receiveMessage = (receivedData) => {
-    console.log(client);
     const senderName = receivedData.from.username;
     const chattingWith = getCookie("chatboxOpenedWith");
-    console.log("receiveing message");
-    console.log(chattingWith);
     if (chattingWith === senderName) {
         renderMessages(senderName);
     }
@@ -136,9 +133,7 @@ const renderMuteButton = (username) => {
 }
 
 const unmuteUser = async (username) => {
-    console.log('unmute');
     await postUnmuteUser(username);
-    console.log(getListMutedUsers());
     await renderChatInput(username);
 
     const connectedReceiver = client.listUser.find(user => user.username == username)
@@ -149,9 +144,7 @@ const unmuteUser = async (username) => {
 }
 
 const muteUser = async (username) => {
-    console.log('mute');
     await postMuteUser(username);
-    console.log(getListMutedUsers());
     await renderChatInput(username);
 
     const connectedReceiver = client.listUser.find(user => user.username == username)
@@ -162,7 +155,6 @@ const muteUser = async (username) => {
 }
 
 export const renderChatInput = async (friendUsername) => {
-    console.log("renderchat input");
     const chattingWith = getCookie("chatboxOpenedWith");
     if (chattingWith !== friendUsername)
         return ;

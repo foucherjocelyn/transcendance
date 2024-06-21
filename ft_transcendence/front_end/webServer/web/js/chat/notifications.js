@@ -40,7 +40,6 @@ const friendInviteHasBeenDeclined = (sender) => {
 };
 
 const acceptFriendInvite = async (id, sender) => {
-    console.log("accept");
     await updateFriendInviteStatus(id, "accepted");
     // const listFriends = getListFriends();
     // listFriends.then(list => {
@@ -62,11 +61,13 @@ const receiveFriendInvite = (id, sender) => {
     const notificationsList = document.getElementById("c-notifications-list");
     notificationsList.insertAdjacentHTML("beforeend", `<div id="c-friend-invitation${id}" class="notification c-friend-invitation">
     <p>${sender}</p>
-    <button name="accept" class="accept">accept</button>
-    <button name="decline" class="decline">decline</button>
+        <div>
+            <button name="accept" class="button-img button-accept">accept</button>
+            <button name="decline" class="button-img button-decline">decline</button>
+        </div>
     </div>`);
-    document.getElementById(`c-friend-invitation${id}`).querySelector(".accept").addEventListener("click", () => { acceptFriendInvite(id, sender) });
-    document.getElementById(`c-friend-invitation${id}`).querySelector(".decline").addEventListener("click", () => { declineFriendInvite(id, sender) });
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".button-accept").addEventListener("click", () => { acceptFriendInvite(id, sender) });
+    document.getElementById(`c-friend-invitation${id}`).querySelector(".button-decline").addEventListener("click", () => { declineFriendInvite(id, sender) });
 };
 
 const closeNotificationWindow = () => {

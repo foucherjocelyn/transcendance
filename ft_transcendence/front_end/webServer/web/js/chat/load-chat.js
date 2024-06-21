@@ -61,7 +61,6 @@ const loadChat = () => {
     document.getElementById("c-hide-friend-list").addEventListener("click", () => { document.getElementById("chat-list").classList.toggle("hide"); });
     document.querySelector("#c-show-notifications-button").addEventListener("click", showNotifications);
     document.getElementById("chat").style.display = "block";
-    console.log("chat loaded");
     refreshChat();
 };
 

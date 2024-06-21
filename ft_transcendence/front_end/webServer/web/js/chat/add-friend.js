@@ -47,7 +47,6 @@ export const searchFindNewFriendWindow = async () => {
         });
         document.querySelectorAll(".c-send-friend-invite").forEach(user => {
             const userUsername = user.id.substring().slice(21);
-            console.log(userUsername);
             user.addEventListener("click", (e) => {
                 sendFriendInvite(userUsername);
                 searchFindNewFriendWindow();
@@ -64,7 +63,6 @@ const closeFindNewFriendWindow = () => {
 
 const displayFindNewFriendWindow = () => {
     const findNewFriendWindow = document.getElementById("c-find-new-friend-window");
-    console.log(client);
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list").innerHTML = "";
     document.querySelector("#c-find-new-friend-window input").value = "";
     findNewFriendWindow.classList.remove("hidden");
