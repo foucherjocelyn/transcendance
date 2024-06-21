@@ -130,8 +130,7 @@ function createTournamentInput(tour_list_name) {
 	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
 		event.preventDefault();
 		let alias = await getAliasFromUsername(getCookie("username"));
-		console.log("Alias is:");
-		console.log(alias);
+		console.log("Alias is: " + alias);
 		if (!alias) {
 			let alias = {
 				"alias": document.getElementById("hcm_alias").value
