@@ -41,19 +41,12 @@ const requestListener = async function (req, res) {
     else if (req.url.startsWith('/node_modules/')) {
         filePath = path.join(__dirname, req.url);
     }
-    else if (req.url.startsWith('/?code')) {//redirection infini?
+    else if (req.url.startsWith('/?code')) {
         filePath = path.join(__dirname, "./web/index.html");
-        await retrieveCodeCreateAccount(req);
-
-        /*
-        let url = window.location.search;
-        let params = new URLSearchParams(url.search.slice(1));
-        params.delete("code");
-        console.log(url);
-        */
-
-        //res.redirect('https://google.com');
-        //res.write(token_client);
+        await retrieveCodeCreateAccount(req, res);
+    }
+    else if (req.url.startsWith('/?token')) {
+        filePath = path.join(__dirname, "./web/index.html");
     }
     else {
         filePath = path.join(__dirname, `./web/${req.url}`);
@@ -90,3 +83,7 @@ async function startServer() {
 }
 
 startServer();
+
+module.exports = {
+    requestListener
+};

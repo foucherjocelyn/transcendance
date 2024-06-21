@@ -119,11 +119,9 @@ function load_connectForm(callback) {
 	document.getElementById("rb_signup42").addEventListener("click", async () => {
 		console.log("login42 clicked");
 		await request42Login();
-
+		
 		/////
 		console.log("THIS DOES NOT SHOWS ON CONSOLE");
-		const sendData = new dataToServer('connection_42', "", 'socket server');
-		client.socket.send(JSON.stringify(sendData));
 
 		/*
 		let data = await fetch("https://localhost:5500/json", { method: "GET"} )
