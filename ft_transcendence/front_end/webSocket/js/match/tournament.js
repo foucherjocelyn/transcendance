@@ -107,7 +107,9 @@ async function    create_match_tournament(player1, player2)
 
     // get alias
     player1 = await create_request('GET', `/api/v1/users/${player1.id}`, '');
-    player2 = await create_request('GET', `/api/v1/users/${player2.id}`, '');
+    if (player2 !== null) {
+        player2 = await create_request('GET', `/api/v1/users/${player2.id}`, '');
+    }
     
     for (let i = 0; i < 4; i++)
     {
