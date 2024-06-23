@@ -43,6 +43,12 @@ function    get_sign_game_setting_button()
 
 function    setup_game_settings()
 {
+    if (match.mode === 'tournament') {
+        const   tableSetting = document.getElementById('gameSettingPanel');
+        tableSetting.style.display = 'none';
+        return ;
+    }
+    
     setup_size_game_settings_layer();
     get_sign_game_setting_button();
     get_sign_buttons_game_setting_bar();

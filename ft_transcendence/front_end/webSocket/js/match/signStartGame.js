@@ -1,4 +1,4 @@
-const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
+const { define_user_by_ID } = require("../webSocket/webSocket");
 const { define_match, update_match } = require("./updateMatch");
 const { matchmaking } = require("./matchmaking");
 const { send_data } = require("../webSocket/dataToClient");
@@ -34,7 +34,7 @@ function    check_number_player(match)
     }
 
     const   nbrPerson = match.listPlayer.filter(player => player.type === 'player').length;
-    if ((match.mode === 'ranked' || match.mode === 'tournament') && nbrPerson < 2)
+    if ((match.mode === 'ranked' || match.mode === 'with friends') && nbrPerson < 2)
     {
         send_data('warning', 'You need at least 2 players ( not AI ) to start', '../../img/avatar/informationsSign.png', match.admin);
         return false;
@@ -45,11 +45,6 @@ function    check_number_player(match)
 function    call_matchmaking(user, match)
 {
     send_data('display loader', 'flex', 'server', user);
-
-    if (match.mode === 'tournament') {
-        match.listPlayer[0].name = match.listPlayer[0].name + match.listPlayer[0].id;
-    }
-
     matchmaking(user, match, (result) => {
         if (result)
         {
@@ -73,7 +68,7 @@ function    call_matchmaking(user, match)
 function    sign_start_game(sender)
 {
     const   match = define_match(sender);
-    if (match === undefined) {
+    if (match === undefined || match.mode === 'tournament') {
         return;
     }
 
@@ -83,9 +78,7 @@ function    sign_start_game(sender)
         return ;
     }
     
-    (match.mode === 'ranked' || match.mode === 'tournament') ?
-    call_matchmaking(sender, match) :
-    setup_game(match);
+    (match.mode === 'ranked') ? call_matchmaking(sender, match) : setup_game(match);
 }
 
 module.exports = {
