@@ -28,6 +28,20 @@ function define_user_by_ID(userID) {
     return undefined;
 }
 
+async function  update_infor_user(user)
+{
+    const   infor = await create_request('GET', `/api/v1/users/${user.id}`, '');
+    for (let i = 0; i < webSocket.listUser.length; i++)
+    {
+        if (webSocket.listUser[i].id === user.id)
+        {
+            webSocket.listUser[i] = infor;
+            webSocket.listConnection[i].inforUser = infor;
+            return ;
+        }
+    }
+}
+
 function handle_requirements(socket, title, content, sender, recipient) {
     if (sender.status === 'online') {
         if (title === 'disconnect') {
@@ -190,4 +204,5 @@ const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament, send_sign_join_tournament, send_sign_create_tournament } = require("../match/tournament");
-const { url } = require("inspector");
+const { url } = require("inspector");const { create_request } = require("../dataToDB/createRequest");
+

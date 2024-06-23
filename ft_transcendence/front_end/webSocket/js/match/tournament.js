@@ -105,6 +105,10 @@ async function    create_match_tournament(player1, player2)
     match.id += player1.id;
     match.mode = 'tournament';
 
+    // get alias
+    player1 = await create_request('GET', `/api/v1/users/${player1.id}`, '');
+    player2 = await create_request('GET', `/api/v1/users/${player2.id}`, '');
+    
     for (let i = 0; i < 4; i++)
     {
         let   player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
@@ -190,34 +194,6 @@ async function    send_sign_join_tournament(title, tournamentID)
     })
 }
 
-function  update_infor_user(infor)
-{
-    for (let i = 0; i < webSocket.listUser.length; i++)
-    {
-        const   user = webSocket.listUser[i];
-        if (user.id === infor.id)
-        {
-            webSocket.listUser[i] = infor;
-            webSocket.listConnection[i].inforUser = infor;
-            return ;
-        }
-    }
-}
-
-async function  get_alias(listName)
-{
-    for (const name of listName) {
-        for (let i = 0; i < webSocket.listUser.length; i++) {
-            const user = webSocket.listUser[i];
-            if (user !== undefined && user.username === name) {
-                const infor = await create_request('GET', `/api/v1/users/${user.id}`, '');
-                update_infor_user(infor);
-                break;
-            }
-        }
-    }
-}
-
 async function    start_tournament(tournamentID, sender)
 {
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
@@ -225,7 +201,6 @@ async function    start_tournament(tournamentID, sender)
     }
 
     const   tournament = await create_request('GET', `/api/v1/tournament/${tournamentID}`, '');
-    get_alias(tournament.player_usernames);
     if (sender.username !== tournament.owner_username || tournament.player_usernames.length < 2) {
         return ;
     }
