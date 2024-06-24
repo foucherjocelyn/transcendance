@@ -8,7 +8,7 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { aliasJoinTournament, to_tournamentWaitingRoom } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
-import { addAlias, getAliasFromUsername } from "../../backend_operation/alias.js";
+import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
 
 function addLabel(tour_list, index) {
@@ -112,6 +112,36 @@ function tournamentCreateCheck(tour_list_name, newtour_obj) {
 	return (true);
 }
 
+async function createTournamentSubmit(event, tour_list_name) {
+	event.preventDefault();
+	let alias = await getAliasFromUsername(getCookie("username"));
+	console.log("Alias is: " + alias);
+	if (!alias) {
+		let alias = {
+			"alias": document.getElementById("hcm_alias").value
+		};
+		await addAlias(alias);
+		let createtour_info = {
+			name: document.getElementById("hcm_name").value,
+			description: document.getElementById("hcm_description").value,
+			start_time: document.getElementById("hcm_start").value
+		};
+		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
+			console.log("createTournament: if 1");
+			createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
+			let newtour_obj = await createTournament(createtour_info);
+			console.log("the returned tour object:");
+			console.log(newtour_obj);
+			document.getElementById(`htb_create_menu`).outerHTML = ``;
+			to_tournamentWaitingRoom("false", newtour_obj);
+			const send_data = new dataToServer('create tournament', "", 'socket server');
+			client.socket.send(JSON.stringify(send_data));
+		}
+	}
+	else
+		notice("You cannot create more than one tournament", 2, "#d11706");
+}
+
 function createTournamentInput(tour_list_name) {
 	//console.log("createTournamentInput started :" + tour_list_name);
 	let min_date = getToday(5);
@@ -127,35 +157,7 @@ function createTournamentInput(tour_list_name) {
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
 `;
-	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
-		event.preventDefault();
-		let alias = await getAliasFromUsername(getCookie("username"));
-		console.log("Alias is: " + alias);
-		if (!alias) {
-			let alias = {
-				"alias": document.getElementById("hcm_alias").value
-			};
-			await addAlias(alias);
-			let createtour_info = {
-				name: document.getElementById("hcm_name").value,
-				description: document.getElementById("hcm_description").value,
-				start_time: document.getElementById("hcm_start").value
-			};
-			if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
-				console.log("createTournament: if 1");
-				createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
-				let newtour_obj = await createTournament(createtour_info);
-				console.log("the returned tour object:");
-				console.log(newtour_obj);
-				document.getElementById(`htb_create_menu`).outerHTML = ``;
-				to_tournamentWaitingRoom("false", newtour_obj);
-				const send_data = new dataToServer('create tournament', "", 'socket server');
-				client.socket.send(JSON.stringify(send_data));
-			}
-		}
-		else
-			notice("You cannot create more than one tournament", 2, "#d11706");
-	});
+	document.getElementById(`htb_create_menu`).addEventListener("submit", () => { createTournamentSubmit(event, tour_list_name); });
 	document.getElementById(`hcm_create_menu_close`).addEventListener("click", () => { document.getElementById(`htb_create_menu`).outerHTML = ``; });
 }
 
@@ -192,6 +194,7 @@ async function drawTournament(callback) {
           </table>
 		  <hr>
 		  <input id ="htb_create_button" class="button-img" type="button" value="Create tournament">
+		  <input id ="htb_delalias" class="button-img" type="button" value="Remove Alias (debug)">
 		  <div id="htb_create"></div>
 		  <div id="tournament_tree"></div>
 				</div>
@@ -202,6 +205,8 @@ async function drawTournament(callback) {
 			${noticeInvitePlayer()}
 		</div>
 `;
+
+	document.getElementById("htb_delalias").addEventListener("click", await removeAlias);
 	let tour_list = await getTournamentsList();
 	let tour_list_name = [];
 

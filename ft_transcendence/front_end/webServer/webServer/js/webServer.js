@@ -45,9 +45,9 @@ const requestListener = async function (req, res) {
         filePath = path.join(__dirname, "./web/index.html");
         await retrieveCodeCreateAccount(req, res);
     }
-    else if (req.url.startsWith('/?token')) {
-        filePath = path.join(__dirname, "./web/index.html");
-    }
+    //else if (req.url.startsWith('/?token')) {
+      //  filePath = path.join(__dirname, "./web/index.html");
+    //}
     else if (req.url.startsWith('/?')) {
         filePath = path.join(__dirname, "./web/index.html");
     }
