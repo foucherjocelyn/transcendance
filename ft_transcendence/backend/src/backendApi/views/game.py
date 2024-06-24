@@ -8,6 +8,7 @@ from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSock
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from backend.settings import logger
+from decimal import Decimal
 
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
@@ -158,9 +159,9 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response({"error": "No winner found"}, status=400)
         # Update the level of the winner
         if game.mode == "tournament":
-            winner.level += 0.5
+            winner.level += Decimal(0.5)
         elif game.mode == "ranked":
-            winner.level += 0.25
+            winner.level += Decimal(0.25)
         winner.save()
         return Response({"message": "Winner level up successfully"}, status=200)
 

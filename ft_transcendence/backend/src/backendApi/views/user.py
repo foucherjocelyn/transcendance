@@ -87,6 +87,9 @@ class UserViewSet(viewsets.ModelViewSet):
             first_name=first_name,
             last_name=last_name,
         )
+        user.status = "online"
+        user.last_login = timezone.now()
+        user.save()
         token = JwtTokenGenerator.generateJwtToken(user.id)
         return Response(
             {

@@ -51,7 +51,7 @@ function	drawProfilePage(user_info)
 	${upperPanel()}
 	<div id="h_homepage" class="hide">
 		<div id="h_player_bar">
-				<img id="hpb_player_img" src="../../img/avatar/avatar_default.png">
+				<img id="hpb_player_img" src="../../img/avatars/default.png">
 				<p id="hpb_username"></p>
 				<p id="hpb_level">Level: ${user_info.level}</p>
       </div>

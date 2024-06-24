@@ -54,7 +54,7 @@ class MatchMaking {
             const intervalId = setInterval(() => {
                 if (match.pongGame.gameOver && match.winner !== undefined) {
                     clearInterval(intervalId);
-                    let winner = (player1.id === match.winner.id) ? player1 : player2;
+                    let winner = player1.id === match.winner.id ? player1 : player2;
                     resolve(winner);
                 }
             }, 1000);
@@ -62,16 +62,15 @@ class MatchMaking {
     }
 
     async simulateMatch(player1, player2, tournamentName) {
-        if (player1 === null || player2 === null)
-        {
-            let   player = (player1 !== null) ? player1 : player2;
+        if (player1 === null || player2 === null) {
+            let player = player1 !== null ? player1 : player2;
             player1 = player;
             player2 = null;
         }
 
         // create match + run
         await create_match_tournament(player1, player2);
-        const   match = define_match(player1);
+        const match = define_match(player1);
         match.tournamentName = tournamentName;
         setup_game(match);
 
@@ -79,13 +78,11 @@ class MatchMaking {
         const winner = await this.checkGameOver(match, player1, player2);
 
         // stop match AI
-        const   list_match_in_tournament = webSocket.listMatch.filter(match => match.tournamentName === tournamentName);
-        if (list_match_in_tournament.length > 0)
-        {
-            const   list_match_AI = list_match_in_tournament.filter(match => match.listUser.length === 1);
-            if (list_match_AI.length > 0)
-            {
-                const   matchAI = list_match_AI[0];
+        const list_match_in_tournament = webSocket.listMatch.filter((match) => match.tournamentName === tournamentName);
+        if (list_match_in_tournament.length > 0) {
+            const list_match_AI = list_match_in_tournament.filter((match) => match.listUser.length === 1);
+            if (list_match_AI.length > 0) {
+                const matchAI = list_match_AI[0];
                 matchAI.pongGame.gameOver = true;
             }
         }
@@ -98,38 +95,42 @@ class MatchMaking {
     }
 }
 
-async function    create_match_tournament(player1, player2)
-{
-    const   match = new formMatch();
+async function create_match_tournament(player1, player2) {
+    const match = new formMatch();
     match.id = await create_match_ID();
     match.id += player1.id;
-    match.mode = 'tournament';
+    match.mode = "tournament";
 
-    for (let i = 0; i < 4; i++)
-    {
-        let   player = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+    // get alias
+    player1 = await create_request("GET", `/api/v1/users/${player1.id}`, "");
+    player1.avatarPath = `img/${player1.avatarPath}`;
+    if (player2 !== null) {
+        player2 = await create_request("GET", `/api/v1/users/${player2.id}`, "");
+        player2.avatarPath = `img/${player2.avatarPath}`;
+    }
+
+    for (let i = 0; i < 4; i++) {
+        let player = new inforPlayer("", "", "../../img/avatar/addPlayerButton.png", 42, "none");
         if (i === 0) {
-            player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, 'player');
-        }
-        else if (i === 1) {
+            player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, "player");
+        } else if (i === 1) {
             if (player2 === null) {
-                player = new inforPlayer('#42', 'AI', "../../img/avatar/AI.png", 42, 'AI');
-            }
-            else {
-                player = new inforPlayer(player2.id, player2.alias, player2.avatarPath, player2.level, 'player');
+                player = new inforPlayer("#42", "AI", "../../img/avatar/AI.png", 42, "AI");
+            } else {
+                player = new inforPlayer(player2.id, player2.alias, player2.avatarPath, player2.level, "player");
             }
         }
         match.listPlayer.push(player);
     }
 
-    const   user = define_user_by_ID(player1.id);
+    const user = define_user_by_ID(player1.id);
     user.matchID = match.id;
-    user.status = 'creating match';
+    user.status = "creating match";
 
     if (player2 !== null) {
-        const   user2 = define_user_by_ID(player2.id);
+        const user2 = define_user_by_ID(player2.id);
         user2.matchID = match.id;
-        user2.status = 'creating match';
+        user2.status = "creating match";
     }
 
     match.admin = match.listPlayer[0];
@@ -142,13 +143,12 @@ function create_list_player_tournament(listName) {
     return new Promise((resolve, reject) => {
         try {
             const listPlayer = [];
-            listName.forEach(name => {
-                for (let i = 0; i < webSocket.listUser.length; i++)
-                {
-                    const   user = webSocket.listUser[i];
+            listName.forEach((name) => {
+                for (let i = 0; i < webSocket.listUser.length; i++) {
+                    const user = webSocket.listUser[i];
                     if (user !== undefined && user.username === name) {
                         listPlayer.push(user);
-                        break ;
+                        break;
                     }
                 }
             });
@@ -159,77 +159,74 @@ function create_list_player_tournament(listName) {
     });
 }
 
-function    send_sign_create_tournament(title, sender)
-{
-    for (let i = 0; i < webSocket.listUser.length; i++)
-    {
-        const   user = webSocket.listUser[i];
+function send_sign_create_tournament(title, sender) {
+    for (let i = 0; i < webSocket.listUser.length; i++) {
+        const user = webSocket.listUser[i];
         if (user !== undefined && user.username !== sender.username) {
-            send_data(title, '', 'server', user);
+            send_data(title, "", "server", user);
         }
     }
 }
 
-async function    send_sign_join_tournament(title, tournamentID)
-{
+async function send_sign_join_tournament(title, tournamentID) {
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
-        return ;
+        return;
     }
 
-    const   tournament = await create_request('GET', `/api/v1/tournament/${tournamentID}`, '');
-    tournament.player_usernames.forEach(userName => {
-        for (let i = 0; i < webSocket.listUser.length; i++)
-        {
-            const   user = webSocket.listUser[i];
+    const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    tournament.player_usernames.forEach((userName) => {
+        for (let i = 0; i < webSocket.listUser.length; i++) {
+            const user = webSocket.listUser[i];
             if (user !== undefined && user.username === userName) {
-                send_data(title, tournament, 'server', user);
-                break ;
+                send_data(title, tournament, "server", user);
+                break;
             }
         }
-    })
+    });
 }
 
-async function    start_tournament(tournamentID, sender)
-{
+async function start_tournament(tournamentID, sender) {
+    console.table(`Start tournament: ${tournamentID}`);
+    console.table(`Sender: ${sender}`);
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
-        return ;
+        return;
     }
 
-    const   tournament = await create_request('GET', `/api/v1/tournament/${tournamentID}`, '');
-    const   tournamentName = tournament.name;
-    const   listPlayer = await create_list_player_tournament(tournament.player_usernames);
-
-    if (sender.username !== tournament.owner_username || listPlayer.length < 2) {
-        return ;
+    const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    if (sender.username !== tournament.owner_username || tournament.player_usernames.length < 2) {
+        return;
     }
-    
+
     // sign start tournament
-    await create_request('POST', `/api/v1/tournament/${tournament.id}/start`, '');
+    await create_request("POST", `/api/v1/tournament/${tournament.id}/start`, "");
 
     // call matchmaking
+    const listPlayer = await create_list_player_tournament(tournament.player_usernames);
+    listPlayer.forEach((player) => console.log(player.username));
+
     const matchMaker = new MatchMaking(listPlayer);
-    const champion = await matchMaker.generateMatches(tournamentName);
+    const champion = await matchMaker.generateMatches(tournament.name);
 
     // sign end tournament
-    await create_request('POST', `/api/v1/tournament/${tournament.id}/end`, '');
-    
+    await create_request("POST", `/api/v1/tournament/${tournament.id}/end`, "");
+
     // Update the champion of a tournament
-    const   postData = {
-        username: `${champion.username}`
+    const postData = {
+        username: `${champion.username}`,
     };
-    await create_request('POST', `/api/v1/tournament/${tournament.id}/champion/update`, postData);
+    await create_request("POST", `/api/v1/tournament/${tournament.id}/champion/update`, postData);
     console.log(`The champion is: ${champion.username}`);
 
-    // display button exit match
-    send_data('display exit match', 'flex', 'server', champion);
+    // display button exit match + send sign delete alias
+    send_data("display exit match", "flex", "server", champion);
     for (let i = 0; i < listPlayer.length; i++) {
         let user = listPlayer[i];
-        send_data('delete alias', '', 'server', user);
+        send_data("delete alias", "", "server", user);
     }
 }
 
 module.exports = {
     start_tournament,
     send_sign_create_tournament,
-    send_sign_join_tournament
-}
+    send_sign_join_tournament,
+};

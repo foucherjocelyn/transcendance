@@ -20,11 +20,6 @@ COPY	./webServer ./webServer
 RUN	npm init -y && \
 	npm install -y three axios cookie
 
-# Make certificate SSL
-RUN mkdir ./ssl && \
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./ssl/private.key -out ./ssl/certificate.crt -subj "/CN=localhost" && \
-	mv ./ssl ./webServer
-
 # Update OrbitControls.js
 RUN	cp -rf ./web/js/game/OrbitControls.js ./node_modules/three/examples/jsm/controls/
 
@@ -33,4 +28,3 @@ EXPOSE	5500
 
 # Start web server
 CMD	["node", "./webServer/js/webServer.js"]
-
