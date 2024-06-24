@@ -18,7 +18,7 @@ COPY	./webServer ./webServer
 
 # Install THREE + AXIOS
 RUN	npm init -y && \
-	npm install -y three axios
+	npm install -y three axios cookie
 
 # Update OrbitControls.js
 RUN	cp -rf ./web/js/game/OrbitControls.js ./node_modules/three/examples/jsm/controls/

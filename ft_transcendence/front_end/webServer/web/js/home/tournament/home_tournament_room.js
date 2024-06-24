@@ -47,7 +47,7 @@ export async function aliasJoinTournament(tour_obj) {
 	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
 </div>
 `;
-		document.getElementById("tour_inputsend").addEventListener("click", async () => {
+		document.getElementById("tour_inputsend").addEventListener("submit", async () => {
 			event.preventDefault();
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value

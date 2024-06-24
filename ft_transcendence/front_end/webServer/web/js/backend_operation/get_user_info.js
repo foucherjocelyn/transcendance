@@ -121,7 +121,7 @@ export async function getListUsers() {
 		console.error("getListUsers: ", error);
 	}
 
-	return response;
+	//return response.json;
 }
 
 export const getListFriends = async () => {
