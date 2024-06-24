@@ -14,11 +14,11 @@ const renderFriendList = (list) => {
     const friendsList = document.getElementById("c-friends-list");
     if (!friendsList)
         return;
-    friendsList.innerHTML = "";
+    //friendsList.innerHTML = "";
     const listHTML = list.map((friend) => {
         return ("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
         <div class="user-avatar">
-            <img id="friend-avatar-${friend.username}" src="../img/avatars/default.png" alt="profile-picture">
+            <img id="friend-avatar-${friend.username}" src="${document.getElementById(`friend-avatar-${friend.username}`)?.src || '../img/avatars/default.png'}" alt="profile-picture">
             <div id="c-list-friend-status-${friend.username}" class="c-list-friend-status ${friend.status}"></div>
         </div>
         <div class="user-name">${friend.username}</div>
