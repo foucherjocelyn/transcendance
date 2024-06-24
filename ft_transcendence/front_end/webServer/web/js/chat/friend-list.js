@@ -18,7 +18,7 @@ const renderFriendList = (list) => {
     const listHTML = list.map((friend) => {
         return ("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
         <div class="user-avatar">
-            <img id="friend-avatar-${friend.username}" src="${document.getElementById(`friend-avatar-${friend.username}`)?.src || '../img/avatars/default.png'}" alt="profile-picture">
+            <img id="friend-avatar-${friend.username}" src="${friend.avatarPath}" alt="profile-picture">
             <div id="c-list-friend-status-${friend.username}" class="c-list-friend-status ${friend.status}"></div>
         </div>
         <div class="user-name">${friend.username}</div>
@@ -32,7 +32,6 @@ const renderFriendList = (list) => {
     document.querySelectorAll(".c-friend").forEach(friendDiv => {
         const friendUsername = friendDiv.id.slice(12);
 
-        getAvatar(`friend-avatar-${friendUsername}`);
         //const friendDiv = document.getElementById(`c-list-user-${friendUsername}`);
         friendDiv?.addEventListener("click", (e) => openChatBox(friendUsername));
         friendDiv?.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
