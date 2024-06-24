@@ -1,8 +1,7 @@
-import { notice } from "./auth_main.js";
-import { to_change2fa, to_changeAvatar, to_changeInfo, } from "../home/profile/home_changeprofile.js";
-import { getOtpStatusToken, toggleOtpStatus } from "../backend_operation/one_time_password.js";
-import { uploadAvatar } from "../backend_operation/profile_picture.js";
-import { dataUpdate } from "../backend_operation/data_update.js";
+import { to_change2fa, to_changeAvatar, to_changeInfo, } from "./home_changeprofile.js";
+import { getOtpStatusToken, toggleOtpStatus } from "../../backend_operation/one_time_password.js";
+import { uploadAvatar } from "../../backend_operation/profile_picture.js";
+import { dataUpdate } from "../../backend_operation/data_update.js";
 
 export function checkPasswordChange()
 {

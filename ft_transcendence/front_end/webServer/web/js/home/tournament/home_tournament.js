@@ -206,7 +206,7 @@ async function drawTournament(callback) {
 		</div>
 `;
 
-	document.getElementById("htb_delalias").addEventListener("click", await removeAlias);
+	document.getElementById("htb_delalias").addEventListener("click", removeAlias);
 	let tour_list = await getTournamentsList();
 	let tour_list_name = [];
 

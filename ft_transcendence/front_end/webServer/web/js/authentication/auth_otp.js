@@ -23,10 +23,10 @@ export async function	checkInput2FA()
 async function load_otpForm(connect_user)
 {
 	document.querySelector("#frontpage").outerHTML =
-		`<div id="frontpage">\
+		`<div id="frontpage">
 	${loadSpinner()}
-      <div id="r_connect_page" class="hide">\
-			<divclass="r_connect_form">\
+      <div id="r_connect_page" class="hide">
+			<divclass="r_connect_form">
 			<form method="post"  id="r_registration">
 				<input type="text" id="rc_otp" name="rc_otp" placeholder="2FA" required>
 				<button type="button" id="rc_otp_send" name="rc_otp_send">Send</button>
