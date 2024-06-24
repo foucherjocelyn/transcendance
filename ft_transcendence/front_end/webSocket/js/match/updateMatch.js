@@ -20,8 +20,7 @@ function    get_user_in_list_player_ws(match)
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
-        if (player.type !== 'none' && player.id[0] !== '#')
-        {
+        if (player.type !== 'none' && player.id[0] !== '#') {
             match.listUser.push(match.listPlayer[i]);
         }
     }

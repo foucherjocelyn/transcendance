@@ -36,6 +36,7 @@ function    leave_match(user)
             
             // update status user
             user.status = 'online';
+            console.log('----------> status online: ' + user.username);
             update_match(user);
             return ;
         }
