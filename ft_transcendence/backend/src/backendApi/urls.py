@@ -32,6 +32,10 @@ urlpatterns = [
         "users/id/<str:username>", UserViewSet.as_view({"get": "getUserIdByUsername"})
     ),
     path("users/id/<int:user_id>", UserViewSet.as_view({"get": "getUserById"})),
+    path(
+        "users/<int:user_id>/status/update",
+        UserViewSet.as_view({"post": "updateStatusByWebSocket"}),
+    ),
     # Auth
     path("auth/register", UserViewSet.as_view({"post": "register"})),
     path("auth/login", UserViewSet.as_view({"post": "logIn"})),

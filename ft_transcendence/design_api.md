@@ -474,6 +474,22 @@ authorization Bearer <token>
 
 -   The updated user profile ([User](#user))
 
+## Update status of user by websocket
+
+Only websocket avec websocket token can update the user's status by this endpoint
+
+```typescript
+POST /api/v1/users/<user_id>/status/update
+authorization Bearer <token> // websocket token
+{
+	status: string
+}
+```
+
+### Return
+
+-   The updated user profile ([User](#user))
+
 # Channels
 
 Public channel: every user can see it and join it.

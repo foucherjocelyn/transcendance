@@ -76,7 +76,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"error": "Failed to get user data"}, status=400)
         id42 = user_data.get("id")
         email42 = user_data.get("email")
-        username = user_data.get("login")
+        username = user_data.get("login") + "#42"
         first_name = user_data.get("first_name")
         last_name = user_data.get("last_name")
         # Create user or update user data
@@ -212,6 +212,22 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=200)
 
     @action(detail=True, methods=["post"])
+    def updateStatusByWebSocket(self, request, user_id):
+        status = request.data.get("status", None)
+        if not status:
+            return Response({"error": "Status not provided"}, status=400)
+        if status not in ["online", "offline"]:
+            return Response({"error": "Invalid status"}, status=400)
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+        user.status = status
+        user.save()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=200)
+
+    @action(detail=True, methods=["post"])
     def addAliasToUser(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
@@ -267,6 +283,8 @@ class UserViewSet(viewsets.ModelViewSet):
             "removeAliasToUser",
         ]:
             self.permission_classes = [IsAuthenticated]
+        elif self.action in ["updateStatusByWebSocket"]:
+            self.permission_classes = [IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()
