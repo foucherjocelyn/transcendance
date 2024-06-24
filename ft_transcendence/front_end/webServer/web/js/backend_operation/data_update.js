@@ -1,7 +1,6 @@
 import { getCookie } from "../authentication/auth_cookie.js";
-import { client } from '../client/client.js';
 import { openSocketClient } from "./authentication.js";
-import { getMyInfo, getUserById } from "./get_user_info.js";
+import { getMyInfo } from "./get_user_info.js";
 
 export async function dataUpdate(newInfo) {
 	//	console.log("-dataUpdate starting");
@@ -31,9 +30,9 @@ export async function dataUpdate(newInfo) {
 export async function updateMyInfo(connectFlag = false) {
 	await getMyInfo();
 
-	client.inforUser = await getUserById(getCookie('id'));
-	if (client.inforUser !== undefined)
-		client.inforUser.avatarPath = "../img/avatar/avatar_default.png";//temp
+	//client.inforUser = await getUserById(getCookie('id'));
+	//if (client.inforUser !== undefined)
+//		client.inforUser.avatarPath = "../img/avatar/avatar_default.png";//temp
 
 	if (connectFlag) {
 		openSocketClient();

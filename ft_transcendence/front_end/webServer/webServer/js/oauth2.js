@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { create_request } = require('./createRequest.js');
-const { requestListener } = require("./webServer.js");
+const cookie = require('cookie');
 
 async function retrieveCodeCreateAccount(req, res) {
     var query = require("url").parse(req.url, true).query;
@@ -27,6 +27,46 @@ async function retrieveCodeCreateAccount(req, res) {
     //console.log(params);
     params.delete("code");
     //console.log(params);
+    /*
+        req.url = "https://127.0.0.1:5500/?token=" + token42_to_client;
+        console.log(req.url);
+        res.writeHead(301, {
+            'Location': req.url,
+            'Content-Type': "text/html"
+        });
+        res.end();
+    //*/
+    ///*
+
+
+    ///*
+    res.cookie('token', token42_to_client, {
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+        httpOnly: true, // Prevent client-side access
+        secure: true, // Require HTTPS
+        sameSite: 'strict' // Prevent CSRF attacks
+    });
+    res.end(contents, 'utf8');
+    //*/
+   /*
+    res.setHeader('Set-Cookie', cookie.serialize('token', token42_to_client, {
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict'
+    }));
+    //*/
+    req.url = "https://127.0.0.1:5500/?login42=true";
+    console.log(req.url);
+    res.writeHead(301, {
+        'Location': req.url,
+        'Content-Type': "text/html"
+    });
+    res.end();
+    //*/
+
+
+    /*
     req.url = "https://127.0.0.1:5500/?token=" + token42_to_client;
     console.log(req.url);
     res.writeHead(301, {
@@ -34,6 +74,9 @@ async function retrieveCodeCreateAccount(req, res) {
         'Content-Type': "text/html"// Utilisez req.url pour spécifier la nouvelle URL
     });
     res.end();
+    */
+
+
     //requestListener(req, res);
     //changer l'url avec token42
     //const send_data = new dataToServer('connection_42', token42_to_client, 'socket server');

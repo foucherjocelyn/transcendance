@@ -43,7 +43,8 @@ export async function	authCheck()
 {
 	await updateMyInfo();
 	const url = window.location.search;
-	if (url.startsWith("?token="))
+	///*
+	if (url.startsWith("?login42=true"))
 		{
 			const params = new URLSearchParams(url);
 			const token = params.get("token");
@@ -53,6 +54,7 @@ export async function	authCheck()
 			client.socket.send(JSON.stringify(sendData));
 			window.location.search = "";
 		}
+	//*/
 	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
 	//console.log("the bar(search) contains: [" + window.location.search + "]");
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")

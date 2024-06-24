@@ -127,7 +127,7 @@ function createTournamentInput(tour_list_name) {
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
 `;
-	document.getElementById(`hcm_create_menu_create`).addEventListener("click", async function (event) {
+	document.getElementById(`hcm_create_menu_create`).addEventListener("submit", async function (event) {
 		event.preventDefault();
 		let alias = await getAliasFromUsername(getCookie("username"));
 		console.log("Alias is: " + alias);
