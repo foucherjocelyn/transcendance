@@ -23,6 +23,7 @@ async function    connect(userID, socket)
     }
 
     // check same user
+    inforUser.avatarPath = `img/${inforUser.avatarPath}`;
     const   checkConnection = define_user_by_ID(userID);
     if (checkConnection !== undefined)
     {
@@ -39,6 +40,7 @@ async function    connect(userID, socket)
     webSocket.listUser.push(inforUser);
     
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
+    // await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
 }
 
 function    disconnect(socket)
@@ -65,4 +67,3 @@ module.exports = {
     connect,
     disconnect
 };
-

@@ -17,7 +17,7 @@ const renderFriendList = (list) => {
     const listHTML = list.map((friend) => {
         return ("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
         <div class="user-avatar">
-            <img src="../img/avatar/avatar_default.png" alt="profile-picture">
+            <img src="../img/avatars/default.png" alt="profile-picture">
             <div id="c-list-friend-status-${friend.username}" class="c-list-friend-status ${friend.status}"></div>
         </div>
         <div class="user-name">${friend.username}</div>

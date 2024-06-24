@@ -42,6 +42,7 @@
     -   [Add alias to user](#add-alias-to-user)
     -   [Update alias of user](#update-alias-of-user)
     -   [Remove alias of user](#remove-alias-of-user)
+    -   [Update status of user by websocket](#update-status-of-user-by-websocket)
 
 -   **Channels**
 

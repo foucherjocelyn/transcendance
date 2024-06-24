@@ -65,7 +65,7 @@ export function	to_changeAvatar()
 	document.getElementById("h_current_parameters").innerHTML = 
 `<br>
 <input type="file" id="p_avatar" name="avatar" accept="image/*">
-<img id="p_avatarpreview" src="../img/avatar/avatar_default.png" alt="Avatar preview">
+<img id="p_avatarpreview" src="../img/avatars/default.png" alt="Avatar preview">
 <hr id="p_div">
 <button class="button-img" type="button" id="p_change">Apply</button>
 `;
