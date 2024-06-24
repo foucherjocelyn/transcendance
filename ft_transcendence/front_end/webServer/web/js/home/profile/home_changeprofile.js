@@ -2,7 +2,7 @@ import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
 import { loadSpinner } from "../../authentication/spinner.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { checkInput2FA } from "../../authentication/auth_otp.js";
-import { updateMyOtp, updateMyAvatar, updateMyAccount } from "../../authentication/auth_change_info.js";
+import { updateMyOtp, updateMyAvatar, updateMyAccount } from "./home_change_info.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
@@ -82,7 +82,7 @@ export function	to_changeInfo()
 {
 	document.getElementById("h_current_parameters").innerHTML = 
 `<br>
-<input type="text" id="p_username" placeholder="${getCookie("username")}" maxlength="20" title="This is your username">
+<input type="text" id="p_username" placeholder="${getCookie("username")}" maxlength="20" title="This is your username" pattern="[a-zA-Z0-9]">
 <br>
 <input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here")">
 <br>
@@ -90,9 +90,9 @@ export function	to_changeInfo()
 <br>
 <input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" maxlength="30" disabled>
 <br>
-<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" maxlength="20" title="This is your firstname">
+<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" maxlength="20" title="This is your firstname" pattern="[a-zA-Z]">
 <br>
-<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" maxlength="20" title="This is your lastname">
+<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" maxlength="20" title="This is your lastname" pattern="[a-zA-Z]">
 <br>
 <input type="text" id="p_email" title="This cannot be changed" placeholder="${getCookie("email")}" readonly>
 <hr id="p_div">

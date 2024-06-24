@@ -14,8 +14,7 @@
 	background-image: url(../../../img/background/card2.png);
 	background-size: cover;
 	border-radius: 4px;
-	min-width:380px;
-	width: 60%;
+	width: 700px;
 	height: auto;
 	padding: 10px;
 	margin-top: 8%;
@@ -83,7 +82,7 @@
 
 #htb_dropdown {
 	position: relative;
-	margin-left: 25%;
+	margin-left: 330px;
 	background-image: url(../../../img/background/bar2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -132,7 +131,7 @@
 	left: 30%;
 	background-color: gray;
 	border-radius: 4px;
-	height: 180px;
+	height: 190px;
 	width: 250px;
 }
 
