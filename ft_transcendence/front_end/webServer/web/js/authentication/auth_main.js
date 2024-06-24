@@ -4,7 +4,6 @@ import { to_profilePage } from "../home/profile/home_changeprofile.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
-import { to_forgotForm } from "./auth_reset.js";
 import { getCookie } from "./auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
@@ -73,7 +72,6 @@ export async function	authCheck()
 const urlRoutes = {
 	connect: () => to_connectForm("true"),
 	register: () => to_regisForm("true"),
-	reset: () => to_forgotForm("true"),
 	homepage: () => to_homePage("true"),
 	configprofile: () => to_profilePage("true"),
 	game: () => to_game("true"),
