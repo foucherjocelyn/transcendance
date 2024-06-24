@@ -82,7 +82,7 @@ export function	to_changeInfo()
 {
 	document.getElementById("h_current_parameters").innerHTML = 
 `<br>
-<input type="text" id="p_username" placeholder="${getCookie("username")}" maxlength="20" title="This is your username" pattern="[a-zA-Z0-9]">
+<input type="text" id="p_username" placeholder="${getCookie("username")}"title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}">
 <br>
 <input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here")">
 <br>
@@ -90,9 +90,9 @@ export function	to_changeInfo()
 <br>
 <input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" maxlength="30" disabled>
 <br>
-<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" maxlength="20" title="This is your firstname" pattern="[a-zA-Z]">
+<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letters numeric only" pattern="[a-zA-Z]{3,20}">
 <br>
-<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" maxlength="20" title="This is your lastname" pattern="[a-zA-Z]">
+<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letters only" pattern="[a-zA-Z]{3,20}">
 <br>
 <input type="text" id="p_email" title="This cannot be changed" placeholder="${getCookie("email")}" readonly>
 <hr id="p_div">
