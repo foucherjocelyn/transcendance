@@ -45,18 +45,20 @@ export async function	authCheck()
 	///*
 	if (url.startsWith("?login42=true"))
 		{
-			const params = new URLSearchParams(url);
-			const token = params.get("token");
-			document.cookie = `token=${token}; SameSite=Strict`;
+			// const params = new URLSearchParams(url);
+			// const token = params.get("token");
+			// console.log(token);
+			// document.cookie = `token=${token}; SameSite=Strict`;
 			await getMyInfo();
 			const sendData = new dataToServer('connection_42', "", 'socket server');
 			client.socket.send(JSON.stringify(sendData));
+			console.log(window.location.search);
 			window.location.search = "";
 		}
 	//*/
 	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
 	//console.log("the bar(search) contains: [" + window.location.search + "]");
-	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
+	if (getCookie("token") != null && getCookie("token") != "" /*&& getCookie("status") === "online"*/)
 	{//add securite
 		await updateMyInfo(true);
 		checkAddress();

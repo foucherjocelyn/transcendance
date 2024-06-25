@@ -40,13 +40,14 @@ async function retrieveCodeCreateAccount(req, res) {
 
 
     ///*
-    res.cookie('token', token42_to_client, {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-        httpOnly: true, // Prevent client-side access
-        secure: true, // Require HTTPS
-        sameSite: 'strict' // Prevent CSRF attacks
-    });
-    res.end(contents, 'utf8');
+    // res.cookie('token', token42_to_client, {
+    //     expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+    //     httpOnly: false, // Prevent client-side access
+    //     secure: true, // Require HTTPS
+    //     sameSite: 'strict' // Prevent CSRF attacks
+    // });
+    // res.end(contents, 'utf8');
+    // console.log("before writehead");
     //*/
    /*
     res.setHeader('Set-Cookie', cookie.serialize('token', token42_to_client, {
@@ -60,7 +61,13 @@ async function retrieveCodeCreateAccount(req, res) {
     console.log(req.url);
     res.writeHead(301, {
         'Location': req.url,
-        'Content-Type': "text/html"
+        'Set-Cookie': cookie.serialize('token', token42_to_client, {
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            httpOnly: false,
+            secure: true,
+            sameSite: 'strict'
+        }),
+        'Content-Type': "application/json"
     });
     res.end();
     //*/
