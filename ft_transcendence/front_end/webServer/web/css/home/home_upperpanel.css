@@ -1,4 +1,5 @@
 #h_upperpanel {
+	z-index: 100;
 	min-width: 330px;
 	max-width: 400px;
 	height: 70px;

@@ -58,7 +58,7 @@ async function retrieveCodeCreateAccount(req, res) {
     }));
     //*/
     req.url = "https://127.0.0.1:5500/?login42=true";
-    console.log(req.url);
+    console.log("retrieveCodeCreateAccount: rewriting url = " + req.url);
     res.writeHead(301, {
         'Location': req.url,
         'Set-Cookie': cookie.serialize('token', token42_to_client, {
