@@ -6,8 +6,6 @@ import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
 import { getCookie } from "./auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
-import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { client, dataToServer } from "../client/client.js";
 
 export function notice(str, time, color)
 {
@@ -41,25 +39,6 @@ function checkAddress()
 export async function	authCheck()
 {
 	await updateMyInfo();
-	const url = window.location.search;
-	///*
-	if (url.startsWith("?login42=true"))
-		{
-			// const params = new URLSearchParams(url);
-			// const token = params.get("token");
-			// console.log(token);
-			// document.cookie = `token=${token}; SameSite=Strict`;
-			await getMyInfo();
-			const sendData = new dataToServer('connection_42', "", 'socket server');
-			client.socket.send(JSON.stringify(sendData));
-			console.log("window.location.search = ");
-			console.log(window.location.search);
-			window.location.search = "";
-		}
-	//*/
-	//console.log("the bar(path) contains: [" + window.location.pathname + "]");
-	//console.log("the bar(search) contains: [" + window.location.search + "]");
-	console.log("the status is " + getCookie("status"));
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
 	{//add securite
 		await updateMyInfo(true);

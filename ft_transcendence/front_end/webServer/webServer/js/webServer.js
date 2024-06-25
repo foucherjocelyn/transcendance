@@ -44,9 +44,7 @@ const requestListener = async function (req, res) {
     else if (req.url.startsWith('/?code')) {
         filePath = path.join(__dirname, "./web/index.html");
         await retrieveCodeCreateAccount(req, res);
-    }
-    else if (req.url.startsWith('/?')) {
-        filePath = path.join(__dirname, "./web/index.html");
+        return ;
     }
     else {
         filePath = path.join(__dirname, `./web/${req.url}`);
