@@ -18,13 +18,18 @@ function    create_result(match)
     send_data('update pongGame', match.pongGame, 'server', match.listUser);
 
     if (match.mode === 'tournament') {
-        match.listUser.forEach((player, index) => {
-            const user = define_user_by_ID(player.id);
+        for (let i = 0; i < 2; i++)
+        {
+            const   player = match.listPlayer[i];
+            const   user = define_user_by_ID(player.id);
+            
             let status_exit_button = (user.id !== winner.id) ? 'flex' : 'none';
             send_data('display exit match', status_exit_button, 'server', user);
-            Object.assign(match.listPlayer[index], match.listPlayer[3]);
-            update_match(user);
-        })
+
+            if (player.id === winner.id) {
+                Object.assign(match.listPlayer[i], match.listPlayer[3]);
+            }
+        }
     }
 }
 

@@ -20,8 +20,7 @@ function    get_user_in_list_player_ws(match)
     for (let i = 0; i < match.listPlayer.length; i++)
     {
         const   player = match.listPlayer[i];
-        if (player.type !== 'none' && player.id[0] !== '#')
-        {
+        if (player.type !== 'none' && player.id[0] !== '#') {
             match.listUser.push(match.listPlayer[i]);
         }
     }
@@ -41,6 +40,7 @@ function    update_match(user)
         if (match.mode === 'ranked') {
             stop_finding_random_matches(user, match);
         }
+        // console.table('--> delete: ' + match.id);
         const   indexMatch = webSocket.listMatch.findIndex(check => check.id === match.id);
         webSocket.listMatch.splice(indexMatch, 1);
     }

@@ -41,16 +41,15 @@ function    stop_movements_paddle() {
 
 function    animation(renderer, scene, camera)
 {
-    if (pongGame.gameOver)
+    const   ball = pongGame.ball;
+    if (pongGame.gameOver || ball === undefined)
     {
         stop_movements_paddle();
         renderer.setAnimationLoop(null);
         return ;
     }
     
-    const   ball = pongGame.ball;
     displayPongGame.ball.position.set(ball.position.x, ball.position.y, ball.position.z);
-
     pongGame.listPaddle.forEach((paddle, index) => {
         if (paddle !== null)
             displayPongGame.paddles[index].position.set(paddle.position.x, paddle.position.y, paddle.position.z);
