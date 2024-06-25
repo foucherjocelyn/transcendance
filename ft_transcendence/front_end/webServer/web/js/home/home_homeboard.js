@@ -52,7 +52,7 @@ function	drawHomePage(callback)
 	${upperPanel()}
 	<div id="h_homepage" class="hide">
 		<div id="h_player_bar">
-			<img id="hpb_player_img" src="../../img/avatars/default.png">
+			<img id="hpb_player_img" src="../../img/avatar/default.png">
 			<p id="hpb_username"></p>
 			<p id="hpb_level">Level: ${getCookie("level")}</p>
       </div>

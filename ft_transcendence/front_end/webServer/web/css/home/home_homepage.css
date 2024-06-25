@@ -7,16 +7,14 @@
 }
 
 #hpb_player_img {
-	display: inline-block;
-	background-color: white;
-	border-radius: 60px;
 	position: relative;
-	margin-top: -2em;
-	left: 70px;
-	width: auto;
-	height: auto;
-	max-width: 80px;
-	max-height: 80px;
+    margin-top: -4.5em;
+    left: 40px;
+    width: auto;
+    height: auto;
+    max-width: 140px;
+    max-height: 140px;
+    clip-path: circle();
 }
 
 #hpb_username, #hpb_level {
