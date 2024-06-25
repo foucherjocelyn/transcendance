@@ -11,53 +11,16 @@ async function retrieveCodeCreateAccount(req, res) {
         "code": query.code,
         "redirect_uri": "https://127.0.0.1:5500/"
     };
-    //console.log(config_42);
     let token42 = await request42Token(config_42);
     let token42_obj = {
         "token42": token42
     };
-    //console.log("the retrieved token = ");
-    //console.log(token42_obj);
     let info = await create_request("POST", "/api/v1/auth/login42", token42_obj);
-    //console.log("here is the info");
-    //console.log(info);
     let token42_to_client = info.access;
-    //console.log(req);
     const params = new URLSearchParams(req.url.slice(1));
-    //console.log(params);
     params.delete("code");
-    //console.log(params);
-    /*
-        req.url = "https://127.0.0.1:5500/?token=" + token42_to_client;
-        console.log(req.url);
-        res.writeHead(301, {
-            'Location': req.url,
-            'Content-Type': "text/html"
-        });
-        res.end();
-    //*/
-    ///*
 
-
-    ///*
-    // res.cookie('token', token42_to_client, {
-    //     expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-    //     httpOnly: false, // Prevent client-side access
-    //     secure: true, // Require HTTPS
-    //     sameSite: 'strict' // Prevent CSRF attacks
-    // });
-    // res.end(contents, 'utf8');
-    // console.log("before writehead");
-    //*/
-   /*
-    res.setHeader('Set-Cookie', cookie.serialize('token', token42_to_client, {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict'
-    }));
-    //*/
-    req.url = "https://127.0.0.1:5500/?login42=true";
+    req.url = "https://127.0.0.1:5500/";
     console.log(req.url);
     res.writeHead(301, {
         'Location': req.url,
@@ -70,33 +33,6 @@ async function retrieveCodeCreateAccount(req, res) {
         'Content-Type': "application/json"
     });
     res.end();
-    //*/
-
-
-    /*
-    req.url = "https://127.0.0.1:5500/?token=" + token42_to_client;
-    console.log(req.url);
-    res.writeHead(301, {
-        'Location': req.url,
-        'Content-Type': "text/html"// Utilisez req.url pour spécifier la nouvelle URL
-    });
-    res.end();
-    */
-
-
-    //requestListener(req, res);
-    //changer l'url avec token42
-    //const send_data = new dataToServer('connection_42', token42_to_client, 'socket server');
-    //client.socket.send(JSON.stringify(send_data));
-    //retrieveToken42(token42_to_client);
-    /*
-    response.writeHead(301, {
-        Location: "https://google.com/"
-      });
-    */
-    //app.get('/json', (req, res) => {
-    //  res.json({ message: 'Hello, this is a JSON response!', status: 'success' });
-    //});
 }
 
 async function request42Token(config_42) {
@@ -108,11 +44,7 @@ async function request42Token(config_42) {
             }
         })
         .then(function (response) {
-            //console.log("then request42Token------");
-            //console.log(response.status);
             if (response.status === 200) {
-                //console.log("response is good, info here: ");
-                //console.log(response);
                 return (response.data.access_token);
             }
         })
