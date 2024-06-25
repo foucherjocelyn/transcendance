@@ -90,9 +90,9 @@ export function	to_changeInfo()
 <br>
 <input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" maxlength="30" disabled>
 <br>
-<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letters numeric only" pattern="[a-zA-Z]{3,20}">
+<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letters only" pattern="[a-zA-Z]{3,20}">
 <br>
-<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letters only" pattern="[a-zA-Z]{3,20}">
+<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letters only" pattern="[a-zA-Z]{3,console.log(getCookie("status"));20}">
 <br>
 <input type="text" id="p_email" title="This cannot be changed" placeholder="${getCookie("email")}" readonly>
 <hr id="p_div">
