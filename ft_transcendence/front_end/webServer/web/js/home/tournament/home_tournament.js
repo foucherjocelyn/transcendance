@@ -121,10 +121,12 @@ async function createTournamentSubmit(event, tour_list_name) {
 			"alias": document.getElementById("hcm_alias").value
 		};
 		await addAlias(alias);
+		console.log(document.getElementById("hcm_start").value);
+		let start_time_value = document.getElementById("hcm_start").value;
 		let createtour_info = {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value,
-			start_time: document.getElementById("hcm_start").value
+			start_time: start_time_value
 		};
 		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
 			console.log("createTournament: if 1");
@@ -152,7 +154,7 @@ function createTournamentInput(tour_list_name) {
 		<input id="hcm_alias" type="text" placeholder="Your alias" maxlength="30" required>
 		<input id="hcm_name" type="text" placeholder="Tournament name" maxlength="30" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
-		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59" required>
+		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59">
 		<br>
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
