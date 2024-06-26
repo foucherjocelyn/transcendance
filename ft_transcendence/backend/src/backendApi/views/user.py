@@ -76,7 +76,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"error": "Failed to get user data"}, status=400)
         id42 = user_data.get("id")
         email42 = user_data.get("email")
-        username = user_data.get("login") + "#42"
+        username = user_data.get("login") + "_42"
         first_name = user_data.get("first_name")
         last_name = user_data.get("last_name")
         # Create user or update user data
