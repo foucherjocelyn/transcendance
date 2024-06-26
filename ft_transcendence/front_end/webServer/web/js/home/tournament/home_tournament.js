@@ -95,12 +95,8 @@ function getToday(add_minute) {
 /* Tournament Creation */
 
 function tournamentCreateCheck(tour_list_name, newtour_obj) {
-	if (newtour_obj.start_time === '' || newtour_obj.start_time === null) {
-		notice("No planned starting date set", 2, "#d6460d");
-		return (false);
-	}
-	if (newtour_obj.start_time <= getToday()) {
-		notice("The tournament you will create will start too soon", 2, "#d6460d");
+	if (newtour_obj.start_time && newtour_obj.start_time <= getToday()) {
+		notice("The planned starting time can't be set earlier than today", 2, "#d6460d");
 		return (false);
 	}
 	for (let i = 0; i < tour_list_name.length; i++) {
@@ -122,7 +118,9 @@ async function createTournamentSubmit(event, tour_list_name) {
 		};
 		await addAlias(alias);
 		console.log(document.getElementById("hcm_start").value);
-		let start_time_value = document.getElementById("hcm_start").value;
+		let start_time_value;
+		if (document.getElementById("hcm_start").value)
+			start_time_value  = document.getElementById("hcm_start").value;
 		let createtour_info = {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value,
@@ -130,7 +128,8 @@ async function createTournamentSubmit(event, tour_list_name) {
 		};
 		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
 			console.log("createTournament: if 1");
-			createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
+			if (start_time_value)
+				createtour_info.start_time = formatDate(document.getElementById("hcm_start").value);
 			let newtour_obj = await createTournament(createtour_info);
 			console.log("the returned tour object:");
 			console.log(newtour_obj);
