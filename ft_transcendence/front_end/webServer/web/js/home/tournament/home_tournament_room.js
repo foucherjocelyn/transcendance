@@ -19,17 +19,17 @@ async function checkTournamentAvailability(tour_obj) {
 	await getMyInfo();
 	let my_username = getCookie("username");
 	let my_alias = await getAliasFromUsername(getCookie("username"));
-	//console.log("----------------------- alias =" + my_alias);
+	console.log("----------------------- alias =" + my_alias);
 	if (!my_username) {
 		to_connectForm();
 		return (false);
 	}
 	if (my_alias && tour_obj.player_usernames.includes(my_username)) {
-		//console.log("checkTournamentAvailability: can join");
+		console.log("checkTournamentAvailability: can join");
 		return ("can join");
 	}
 	if (!my_alias && tour_obj.status === "registering") {
-		//console.log("checkTournamentAvailability: true");
+		console.log("checkTournamentAvailability: true");
 		return (true);
 	}
 	return (false);
@@ -42,12 +42,14 @@ export async function aliasJoinTournament(tour_obj) {
 	if (join_status === true) {
 		document.getElementById("h_tournament_page").innerHTML = `
 <div id="h_tournament_aliasjoin">
+	<form id="tour_aliasjoiningform">
 	<input type="text" id="tour_inputalias" placeholder="Enter an alias" required>
 	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
 	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
+	</form>
 </div>
 `;
-		document.getElementById("tour_inputsend").addEventListener("submit", async () => {
+		document.getElementById("tour_aliasjoiningform").addEventListener("submit", async () => {
 			event.preventDefault();
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value
