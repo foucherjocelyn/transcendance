@@ -54,12 +54,16 @@ export async function aliasJoinTournament(tour_obj) {
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value
 			};
-			await addAlias(alias);
-			const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
-			client.socket.send(JSON.stringify(send_data));
-			await joinTournament(tour_obj.id);
-			//console.log("sending alias, to_tournament waiting room from aliasJointournament");
-			to_tournamentWaitingRoom("true", tour_obj);
+			const joined_tour_obj = await joinTournament(tour_obj.id);
+			if (joined_tour_obj) {
+				//console.log("sending alias, to_tournament waiting room from aliasJointournament");
+				await addAlias(alias);
+				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
+				client.socket.send(JSON.stringify(send_data));
+				to_tournamentWaitingRoom("true", tour_obj);
+			}
+			else
+				notice("Joined tournament not found", 3, "#d1060d");
 		});
 		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
 		return (false);

@@ -123,22 +123,22 @@ async function createTournamentSubmit(event, tour_list_name) {
 			description: document.getElementById("hcm_description").value
 		};
 		let start_time_value = document.getElementById("hcm_start").value;
-		console.log("the value of the starting date = [" + start_time_value + "]");
 		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
 			console.log("createTournament: if 1");
-			await addAlias(alias);
 			if (start_time_value)
 				createtour_info.start_time = formatDate(start_time_value);
-			else
-				createtour_info.start_time = null;
-			console.log("The value of the formatted date = " + createtour_info.start_time);
 			let newtour_obj = await createTournament(createtour_info);
 			console.log("the returned tour object:");
 			console.log(newtour_obj);
-			document.getElementById(`htb_create_menu`).outerHTML = ``;
-			to_tournamentWaitingRoom("false", newtour_obj);
-			const send_data = new dataToServer('create tournament', "", 'socket server');
-			client.socket.send(JSON.stringify(send_data));
+			if (newtour_obj) {
+				await addAlias(alias);
+				document.getElementById(`htb_create_menu`).outerHTML = ``;
+				to_tournamentWaitingRoom("false", newtour_obj);
+				const send_data = new dataToServer('create tournament', "", 'socket server');
+				client.socket.send(JSON.stringify(send_data));
+			}
+			else
+				notice("Tournament creation failed", 3, "#d1060d");
 		}
 	}
 	else
