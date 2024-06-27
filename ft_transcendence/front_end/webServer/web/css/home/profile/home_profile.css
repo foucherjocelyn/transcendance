@@ -7,7 +7,7 @@
     transform: translateX(-80%);
     top: 15%;
     padding: 10px;
-    height: 300px;
+    height: 335px;
     width: 300px;
 }
 
@@ -42,8 +42,7 @@
 }
 
 #ip_avatar {
-    width: auto;
-	height: auto;
-	max-width: 80px;
-	max-height: 80px;
+	width: 80px;
+	height: 80px;
+    object-fit: cover;
 }

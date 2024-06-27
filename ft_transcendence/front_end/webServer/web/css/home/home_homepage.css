@@ -8,16 +8,16 @@
 
 #hpb_player_img {
 	position: relative;
-    margin-top: -4.5em;
-    left: 40px;
-    width: auto;
-    height: auto;
-    max-width: 120px;
-    max-height: 120px;
-    clip-path: circle();
+	margin-top: -3.5em;
+	left: 40px;
+	object-fit: cover;
+	width: 98px;
+	height: 98px;
+	clip-path: circle();
 }
 
-#hpb_username, #hpb_level {
+#hpb_username,
+#hpb_level {
 	color: white;
 	font-weight: bold;
 }
@@ -30,7 +30,7 @@
 
 #hpb_level {
 	position: absolute;
-    right: 300px;
+	right: 300px;
 	top: 29px;
 }
 
@@ -38,12 +38,12 @@
 	background-image: url(../../img/background/card2.png);
 	background-size: cover;
 	border-radius: 4px;
-	min-width:380px;
+	min-width: 380px;
 	width: 900px;
 	height: 400px;
 	max-height: 700px;
 	padding: 10px;
-	position: relative;	
+	position: relative;
 	margin-left: auto;
 	margin-right: auto;
 }
