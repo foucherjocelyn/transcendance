@@ -85,6 +85,8 @@ const renderNotifications = async () => {
 
     const notificationCount = listUnreadNotifications.length + listOfPendingFriendInvitations.length;
     renderNotificationCount(notificationCount);
+    if (!notificationsList)
+        return ;
     notificationsList.innerHTML = "";
     listUnreadNotifications.forEach(notification => {
         notificationsList.insertAdjacentHTML("beforeend", `<div id="notification-${notification.id}" class="notification">
