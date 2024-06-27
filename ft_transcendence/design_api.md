@@ -1161,7 +1161,6 @@ authorization Bearer <token>
 {
 	name: string,
 	description: string, // optional
-	start_time: DateTime, // Format: YYYY-MM-DD HH:MM:SS
 }
 ```
 
