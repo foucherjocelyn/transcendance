@@ -6,7 +6,8 @@ function    check_str_in_str(str, str2) {
     return String(str).includes(String(str2));
 }
 
-function    check_user_in_list_player(user) {
+function    check_user_in_list_player(user)
+{
     for (let i = 0; i < match.listUser.length; i++)
     {
         const   player = match.listUser[i];
@@ -16,7 +17,8 @@ function    check_user_in_list_player(user) {
     return true;
 }
 
-async function    get_list_friends() {
+async function    get_list_friends()
+{
     try {
         const listFriends = await fetch(`https://${domain_name}:8000/api/v1/user/friendship`, {
         method: "GET",
@@ -32,7 +34,8 @@ async function    get_list_friends() {
     }
 }
 
-async function    search_friends_to_invite(input) {
+async function    search_friends_to_invite(input)
+{
     const   listFriends = await get_list_friends();
     const   results = [];
     
@@ -49,8 +52,9 @@ async function    search_friends_to_invite(input) {
                     results[0] = user;
                     results[i] = tmp;
                 }
-                else if (user.status !== 'playing game')
+                else if (user.status !== 'playing game') {
                     results.push(user);
+                }
             }
         }
     }
@@ -59,8 +63,9 @@ async function    search_friends_to_invite(input) {
 
 async function    search_friends_to_invite_play(input)
 {
-    if (input === '')
+    if (input === '') {
         return ;
+    }
 
     const   results = await search_friends_to_invite(input);
     display_results_search_friends_to_play(results);
