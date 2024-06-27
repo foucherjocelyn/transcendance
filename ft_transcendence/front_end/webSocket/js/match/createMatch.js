@@ -75,7 +75,7 @@ async function    create_match(user, mode)
     {
         const   player = (i === 0) ?
         new inforPlayer(user.id, user.username, user.avatarPath, user.level, 'player') :
-        new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+        new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
 
         match.listPlayer.push(player);
     }

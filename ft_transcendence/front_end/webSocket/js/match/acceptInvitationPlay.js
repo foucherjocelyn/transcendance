@@ -11,7 +11,7 @@ function    change_match_admin(match)
         {
             match.admin = player;
             match.listPlayer[0] = player;
-            match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+            match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
             return ;
         }
     }
@@ -32,7 +32,7 @@ function    leave_match(user)
             // admin leave
             (player.id === match.admin.id && user.status === 'creating match' && match.listUser.length > 1) ?
             change_match_admin(match) :
-            match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+            match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
             
             // update status user
             user.status = 'online';

@@ -26,7 +26,7 @@ function    add_player_mode_friend(user, match, position)
         send_data('display invitation play layer', 'flex', 'server', user):
         kick_out_of_the_match(user, match, player);
         
-        match.listPlayer[position] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+        match.listPlayer[position] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
     }
 }
 
@@ -40,7 +40,7 @@ function    add_player_mode_ranked(match, position)
         match.listPlayer[position] = new inforPlayer('#42', 'Player ' + (position + 1), "../../img/avatar/avatar2.png", 42, 'player');
     }
     else {
-        match.listPlayer[position] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+        match.listPlayer[position] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
     }
 }
 

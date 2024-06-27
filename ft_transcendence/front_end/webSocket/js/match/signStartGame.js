@@ -29,14 +29,14 @@ function    check_number_player(match)
     const   nbrPlayer = 4 - match.listPlayer.filter(player => player.type === 'none').length;
     if (nbrPlayer < 2)
     {
-        send_data('warning', 'You need at least 2 players to start', '../../img/avatar/informationsSign.png', match.admin);
+        send_data('warning', 'You need at least 2 players to start', '../../img/avatar/avatar1.png', match.admin);
         return false;
     }
 
     const   nbrPerson = match.listPlayer.filter(player => player.type === 'player').length;
     if ((match.mode === 'ranked' || match.mode === 'with friends') && nbrPerson < 2)
     {
-        send_data('warning', 'You need at least 2 players ( not AI ) to start', '../../img/avatar/informationsSign.png', match.admin);
+        send_data('warning', 'You need at least 2 players ( not AI ) to start', '../../img/avatar/avatar1.png', match.admin);
         return false;
     }
     return true;

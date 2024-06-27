@@ -109,7 +109,7 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
     }
 
     for (let i = 0; i < 4; i++) {
-        let player = new inforPlayer("", "", "../../img/avatar/addPlayerButton.png", 42, "none");
+        let player = new inforPlayer("", "", "../../img/button/button_add_player.png", 42, "none");
         if (i === 0) {
             player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, "player");
         } else if (i === 1) {
