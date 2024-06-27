@@ -4,12 +4,14 @@ const cookie = require('cookie');
 
 async function retrieveCodeCreateAccount(req, res) {
     var query = require("url").parse(req.url, true).query;
+    //console.log("voici le nom de domaine: " + req.headers.host);
+    const connect_ip = req.headers.host;
     const config_42 = {
         "grant_type": "authorization_code",
         "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
         "client_secret": process.env.FOURTWO_CLIENT_SECRET,
         "code": query.code,
-        "redirect_uri": "https://127.0.0.1:5500/"
+        "redirect_uri": `https://${connect_ip}/`
     };
     let token42 = await request42Token(config_42);
     let token42_obj = {
@@ -20,7 +22,7 @@ async function retrieveCodeCreateAccount(req, res) {
     const params = new URLSearchParams(req.url.slice(1));
     params.delete("code");
 
-    req.url = "https://127.0.0.1:5500/";
+    req.url = `https://${connect_ip}/`;
     console.log(req.url);
     res.writeHead(301, {
         'Location': req.url,

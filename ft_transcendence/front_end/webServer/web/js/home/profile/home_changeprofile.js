@@ -2,7 +2,7 @@ import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
 import { loadSpinner } from "../../authentication/spinner.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { checkInput2FA } from "../../authentication/auth_otp.js";
-import { updateMyOtp, updateMyAvatar, updateMyAccount } from "./home_change_info.js";
+import { updateMyOtp, updateMyAvatar, updateMyAccount } from "./home_update_info.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
@@ -37,7 +37,7 @@ export function to_change2fa() {
 export function to_changeAvatar() {
 	document.getElementById("h_current_parameters").innerHTML =
 		`<br>
-<input type="file" id="p_avatar" name="avatar" accept="image/*">
+<input type="file" id="p_avatar" name="avatar" accept="image/*" class="text_area">
 <img id="p_avatarpreview" src="../img/avatars/default.png" alt="Avatar preview">
 <hr id="p_div">
 <button class="button-img" type="button" id="p_change">Apply</button>
@@ -54,34 +54,41 @@ export function to_changeAvatar() {
 export function to_changeInfo() {
 	document.getElementById("h_current_parameters").innerHTML =
 		`<br>
-<input type="text" id="p_username" placeholder="${getCookie("username")}"title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}">
+<input type="text" id="p_username" placeholder="${getCookie("username")}"title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}" class="text_area">
 <br>
-<input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here")">
+<input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here")" class="text_area">
 <br>
-<input type="password" id="p_newpassword" placeholder="New password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,30}$" title="Need minimum of one lowercase + uppercase + digit and must be 6 to 30 characters long" maxlength="30" disabled>
+<input type="password" id="p_newpassword" placeholder="New password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,30}$" title="Need minimum of one lowercase + uppercase + digit and must be 6 to 30 characters long" maxlength="30" class="text_area" disabled>
 <br>
-<input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" maxlength="30" disabled>
+<input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" maxlength="30" class="text_area" disabled>
 <br>
-<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letters only" pattern="[a-zA-Z]{3,20}">
+<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letters only" pattern="[a-zA-Z]{3,20}" class="text_area">
 <br>
-<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letters only" pattern="[a-zA-Z]{3,console.log(getCookie("status"));20}">
+<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letters only" pattern="[a-zA-Z]{3,console.log(getCookie("status"));20}" class="text_area">
 <br>
-<input type="text" id="p_email" title="This cannot be changed" placeholder="${getCookie("email")}" readonly>
+<input type="text" id="p_email" title="This cannot be changed" placeholder="${getCookie("email")}"  class="text_area_disabled" readonly>
 <hr id="p_div">
 <button class="button-img" type="button" id="p_change">Apply</button>
 `;
 
+	let old_password = document.getElementById("p_oldpassword");
+	let new_password = document.getElementById("p_newpassword");
+	let new_password_confirm = document.getElementById("p_newpasswordconfirm");
 	if (getCookie("email").endsWith("@student.42.fr")) {
-		console.log("the user logged with 42");
-		document.getElementById("p_oldpassword").setAttribute("disabled", "");
-		document.getElementById("p_oldpassword").setAttribute("title", "42 Account cannot set password");
-		document.getElementById("p_newpassword").setAttribute("title", "42 Account cannot set password");
-		document.getElementById("p_newpasswordconfirm").setAttribute("title", "42 Account cannot set password");
+		old_password.setAttribute("disabled", "");
+		old_password.setAttribute("title", "42 Account cannot set password");
+		old_password.setAttribute("class", "text_area_disabled");
+
+		new_password.setAttribute("title", "42 Account cannot set password");
+		new_password.setAttribute("class", "text_area_disabled");
+		
+		new_password_confirm.setAttribute("title", "42 Account cannot set password");
+		new_password_confirm.setAttribute("class", "text_area_disabled");
 	}
 	else {
-		document.getElementById("p_oldpassword").addEventListener("input", () => { enableInputReq(event, 'p_newpassword'); });
-		document.getElementById("p_newpassword").addEventListener("input", () => { enableInputReq(event, 'p_newpasswordconfirm'); });
-		document.getElementById("p_newpasswordconfirm").addEventListener("input", () => { enableInputReq(event, 'p_newpasswordconfirm'); });
+		old_password.addEventListener("input", () => { enableInputReq(event, 'p_newpassword'); });
+		new_password.addEventListener("input", () => { enableInputReq(event, 'p_newpasswordconfirm'); });
+		new_password_confirm.addEventListener("input", () => { enableInputReq(event, 'p_newpasswordconfirm'); });
 	}
 	document.getElementById("p_change").addEventListener("click", () => { updateMyAccount(); });
 }
@@ -113,7 +120,11 @@ ${noticeInvitePlayer()}
 	document.getElementById("h_changeavatar").addEventListener("click", () => {
 		to_changeAvatar();
 	});
-	document.getElementById("h_change2fa").addEventListener("click", () => { to_change2fa(); });
+	if (getCookie("email").endsWith("@student.42.fr")) {
+		document.getElementById("h_change2fa").setAttribute("class", "button-img_disabled");
+	}
+	else
+		document.getElementById("h_change2fa").addEventListener("click", () => { to_change2fa(); });
 	callback(true);
 }
 

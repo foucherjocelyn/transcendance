@@ -38,8 +38,18 @@
 	position: relative;
 }
 
-#p_username, #p_oldpassword, #p_newpassword, #p_newpasswordconfirm, #p_firstname, #p_lastname, #p_email, #p_avatar {
+.text_area {
 	background-image: url(../../../img/background/bar2.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	margin-top: 1%;
+	top: 20%;
+	left: 35%;
+}
+
+.text_area_disabled {
+	background-image: url(../../../img/background/bar2_disabled.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	position: relative;

@@ -3,17 +3,11 @@ import { notice } from "../authentication/auth_main.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 
 export async function getOtpQR() {
-	let f_username = {
-		username: getCookie("username")
-	};
-
-	let f_token = getCookie("token");
-	console.log(f_token);
 	try {
 		const response = await fetch("https://localhost:8000/api/v1/auth/otp/qr-code", {
 			method: "GET",
 			headers: {
-				"Authorization": `Bearer ${f_token}`
+				"Authorization": `Bearer ${getCookie("token")}`
 			}
 		});
 		if (!response.ok) {
@@ -82,8 +76,6 @@ export async function sendOtp(connect_user) {
 }
 
 export async function getOtpStatusPw(f_log) {
-	//    console.log("-getOtpStatusPw starting");
-	//	console.log(f_log);
 	try {
 		const response = await fetch("https://localhost:8000/api/v1/auth/otp/status", {
 			method: "POST",
@@ -103,21 +95,17 @@ export async function getOtpStatusPw(f_log) {
 	catch (error) {
 		console.error("getOtpStatusPw: ", error);
 	}
-	//	console.log("-");
 	return (response);
 }
 
 export async function getOtpStatusToken() {
-	//   console.log("-getOtpStatusToken starting");
-	let f_token = getCookie("token");
-	//    console.log(f_token);
 	try {
 		const response = await fetch("https://localhost:8000/api/v1/auth/otp/status", {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",
 				"Content-type": "application/json",
-				"Authorization": `Bearer ${f_token}`
+				"Authorization": `Bearer ${getCookie("token")}`
 			}
 		});
 		if (!response.ok) {
@@ -130,6 +118,5 @@ export async function getOtpStatusToken() {
 	catch (error) {
 		console.error("getOtpStatusToken: ", error);
 	}
-	//	console.log("-");
 	return (response);
 }
