@@ -22,11 +22,9 @@ export async function uploadAvatar(formData) {
 	catch (error) {
 		console.error("uploadAvatar: ", error);
 	}
-	//	console.log("-");
 }
 
 export async function getAvatar(elemImageId) {
-	console.log("-getAvatar starting");
 	let f_token = getCookie("token");
 
 	try {
@@ -44,11 +42,10 @@ export async function getAvatar(elemImageId) {
 		const imageUrl = URL.createObjectURL(data);
 		if (document.getElementById(elemImageId) !== null)
 			document.getElementById(elemImageId).src = imageUrl;
-		console.log("getAvatar: image url = " + imageUrl);
+		//console.log("getAvatar: image url = " + imageUrl);
 		return (imageUrl);
 	}
 	catch (error) {
 		console.error("getAvatar: ", error);
 	}
-	//	console.log("-");
 }

@@ -4,7 +4,7 @@ import { noticeInvitePlayer } from "../game/home_game.js";
 import { loadChat } from "../../chat/load-chat.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { deleteTournament, getTournamentInfoById, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
-import { getMyInfo } from "../../backend_operation/get_user_info.js";
+import { getAllMyGames, getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
@@ -12,18 +12,31 @@ import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
 import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 
+async function checkClearMyAlias(my_username)
+{
+	const alias = await getAliasFromUsername(my_username)
+	if (alias)
+		{
+			console.log("checkClearMyAlias");
+			const my_username_obj = { my_username };
+			//let mygames = await getAllMyGames(my_username_obj)
+			//console.log(mygames);
+		}
+	return (alias);
+}
+
 async function checkTournamentAvailability(tour_obj) {
 	console.log("checkTournamentAvailability started");
 	//console.log("tour_obj start here");
 	//console.log(tour_obj);
 	await getMyInfo();
 	let my_username = getCookie("username");
-	let my_alias = await getAliasFromUsername(getCookie("username"));
-	console.log("----------------------- alias =" + my_alias);
 	if (!my_username) {
 		to_connectForm();
 		return (false);
 	}
+	let my_alias = await checkClearMyAlias(my_username);
+	console.log("----------------------- alias =" + my_alias);
 	if (my_alias && tour_obj.player_usernames.includes(my_username)) {
 		console.log("checkTournamentAvailability: can join");
 		return ("can join");
