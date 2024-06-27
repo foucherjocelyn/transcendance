@@ -1,17 +1,21 @@
 const { request_game_DB } = require("../dataToDB/requestGame");
-const { update_match } = require("../match/updateMatch");
 const { send_data } = require("../webSocket/dataToClient");
 const { define_user_by_ID } = require("../webSocket/webSocket");
 
 function    create_result(match)
 {
     // Arranged from smallest to largest
-    match.result = match.listPlayer.filter(player => player.type !== 'none');
+    const   listPlayer = match.listPlayer.filter(player => player.type !== 'none');
+    listPlayer.forEach(player => {
+        match.result.push(player);
+    });
     match.result.sort((a, b) => a.score - b.score);
     match.result.reverse();
 
     const   winner = match.result.filter(player => player.type === 'player')[0];
-    match.winner = define_user_by_ID(winner.id);
+    if (match.listUser.length > 0) {
+        match.winner = define_user_by_ID(winner.id);
+    }
 
     request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
     send_data('game over', match.result, 'server', match.listUser);

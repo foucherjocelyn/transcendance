@@ -44,7 +44,7 @@ function    update_match(user)
         const   indexMatch = webSocket.listMatch.findIndex(check => check.id === match.id);
         webSocket.listMatch.splice(indexMatch, 1);
     }
-    else if (user.status !== 'playing game' && match.winner === undefined) {
+    else if (user.status !== 'playing game') {
         send_data('update match', match, user, match.listUser);
     }
 

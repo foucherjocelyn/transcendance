@@ -45,7 +45,7 @@ class MatchMaking {
         return currentRound[0]; // Return the champion
     }
 
-    checkGameOver(match, player1, player2) {
+    checkGameOver(match, player1, player2, nbrPlayer) {
         return new Promise((resolve) => {
             const intervalId = setInterval(() => {
                 if (match.pongGame.gameOver && match.winner !== undefined) {
@@ -64,6 +64,20 @@ class MatchMaking {
             player2 = null;
         }
 
+        // player disconnect
+        if (player2 !== null)
+        {
+            const   user = define_user_by_ID(player2.id);
+            if (user === undefined) {
+                player2 = null;
+            }
+        }
+
+        if (nbrPlayer === 2 && player2 === null) {
+            send_data('display exit match', 'flex', 'server', player1);
+            return player1;
+        }
+
         // create match + run
         await create_match_tournament(player1, player2, nbrPlayer);
         const match = define_match(player1);
@@ -71,7 +85,7 @@ class MatchMaking {
         setup_game(match);
 
         // get winner
-        const winner = await this.checkGameOver(match, player1, player2);
+        const winner = await this.checkGameOver(match, player1, player2, nbrPlayer);
 
         // stop match AI
         const list_match_in_tournament = webSocket.listMatch.filter((match) => match.tournamentName === tournamentName);
@@ -114,6 +128,7 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
             player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, "player");
         } else if (i === 1) {
             if (player2 === null) {
+                match.winner = player1;
                 player = new inforPlayer("#42", "AI", "../../img/avatar/AI.png", 42, "AI");
             } else {
                 player = new inforPlayer(player2.id, player2.alias, player2.avatarPath, player2.level, "player");
