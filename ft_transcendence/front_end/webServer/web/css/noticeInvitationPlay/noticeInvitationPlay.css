@@ -9,8 +9,8 @@
     width: 500px;
     height: 500px;
 
-    background-color: #2d748b;
-    border: 1px solid greenyellow;
+    background-color: #101720;
+    border: 1px solid #3395ff;
 
     top: 50%;
     left: 50%;
@@ -52,7 +52,7 @@
     display: flex;
     flex-direction: column;
 
-    color: white;
+    color: #3395ff;
 }
 
 /* --------------------  -------------------- */
@@ -73,7 +73,12 @@
     height: 50px;
 
     border-radius: 20px;
-    border-color: transparent;
+    border-color: #3395ff;
+    background-color: #101720;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #rejectInvitationPlayButton:hover,
@@ -81,11 +86,11 @@
     transform: scale(1.2);
 }
 
-#rejectInvitationPlayButton {
+#rejectInvitationPlayButton:hover {
     background-color: red;
 }
 
-#acceptInvitationPlayButton {
+#acceptInvitationPlayButton:hover {
     background-color: greenyellow;
 }
 
