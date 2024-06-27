@@ -77,9 +77,8 @@ const closeNotificationWindow = () => {
 };
 
 const renderNotifications = async () => {
-    const notificationsList = document.getElementById("c-notifications-list");
     const listNotifications = await getListNotifications();
-    const notificationsListElem = document.getElementById("c-notifications-list");
+    const notificationsList = document.getElementById("c-notifications-list");
     const listUnreadNotifications = listNotifications.filter(notification => !notification.isRead);
     const listOfFriendInvitations = await getListFriendInvitationsReceived();
     const listOfPendingFriendInvitations = listOfFriendInvitations.filter(invitation => invitation.status === "pending");
@@ -88,7 +87,7 @@ const renderNotifications = async () => {
     renderNotificationCount(notificationCount);
     notificationsList.innerHTML = "";
     listUnreadNotifications.forEach(notification => {
-        notificationsListElem.insertAdjacentHTML("beforeend", `<div id="notification-${notification.id}" class="notification">
+        notificationsList.insertAdjacentHTML("beforeend", `<div id="notification-${notification.id}" class="notification">
                     <p class="notification-content">${notification.content}</p>
                 <div>
                     <button name="close" class="close">&times</button>

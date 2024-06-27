@@ -87,8 +87,7 @@ function	drawProfilePage(user_info)
 		&& document.getElementById("loadspinner") !== null
 		&& document.getElementById("h_homepage") !== null)
 	{
-		if (document.getElementById("hpb_player_img") != null)
-			user_info.avatarPath;//need to check if existing
+		document.getElementById("hpb_player_img").setAttribute("src", "../../../img/" + user_info.avatarPath);
 		document.getElementById("loadspinner").classList.add("hide");
 		document.getElementById("h_homepage").classList.remove("hide");
 		loadChat();

@@ -112,35 +112,10 @@ function loadTournamentOwnerPanel(tour_obj) {
 	});
 }
 
-/*
-async function detailsTournamentPlayers(tour_obj, html_id_element) {
-	let player_nb = tour_obj.player_usernames.length;
-	document.getElementById(html_id_element).innerHTML = `
-	<div id="tournament_player_details">
-	<button id="tpd_close"></button>
-	</div>
-	`;
-	for (let i = 0; i < player_nb; i++) {
-		let alias = await getAliasFromUsername(tour_obj.player_usernames[i]);
-		document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
-			<p>${alias}</p>
-			<br>
-			`);
-	}
-	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
-}
-*/
-
 export async function refresh_tour_waiting_room(tour_obj) {
 	if (getCookie("alias") && document.querySelector("#tournament_waiting_room")) {
 		tour_obj = await getTournamentInfoById(tour_obj.id);
 		renderTournamentTree(tour_obj);
-		/*
-		console.log("-------------");
-		console.log(tour_obj);
-		console.log(tour_obj.player_usernames.length);
-		console.log("-------------");
-		//*/
 		document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 		document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
 		document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
@@ -177,7 +152,6 @@ async function drawWaitingRoom(callback, tour_obj) {
 		</div>
 `;
 	await refresh_tour_waiting_room(tour_obj);
-	//document.getElementById(`tour_details_more`).addEventListener("click", () => { detailsTournamentPlayers(tour_obj, "twr_player_details"); });
 	document.getElementById("twr_refresh_tour").addEventListener("click", async () => {
 		await refresh_tour_waiting_room(tour_obj);
 	});
