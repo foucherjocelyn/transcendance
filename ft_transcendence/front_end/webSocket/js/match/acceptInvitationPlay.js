@@ -37,6 +37,11 @@ function    leave_match(user)
             // update status user
             user.status = 'online';
             update_match(user);
+
+            // delete alias
+            if (match.mode === 'tournament') {
+                send_data("delete alias", "", "server", user);
+            }
             return ;
         }
     }

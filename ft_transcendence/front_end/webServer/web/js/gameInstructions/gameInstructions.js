@@ -79,8 +79,10 @@ function    setup_game_instructions()
         if (player.type !== 'none')
         {
             const       paddle = pongGame.listPaddle[i];
-            const   playerIntroduction = create_player_introduction(paddle);
-            gameInstructionsPanel.appendChild(playerIntroduction);
+            if (paddle !== null) {
+                const   playerIntroduction = create_player_introduction(paddle);
+                gameInstructionsPanel.appendChild(playerIntroduction);
+            }
         }
     }
 }

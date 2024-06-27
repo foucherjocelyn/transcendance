@@ -1,4 +1,5 @@
 const { request_game_DB } = require("../dataToDB/requestGame");
+const { update_match } = require("../match/updateMatch");
 const { send_data } = require("../webSocket/dataToClient");
 const { define_user_by_ID } = require("../webSocket/webSocket");
 
@@ -34,6 +35,7 @@ function    create_result(match)
                 if (player.id === winner.id && match.finalMatch === false) {
                     Object.assign(match.listPlayer[i], match.listPlayer[3]);
                 }
+                update_match(user);
             }
         }
     }
