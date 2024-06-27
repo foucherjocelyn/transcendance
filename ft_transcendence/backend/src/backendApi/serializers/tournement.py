@@ -21,7 +21,6 @@ class TournamentSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "owner_username",
-            "start_time",
             "max_players",
             "status",
             "player_usernames",
@@ -53,20 +52,11 @@ class TournamentSerializer(serializers.ModelSerializer):
         if not isinstance(owner, AnonymousUser):
             tournement.owner = owner
             tournement.players.add(owner)
-        # Set the status by compared to the start time
-        if tournement.start_time > timezone.now():
-            tournement.status = "registering"
-        else:
-            tournement.status = "progressing"
         tournement.save()
         return tournement
 
     def update(self, instance, validated_data):
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        if instance.start_time > timezone.now():
-            instance.status = "registering"
-        else:
-            instance.status = "progressing"
         instance.save()
         return instance

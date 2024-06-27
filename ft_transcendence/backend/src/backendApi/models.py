@@ -111,7 +111,6 @@ class ChannelInvitedUser(models.Model):
 class Tournament(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True, default=None)
-    start_time = models.DateTimeField(default=None)
     max_players = models.PositiveIntegerField(default=32)
     status_choices = [
         ("registering", "Registering"),
