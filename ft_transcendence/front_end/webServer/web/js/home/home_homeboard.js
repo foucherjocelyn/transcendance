@@ -26,10 +26,10 @@ function	 newLabel()//
 export async function	renderMatchHistory(username) {
 	const username_obj = { username };
 	const myGames = await getAllMyGames(username_obj);
-	console.log(myGames);
+	//console.log(myGames);
 	const myGamesSorted = myGames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 	const myScores = await getAllMyScores(username_obj);
-	console.log(myScores);
+	//console.log(myScores);
 	const matchTableBody = myGamesSorted.map(game => `
 		<tr class="${game.winner_username === username_obj.username ? 'win' : 'loss'}">
 			<td>${game.mode}</td>

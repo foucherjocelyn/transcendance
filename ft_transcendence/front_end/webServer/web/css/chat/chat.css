@@ -110,10 +110,11 @@
     max-height: 60%;
 }
 
-.user-avatar img {
+.user-avatar {
+    object-fit: cover;
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+    clip-path: circle();
 }
 
 .c-user {

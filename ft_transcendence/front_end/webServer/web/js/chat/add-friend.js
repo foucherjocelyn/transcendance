@@ -31,14 +31,14 @@ export const searchFindNewFriendWindow = async () => {
         matchlist.forEach((user) => {
             if (listFriendInvitationPending.some(invitation => invitation.receiver_username === user.username || invitation.sender_username === user.username)) {
                 const userHTML = `<div id="c-list-user-${user.username}" class="c-user">
-                    <div class="user-avatar"><img src="../img/avatars/default.png" alt="profile-picture"></div>
+                    <img src="../../img/avatars/default.png" alt="profile-picture" class="user-avatar">
                     <div class="user-name">${user.username}</div>
                     <div>pending</div>
                     </div>`;
                 userListDiv.innerHTML += userHTML;
             } else {
                 const userHTML = `<div id="c-list-user-${user.username}" class="c-user">
-                    <div class="user-avatar"><img src="../img/avatars/default.png" alt="profile-picture"></div>
+                    <img src="../img/avatars/default.png" alt="profile-picture" class="user-avatar">
                     <div class="user-name">${user.username}</div>
                     <button id="c-send-friend-invite-${user.username}" class="c-send-friend-invite">+</button>
                     </div>`;
