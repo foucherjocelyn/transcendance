@@ -17,8 +17,10 @@ const renderFriendList = (list) => {
     //friendsList.innerHTML = "";
     const listHTML = list.map((friend) => {
         return ("beforeend", `<div id="c-list-user-${friend.username}" class="c-user c-friend">
+            <div>
             <img id="friend-avatar-${friend.username}" src="../../img/${friend.avatarPath}" alt="profile-picture" class="user-avatar">
             <div id="c-list-friend-status-${friend.username}" class="c-list-friend-status ${friend.status}"></div>
+            </div>
         <div class="user-name">${friend.username}</div>
         <button id="c-invite-match${friend.username}" class="c-invite-match-button"></button>
         <button id="c-inspectprofile${friend.username}" class="c-inspectprofile-button"></button>
