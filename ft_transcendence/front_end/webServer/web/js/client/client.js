@@ -13,6 +13,7 @@ import { change_color_border } from "../game/drawBorders.js";
 import { removeAlias } from "../backend_operation/alias.js";
 import { refresh_tour_waiting_room, to_tournamentWaitingRoom } from "../home/tournament/home_tournament_room.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
+import { domain_name } from "../backend_operation/authentication.js";
 
 class userNotifications {
     constructor() {
@@ -150,7 +151,7 @@ function get_data_from_server(socket) {
 function connection() {
     // Connect to WebSocket with secure connection
     const protocol = (window.location.protocol === 'https:') ? 'wss' : 'ws';
-    const socket = new WebSocket(`${protocol}://localhost:5555`);
+    const socket = new WebSocket(`${protocol}://${domain_name}:5555`);
 
     socket.onopen = function () {
         console.log('Connected to WebSocket server');

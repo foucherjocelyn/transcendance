@@ -123,7 +123,7 @@ export async function signOut() {
 		return;
 	}
 	try {
-		const response = await fetch(`https://localhost:8000/api/v1/auth/logout`, {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/logout`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${getCookie("token")}`
