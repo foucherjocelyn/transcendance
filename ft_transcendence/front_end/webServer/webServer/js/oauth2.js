@@ -4,7 +4,7 @@ const cookie = require('cookie');
 
 async function retrieveCodeCreateAccount(req, res) {
     var query = require("url").parse(req.url, true).query;
-    //console.log("voici le nom de domaine: " + req.headers.host);
+    console.log("voici le nom de domaine: " + req.headers.host);
     const connect_ip = req.headers.host;
     const config_42 = {
         "grant_type": "authorization_code",

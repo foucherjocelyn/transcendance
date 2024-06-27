@@ -14,7 +14,7 @@ export async function	inspectProfile(username)
 	let user_info = await getUserById(user_id_obj.user_id);
 	let	inspect_content = `<div id="inspectprofile">
 	<button id="inspectprofile_close""></button>
-	<img id="ip_avatar" src="../../${user_info.avatarPath}">
+	<img id="ip_avatar" src="../../../${user_info.avatarPath}">
 	<p>Name : ${user_info.username}</p>
 	<p>Nb of games : ${user_info.nb_games}</p>
 	<p>Average score : ${user_info.avg_score}</p>
