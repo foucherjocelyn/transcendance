@@ -1,9 +1,10 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import { domain_name } from "./authentication.js";
 
 export const postNotification = async (notification) => {
     let f_token = getCookie("token");
     console.log(notification);
-    await fetch("https://localhost:8000/api/v1/notification/create", {
+    await fetch(`https://${domain_name}:8000/api/v1/notification/create`, {
         method: "POST",
         body: JSON.stringify(notification),
         headers: {
@@ -30,7 +31,7 @@ export const postNotification = async (notification) => {
 
 export const getListNotifications = async () => {
     let f_token = getCookie("token");
-    return await fetch(`https://localhost:8000/api/v1/notification/list`, {
+    return await fetch(`https://${domain_name}:8000/api/v1/notification/list`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -56,7 +57,7 @@ export const getListNotifications = async () => {
 
 export const markNotificationAsRead = async (notificationId) => {
     let f_token = getCookie("token");
-    await fetch(`https://localhost:8000/api/v1/notification/${notificationId}/read`, {
+    await fetch(`https://${domain_name}:8000/api/v1/notification/${notificationId}/read`, {
         method: "POST",
         headers: {
             "Accept": "application/json",

@@ -1,8 +1,9 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import { domain_name } from "./authentication.js";
 
 export const postNewMessage = async (message) => {
     let f_token = getCookie("token");
-    await fetch("https://localhost:8000/api/v1/user/friend/message", {
+    await fetch(`https://${domain_name}:8000/api/v1/user/friend/message`, {
         method: "POST",
         body: JSON.stringify(message),
         headers: {
@@ -28,7 +29,7 @@ export const postNewMessage = async (message) => {
 
 export const postMuteUser = async (username) => {
     let f_token = getCookie("token");
-    await fetch("https://localhost:8000/api/v1/user/friendship/mute", {
+    await fetch(`https://${domain_name}:8000/api/v1/user/friendship/mute`, {
         method: "POST",
         body: JSON.stringify({username: username}),
         headers: {
@@ -54,7 +55,7 @@ export const postMuteUser = async (username) => {
 
 export const postUnmuteUser = async (username) => {
     let f_token = getCookie("token");
-    await fetch("https://localhost:8000/api/v1/user/friendship/unmute", {
+    await fetch(`https://${domain_name}:8000/api/v1/user/friendship/unmute`, {
         method: "POST",
         body: JSON.stringify({username: username}),
         headers: {

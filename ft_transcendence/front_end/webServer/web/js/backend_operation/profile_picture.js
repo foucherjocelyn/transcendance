@@ -1,11 +1,12 @@
 import { getCookie } from "../authentication/auth_cookie.js"
+import { domain_name } from "./authentication.js";
 
 export async function uploadAvatar(formData) {
 	//	console.log("-uploadAvatar starting");
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/profile/me/avatar", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/profile/me/avatar`, {
 			method: "POST",
 			body: formData,
 			headers: {
@@ -29,7 +30,7 @@ export async function getAvatar(elemImageId) {
 	let f_token = getCookie("token");
 
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/profile/me/avatar", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/profile/me/avatar`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`

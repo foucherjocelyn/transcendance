@@ -1,10 +1,10 @@
-import { requestToken } from "./authentication.js";
+import { domain_name, requestToken } from "./authentication.js";
 import { notice } from "../authentication/auth_main.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 
 export async function getOtpQR() {
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/auth/otp/qr-code", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/otp/qr-code`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${getCookie("token")}`
@@ -28,7 +28,7 @@ export async function toggleOtpStatus() {
 	};
 
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/auth/otp/switch", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/otp/switch`, {
 			method: "POST",
 			body: JSON.stringify(f_username),
 			headers: {
@@ -54,7 +54,7 @@ export async function sendOtp(connect_user) {
 		if (getCookie("token") === null || getCookie("token") === "")
 			return;
 		let f_token = getCookie("token");
-		const r = await fetch("https://localhost:8000/api/v1/auth/otp", {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/auth/otp`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -77,7 +77,7 @@ export async function sendOtp(connect_user) {
 
 export async function getOtpStatusPw(f_log) {
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/auth/otp/status", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/otp/status`, {
 			method: "POST",
 			body: JSON.stringify(f_log),
 			headers: {
@@ -100,7 +100,7 @@ export async function getOtpStatusPw(f_log) {
 
 export async function getOtpStatusToken() {
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/auth/otp/status", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/otp/status`, {
 			method: "GET",
 			headers: {
 				"Accept": "application/json",

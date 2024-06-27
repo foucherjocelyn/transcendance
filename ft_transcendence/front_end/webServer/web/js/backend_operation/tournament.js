@@ -1,4 +1,5 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import { domain_name } from "./authentication.js";
 
 export async function getTournamentsList() {
 	let f_token = getCookie("token");
@@ -8,7 +9,7 @@ export async function getTournamentsList() {
 	}
 	try {
 		//		console.log("-Listing all tournaments");
-		const r = await fetch("https://localhost:8000/api/v1/tournament/list", {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/list`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -36,7 +37,7 @@ export async function createTournament(tour_info) {
 		return;
 	}
 	try {
-		const r = await fetch("https://localhost:8000/api/v1/tournament/create", {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/create`, {
 			method: "POST",
 			body: JSON.stringify(tour_info),
 			headers: {
@@ -70,7 +71,7 @@ export async function joinTournament(tour_id) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/join`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}/join`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -99,7 +100,7 @@ export async function endTournament(tour_id) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`,
@@ -129,7 +130,7 @@ export async function startTournament(tour_id) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/start`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}/start`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`,
@@ -160,7 +161,7 @@ export async function leaveTournament(tour_id) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/leave`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}/leave`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${f_token}`,
@@ -189,7 +190,7 @@ export async function deleteTournament(tour_id) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/delete`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}/delete`, {
 			method: "DELETE",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -220,7 +221,7 @@ export async function setChampionTournament(tour_username) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}/champion/update`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}/champion/update`, {
 			method: "POST",
 			body: JSON.stringify(tour_username),
 			headers: {
@@ -254,7 +255,7 @@ export async function getTournamentInfoById(tour_id) {
 		return;
 	}
 	try {
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tour_id}`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`
@@ -285,7 +286,7 @@ export async function updateTournamentsById(tour_id, tour_info) {
 		return;
 	}
 	try {
-		const r = await fetch("https://localhost:8000/api/v1/tournament/${tour_id}", {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tour_id}`, {
 			method: "PUT",
 			body: JSON.stringify(tour_info),
 			headers: {
@@ -318,7 +319,7 @@ export async function getTournamentsGames(tournamentId) {
 	}
 	try {
 		//		console.log("-Listing all tournaments games");
-		const r = await fetch(`https://localhost:8000/api/v1/tournament/${tournamentId}/game/list`, {
+		const r = await fetch(`https://${domain_name}:8000/api/v1/tournament/${tournamentId}/game/list`, {
 			method: "GET",
 			headers: {
 				"Authorization": `Bearer ${f_token}`

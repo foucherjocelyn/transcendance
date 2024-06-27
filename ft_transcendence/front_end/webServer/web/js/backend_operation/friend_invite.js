@@ -1,11 +1,12 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import { domain_name } from "./authentication.js";
 
 export async function getListFriendInvitationSent() {
     //console.log("--getListFriendInvitationSent starting");
     let f_token = getCookie("token");
     //    console.log(f_token);
 
-    const response = await fetch("https://localhost:8000/api/v1/user/friendship/sent", {
+    const response = await fetch(`https://${domain_name}:8000/api/v1/user/friendship/sent`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -29,7 +30,7 @@ export async function getListFriendInvitationSent() {
 
 export const getListFriendInvitationsReceived = async () => {
     let f_token = getCookie("token");
-    return await fetch("https://localhost:8000/api/v1/user/friendship/received", {
+    return await fetch(`https://${domain_name}:8000/api/v1/user/friendship/received`, {
         method: "GET",
         headers: {
             "Accept": "application/json",
@@ -54,7 +55,7 @@ export const getListFriendInvitationsReceived = async () => {
 
 export const updateFriendInviteStatus = async (id, newStatus) => {
     let f_token = getCookie("token");
-    await fetch(`https://localhost:8000/api/v1/user/friendship/${id}/status`, {
+    await fetch(`https://${domain_name}:8000/api/v1/user/friendship/${id}/status`, {
         method: "PUT",
         body: JSON.stringify({ "status": newStatus }),
         headers: {
@@ -81,7 +82,7 @@ export const updateFriendInviteStatus = async (id, newStatus) => {
 export const sendFriendInvite = async (username) => {
     console.log(username);
     let f_token = getCookie("token");
-    await fetch("https://localhost:8000/api/v1/user/friendship/invite", {
+    await fetch(`https://${domain_name}:8000/api/v1/user/friendship/invite`, {
         method: "POST",
         body: JSON.stringify({username}),
         headers: {

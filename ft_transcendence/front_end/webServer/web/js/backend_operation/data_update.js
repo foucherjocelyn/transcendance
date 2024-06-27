@@ -1,13 +1,13 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 import { client } from "../client/client.js";
-import { openSocketClient } from "./authentication.js";
+import { domain_name, openSocketClient } from "./authentication.js";
 import { getMyInfo, getUserById } from "./get_user_info.js";
 
 export async function dataUpdate(newInfo) {
 	//	console.log("-dataUpdate starting");
 	let f_token = getCookie("token");
 	try {
-		const response = await fetch("https://localhost:8000/api/v1/profile/me", {
+		const response = await fetch(`https://${domain_name}:8000/api/v1/profile/me`, {
 			method: "PUT",
 			body: JSON.stringify(newInfo),
 			headers: {
