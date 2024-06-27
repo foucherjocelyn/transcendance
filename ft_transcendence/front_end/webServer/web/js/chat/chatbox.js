@@ -4,6 +4,7 @@ import { postMuteUser, postNewMessage, postUnmuteUser } from "../backend_operati
 import { getListMutedUsers } from "../backend_operation/get_user_info.js";
 import { postNotification } from "../backend_operation/notification.js";
 import { domain_name } from "../backend_operation/authentication.js";
+import { notice } from "../authentication/auth_main.js";
 
 const renderMessages = async (friendUsername) => {
     let f_token = getCookie("token");
@@ -167,11 +168,18 @@ export const renderChatInput = async (friendUsername) => {
     document.getElementById(`c-mute-button-${friendUsername}`)?.remove();
     document.getElementById(`c-unmute-button-${friendUsername}`)?.remove();
     if (!amIMuting && !amIMuted) {
-        document.getElementById("c-chat-input").innerHTML = `<input name="message" type="text" placeholder="Type your message...">
+        document.getElementById("c-chat-input").innerHTML = `<input id="c-sending-message" name="message" type="text" placeholder="Type your message..." maxlength="512">
         <button>Send</button>`;
         const sendMessageButton = document.querySelector("#c-chat-input button");
         const chatInputContent = document.querySelector("#c-chat-input input");
-        sendMessageButton.addEventListener("click", () => { sendMessage(friendUsername) });
+        sendMessageButton.addEventListener("click", () => {
+            if (document.getElementById("c-sending-message").value.length > 512)
+            {
+                notice("Sent text cannot exceed 512 characters", 2, "#fc2403");
+                return ;
+            }
+            sendMessage(friendUsername);
+        });
         chatInputContent.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
                 sendMessage(friendUsername);
