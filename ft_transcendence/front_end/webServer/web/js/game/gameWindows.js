@@ -59,8 +59,9 @@ function    animation(renderer, scene, camera)
 
 function    setup_camera_position(camera)
 {
-    if (match.mode === 'offline')
+    if (match.mode === 'offline') {
         camera.position.set(0, 35, 0);
+    }
     else
     {
         const   wTable = gameSettings.size.table.width + 3;

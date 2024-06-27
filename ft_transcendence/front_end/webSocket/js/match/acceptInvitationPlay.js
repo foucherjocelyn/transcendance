@@ -19,7 +19,6 @@ function    change_match_admin(match)
 
 function    leave_match(user)
 {
-    user.status = 'online';
     const   match = define_match(user);
     if (match === undefined) {
         return ;
@@ -36,6 +35,7 @@ function    leave_match(user)
             match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
             
             // update status user
+            user.status = 'online';
             update_match(user);
             return ;
         }
