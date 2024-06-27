@@ -26,7 +26,7 @@ const renderFriendList = (list) => {
         <button id="c-inspectprofile${friend.username}" class="c-inspectprofile-button"></button>
         <button id="c-remove-friend${friend.username}" class="c-remove-friend-button"></button>
     </div>`);
-    });
+    }).join('');
     friendsList.innerHTML = listHTML;
 
     document.querySelectorAll(".c-friend").forEach(friendDiv => {
