@@ -22,12 +22,14 @@ function    create_result(match)
         {
             const   player = match.listPlayer[i];
             const   user = define_user_by_ID(player.id);
-            
-            let status_exit_button = (user.id !== winner.id) ? 'flex' : 'none';
-            send_data('display exit match', status_exit_button, 'server', user);
-
-            if (player.id === winner.id) {
-                Object.assign(match.listPlayer[i], match.listPlayer[3]);
+            if (user !== undefined)
+            {
+                let status_exit_button = (match.finalMatch || user.id !== winner.id) ? 'flex' : 'none';
+                send_data('display exit match', status_exit_button, 'server', user);
+    
+                if (player.id === winner.id && match.finalMatch === false) {
+                    Object.assign(match.listPlayer[i], match.listPlayer[3]);
+                }
             }
         }
     }

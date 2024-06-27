@@ -24,19 +24,15 @@ class MatchMaking {
         // Shuffle players before the first round
         if (roundNumber === 1) {
             this.shufflePlayers();
-            // console.log("Players have been shuffled for the first round.");
         }
 
         let currentRound = this.players;
         while (currentRound.length > 1) {
-            // console.log(`\nRound ${roundNumber}:`);
-            // console.log(`Current round players: ${currentRound.join(", ")}`);
-
             const matches = [];
             for (let i = 0; i < currentRound.length; i += 2) {
                 const player1 = currentRound[i];
                 const player2 = i + 1 < currentRound.length ? currentRound[i + 1] : null;
-                matches.push(this.simulateMatch(player1, player2, tournamentName));
+                matches.push(this.simulateMatch(player1, player2, tournamentName, currentRound.length));
             }
 
             // Wait for all matches in the current round to complete
@@ -61,7 +57,7 @@ class MatchMaking {
         });
     }
 
-    async simulateMatch(player1, player2, tournamentName) {
+    async simulateMatch(player1, player2, tournamentName, nbrPlayer) {
         if (player1 === null || player2 === null) {
             let player = player1 !== null ? player1 : player2;
             player1 = player;
@@ -69,7 +65,7 @@ class MatchMaking {
         }
 
         // create match + run
-        await create_match_tournament(player1, player2);
+        await create_match_tournament(player1, player2, nbrPlayer);
         const match = define_match(player1);
         match.tournamentName = tournamentName;
         setup_game(match);
@@ -95,11 +91,14 @@ class MatchMaking {
     }
 }
 
-async function create_match_tournament(player1, player2) {
+async function create_match_tournament(player1, player2, nbrPlayer) {
     const match = new formMatch();
     match.id = await create_match_ID();
     match.id += player1.id;
     match.mode = "tournament";
+
+    // define final match
+    match.finalMatch = (nbrPlayer === 2) ? true : false;
 
     // get alias
     player1 = await create_request("GET", `/api/v1/users/${player1.id}`, "");
@@ -218,7 +217,6 @@ async function start_tournament(tournamentID, sender) {
     console.log(`The champion is: ${champion.username}`);
 
     // display button exit match + send sign delete alias
-    send_data("display exit match", "flex", "server", champion);
     for (let i = 0; i < listPlayer.length; i++) {
         let user = listPlayer[i];
         send_data("delete alias", "", "server", user);
