@@ -6,12 +6,17 @@ const { define_user_by_ID } = require("../webSocket/webSocket");
 function    create_result(match)
 {
     // Arranged from smallest to largest
-    match.result = match.listPlayer.filter(player => player.type !== 'none');
+    const   listPlayer = match.listPlayer.filter(player => player.type !== 'none');
+    listPlayer.forEach(player => {
+        match.result.push(player);
+    });
     match.result.sort((a, b) => a.score - b.score);
     match.result.reverse();
 
     const   winner = match.result.filter(player => player.type === 'player')[0];
-    match.winner = define_user_by_ID(winner.id);
+    if (match.listUser.length > 0) {
+        match.winner = define_user_by_ID(winner.id);
+    }
 
     request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
     send_data('game over', match.result, 'server', match.listUser);
@@ -22,12 +27,15 @@ function    create_result(match)
         {
             const   player = match.listPlayer[i];
             const   user = define_user_by_ID(player.id);
-            
-            let status_exit_button = (user.id !== winner.id) ? 'flex' : 'none';
-            send_data('display exit match', status_exit_button, 'server', user);
-
-            if (player.id === winner.id) {
-                Object.assign(match.listPlayer[i], match.listPlayer[3]);
+            if (user !== undefined)
+            {
+                let status_exit_button = (match.finalMatch || user.id !== winner.id) ? 'flex' : 'none';
+                send_data('display exit match', status_exit_button, 'server', user);
+    
+                if (player.id === winner.id && match.finalMatch === false) {
+                    Object.assign(match.listPlayer[i], match.listPlayer[3]);
+                }
+                update_match(user);
             }
         }
     }

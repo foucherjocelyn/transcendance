@@ -72,7 +72,7 @@
     border-radius: 50%;
     border: 2px solid white;
 
-    background-image: url("../../img/avatar/addPlayerButton.png");
+    background-image: url("../../img/button/button_add_player.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -118,15 +118,16 @@
     width: 150px;
     height: 50px;
 
-    background-color: greenyellow;
+    background-color: black;
     border: 1px solid white;
     border-radius: 20px;
 }
 
 #buttonsGameOver > div > button:hover {
-    background-color: white;
+    background-color: greenyellow;
 }
 
 #buttonsGameOver > div > button > span {
     font-size: 20px;
+    color: greenyellow;
 }

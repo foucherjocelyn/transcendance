@@ -30,7 +30,8 @@ export function    setup_content_add_player_button()
     const   spanID = document.querySelectorAll('.idPlayer');
     const   spanName = document.querySelectorAll('.namePlayer');
 
-    for (let i = 0; i < match.listPlayer.length; i++)
+    let nbrButton = (match.mode === 'tournament') ? 2 : 4;
+    for (let i = 0; i < nbrButton; i++)
     {
         const   player = match.listPlayer[i];
         buttons[i].style.backgroundImage = `url("${player.avatar}")`;
@@ -45,9 +46,10 @@ export function    display_add_player_buttons()
         button.remove();
     })
 
-    match.listPlayer.forEach(button => {
+    let nbrButton = (match.mode === 'tournament') ? 2 : 4;
+    for (let i = 0; i < nbrButton; i++) {
         create_add_player_button();
-    })
+    }
 
     setup_content_add_player_button();
 }

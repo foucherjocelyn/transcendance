@@ -62,7 +62,7 @@ export function update_match_informations(data)
     (document.getElementById('createMatchLayer') === null) ?
     display_create_match_layer() : setup_content_add_player_button();
 
-    if ((match.mode === 'ranked' || match.mode === 'tournament') && (match.listUser.length > 1))
+    if ((match.mode === 'tournament') || (match.mode === 'ranked' && match.listUser.length > 1))
     {
         document.getElementById("cancelCreateMatchButton").style.display = 'none';
         document.getElementById("startCreateMatchButton").style.display = 'none';

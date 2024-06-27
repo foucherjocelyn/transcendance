@@ -32,7 +32,7 @@ function    display_results_search_friends_to_play_on_html(user)
 
     const   avatarInvitationPlay = document.createElement('div');
     avatarInvitationPlay.className = 'avatarInvitationPlay';
-    avatarInvitationPlay.style.backgroundImage = `url("${user.avatarPath}")`;
+    avatarInvitationPlay.style.backgroundImage = `url("img/${user.avatarPath}")`;
 
     const   idInvitationPlay = document.createElement('span');
     idInvitationPlay.className = 'idInvitationPlay';

@@ -11,7 +11,7 @@ function    change_match_admin(match)
         {
             match.admin = player;
             match.listPlayer[0] = player;
-            match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+            match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
             return ;
         }
     }
@@ -19,7 +19,6 @@ function    change_match_admin(match)
 
 function    leave_match(user)
 {
-    user.status = 'online';
     const   match = define_match(user);
     if (match === undefined) {
         return ;
@@ -33,10 +32,16 @@ function    leave_match(user)
             // admin leave
             (player.id === match.admin.id && user.status === 'creating match' && match.listUser.length > 1) ?
             change_match_admin(match) :
-            match.listPlayer[i] = new inforPlayer('', '', "../../img/avatar/addPlayerButton.png", 42, 'none');
+            match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
             
             // update status user
+            user.status = 'online';
             update_match(user);
+
+            // delete alias
+            if (match.mode === 'tournament') {
+                send_data("delete alias", "", "server", user);
+            }
             return ;
         }
     }

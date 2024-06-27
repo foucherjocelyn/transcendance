@@ -15,7 +15,7 @@
     justify-content: center;
     align-items: center;
 
-    background-color: #212121;
+    background-color: #101720;
     border-radius: 20px;
 }
 
@@ -99,7 +99,7 @@
     width: 4.2em;
     height: 4.2em;
 
-    background-color: #212121;
+    background-color: #101720;
     border: 0.08em solid #fff;
     border-radius: 0.3em;
     font-size: 12px;
@@ -116,7 +116,7 @@
     width: 2.25em;
     height: 2.5em;
     
-    background-color: #212121;
+    background-color: #101720;
     border-radius: 0.2em;
     font-size: 1.5em;
     color: #fff;

@@ -24,19 +24,15 @@ class MatchMaking {
         // Shuffle players before the first round
         if (roundNumber === 1) {
             this.shufflePlayers();
-            // console.log("Players have been shuffled for the first round.");
         }
 
         let currentRound = this.players;
         while (currentRound.length > 1) {
-            // console.log(`\nRound ${roundNumber}:`);
-            // console.log(`Current round players: ${currentRound.join(", ")}`);
-
             const matches = [];
             for (let i = 0; i < currentRound.length; i += 2) {
                 const player1 = currentRound[i];
                 const player2 = i + 1 < currentRound.length ? currentRound[i + 1] : null;
-                matches.push(this.simulateMatch(player1, player2, tournamentName));
+                matches.push(this.simulateMatch(player1, player2, tournamentName, currentRound.length));
             }
 
             // Wait for all matches in the current round to complete
@@ -49,7 +45,7 @@ class MatchMaking {
         return currentRound[0]; // Return the champion
     }
 
-    checkGameOver(match, player1, player2) {
+    checkGameOver(match, player1, player2, nbrPlayer) {
         return new Promise((resolve) => {
             const intervalId = setInterval(() => {
                 if (match.pongGame.gameOver && match.winner !== undefined) {
@@ -61,21 +57,35 @@ class MatchMaking {
         });
     }
 
-    async simulateMatch(player1, player2, tournamentName) {
+    async simulateMatch(player1, player2, tournamentName, nbrPlayer) {
         if (player1 === null || player2 === null) {
             let player = player1 !== null ? player1 : player2;
             player1 = player;
             player2 = null;
         }
 
+        // player disconnect
+        if (player2 !== null)
+        {
+            const   user = define_user_by_ID(player2.id);
+            if (user === undefined) {
+                player2 = null;
+            }
+        }
+
+        if (nbrPlayer === 2 && player2 === null) {
+            send_data('display exit match', 'flex', 'server', player1);
+            return player1;
+        }
+
         // create match + run
-        await create_match_tournament(player1, player2);
+        await create_match_tournament(player1, player2, nbrPlayer);
         const match = define_match(player1);
         match.tournamentName = tournamentName;
         setup_game(match);
 
         // get winner
-        const winner = await this.checkGameOver(match, player1, player2);
+        const winner = await this.checkGameOver(match, player1, player2, nbrPlayer);
 
         // stop match AI
         const list_match_in_tournament = webSocket.listMatch.filter((match) => match.tournamentName === tournamentName);
@@ -95,11 +105,14 @@ class MatchMaking {
     }
 }
 
-async function create_match_tournament(player1, player2) {
+async function create_match_tournament(player1, player2, nbrPlayer) {
     const match = new formMatch();
     match.id = await create_match_ID();
     match.id += player1.id;
     match.mode = "tournament";
+
+    // define final match
+    match.finalMatch = (nbrPlayer === 2) ? true : false;
 
     // get alias
     player1 = await create_request("GET", `/api/v1/users/${player1.id}`, "");
@@ -110,11 +123,12 @@ async function create_match_tournament(player1, player2) {
     }
 
     for (let i = 0; i < 4; i++) {
-        let player = new inforPlayer("", "", "../../img/avatar/addPlayerButton.png", 42, "none");
+        let player = new inforPlayer("", "", "../../img/button/button_add_player.png", 42, "none");
         if (i === 0) {
             player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, "player");
         } else if (i === 1) {
             if (player2 === null) {
+                match.winner = player1;
                 player = new inforPlayer("#42", "AI", "../../img/avatar/AI.png", 42, "AI");
             } else {
                 player = new inforPlayer(player2.id, player2.alias, player2.avatarPath, player2.level, "player");
@@ -218,7 +232,6 @@ async function start_tournament(tournamentID, sender) {
     console.log(`The champion is: ${champion.username}`);
 
     // display button exit match + send sign delete alias
-    send_data("display exit match", "flex", "server", champion);
     for (let i = 0; i < listPlayer.length; i++) {
         let user = listPlayer[i];
         send_data("delete alias", "", "server", user);

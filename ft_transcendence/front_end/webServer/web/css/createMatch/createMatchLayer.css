@@ -19,9 +19,10 @@
 
     position: absolute;
 
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: black;
+    border-color: #337dff;
 
-    top: 20px;
+    top: 10px;
     right: 10px;
 
     border-radius: 50%;
@@ -30,8 +31,8 @@
 
 #cancelCreateMatchButton:hover,
 #cancelInvitationPlayButton:hover {
-    background-color: white;
-    border-color: green;
+    background-color: red;
+    border-color: transparent;
     transform: rotate(90deg);
 }
 
@@ -103,7 +104,7 @@
     display: flex;
     flex-direction: row;
 
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
     flex-grow: 1;
@@ -115,7 +116,7 @@
     background-color: black;
     border: transparent;
 
-    background-image: url("../../img/avatar/addPlayerButton.png");
+    background-image: url("../../img/button/button_add_player.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

@@ -85,6 +85,10 @@ function    start_game_ws(match)
 function    countdown(match)
 {
     let count = (match.pongGame.lostPoint === false) ? 15 : 3;
+    if (match.mode === 'tournament') {
+        count = 3;
+    }
+    
     const countdownInterval = setInterval(function() {
         if (count < -1)
         {
