@@ -44,13 +44,10 @@ async function checkTournamentAvailability(tour_obj) {
 		return (false);
 	}
 	let my_alias = await checkClearMyAlias(my_username);
-	console.log("----------------------- alias =" + my_alias);
 	if (my_alias && tour_obj.player_usernames.includes(my_username)) {
-		console.log("checkTournamentAvailability: can join");
 		return ("can join");
 	}
 	if (!my_alias && tour_obj.status === "registering") {
-		console.log("checkTournamentAvailability: true");
 		return (true);
 	}
 	return (false);
@@ -99,77 +96,77 @@ export async function aliasJoinTournament(tour_obj) {
 }
 
 function loadTournamentOwnerPanel(tour_obj) {
-	document.querySelector("#twr_owner_panel").innerHTML = `
+	let owner_panel = document.querySelector("#twr_owner_panel");
+	if (owner_panel) {
+		owner_panel.innerHTML = `
 		<hr>
 		<p id="twr_ownerpanel_info">Owner Panel</p>
 		<input type="button" id="twr_owner_start_button" class="button-img" value="Start Tournament">
 		<input type="button" id="twr_owner_delete_button" class="button-img" value="Delete Tournament">
 		<hr>
 	`;
-	document.getElementById("twr_owner_start_button").addEventListener("click", async () => {
-		console.log(tour_obj.player_usernames.length);
-		if (tour_obj.player_usernames.length <= 1)
-			{
-				notice("A tournament must have more than 1 player to start", 2, "#9e7400");	
+		document.getElementById("twr_owner_start_button").addEventListener("click", async () => {
+			console.log(tour_obj.player_usernames.length);
+			if (tour_obj.player_usernames.length <= 1) {
+				notice("A tournament must have more than 1 player to start", 2, "#9e7400");
 			}
-		else if (tour_obj.status === "registering") {
-			const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
-			client.socket.send(JSON.stringify(sendData));
-			
-			notice("The tournament has now started", 2, "#00a33f");
-		}
-		else if (tour_obj.status === "progressing") {
-			notice("This tournament has already started", 2, "#9e7400");
-		}
-		else if (tour_obj.status === "finished") {
-			notice("This tournament is over", 2, "#bd0606");
-		}
-	});
-	document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
-		if (tour_obj.status === "registering") {
-			deleteTournament(tour_obj.id);
-			to_tournament("false");
-			const send_data = new dataToServer('update tournament board', "", 'socket server');
-			client.socket.send(JSON.stringify(send_data));
-		}
-		else {
-			notice("You cannot delete an ongoing tournament", 2, "#d11706");
-		}
-	});
+			else if (tour_obj.status === "registering") {
+				const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
+				client.socket.send(JSON.stringify(sendData));
+
+				notice("The tournament has now started", 2, "#00a33f");
+			}
+			else if (tour_obj.status === "progressing") {
+				notice("This tournament has already started", 2, "#9e7400");
+			}
+			else if (tour_obj.status === "finished") {
+				notice("This tournament is over", 2, "#bd0606");
+			}
+		});
+		document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
+			if (tour_obj.status === "registering") {
+				deleteTournament(tour_obj.id);
+				to_tournament("false");
+				const send_data = new dataToServer('update tournament board', "", 'socket server');
+				client.socket.send(JSON.stringify(send_data));
+			}
+			else {
+				notice("You cannot delete an ongoing tournament", 2, "#d11706");
+			}
+		});
+	}
 }
 
-export async function refresh_tour_waiting_room(tour_obj) {
-	if (getCookie("alias") && document.querySelector("#tournament_waiting_room")) {
+export async function refresh_tour_waiting_room(tour_obj, mode) {
+	if (document.querySelector("#tournament_waiting_room")) {
 		tour_obj = await getTournamentInfoById(tour_obj.id);
 		renderTournamentTree(tour_obj);
-		if (tour_obj.owner_username === getCookie("username"))
-			loadTournamentOwnerPanel(tour_obj);
 		document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 		document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
 		document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
 		document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 	}
+	if (!mode && getCookie("alias") && tour_obj.owner_username === getCookie("username"))
+		loadTournamentOwnerPanel(tour_obj);
 }
 
-async function drawWaitingRoom(callback, tour_obj) {
+async function drawWaitingRoom(callback, tour_obj, mode) {
 	document.getElementById("frontpage").outerHTML =
-		`<div id="frontpage">
+		`
+		<div id="frontpage">
 			${loadSpinner()}
 			${upperPanel()}
 			<div id="tournament_waiting_room" class="hide">
 				<div id="twr_board">
+					<div id="twr_basic_info">
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
 					<p id="twr_tour_playernb"></p>
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
+					</div>
 					<div id="tournament_tree"></div>
-					<div id="twr_owner_panel"></div>
-					<!-- <input type="button" id="twr_refresh_tour" class="button-img" value="Refresh"> -->
-					<br>
-					<input type="button" id="twr_leave" class="button-img" value="Unregister">
-					<input type="button" id="twr_back" class="button-img" value="Back">
 				</div>
 			</div>
 			<br>
@@ -178,35 +175,50 @@ async function drawWaitingRoom(callback, tour_obj) {
 			${noticeInvitePlayer()}
 		</div>
 `;
-	await refresh_tour_waiting_room(tour_obj);
+	await refresh_tour_waiting_room(tour_obj, mode);
 	/*
 	document.getElementById("twr_refresh_tour").addEventListener("click", async () => {
-		await refresh_tour_waiting_room(tour_obj);
+		await refresh_tour_waiting_room(tour_obj, mode);
 	});
 	//*/
-	if (tour_obj.owner_username === getCookie("username"))
-		loadTournamentOwnerPanel(tour_obj);
+	if (mode && mode === "spectator") {
+		document.getElementById("twr_board").insertAdjacentHTML("beforeend", `
+			<input type="button" id="twr_back" class="button-img" value="Back">
+			`);
+	}
+	else {
+		document.getElementById("twr_board").insertAdjacentHTML("beforeend", `
+			<div id="twr_owner_panel"></div>
+					<!-- <input type="button" id="twr_refresh_tour" class="button-img" value="Refresh"> -->
+					<br>
+					<input type="button" id="twr_leave" class="button-img" value="Unregister">
+					<input type="button" id="twr_back" class="button-img" value="Back">
+					`);
+		if (tour_obj.owner_username === getCookie("username"))
+			loadTournamentOwnerPanel(tour_obj);
+		document.querySelector("#twr_leave").addEventListener("click", async () => {
+			if (tour_obj.status === "registering") {
+				await removeAlias();
+				await leaveTournament(tour_obj.id);
+				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
+				client.socket.send(JSON.stringify(send_data));
+				to_tournament("false");
+			}
+			else {
+				//send warning and disqualify if continue?
+				notice("You cannot leave a tournament once it has started", 2, "#d11706")
+			}
+		});
+	}
+
 	document.querySelector("#twr_back").addEventListener("click", () => {
 		to_tournament("false");
-	});
-	document.querySelector("#twr_leave").addEventListener("click", async () => {
-		if (tour_obj.status === "registering") {
-			await removeAlias();
-			await leaveTournament(tour_obj.id);
-			const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
-			client.socket.send(JSON.stringify(send_data));
-			to_tournament("false");
-		}
-		else {
-			//send warning and disqualify if continue?
-			notice("You cannot leave a tournament once it has started", 2, "#d11706")
-		}
 	});
 	upperPanelEventListener();
 	callback(true);
 }
 
-export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
+export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj, mode) {
 	await getMyInfo();
 	if (!getCookie("username")) {
 		to_connectForm();
@@ -224,5 +236,5 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj) {
 			loadChat();
 			document.querySelector("#c-hide-friend-list").click();
 		}
-	}, tour_obj);
+	}, tour_obj, mode);
 }
