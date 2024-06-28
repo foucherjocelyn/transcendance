@@ -11,20 +11,6 @@ import { notice } from "../../authentication/auth_main.js";
 import { addAlias } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
 
-// function	inspect_tourTree(tour_obj)
-// {
-// 	document.getElementById("frontpage").insertAdjacentHTML("beforeend", `
-// 		<div id="tour_expandtree">
-// 		<button id="t_expandtree_close" class="c-close-button"></button>
-// 		<div id="tournament_tree"></div>
-// 		</div>
-// 		`);
-// 	renderTournamentTree(tour_obj);
-// 	document.getElementById("t_expandtree_close").addEventListener("click", () => {
-// 		document.getElementById("t_expandtree").remove();
-// 	});
-// }
-
 function addLabel(tour_list, index) {
 	let player_nb = tour_list[index].player_usernames.length;
 	let newLabel = `

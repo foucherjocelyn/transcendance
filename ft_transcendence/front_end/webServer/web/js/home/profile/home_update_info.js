@@ -28,7 +28,8 @@ function avatarCheckType(elem_name) {
 
 export async function updateMyAvatar() {
 	let avatar = document.getElementById("p_avatar");
-	if (avatar.files.length > 0 && avatarCheckType("p_avatar")) {
+	let max_size = 5 * 1024 * 1024;
+	if (avatar.files.length > 0 && avatarCheckType("p_avatar") && avatar.files[0].size < max_size) {
 		let avatarForm = new FormData();
 		avatarForm.append("avatar", document.getElementById("p_avatar").files[0]);
 		const send_data = new dataToServer('update informations user', "", 'socket server');
@@ -36,6 +37,8 @@ export async function updateMyAvatar() {
 		await uploadAvatar(avatarForm);
 		to_changeAvatar();
 	}
+	else
+		notice(`Uploaded file is too big, must be less than ${max_size} megabytes`, 0, "#D20000");
 }
 
 export async function updateMyAccount() {
