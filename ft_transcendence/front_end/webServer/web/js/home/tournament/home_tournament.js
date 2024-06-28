@@ -156,9 +156,10 @@ function createTournamentInput(tour_list_name) {
 		<input type="button" id="hcm_create_menu_close">
 		<br>
 		<input id="hcm_alias" type="text" placeholder="Your alias" maxlength="30" required>
+		<hr>
 		<input id="hcm_name" type="text" placeholder="Tournament name" maxlength="30" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
-		<input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59">
+		<!-- <input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59"> -->
 		<br>
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
