@@ -8,6 +8,8 @@ export const searchFindNewFriendWindow = async () => {
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list");
     const regex = /([A-Za-z]+)/g;
     const searchInput = document.querySelector("#c-find-new-friend-window input");
+    if (!userListDiv || !searchInput)
+        return ;
     const listUsers = await getListUsers();
     const listFriends = await getListFriends();
     const listFriendInvitationSent = await getListFriendInvitationSent();

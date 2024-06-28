@@ -6,6 +6,8 @@ import { getListFriends } from "./friend-list.js";
 
 const renderNotificationCount = async (count = 0) => {
     const notificationCountElem = document.getElementById("c-notification-count");
+    if (!notificationCountElem)
+        return;
     if (notificationCountElem) {
         if (count === 0) {
             notificationCountElem.classList.add("hidden");
@@ -59,6 +61,8 @@ const declineFriendInvite = (id, sender) => {
 
 const receiveFriendInvite = (id, sender) => {
     const notificationsList = document.getElementById("c-notifications-list");
+    if (!notificationsList)
+        return;
     notificationsList.insertAdjacentHTML("beforeend", `<div id="c-friend-invitation${id}" class="notification c-friend-invitation">
     <p>${sender}</p>
         <div>

@@ -1,15 +1,17 @@
-import { renderFriendList } from "./friend-list.js";
 import { searchFriendList } from "./friend-list.js";
 import { displayFindNewFriendWindow, searchFindNewFriendWindow } from "./add-friend.js";
 import { showNotifications } from "./notifications.js";
-import { getListFriends } from "./friend-list.js";
+import { getCookie } from "../authentication/auth_cookie.js";
+import { getUserById } from "../backend_operation/get_user_info.js";
 
 async function refreshChat() {
     if (document.getElementById("chat-list")) {
-        // const listFriends = await getListFriends();
-        // renderFriendList(listFriends);
-        searchFriendList();
-        setTimeout(refreshChat, 2000);
+        const myId = getCookie("id");
+        const myinfo = await getUserById(myId);
+        if (myinfo && myinfo.status !== "offline") {
+            searchFriendList();
+            setTimeout(refreshChat, 2000);
+        }
     }
 }
 

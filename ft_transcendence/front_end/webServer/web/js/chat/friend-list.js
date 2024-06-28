@@ -12,7 +12,7 @@ import { removeFriend } from "./remove-friend.js";
 const renderFriendList = (list) => {
     //console.log(list);
     const friendsList = document.getElementById("c-friends-list");
-    if (!friendsList)
+    if (!friendsList || !list)
         return;
     //friendsList.innerHTML = "";
     const listHTML = list.map((friend) => {
@@ -57,22 +57,20 @@ const renderFriendList = (list) => {
     searchFindNewFriendWindow();
 };
 
-const searchFriendList = () => {
+const searchFriendList = async () => {
     const friendsListSearchInput = document.querySelector("#c-search-friend-list input");
     const regex = /([A-Za-z0-9]+)/g;
-    const listFriends = getListFriends();
+    const listFriends = await getListFriends();
 
-    if (!friendsListSearchInput)
+    if (!friendsListSearchInput || !listFriends)
         return;
-    listFriends.then(list => {
-        if (friendsListSearchInput.value === "") {
-            renderFriendList(list);
-            return;
-        }
-        const parsedSearchInput = friendsListSearchInput.value.match(regex)?.join("");
-        const matchlist = list.filter((friend) => friend.username.includes(parsedSearchInput));
-        renderFriendList(matchlist);
-    });
+    if (friendsListSearchInput.value === "") {
+        renderFriendList(listFriends);
+        return;
+    }
+    const parsedSearchInput = friendsListSearchInput.value.match(regex)?.join("");
+    const matchlist = listFriends.filter((friend) => friend.username.includes(parsedSearchInput));
+    renderFriendList(matchlist);
 };
 
 export { renderFriendList, searchFriendList, getListFriends };
