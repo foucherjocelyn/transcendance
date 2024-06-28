@@ -119,8 +119,6 @@ async function createTournamentSubmit(event, tour_list_name) {
 }
 
 function createTournamentInput(tour_list_name) {
-	//console.log("createTournamentInput started :" + tour_list_name);
-	let min_date = getToday(5);
 	document.getElementById("htb_create").innerHTML = `
 	<form method="post" id="htb_create_menu">
 		<input type="button" id="hcm_create_menu_close">

@@ -129,7 +129,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 		if (tour_obj.status === "registering") {
 			deleteTournament(tour_obj.id);
 			to_tournament("false");
-			const send_data = new dataToServer('delete tournament', "", 'socket server');
+			const send_data = new dataToServer('update tournament board', "", 'socket server');
 			client.socket.send(JSON.stringify(send_data));
 		}
 		else {
