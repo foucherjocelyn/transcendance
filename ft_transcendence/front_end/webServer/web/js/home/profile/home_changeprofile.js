@@ -34,7 +34,8 @@ export function to_change2fa() {
 	document.getElementById("p_change").addEventListener("click", () => { updateMyOtp(); });
 }
 
-export function to_changeAvatar() {
+export async function to_changeAvatar() {
+	await getMyInfo();
 	document.getElementById("h_current_parameters").innerHTML =
 		`<br>
 <input type="file" id="p_avatar" name="avatar" accept="image/*" class="text_area">
@@ -42,16 +43,17 @@ export function to_changeAvatar() {
 <hr id="p_div">
 <button class="button-img" type="button" id="p_change">Apply</button>
 `;
-	getAvatar("p_avatarpreview");
+	await getAvatar("p_avatarpreview");
 	document.getElementById("p_avatar").addEventListener("change", () => {
 		document.getElementById("p_avatarpreview").src = URL.createObjectURL(event.target.files[0]);
 	});
-	document.getElementById("p_change").addEventListener("click", () => {
-		updateMyAvatar('p_avatarpreview');
+	document.getElementById("p_change").addEventListener("click", async () => {
+		await updateMyAvatar('p_avatarpreview');
 	});
 }
 
-export function to_changeInfo() {
+export async function to_changeInfo() {
+	await getMyInfo();
 	document.getElementById("h_current_parameters").innerHTML =
 		`<br>
 <input type="text" id="p_username" placeholder="${getCookie("username")}"title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}" class="text_area">
@@ -93,7 +95,7 @@ export function to_changeInfo() {
 	document.getElementById("p_change").addEventListener("click", () => { updateMyAccount(); });
 }
 
-async function drawProfilePage(callback) {
+async function drawEditProfilePage(callback) {
 	await getMyInfo();
 	document.querySelector("#frontpage").outerHTML =
 		`<div id="frontpage">
@@ -116,9 +118,9 @@ ${noticeInvitePlayer()}
 </div>
 `;
 	upperPanelEventListener("h_myprofile");
-	document.getElementById("h_changeinfo").addEventListener("click", () => { to_changeInfo(); });
-	document.getElementById("h_changeavatar").addEventListener("click", () => {
-		to_changeAvatar();
+	document.getElementById("h_changeinfo").addEventListener("click", async () => { await to_changeInfo(); });
+	document.getElementById("h_changeavatar").addEventListener("click", async () => {
+		await to_changeAvatar();
 	});
 	if (getCookie("email").endsWith("@student.42.fr")) {
 		document.getElementById("h_change2fa").setAttribute("class", "button-img_disabled");
@@ -136,7 +138,7 @@ export async function to_profilePage(nohistory = "false") {
 	}
 	if (nohistory === "false")
 		history.pushState({ url: "configprofile" }, "", "#config_profile");
-	drawProfilePage((result) => {
+	drawEditProfilePage((result) => {
 		if (result) {
 			document.getElementById("loadspinner").classList.add("hide");
 			document.getElementById("h_myprofile").classList.remove("hide");
