@@ -1,4 +1,4 @@
-const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
+const { webSocket, define_user_by_ID, update_informations_user } = require("../webSocket/webSocket");
 const { setup_game } = require("../game/setupGame");
 const { formMatch, create_match_ID, inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
@@ -20,35 +20,42 @@ class MatchMaking {
 
     async generateMatches(tournamentName) {
         let roundNumber = 1;
-
+    
         // Shuffle players before the first round
         if (roundNumber === 1) {
             this.shufflePlayers();
         }
-
+    
         let currentRound = this.players;
         while (currentRound.length > 1) {
             const matches = [];
+    
+            // Send signal to update tournament tree
+            send_data("update tournament tree", currentRound, "server", currentRound);
+            await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds
+    
             for (let i = 0; i < currentRound.length; i += 2) {
                 const player1 = currentRound[i];
                 const player2 = i + 1 < currentRound.length ? currentRound[i + 1] : null;
                 matches.push(this.simulateMatch(player1, player2, tournamentName, currentRound.length));
             }
-
+    
             // Wait for all matches in the current round to complete
             const winners = await Promise.all(matches);
             currentRound = winners.filter((winner) => winner !== null);
             roundNumber++;
         }
-
+    
         console.log("\nTournament completed!");
         return currentRound[0]; // Return the champion
     }
 
-    checkGameOver(match, player1, player2, nbrPlayer) {
+    checkGameOver(match, player1, player2)
+    {
         return new Promise((resolve) => {
             const intervalId = setInterval(() => {
-                if (match.pongGame.gameOver && match.winner !== undefined) {
+                if (match.pongGame.gameOver && match.winner !== undefined)
+                {
                     clearInterval(intervalId);
                     let winner = player1.id === match.winner.id ? player1 : player2;
                     resolve(winner);
@@ -57,8 +64,10 @@ class MatchMaking {
         });
     }
 
-    async simulateMatch(player1, player2, tournamentName, nbrPlayer) {
-        if (player1 === null || player2 === null) {
+    async simulateMatch(player1, player2, tournamentName, nbrPlayer)
+    {
+        if (player1 === null || player2 === null)
+        {
             let player = player1 !== null ? player1 : player2;
             player1 = player;
             player2 = null;
@@ -85,13 +94,15 @@ class MatchMaking {
         setup_game(match);
 
         // get winner
-        const winner = await this.checkGameOver(match, player1, player2, nbrPlayer);
+        const winner = await this.checkGameOver(match, player1, player2);
 
         // stop match AI
         const list_match_in_tournament = webSocket.listMatch.filter((match) => match.tournamentName === tournamentName);
-        if (list_match_in_tournament.length > 0) {
+        if (list_match_in_tournament.length > 0)
+        {
             const list_match_AI = list_match_in_tournament.filter((match) => match.listUser.length === 1);
-            if (list_match_AI.length > 0) {
+            if (list_match_AI.length > 0)
+            {
                 const matchAI = list_match_AI[0];
                 matchAI.pongGame.gameOver = true;
             }
@@ -115,22 +126,25 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
     match.finalMatch = (nbrPlayer === 2) ? true : false;
 
     // get alias
-    player1 = await create_request("GET", `/api/v1/users/${player1.id}`, "");
     player1.avatarPath = `img/${player1.avatarPath}`;
     if (player2 !== null) {
-        player2 = await create_request("GET", `/api/v1/users/${player2.id}`, "");
         player2.avatarPath = `img/${player2.avatarPath}`;
     }
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++)
+    {
         let player = new inforPlayer("", "", "../../img/button/button_add_player.png", 42, "none");
         if (i === 0) {
             player = new inforPlayer(player1.id, player1.alias, player1.avatarPath, player1.level, "player");
-        } else if (i === 1) {
-            if (player2 === null) {
+        }
+        else if (i === 1)
+        {
+            if (player2 === null)
+            {
                 match.winner = player1;
                 player = new inforPlayer("#42", "AI", "../../img/avatar/AI.png", 42, "AI");
-            } else {
+            }
+            else {
                 player = new inforPlayer(player2.id, player2.alias, player2.avatarPath, player2.level, "player");
             }
         }
@@ -141,7 +155,8 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
     user.matchID = match.id;
     user.status = "creating match";
 
-    if (player2 !== null) {
+    if (player2 !== null)
+    {
         const user2 = define_user_by_ID(player2.id);
         user2.matchID = match.id;
         user2.status = "creating match";
@@ -153,24 +168,27 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
     update_match(user);
 }
 
-function create_list_player_tournament(listName) {
-    return new Promise((resolve, reject) => {
-        try {
-            const listPlayer = [];
-            listName.forEach((name) => {
-                for (let i = 0; i < webSocket.listUser.length; i++) {
-                    const user = webSocket.listUser[i];
-                    if (user !== undefined && user.username === name) {
-                        listPlayer.push(user);
-                        break;
-                    }
+async function create_list_player_tournament(listName)
+{
+    try {
+        const listPlayer = [];
+        for (const name of listName)
+        {
+            for (let i = 0; i < webSocket.listUser.length; i++)
+            {
+                const user = await create_request("GET", `/api/v1/users/${webSocket.listUser[i].id}`, "");
+                if (user !== undefined && user.username === name)
+                {
+                    update_informations_user(user);
+                    listPlayer.push(user);
+                    break;
                 }
-            });
-            resolve(listPlayer);
-        } catch (error) {
-            reject(error);
+            }
         }
-    });
+        return listPlayer;
+    } catch (error) {
+        throw error;
+    }
 }
 
 function send_sign_update_tournament_board(sender)

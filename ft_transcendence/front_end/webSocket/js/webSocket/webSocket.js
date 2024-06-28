@@ -8,6 +8,20 @@ const webSocket = {
     listMatch: []
 };
 
+async function    update_informations_user(sender)
+{
+    for (let i = 0; i < webSocket.listUser.length; i++)
+    {
+        const   user = webSocket.listUser[i];
+        if (user.id === sender.id) {
+            const   infor = await create_request('GET', `/api/v1/users/${sender.id}`, '');
+            webSocket.listUser[i] = infor;
+            webSocket.listConnection[i].user = infor;
+            return ;
+        }
+    }
+}
+
 function define_user_by_socket(socket) {
     for (let i = 0; i < webSocket.listConnection.length; i++) {
         const connection = webSocket.listConnection[i];
@@ -53,6 +67,9 @@ function handle_requirements(socket, title, content, sender, recipient) {
         }
         else if (title === 'joining tournament') {
             send_sign_join_tournament(title, content);
+        }
+        else if (title === 'update informations user') {
+            update_informations_user(sender);
         }
         else {
             send_data(title, content, sender, recipient);
@@ -176,7 +193,8 @@ setup_web_socket();
 module.exports = {
     webSocket,
     define_user_by_socket,
-    define_user_by_ID
+    define_user_by_ID,
+    update_informations_user
 };
 
 const { connect, disconnect } = require('./addNewConnection');
@@ -190,4 +208,5 @@ const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
 const { start_tournament, send_sign_join_tournament, send_sign_update_tournament_board } = require("../match/tournament");
 const { url } = require("inspector");const { create_request } = require("../dataToDB/createRequest");
+const { userInfo } = require("os");
 

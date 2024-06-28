@@ -105,6 +105,10 @@ function    setup_game_windows()
     const   scene = new THREE.Scene();
     pongGame.scene = scene;
 
+    const   font_game = '../../img/font/font_game.png'
+    const   textureLoader = new THREE.TextureLoader();
+    scene.background = textureLoader.load(font_game);
+
     const   camera = new THREE.PerspectiveCamera(
         45,
         screen.width / screen.height,

@@ -140,6 +140,10 @@ function get_data_from_server(socket) {
             console.log("client.js connect 42 data:");
             console.log(receivedData.content);
         }
+        if (receivedData.title === 'update tournament tree') {
+            console.log('update tournament tree');
+            console.table(receivedData.content);
+        }
     };
 }
 
