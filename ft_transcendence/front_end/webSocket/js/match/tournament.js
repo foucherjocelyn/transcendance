@@ -179,7 +179,7 @@ async function create_list_player_tournament(listName)
                 const user = await create_request("GET", `/api/v1/users/${webSocket.listUser[i].id}`, "");
                 if (user !== undefined && user.username === name)
                 {
-                    update_informations_user(user);
+                    // update_informations_user(user);
                     listPlayer.push(user);
                     break;
                 }

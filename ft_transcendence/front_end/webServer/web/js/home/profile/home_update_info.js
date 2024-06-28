@@ -2,6 +2,7 @@ import { to_change2fa, to_changeAvatar, to_changeInfo, } from "./home_changeprof
 import { getOtpStatusToken, toggleOtpStatus } from "../../backend_operation/one_time_password.js";
 import { uploadAvatar } from "../../backend_operation/profile_picture.js";
 import { dataUpdate } from "../../backend_operation/data_update.js";
+import { client, dataToServer } from "../../client/client.js";
 
 export function checkPasswordChange() {
 	if (document.getElementById("p_oldpassword").value.length > 0 && document.getElementById("p_newpassword").value.length > 0 && document.getElementById("p_newpasswordconfirm").value.length > 0) {
@@ -15,13 +16,11 @@ export function checkPasswordChange() {
 
 function avatarCheckType(elem_name) {
 	let typechecker = document.getElementById(elem_name).value;
-	switch (typechecker.endsWith()) {
-		case ".png":
-			return (true);
-		case ".jpg":
-			return (true);
-		case ".jpeg":
-			return (true);
+	switch (true) {
+		case typechecker.endsWith(".png"):
+		case typechecker.endsWith(".jpg"):
+		case typechecker.endsWith(".jpeg"):
+			return true;
 		default:
 			return (false);
 	}
@@ -32,8 +31,8 @@ export async function updateMyAvatar() {
 	if (avatar.files.length > 0 && avatarCheckType("p_avatar")) {
 		let avatarForm = new FormData();
 		avatarForm.append("avatar", document.getElementById("p_avatar").files[0]);
-		//const send_data = new dataToServer('', "", 'socket server');
-		//client.socket.send(JSON.stringify(send_data));
+		const send_data = new dataToServer('update informations user', "", 'socket server');
+		client.socket.send(JSON.stringify(send_data));
 		await uploadAvatar(avatarForm);
 		to_changeAvatar();
 	}
@@ -65,6 +64,8 @@ export async function updateMyAccount() {
 	}
 	console.log(changes);
 	if (changes > 0) {
+		const send_data = new dataToServer('update informations user', "", 'socket server');
+		client.socket.send(JSON.stringify(send_data));
 		await dataUpdate(newInfo);
 		to_changeInfo();
 	}

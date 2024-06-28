@@ -17,6 +17,7 @@ async function    update_informations_user(sender)
             const   infor = await create_request('GET', `/api/v1/users/${sender.id}`, '');
             webSocket.listUser[i] = infor;
             webSocket.listConnection[i].user = infor;
+            console.table(webSocket.listUser[i]);
             return ;
         }
     }
