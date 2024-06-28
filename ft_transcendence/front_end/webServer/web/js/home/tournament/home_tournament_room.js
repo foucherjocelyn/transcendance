@@ -3,8 +3,8 @@ import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { loadChat } from "../../chat/load-chat.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { deleteTournament, getTournamentInfoById, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
-import { getAllMyGames, getMyInfo } from "../../backend_operation/get_user_info.js";
+import { deleteTournament, getTournamentInfoById, getTournamentsList, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
+import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
 import { formatDate, to_tournament } from "./home_tournament.js";
@@ -12,16 +12,27 @@ import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
 import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 
-async function checkClearMyAlias(my_username)
-{
+const isRegisteredToUnfinishedTournament = async (username) => {
+	let tournaments = await getTournamentsList();
+	const unfinishedTournaments = tournaments.filter(tournament => tournament.status !== "finished");
+	return (unfinishedTournaments.some(tournament => tournament.player_usernames.find(currentUsername => currentUsername === username)));
+}
+
+const isRegisteredToFinishedTournament = async (username) => {
+	let tournaments = await getTournamentsList();
+	const finishedTournaments = tournaments.filter(tournament => tournament.status === "finished");
+	return (finishedTournaments.some(tournament => tournament.player_usernames.find(currentUsername => currentUsername === username)));
+}
+
+export async function checkClearMyAlias(my_username) {
+	console.log("checkClearMyAlias started");
 	const alias = await getAliasFromUsername(my_username)
-	if (alias)
-		{
-			console.log("checkClearMyAlias");
-			const my_username_obj = { my_username };
-			//let mygames = await getAllMyGames(my_username_obj)
-			//console.log(mygames);
+	if (alias) {
+		if (isRegisteredToFinishedTournament(my_username) && !isRegisteredToUnfinishedTournament(my_username)) {
+			console.log("user has been found in finished tournament and not in unfinished => removing alias")
+			removeAlias();
 		}
+	}
 	return (alias);
 }
 
@@ -131,7 +142,7 @@ export async function refresh_tour_waiting_room(tour_obj) {
 		renderTournamentTree(tour_obj);
 		document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 		document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
-		document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
+		//document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
 		document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
 		document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 	}

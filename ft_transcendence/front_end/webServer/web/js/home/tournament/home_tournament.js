@@ -6,7 +6,7 @@ import { createTournament, getTournamentsList } from "../../backend_operation/to
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { aliasJoinTournament, to_tournamentWaitingRoom } from "./home_tournament_room.js";
+import { aliasJoinTournament, checkClearMyAlias, to_tournamentWaitingRoom } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
 import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
@@ -17,7 +17,7 @@ function addLabel(tour_list, index) {
 	newLabel = `<tr id="t_tourlabel${index}">
 <th scope="row">${tour_list[index].name}</th>
 <td>${player_nb}/${tour_list[index].max_players}</td>
-<td>${formatDate(tour_list[index].start_time, 1)}</td>
+<!-- <td>${formatDate(tour_list[index].start_time, 1)}</td> -->
 <td>${tour_list[index].status}</td>
 <!-- <td><input type="button" id="t_infobutton${index}" value="Details"></td> -->
 <div id="tour_expanddetails"></div>
@@ -97,10 +97,12 @@ function getToday(add_minute) {
 /* Tournament Creation */
 
 function tournamentCreateCheck(tour_list_name, newtour_obj) {
+	/*
 	if (newtour_obj.start_time && newtour_obj.start_time <= getToday()) {
 		notice("The planned starting time can't be set earlier than today", 2, "#d6460d");
 		return (false);
 	}
+	*/
 	for (let i = 0; i < tour_list_name.length; i++) {
 		if (tour_list_name[i] === document.getElementById("hcm_name").value) {
 			notice("A tournament with this name already exists", 2, "#d6460d");
@@ -112,26 +114,27 @@ function tournamentCreateCheck(tour_list_name, newtour_obj) {
 
 async function createTournamentSubmit(event, tour_list_name) {
 	event.preventDefault();
-	let alias = await getAliasFromUsername(getCookie("username"));
-	console.log("Alias is: " + alias);
-	if (!alias) {
-		let alias = {
+	let my_username = getCookie("username");
+	let my_alias = await checkClearMyAlias(my_username);
+	console.log("Alias is: " + my_alias);
+	if (!my_alias) {
+		let my_alias = {
 			"alias": document.getElementById("hcm_alias").value
 		};
 		let createtour_info = {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value
 		};
-		let start_time_value = document.getElementById("hcm_start").value;
+		//let start_time_value = document.getElementById("hcm_start").value;
 		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
 			console.log("createTournament: if 1");
-			if (start_time_value)
-				createtour_info.start_time = formatDate(start_time_value);
+		//	if (start_time_value)
+		//		createtour_info.start_time = formatDate(start_time_value);
 			let newtour_obj = await createTournament(createtour_info);
 			console.log("the returned tour object:");
 			console.log(newtour_obj);
 			if (newtour_obj) {
-				await addAlias(alias);
+				await addAlias(my_alias);
 				document.getElementById(`htb_create_menu`).outerHTML = ``;
 				to_tournamentWaitingRoom("false", newtour_obj);
 				const send_data = new dataToServer('create tournament', "", 'socket server');
@@ -142,7 +145,7 @@ async function createTournamentSubmit(event, tour_list_name) {
 		}
 	}
 	else
-		notice("You cannot create more than one tournament", 2, "#d11706");
+		notice("You cannot participate in more than one tournament", 2, "#d11706");
 }
 
 function createTournamentInput(tour_list_name) {
@@ -188,7 +191,7 @@ async function drawTournament(callback) {
               <tr id="htb_filter">
                 <th scope="col">Match Name</th>
 				<th scope="col">Player</th>
-                <th scope="col">Planned Starting Date</th>
+                <!-- <th scope="col">Planned Starting Date</th> -->
                 <th scope="col">Status</th>
               </tr>
             </thead>
