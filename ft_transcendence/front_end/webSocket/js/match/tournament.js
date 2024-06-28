@@ -173,25 +173,30 @@ function create_list_player_tournament(listName) {
     });
 }
 
-function send_sign_create_tournament(title, sender) {
-    for (let i = 0; i < webSocket.listUser.length; i++) {
+function send_sign_create_tournament(sender)
+{
+    for (let i = 0; i < webSocket.listUser.length; i++)
+    {
         const user = webSocket.listUser[i];
         if (user !== undefined && user.username !== sender.username) {
-            send_data(title, "", "server", user);
+            send_data('update tournament board', "", "server", user);
         }
     }
 }
 
-async function send_sign_join_tournament(title, tournamentID) {
+async function send_sign_join_tournament(title, tournamentID)
+{
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
     }
 
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
     tournament.player_usernames.forEach((userName) => {
-        for (let i = 0; i < webSocket.listUser.length; i++) {
+        for (let i = 0; i < webSocket.listUser.length; i++)
+        {
             const user = webSocket.listUser[i];
-            if (user !== undefined && user.username === userName) {
+            if (user !== undefined && user.username === userName)
+            {
                 send_data(title, tournament, "server", user);
                 break;
             }
@@ -199,14 +204,17 @@ async function send_sign_join_tournament(title, tournamentID) {
     });
 }
 
-async function start_tournament(tournamentID, sender) {
-    console.table(`Start tournament: ${tournamentID}`);
-    console.table(`Sender: ${sender}`);
+async function start_tournament(tournamentID, sender)
+{
+    // check number tournament ID from client
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
     }
 
+    // get tournament Obj from DB
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    
+    // check sender is admin + number of player in tournament
     if (sender.username !== tournament.owner_username || tournament.player_usernames.length < 2) {
         return;
     }
@@ -216,8 +224,6 @@ async function start_tournament(tournamentID, sender) {
 
     // call matchmaking
     const listPlayer = await create_list_player_tournament(tournament.player_usernames);
-    listPlayer.forEach((player) => console.log(player.username));
-
     const matchMaker = new MatchMaking(listPlayer);
     const champion = await matchMaker.generateMatches(tournament.name);
 
@@ -231,11 +237,14 @@ async function start_tournament(tournamentID, sender) {
     await create_request("POST", `/api/v1/tournament/${tournament.id}/champion/update`, postData);
     console.log(`The champion is: ${champion.username}`);
 
-    // display button exit match + send sign delete alias
+    // send sign delete alias
     for (let i = 0; i < listPlayer.length; i++) {
         let user = listPlayer[i];
         send_data("delete alias", "", "server", user);
     }
+
+    // update status tournament on client
+    send_sign_create_tournament(champion);
 }
 
 module.exports = {

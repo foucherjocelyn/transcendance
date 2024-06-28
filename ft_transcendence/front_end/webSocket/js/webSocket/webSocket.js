@@ -63,7 +63,7 @@ function handle_requirements(socket, title, content, sender, recipient) {
             start_tournament(content, sender);
         }
         else if (title === 'create tournament') {
-            send_sign_create_tournament(title, sender);
+            send_sign_create_tournament(sender);
         }
         else if (title === 'joining tournament') {
             send_sign_join_tournament(title, content);

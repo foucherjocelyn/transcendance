@@ -1,20 +1,25 @@
 function    verticalCheck(point, obj)
 {
-    if (point > obj.collisionPoint.left && point < obj.collisionPoint.right)
+    if (point > obj.collisionPoint.left && point < obj.collisionPoint.right) {
         return (1);
+    }
     return (0);
 }
 
 function    verticalCollisionCheck(obj, obj2)
 {
-    if (verticalCheck(obj.collisionPoint.left, obj2))
+    if (verticalCheck(obj.collisionPoint.left, obj2)) {
         return (1);
-    else if (verticalCheck(obj.collisionPoint.right, obj2))
+    }
+    else if (verticalCheck(obj.collisionPoint.right, obj2)) {
         return (1);
-    else if (verticalCheck(obj2.collisionPoint.left, obj))
+    }
+    else if (verticalCheck(obj2.collisionPoint.left, obj)) {
         return (1);
-    else if (verticalCheck(obj2.collisionPoint.right, obj))
+    }
+    else if (verticalCheck(obj2.collisionPoint.right, obj)) {
         return (1);
+    }
     return (0);
 }
 
@@ -24,13 +29,15 @@ function    verticalCollision(obj, obj2)
 
     if ((obj.vector.y < 0) && (obj.position.z > obj2.position.z))
     {
-        if (obj.collisionPoint.top - speed <= obj2.collisionPoint.bottom)
+        if (obj.collisionPoint.top - speed <= obj2.collisionPoint.bottom) {
             return (1);
+        }
     }
     else if ((obj.vector.y >= 0) && (obj.position.z < obj2.position.z))
     {
-        if (obj.collisionPoint.bottom + speed >= obj2.collisionPoint.top)
+        if (obj.collisionPoint.bottom + speed >= obj2.collisionPoint.top) {
             return (-1);
+        }
     }
     return (0);
 }
@@ -38,21 +45,26 @@ function    verticalCollision(obj, obj2)
 /* --------------- */
 function    horizontalCheck(point, obj)
 {
-    if (point > obj.collisionPoint.top && point < obj.collisionPoint.bottom)
+    if (point > obj.collisionPoint.top && point < obj.collisionPoint.bottom) {
         return (1);
+    }
     return (0);
 }
 
 function    horizontalCollisionCheck(obj, obj2)
 {
-    if (horizontalCheck(obj.collisionPoint.top, obj2))
+    if (horizontalCheck(obj.collisionPoint.top, obj2)) {
         return (1);
-    else if (horizontalCheck(obj.collisionPoint.bottom, obj2))
+    }
+    else if (horizontalCheck(obj.collisionPoint.bottom, obj2)) {
         return (1);
-    else if (horizontalCheck(obj2.collisionPoint.top, obj))
+    }
+    else if (horizontalCheck(obj2.collisionPoint.top, obj)) {
         return (1);
-    else if (horizontalCheck(obj2.collisionPoint.bottom, obj))
+    }
+    else if (horizontalCheck(obj2.collisionPoint.bottom, obj)) {
         return (1);
+    }
     return (0);
 }
 
@@ -62,13 +74,15 @@ function    horizontalCollision(obj, obj2)
 
     if ((obj.vector.x < 0) && (obj.position.x > obj2.position.x))
     {
-        if (obj.collisionPoint.left - speed <= obj2.collisionPoint.right)
+        if (obj.collisionPoint.left - speed <= obj2.collisionPoint.right) {
             return (1);
+        }
     }
     else if ((obj.vector.x >= 0) && (obj.position.x < obj2.position.x))
     {
-        if (obj.collisionPoint.right + speed >= obj2.collisionPoint.left)
+        if (obj.collisionPoint.right + speed >= obj2.collisionPoint.left) {
             return (-1);
+        }
     }
     return (0);
 }
@@ -90,8 +104,9 @@ function    resetInformationsCollision(obj)
 
 function    check_collision(obj, obj2)
 {
-    if (obj === undefined || obj2 === undefined)
+    if (obj === undefined || obj2 === undefined) {
         return false;
+    }
     
     resetInformationsCollision(obj);
 

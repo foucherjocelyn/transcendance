@@ -117,7 +117,7 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'game over') {
             display_game_over_layer(receivedData.content);
         }
-        if (receivedData.title === 'create tournament') {
+        if (receivedData.title === 'update tournament board') {
             if (document.querySelector("#h_tournament_board")) {
                 to_tournament("true");
             }
