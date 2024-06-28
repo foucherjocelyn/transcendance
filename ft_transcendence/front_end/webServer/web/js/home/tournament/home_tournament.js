@@ -107,7 +107,7 @@ async function createTournamentSubmit(event, tour_list_name) {
 				await addAlias(my_alias);
 				document.getElementById(`htb_create_menu`).outerHTML = ``;
 				to_tournamentWaitingRoom("false", newtour_obj);
-				const send_data = new dataToServer('create tournament', "", 'socket server');
+				const send_data = new dataToServer('update tournament board', "", 'socket server');
 				client.socket.send(JSON.stringify(send_data));
 			}
 			else

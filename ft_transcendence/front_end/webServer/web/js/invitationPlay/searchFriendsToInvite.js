@@ -1,4 +1,5 @@
 import { getCookie } from "../authentication/auth_cookie.js";
+import { domain_name } from "../backend_operation/authentication.js";
 import { match } from "../createMatch/createMatch.js";
 import { display_results_search_friends_to_play } from "./displayResultsSearchInvitationPlay.js";
 
