@@ -129,6 +129,8 @@ function loadTournamentOwnerPanel(tour_obj) {
 		if (tour_obj.status === "registering") {
 			deleteTournament(tour_obj.id);
 			to_tournament("false");
+			const send_data = new dataToServer('delete tournament', "", 'socket server');
+			client.socket.send(JSON.stringify(send_data));
 		}
 		else {
 			notice("You cannot delete an ongoing tournament", 2, "#d11706");
@@ -142,7 +144,6 @@ export async function refresh_tour_waiting_room(tour_obj) {
 		renderTournamentTree(tour_obj);
 		document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 		document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
-		//document.getElementById("twr_tour_start").textContent = `Starting date : ${formatDate(tour_obj.start_time, 1)}`;
 		document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
 		document.getElementById("twr_tour_status").textContent = `Status : ${tour_obj.status}`;
 	}
@@ -158,7 +159,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
-					<p id="twr_tour_playernb"></p><!--	<button id="tour_details_more">...</button> -->
+					<p id="twr_tour_playernb"></p>
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
 					<div id="tournament_tree"></div>

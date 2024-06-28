@@ -17,9 +17,7 @@ function addLabel(tour_list, index) {
 	newLabel = `<tr id="t_tourlabel${index}">
 <th scope="row">${tour_list[index].name}</th>
 <td>${player_nb}/${tour_list[index].max_players}</td>
-<!-- <td>${formatDate(tour_list[index].start_time, 1)}</td> -->
 <td>${tour_list[index].status}</td>
-<!-- <td><input type="button" id="t_infobutton${index}" value="Details"></td> -->
 <div id="tour_expanddetails"></div>
 </tr>`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
@@ -77,32 +75,9 @@ export function formatDate(given_date, bool_format) {
 	}
 }
 
-function getToday(add_minute) {
-	let today = new Date();
-	let year = today.getFullYear();
-	let month = today.getMonth() + 1;
-	month = month < 10 ? "0" + month : month;
-	let day = today.getDate();
-	day = day < 10 ? "0" + day : day;
-	let hours = today.getHours();
-	hours = hours < 10 ? "0" + hours : hours;
-	let minute = today.getMinutes();
-	minute = minute < 10 ? "0" + minute : minute;
-	if (!isNaN(add_minute))
-		minute += add_minute;
-	let min_date = year + "-" + month + "-" + day + "T" + hours + ":" + minute;
-	return (min_date);
-}
-
 /* Tournament Creation */
 
 function tournamentCreateCheck(tour_list_name, newtour_obj) {
-	/*
-	if (newtour_obj.start_time && newtour_obj.start_time <= getToday()) {
-		notice("The planned starting time can't be set earlier than today", 2, "#d6460d");
-		return (false);
-	}
-	*/
 	for (let i = 0; i < tour_list_name.length; i++) {
 		if (tour_list_name[i] === document.getElementById("hcm_name").value) {
 			notice("A tournament with this name already exists", 2, "#d6460d");
@@ -116,7 +91,6 @@ async function createTournamentSubmit(event, tour_list_name) {
 	event.preventDefault();
 	let my_username = getCookie("username");
 	let my_alias = await checkClearMyAlias(my_username);
-	console.log("Alias is: " + my_alias);
 	if (!my_alias) {
 		let my_alias = {
 			"alias": document.getElementById("hcm_alias").value
@@ -125,11 +99,7 @@ async function createTournamentSubmit(event, tour_list_name) {
 			name: document.getElementById("hcm_name").value,
 			description: document.getElementById("hcm_description").value
 		};
-		//let start_time_value = document.getElementById("hcm_start").value;
 		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
-			console.log("createTournament: if 1");
-		//	if (start_time_value)
-		//		createtour_info.start_time = formatDate(start_time_value);
 			let newtour_obj = await createTournament(createtour_info);
 			console.log("the returned tour object:");
 			console.log(newtour_obj);
@@ -159,7 +129,6 @@ function createTournamentInput(tour_list_name) {
 		<hr>
 		<input id="hcm_name" type="text" placeholder="Tournament name" maxlength="30" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
-		<!-- <input id="hcm_start" type="datetime-local" min="${min_date}" max="2150-12-31T23:59"> -->
 		<br>
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">
 	</form>
@@ -192,7 +161,6 @@ async function drawTournament(callback) {
               <tr id="htb_filter">
                 <th scope="col">Match Name</th>
 				<th scope="col">Player</th>
-                <!-- <th scope="col">Planned Starting Date</th> -->
                 <th scope="col">Status</th>
               </tr>
             </thead>
@@ -201,7 +169,6 @@ async function drawTournament(callback) {
           </table>
 		  <hr>
 		  <input id ="htb_create_button" class="button-img" type="button" value="Create tournament">
-		  <input id ="htb_delalias" class="button-img" type="button" value="Remove Alias (debug)">
 		  <div id="htb_create"></div>
 		  <div id="tournament_tree"></div>
 				</div>
@@ -213,7 +180,6 @@ async function drawTournament(callback) {
 		</div>
 `;
 
-	document.getElementById("htb_delalias").addEventListener("click", removeAlias);
 	let tour_list = await getTournamentsList();
 	let tour_list_name = [];
 
