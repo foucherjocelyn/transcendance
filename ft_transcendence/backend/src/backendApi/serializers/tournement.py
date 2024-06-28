@@ -10,6 +10,9 @@ class TournamentSerializer(serializers.ModelSerializer):
     player_usernames = serializers.ListField(
         child=serializers.CharField(), read_only=True
     )
+    ordered_players_usernames = serializers.ListField(
+        child=serializers.CharField(), read_only=True
+    )
     champion_username = serializers.CharField(
         source="champion.username", read_only=True
     )
@@ -24,6 +27,7 @@ class TournamentSerializer(serializers.ModelSerializer):
             "max_players",
             "status",
             "player_usernames",
+            "ordered_players_usernames",
             "champion_username",
             "created_at",
             "updated_at",
@@ -32,6 +36,7 @@ class TournamentSerializer(serializers.ModelSerializer):
             "id",
             "status",
             "player_usernames",
+            "ordered_players_usernames",
             "champion_username",
             "created_at",
             "updated_at",
@@ -39,9 +44,13 @@ class TournamentSerializer(serializers.ModelSerializer):
 
     def get_player_usernames(self, obj):
         return [player.username for player in obj.players.all()]
+    
+    def get_ordered_players_usernames(self, obj):
+        return [player.username for player in obj.ordered_players.all()]
 
     def to_representation(self, instance):
         instance.player_usernames = self.get_player_usernames(instance)
+        instance.ordered_players_usernames = self.get_ordered_players_usernames(instance)
         return super().to_representation(instance)
 
     def create(self, validated_data):

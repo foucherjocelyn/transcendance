@@ -320,6 +320,10 @@ urlpatterns = [
         "tournament/<int:tournament_id>/game/list",
         GameViewSet.as_view({"get": "listGamesByTournament"}),
     ),
+    path(
+        "tournament/<int:tournament_id>/players/order/update",
+        TournamentViewSet.as_view({"post": "updateOrderdPlayers"}),
+    ),
     # Notification
     path(
         "notifications", NotificationViewSet.as_view({"get": "list", "post": "create"})

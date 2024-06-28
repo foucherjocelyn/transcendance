@@ -111,6 +111,7 @@
     -   [Delete a tournament](#delete-a-tournament)
     -   [Update the champion of a tournament](#update-the-champion-of-a-tournament)
     -   [List all games in a tournament](#list-all-games-in-a-tournament)
+    -   [Update ordered players of tournament](#update-ordered-players-of-tournament)
 
 -   **Notifications**
     -   [Create a new notification](#create-a-new-notification)
@@ -1305,6 +1306,19 @@ authorization Bearer <token>
 ### Return
 
 -   A list of game objects ([Game](#game))
+
+## Update ordered players of tournament
+
+Only websocket can use this endpoint.
+
+```typescript
+POST /api/v1/tournament/<tournament_id>/players/order/update
+authorization Bearer <token>
+```
+
+### Return
+
+- A updated tournament object ([Tournament](#tournament))
 
 # Notifications
 
