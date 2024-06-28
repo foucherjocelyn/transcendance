@@ -121,7 +121,10 @@ function    get_sign_movement_paddle(user, keyCode)
         for (let i = 0; i < match.pongGame.listPaddle.length; i++)
         {
             const   paddle = match.pongGame.listPaddle[i];
-            if (paddle !== undefined && (paddle.control.left === keyCode || paddle.control.right === keyCode))
+            const   typePlayer = match.listPlayer[i].type;
+            
+            if (paddle !== undefined && typePlayer !== 'AI' &&
+                (paddle.control.left === keyCode || paddle.control.right === keyCode))
             {
                 movement_paddle_mode_offline(keyCode, paddle, match.pongGame);
                 return ;

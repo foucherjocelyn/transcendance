@@ -1,9 +1,14 @@
-const { webSocket } = require("../webSocket/webSocket");
+const { webSocket, define_user_by_ID } = require("../webSocket/webSocket");
 const { stop_finding_random_matches } = require("./matchmaking");
 const { send_data } = require("../webSocket/dataToClient");
 
 function    define_match(user)
 {
+    user = define_user_by_ID(user.id);
+    if (user === undefined) {
+        return undefined;
+    }
+    
     for (let i = 0; i < webSocket.listMatch.length; i++)
     {
         const   match = webSocket.listMatch[i];

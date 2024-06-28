@@ -33,7 +33,6 @@ async function    setup_game(match)
             await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
         }
     }
-    // console.table('--> create: ' + match.id);
 
     update_status_user(match, 'playing game');
 
