@@ -11,9 +11,10 @@ export function checkPasswordChange() {
 	//		return ;
 	//}
 	if (document.getElementById("p_oldpassword").value.length > 0 && document.getElementById("p_newpassword").value.length > 0 && document.getElementById("p_newpasswordconfirm").value.length > 0) {
-		if (!(document.getElementById("p_newpassword").value === document.getElementById("p_newpasswordconfirm").value))
-			console.log("new password and confirmation are different");
-		console.log("new password is valid");
+		if (!(document.getElementById("p_newpassword").value === document.getElementById("p_newpasswordconfirm").value)) {
+			notice("The new password and the confirmation must match", 1, "#D20000");
+			return;
+		}
 		return (true);
 	}
 	return (false);
