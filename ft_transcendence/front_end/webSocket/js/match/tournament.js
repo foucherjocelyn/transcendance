@@ -173,7 +173,7 @@ function create_list_player_tournament(listName) {
     });
 }
 
-function send_sign_create_tournament(sender)
+function send_sign_update_tournament_board(sender)
 {
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
@@ -244,11 +244,11 @@ async function start_tournament(tournamentID, sender)
     }
 
     // update status tournament on client
-    send_sign_create_tournament(champion);
+    send_sign_update_tournament_board(champion);
 }
 
 module.exports = {
     start_tournament,
-    send_sign_create_tournament,
+    send_sign_update_tournament_board,
     send_sign_join_tournament,
 };
