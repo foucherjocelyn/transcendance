@@ -112,10 +112,16 @@ function loadTournamentOwnerPanel(tour_obj) {
 		<input type="button" id="twr_owner_delete_button" class="button-img" value="Delete Tournament">
 		<hr>
 	`;
-	document.getElementById("twr_owner_start_button").addEventListener("click", () => {
-		if (tour_obj.status === "registering") {
+	document.getElementById("twr_owner_start_button").addEventListener("click", async () => {
+		console.log(tour_obj.player_usernames.length);
+		if (tour_obj.player_usernames.length <= 1)
+			{
+				notice("A tournament must have more than 1 player to start", 2, "#9e7400");	
+			}
+		else if (tour_obj.status === "registering") {
 			const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 			client.socket.send(JSON.stringify(sendData));
+			
 			notice("The tournament has now started", 2, "#00a33f");
 		}
 		else if (tour_obj.status === "progressing") {
@@ -142,6 +148,8 @@ export async function refresh_tour_waiting_room(tour_obj) {
 	if (getCookie("alias") && document.querySelector("#tournament_waiting_room")) {
 		tour_obj = await getTournamentInfoById(tour_obj.id);
 		renderTournamentTree(tour_obj);
+		if (tour_obj.owner_username === getCookie("username"))
+			loadTournamentOwnerPanel(tour_obj);
 		document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 		document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
 		document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
@@ -164,7 +172,7 @@ async function drawWaitingRoom(callback, tour_obj) {
 					<p id="twr_tour_status"></p>
 					<div id="tournament_tree"></div>
 					<div id="twr_owner_panel"></div>
-					<input type="button" id="twr_refresh_tour" class="button-img" value="Refresh">
+					<!-- <input type="button" id="twr_refresh_tour" class="button-img" value="Refresh"> -->
 					<br>
 					<input type="button" id="twr_leave" class="button-img" value="Unregister">
 					<input type="button" id="twr_back" class="button-img" value="Back">
@@ -177,9 +185,11 @@ async function drawWaitingRoom(callback, tour_obj) {
 		</div>
 `;
 	await refresh_tour_waiting_room(tour_obj);
+	/*
 	document.getElementById("twr_refresh_tour").addEventListener("click", async () => {
 		await refresh_tour_waiting_room(tour_obj);
 	});
+	//*/
 	if (tour_obj.owner_username === getCookie("username"))
 		loadTournamentOwnerPanel(tour_obj);
 	document.querySelector("#twr_back").addEventListener("click", () => {
