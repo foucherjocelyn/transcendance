@@ -55,7 +55,6 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'update list connection') {
             client.listUser = receivedData.content;
-            // console.table('-------------> nbr connections: ' + client.listUser.length);
         }
         if (receivedData.title === 'invite to play') {
             notice_invitation_play(receivedData);

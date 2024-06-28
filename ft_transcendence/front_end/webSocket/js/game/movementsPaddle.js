@@ -1,4 +1,3 @@
-const { webSocket } = require("../webSocket/webSocket");
 const { send_data } = require("../webSocket/dataToClient");
 const { check_collisions } = require("./movementsBall");
 const { update_status_objects } = require("./collisionsPoint");
@@ -117,12 +116,24 @@ function    get_sign_movement_paddle(user, keyCode)
         return ;
     }
 
-    const   index = match.listPlayer.findIndex(player => player.id === user.id);
-    const   paddle = match.pongGame.listPaddle[index];
-
-    (match.mode === 'offline') ?
-    movement_paddle_mode_offline(keyCode, paddle, match.pongGame) :
-    movement_paddle_mode_online(keyCode, paddle, match.pongGame);
+    if (match.mode === 'offline')
+    {
+        for (let i = 0; i < match.pongGame.listPaddle.length; i++)
+        {
+            const   paddle = match.pongGame.listPaddle[i];
+            if (paddle !== undefined && (paddle.control.left === keyCode || paddle.control.right === keyCode))
+            {
+                movement_paddle_mode_offline(keyCode, paddle, match.pongGame);
+                return ;
+            }
+        }
+    }
+    else
+    {
+        const   index = match.listPlayer.findIndex(player => player.id === user.id);
+        const   paddle = match.pongGame.listPaddle[index];
+        movement_paddle_mode_online(keyCode, paddle, match.pongGame);
+    }
 }
 
 module.exports = {
