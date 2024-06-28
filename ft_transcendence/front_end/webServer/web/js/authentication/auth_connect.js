@@ -6,7 +6,6 @@ import { domain_name, signIn, signOut } from "../backend_operation/authenticatio
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { client, dataToServer } from "../client/client.js";
-//import { request42Login } from "../backend_operation/forty_two_login.js";
 
 export async function classy_signOut(sourcename) {
 	let source;
@@ -57,7 +56,6 @@ async function checkConnect() {
 
 async function request42Login() {
     return new Promise((resolve, reject) => {
-		//let response = await axios.get();
 
         let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
 
@@ -81,9 +79,8 @@ async function request42Login() {
             form.appendChild(input);
         }
 
-        // Écouter l'événement de soumission du formulaire
         form.addEventListener('submit', () => {
-            resolve(); // Résoudre la promesse lorsque le formulaire est soumis
+            resolve();
         });
 
         document.body.appendChild(form);
@@ -108,7 +105,6 @@ function load_connectForm(callback) {
 			</form>
 			</div>
         <hr id="r_line2">
-      <!--  <p id="rb_forgot" name="rb_forgot" class="textlink">Forgot password</p> -->
         <p id="rb_signup" name="rb_signup" class="textlink">Create new account</p>
 		<p id="rb_signup42" name="rb_signup42" class="textlink">Login with 42</p>
 	</div>

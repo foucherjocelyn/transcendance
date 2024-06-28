@@ -122,11 +122,7 @@ function get_data_from_server(socket) {
             }
         }
         if (receivedData.title === 'joining tournament') {
-            //console.log("JOINING tournament signal-----------");
-            //console.log(receivedData.content);
-            //to_tournamentWaitingRoom("true", receivedData.content);
             refresh_tour_waiting_room(receivedData.content);
-
         }
         if (receivedData.title === 'delete alias') {
             removeAlias();

@@ -7,7 +7,7 @@ import { deleteTournament, getTournamentInfoById, getTournamentsList, joinTourna
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
-import { formatDate, to_tournament } from "./home_tournament.js";
+import { to_tournament } from "./home_tournament.js";
 import { renderTournamentTree } from "./tournamentTree/tournamentTree.js";
 import { client, dataToServer } from "../../client/client.js";
 import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
@@ -37,9 +37,6 @@ export async function checkClearMyAlias(my_username) {
 }
 
 async function checkTournamentAvailability(tour_obj) {
-	console.log("checkTournamentAvailability started");
-	//console.log("tour_obj start here");
-	//console.log(tour_obj);
 	await getMyInfo();
 	let my_username = getCookie("username");
 	if (!my_username) {
@@ -60,7 +57,6 @@ async function checkTournamentAvailability(tour_obj) {
 }
 
 export async function aliasJoinTournament(tour_obj) {
-	//console.log("User is joining, requesting alias");
 	let join_status = await checkTournamentAvailability(tour_obj);
 	tour_obj = await getTournamentInfoById(tour_obj.id);
 	if (join_status === true) {
@@ -80,7 +76,6 @@ export async function aliasJoinTournament(tour_obj) {
 			};
 			const joined_tour_obj = await joinTournament(tour_obj.id);
 			if (joined_tour_obj) {
-				//console.log("sending alias, to_tournament waiting room from aliasJointournament");
 				await addAlias(alias);
 				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
@@ -93,7 +88,6 @@ export async function aliasJoinTournament(tour_obj) {
 		return (false);
 	}
 	else if (join_status === "can join") {
-		//console.log("can join, to_tournament waiting room from aliasJointournament");
 		to_tournamentWaitingRoom("true", tour_obj);
 	}
 	else if (tour_obj.status === "progressing")
