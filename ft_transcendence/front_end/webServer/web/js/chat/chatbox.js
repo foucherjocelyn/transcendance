@@ -155,7 +155,7 @@ const muteUser = async (username) => {
         client.socket.send(JSON.stringify(sendData));
     }
 }
-
+    
 export const renderChatInput = async (friendUsername) => {
     const chattingWith = getCookie("chatboxOpenedWith");
     if (chattingWith !== friendUsername)

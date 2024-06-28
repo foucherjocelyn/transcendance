@@ -2,7 +2,7 @@ import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
 import { to_otpForm } from "./auth_otp.js";
 import { notice } from "./auth_main.js";
-import { signIn, signOut } from "../backend_operation/authentication.js";
+import { domain_name, signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { client, dataToServer } from "../client/client.js";
@@ -67,7 +67,7 @@ async function request42Login() {
 
         let params = {
             "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
-            "redirect_uri": "https://127.0.0.1:5500/",
+            "redirect_uri": `https://${domain_name}:5500/`,
             "scope": "",
             "state": "pass-through-value",
             "response_type": "code"
