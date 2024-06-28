@@ -17,13 +17,13 @@ function avatarCheckType(elem_name) {
 	let typechecker = document.getElementById(elem_name).value;
 	switch (typechecker.endsWith()) {
 		case ".png":
-				return (true);
+			return (true);
 		case ".jpg":
-				return (true);
+			return (true);
 		case ".jpeg":
-				return (true);
+			return (true);
 		default:
-				return (false);
+			return (false);
 	}
 }
 
@@ -32,6 +32,8 @@ export async function updateMyAvatar() {
 	if (avatar.files.length > 0 && avatarCheckType("p_avatar")) {
 		let avatarForm = new FormData();
 		avatarForm.append("avatar", document.getElementById("p_avatar").files[0]);
+		//const send_data = new dataToServer('', "", 'socket server');
+		//client.socket.send(JSON.stringify(send_data));
 		await uploadAvatar(avatarForm);
 		to_changeAvatar();
 	}

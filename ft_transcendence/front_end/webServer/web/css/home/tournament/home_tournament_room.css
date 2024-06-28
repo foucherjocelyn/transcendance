@@ -31,10 +31,17 @@
     text-align: center;
 }
 
+#twr_basic_info {
+    position: relative;
+    top: 6%;
+    text-align: center;
+}
+
 #twr_tour_name, #twr_tour_description, #twr_tour_start, #twr_tour_playernb, #twr_tour_status {
     margin: 0.5em 0;
     font-weight: bold;
     color: white;
+    margin-top: 20px;
 }
 
 #twr_tree {

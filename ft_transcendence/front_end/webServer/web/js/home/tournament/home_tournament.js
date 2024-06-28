@@ -11,20 +11,40 @@ import { notice } from "../../authentication/auth_main.js";
 import { addAlias } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
 
+// function	inspect_tourTree(tour_obj)
+// {
+// 	document.getElementById("frontpage").insertAdjacentHTML("beforeend", `
+// 		<div id="tour_expandtree">
+// 		<button id="t_expandtree_close" class="c-close-button"></button>
+// 		<div id="tournament_tree"></div>
+// 		</div>
+// 		`);
+// 	renderTournamentTree(tour_obj);
+// 	document.getElementById("t_expandtree_close").addEventListener("click", () => {
+// 		document.getElementById("t_expandtree").remove();
+// 	});
+// }
+
 function addLabel(tour_list, index) {
 	let player_nb = tour_list[index].player_usernames.length;
-	let newLabel;
-	newLabel = `<tr id="t_tourlabel${index}">
+	let newLabel = `
+<tr id="t_tourlabel${index}">
 <th scope="row">${tour_list[index].name}</th>
 <td>${player_nb}/${tour_list[index].max_players}</td>
 <td>${tour_list[index].status}</td>
-<div id="tour_expanddetails"></div>
-</tr>`;
+</tr>
+`;
 	document.getElementById("htb_info").insertAdjacentHTML("beforeend", newLabel);
 	if (tour_list[index].status === "registering") {
 		document.getElementById(`t_tourlabel${index}`).insertAdjacentHTML("beforeend",
-			`<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>`);
+			`
+			<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>
+			<td><input type="button" id="t_display_tourtree${index}" class="button-img" value="Show bracket"></td>
+			`);
 		document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
+		document.getElementById(`t_display_tourtree${index}`).addEventListener("click", () => {
+			to_tournamentWaitingRoom("false", tour_list[index], "spectator");
+		});
 	}
 }
 
