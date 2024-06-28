@@ -130,6 +130,9 @@ class Tournament(models.Model):
     players = models.ManyToManyField(
         User, related_name="tournament_players", default=list
     )
+    ordered_players = models.ManyToManyField(
+        User, related_name="tournament_ordered_players", default=list
+    )
     champion = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

@@ -184,6 +184,30 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament.save()
         serializer = self.get_serializer(tournament)
         return Response(serializer.data, status=200)
+    
+    @action(detail=True, methods=["post"])
+    def updateOrderdPlayers(self, request, tournament_id):
+        try:
+            tournament = Tournament.objects.get(id=tournament_id)
+        except Tournament.DoesNotExist:
+            return Response({"error": "Tournament not found"}, status=404)
+        players = request.data.get("players", None)
+        if not players:
+            return Response({"error": "Players not provided"}, status=400)
+        ordered_players = []
+        for player in players:
+            try:
+                user = User.objects.get(username=player)
+                # Check if the user is in the tournament
+                if not tournament.players.filter(id=user.id).exists():
+                    return Response({"error": "Player not in the tournament"}, status=400)
+            except User.DoesNotExist:
+                return Response({"error": "Player not found"}, status=404)
+            ordered_players.append(user)
+        tournament.ordered_players.set(ordered_players)
+        tournament.save()
+        serializer = self.get_serializer(tournament)
+        return Response(serializer.data, status=200)
 
     def get_permissions(self):
         if self.action in [
@@ -199,6 +223,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
             "updateChampion",
         ]:
             self.permission_classes = [IsAuthenticated]
+        elif self.action in ["updateOrderdPlayers"]:
+            self.permission_classes = [IsWebSocketServer]
         else:
             self.permission_classes = [IsAdminUser]
         return super().get_permissions()
