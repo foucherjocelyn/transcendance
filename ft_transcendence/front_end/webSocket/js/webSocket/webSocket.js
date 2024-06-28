@@ -42,21 +42,6 @@ function define_user_by_ID(userID) {
     return undefined;
 }
 
-async function  update_infor_user(user)
-{
-    const   infor = await create_request('GET', `/api/v1/users/${user.id}`, '');
-    for (let i = 0; i < webSocket.listUser.length; i++)
-    {
-        if (webSocket.listUser[i].id === user.id)
-        {
-            webSocket.listUser[i] = infor;
-            webSocket.listConnection[i].inforUser = infor;
-            send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
-            return ;
-        }
-    }
-}
-
 function handle_requirements(socket, title, content, sender, recipient) {
     if (sender.status === 'online') {
         if (title === 'disconnect') {
@@ -151,7 +136,6 @@ function check_requirements(data, socket) {
         else if (data.title === 'connection_42') {
             console.log("WebSocket: connection 42 initiating");
             console.log(data);
-            // let exstr = "This should display in console=========================";
             let newdata = new dataToClient("connection_42", data.content, 'server');
             newdata = JSON.stringify(newdata);
             socket.send(newdata);

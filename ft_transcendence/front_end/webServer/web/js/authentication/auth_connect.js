@@ -2,11 +2,10 @@ import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
 import { to_otpForm } from "./auth_otp.js";
 import { notice } from "./auth_main.js";
-import { signIn, signOut } from "../backend_operation/authentication.js";
+import { domain_name, signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { client, dataToServer } from "../client/client.js";
-//import { request42Login } from "../backend_operation/forty_two_login.js";
 
 export async function classy_signOut(sourcename) {
 	let source;
@@ -57,7 +56,6 @@ async function checkConnect() {
 
 async function request42Login() {
     return new Promise((resolve, reject) => {
-		//let response = await axios.get();
 
         let oauth2Endpoint = "https://api.intra.42.fr/oauth/authorize";
 
@@ -67,7 +65,7 @@ async function request42Login() {
 
         let params = {
             "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
-            "redirect_uri": "https://127.0.0.1:5500/",
+            "redirect_uri": `https://${domain_name}:5500/`,
             "scope": "",
             "state": "pass-through-value",
             "response_type": "code"
@@ -81,9 +79,8 @@ async function request42Login() {
             form.appendChild(input);
         }
 
-        // Écouter l'événement de soumission du formulaire
         form.addEventListener('submit', () => {
-            resolve(); // Résoudre la promesse lorsque le formulaire est soumis
+            resolve();
         });
 
         document.body.appendChild(form);
@@ -108,7 +105,6 @@ function load_connectForm(callback) {
 			</form>
 			</div>
         <hr id="r_line2">
-      <!--  <p id="rb_forgot" name="rb_forgot" class="textlink">Forgot password</p> -->
         <p id="rb_signup" name="rb_signup" class="textlink">Create new account</p>
 		<p id="rb_signup42" name="rb_signup42" class="textlink">Login with 42</p>
 	</div>

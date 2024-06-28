@@ -32,8 +32,6 @@ const requestListener = async function (req, res) {
 
     // where to use node
     __dirname = './';
-    // console.log(req.url);
-    // console.log('-----------------');
 
     if (req.url === '/') {
         filePath = path.join(__dirname, "./web/index.html");

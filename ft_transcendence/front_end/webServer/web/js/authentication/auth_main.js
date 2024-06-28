@@ -40,7 +40,7 @@ export async function	authCheck()
 {
 	await updateMyInfo();
 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
-	{//add securite
+	{
 		await updateMyInfo(true);
 		checkAddress();
 		return ("true");
@@ -62,8 +62,6 @@ const urlRoutes = {
 };
 
 window.onpopstate = function(event) {
-//	console.log("popstate detected");
-//	console.log(event.state);
 	if (event.state)
 	{
 		let url = event.state.url;

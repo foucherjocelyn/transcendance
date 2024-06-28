@@ -8,7 +8,7 @@ import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
 import { aliasJoinTournament, checkClearMyAlias, to_tournamentWaitingRoom } from "./home_tournament_room.js";
 import { notice } from "../../authentication/auth_main.js";
-import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_operation/alias.js";
+import { addAlias } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
 
 function addLabel(tour_list, index) {
@@ -58,20 +58,6 @@ function searchLabel(tour_list, search_value) {
 	else {
 		for (let i = 0; i < tour_list.length; i++)
 			addLabel(tour_list, i);
-	}
-}
-
-/* Get Date  */
-
-export function formatDate(given_date, bool_format) {
-	if (given_date) {
-		let formatted_date = given_date.replace("T", " ");
-		if (!bool_format)
-			formatted_date = formatted_date + ":00";
-		else if (bool_format) {
-			formatted_date = formatted_date.replace("Z", "");
-		}
-		return (formatted_date);
 	}
 }
 
