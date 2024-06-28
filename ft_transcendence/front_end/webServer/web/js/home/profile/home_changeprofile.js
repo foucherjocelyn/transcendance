@@ -56,21 +56,23 @@ export async function to_changeInfo() {
 	await getMyInfo();
 	document.getElementById("h_current_parameters").innerHTML =
 		`<br>
-<input type="text" id="p_username" placeholder="${getCookie("username")}"title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}" class="text_area">
+		<form id="p_update_info">
+<input type="text" id="p_username" placeholder="${getCookie('username')}" title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}" class="text_area">
 <br>
-<input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here")" class="text_area">
+<input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here" class="text_area">
 <br>
 <input type="password" id="p_newpassword" placeholder="New password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,30}$" title="Need minimum of one lowercase + uppercase + digit and must be 6 to 30 characters long" maxlength="30" class="text_area" disabled>
 <br>
 <input type="password" id="p_newpasswordconfirm" placeholder="Confirm new password" title="Must be the same as the new password" maxlength="30" class="text_area" disabled>
 <br>
-<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letters only" pattern="[a-zA-Z]{3,20}" class="text_area">
+<input type="text" id="p_firstname" placeholder="${getCookie("firstname")}" title="Letter only" pattern="[a-zA-Z]{3,20}" class="text_area">
 <br>
-<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letters only" pattern="[a-zA-Z]{3,console.log(getCookie("status"));20}" class="text_area">
+<input type="text" id="p_lastname" placeholder="${getCookie("lastname")}" title="Letter only" pattern="[a-zA-Z]{3,20}" class="text_area">
 <br>
 <input type="text" id="p_email" title="This cannot be changed" placeholder="${getCookie("email")}"  class="text_area_disabled" readonly>
 <hr id="p_div">
-<button class="button-img" type="button" id="p_change">Apply</button>
+<button class="button-img" type="submit" id="p_change">Apply</button>
+</form>
 `;
 
 	let old_password = document.getElementById("p_oldpassword");
@@ -92,7 +94,10 @@ export async function to_changeInfo() {
 		new_password.addEventListener("input", () => { enableInputReq(event, 'p_newpasswordconfirm'); });
 		new_password_confirm.addEventListener("input", () => { enableInputReq(event, 'p_newpasswordconfirm'); });
 	}
-	document.getElementById("p_change").addEventListener("click", () => { updateMyAccount(); });
+	document.getElementById("p_update_info").addEventListener("submit", () => {
+		event.preventDefault();
+		updateMyAccount();
+	});
 }
 
 async function drawEditProfilePage(callback) {

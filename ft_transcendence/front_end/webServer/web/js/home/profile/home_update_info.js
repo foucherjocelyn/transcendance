@@ -5,6 +5,11 @@ import { dataUpdate } from "../../backend_operation/data_update.js";
 import { client, dataToServer } from "../../client/client.js";
 
 export function checkPasswordChange() {
+	//if (!oldPasswordCheck())
+	//{
+	//		notice("Your old password is not valid", 1, "#D20000");
+	//		return ;
+	//}
 	if (document.getElementById("p_oldpassword").value.length > 0 && document.getElementById("p_newpassword").value.length > 0 && document.getElementById("p_newpasswordconfirm").value.length > 0) {
 		if (!(document.getElementById("p_newpassword").value === document.getElementById("p_newpasswordconfirm").value))
 			console.log("new password and confirmation are different");
@@ -54,15 +59,15 @@ export async function updateMyAccount() {
 		changes = 2;
 	}
 	if (document.getElementById("p_firstname").value.length > 0) {
-		newInfo.username = document.getElementById("p_username").value;
+		newInfo.first_name = document.getElementById("p_firstname").value;
 		changes = 3;
 	}
 	if (document.getElementById("p_lastname").value.length > 0) {
-		newInfo.username = document.getElementById("p_username").value;
+		newInfo.last_name = document.getElementById("p_lastname").value;
 		changes = 4;
 	}
 	if (document.getElementById("p_email").value.length > 0) {
-		newInfo.username = document.getElementById("p_username").value;
+		newInfo.email = document.getElementById("p_email").value;
 		changes = 5;
 	}
 	console.log(changes);
