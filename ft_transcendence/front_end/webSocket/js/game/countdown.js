@@ -55,16 +55,16 @@ function    handle_player_leave_match(match)
 function    check_position_of_ball(pongGame)
 {
     const   ball = pongGame.ball;
-    if (ball.collisionPoint.top < pongGame.limit.top) {
+    if (ball.collisionPoint.bottom < pongGame.limit.top) {
         pongGame.lostPoint = true;
     }
-    else if (ball.collisionPoint.bottom > pongGame.limit.bottom) {
+    else if (ball.collisionPoint.top > pongGame.limit.bottom) {
         pongGame.lostPoint = true;
     }
-    else if (ball.collisionPoint.left < pongGame.limit.left) {
+    else if (ball.collisionPoint.right < pongGame.limit.left) {
         pongGame.lostPoint = true;
     }
-    else if (ball.collisionPoint.right > pongGame.limit.right) {
+    else if (ball.collisionPoint.left > pongGame.limit.right) {
         pongGame.lostPoint = true;
     }
 }
