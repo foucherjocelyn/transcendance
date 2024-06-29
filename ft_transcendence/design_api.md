@@ -378,7 +378,12 @@ authorization Bearer <token>
 PUT /api/v1/profile/me
 authorization Bearer <token>
 {
-	... new data ...(not include level)
+	username: string, // optional
+	email: string, // optional
+	first_name: string, // optional
+	last_name: string, // optional
+	old_password: string, // if you want to change the password
+	new_password: string // if you want to change the password
 }
 ```
 
