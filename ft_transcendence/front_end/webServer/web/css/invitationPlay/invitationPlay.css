@@ -49,6 +49,9 @@
     height: 50px;
 
     border-radius: 50%;
+
+    border-color: #3395ff;
+    background-color: #101720;
 }
 
 #searchInvitationPlayBar > button > svg {
