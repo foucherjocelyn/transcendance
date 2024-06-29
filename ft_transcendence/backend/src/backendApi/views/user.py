@@ -129,12 +129,26 @@ class UserViewSet(viewsets.ModelViewSet):
         if isinstance(user, WebSocketUser):
             return Response({"error": "WebSocket cannot be retrieved"}, status=403)
         # Update user data
-        serializer = self.get_serializer(user, data=request.data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=200)
-        else:
-            return Response(serializer.errors, status=400)
+        first_name = request.data.get("first_name", None)
+        last_name = request.data.get("last_name", None)
+        username = request.data.get("username", None)
+        old_password = request.data.get("old_password", None)
+        new_password = request.data.get("new_password", None)
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+        if username:
+            user.username = username
+        if old_password:
+            if not verify_password(old_password, user.password):
+                return Response({"error": "Invalid old password"}, status=400)
+            if not new_password:
+                return Response({"error": "New password not provided"}, status=400)
+            user.password = new_password
+        user.save()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=200)
 
     @action(detail=True, methods=["post"])
     def uploadAvatarPicture(self, request):
