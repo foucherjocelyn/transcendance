@@ -74,9 +74,6 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'display invitation play layer') {
             display_invitation_play_layer(receivedData.content);
         }
-        if (receivedData.title === 'create match') {
-            create_match("with friends");
-        }
         if (receivedData.title === 'display loader') {
             display_loader(receivedData.content);
         }

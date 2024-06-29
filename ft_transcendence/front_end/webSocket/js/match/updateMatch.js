@@ -45,11 +45,11 @@ function    update_match(user)
         if (match.mode === 'ranked') {
             stop_finding_random_matches(user, match);
         }
-        // console.table('--> delete: ' + match.id);
         const   indexMatch = webSocket.listMatch.findIndex(check => check.id === match.id);
         webSocket.listMatch.splice(indexMatch, 1);
     }
     else if (user.status !== 'playing game' && match.pongGame === undefined) {
+        console.table(match.listUser)
         send_data('update match', match, user, match.listUser);
     }
 
