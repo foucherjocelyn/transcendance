@@ -49,7 +49,6 @@ function    update_match(user)
         webSocket.listMatch.splice(indexMatch, 1);
     }
     else if (user.status !== 'playing game' && match.pongGame === undefined) {
-        console.table(match.listUser)
         send_data('update match', match, user, match.listUser);
     }
 

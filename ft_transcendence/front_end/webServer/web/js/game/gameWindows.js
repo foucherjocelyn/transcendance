@@ -64,22 +64,31 @@ function    setup_camera_position(camera)
     }
     else
     {
-        const   wTable = gameSettings.size.table.width + 3;
-        const   hTable = gameSettings.size.table.height + 3;
+        const   wTable = gameSettings.size.table.width;
+        const   hTable = gameSettings.size.table.height;
 
         for (let i = 0; i < match.listPlayer.length; i++)
         {
             const   player = match.listPlayer[i];
+            let longest_side = (wTable > hTable) ? wTable : hTable;
             if (player.id === client.inforUser.id)
             {
-                if (i === 0) // left
-                    camera.position.set(-wTable, 20, 0);
-                else if (i === 1) // right
-                    camera.position.set(wTable, 20, 0);
-                else if (i === 2) // top
-                    camera.position.set(0, 20, -hTable);
-                else // bottom
-                    camera.position.set(0, 20, hTable);
+                if (i === 0) {
+                    // left
+                    camera.position.set(-longest_side, longest_side / 2, 0);
+                }
+                else if (i === 1) {
+                    // right
+                    camera.position.set(longest_side, longest_side / 2, 0);
+                }
+                else if (i === 2) {
+                    // top
+                    camera.position.set(0, longest_side / 2, -longest_side);
+                }
+                else {
+                    // bottom
+                    camera.position.set(0, longest_side / 2, longest_side);
+                }
                 return ;
             }
         }
