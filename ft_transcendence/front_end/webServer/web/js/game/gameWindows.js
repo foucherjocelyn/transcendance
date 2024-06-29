@@ -59,18 +59,18 @@ function    animation(renderer, scene, camera)
 
 function    setup_camera_position(camera)
 {
+    const   wTable = gameSettings.size.table.width;
+    const   hTable = gameSettings.size.table.height;
+    let longest_side = (wTable > hTable) ? wTable : hTable;
+
     if (match.mode === 'offline') {
-        camera.position.set(0, 50, 0);
+        camera.position.set(0, longest_side + 20, 0);
     }
     else
     {
-        const   wTable = gameSettings.size.table.width;
-        const   hTable = gameSettings.size.table.height;
-
         for (let i = 0; i < match.listPlayer.length; i++)
         {
             const   player = match.listPlayer[i];
-            let longest_side = (wTable > hTable) ? wTable : hTable;
             if (player.id === client.inforUser.id)
             {
                 if (i === 0) {
