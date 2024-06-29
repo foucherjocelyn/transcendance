@@ -52,6 +52,23 @@ function    handle_player_leave_match(match)
     send_data('draw paddles', '', 'server', match.listUser);
 }
 
+function    check_position_of_ball(pongGame)
+{
+    const   ball = pongGame.ball;
+    if (ball.collisionPoint.top < pongGame.limit.top) {
+        pongGame.lostPoint = true;
+    }
+    else if (ball.collisionPoint.bottom > pongGame.limit.bottom) {
+        pongGame.lostPoint = true;
+    }
+    else if (ball.collisionPoint.left < pongGame.limit.left) {
+        pongGame.lostPoint = true;
+    }
+    else if (ball.collisionPoint.right > pongGame.limit.right) {
+        pongGame.lostPoint = true;
+    }
+}
+
 function    start_game_ws(match)
 {
     const intervalId = setInterval(function()
@@ -69,6 +86,7 @@ function    start_game_ws(match)
         }
 
         // lost point
+        check_position_of_ball(match.pongGame);
         if (match.pongGame.lostPoint) {
             countdown(match);
             clearInterval(intervalId);
