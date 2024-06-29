@@ -60,7 +60,7 @@ function    animation(renderer, scene, camera)
 function    setup_camera_position(camera)
 {
     if (match.mode === 'offline') {
-        camera.position.set(0, 35, 0);
+        camera.position.set(0, 50, 0);
     }
     else
     {
