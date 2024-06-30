@@ -25,7 +25,7 @@ function addLabel(tour_list, index) {
 		document.getElementById(`t_tourlabel${index}`).insertAdjacentHTML("beforeend",
 			`
 			<td><input type="button" id="t_joinbutton${index}" class="button-img" value="Join"></td>
-			<td><input type="button" id="t_display_tourtree${index}" class="button-img" value="Show bracket"></td>
+			<td><input type="button" id="t_display_tourtree${index}" class="button-img" value="Check"></td>
 			`);
 		document.getElementById(`t_joinbutton${index}`).addEventListener("click", () => { aliasJoinTournament(tour_list[index]); });
 		document.getElementById(`t_display_tourtree${index}`).addEventListener("click", () => {

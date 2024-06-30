@@ -3,13 +3,9 @@ import { getOtpStatusToken, toggleOtpStatus } from "../../backend_operation/one_
 import { uploadAvatar } from "../../backend_operation/profile_picture.js";
 import { dataUpdate } from "../../backend_operation/data_update.js";
 import { client, dataToServer } from "../../client/client.js";
+import { notice } from "../../authentication/auth_main.js";
 
 export function checkPasswordChange() {
-	//if (!oldPasswordCheck())
-	//{
-	//		notice("Your old password is not valid", 1, "#D20000");
-	//		return ;
-	//}
 	if (document.getElementById("p_oldpassword").value.length > 0 && document.getElementById("p_newpassword").value.length > 0 && document.getElementById("p_newpasswordconfirm").value.length > 0) {
 		if (!(document.getElementById("p_newpassword").value === document.getElementById("p_newpasswordconfirm").value)) {
 			notice("The new password and the confirmation must match", 1, "#D20000");
@@ -56,7 +52,8 @@ export async function updateMyAccount() {
 		changes = 1;
 	}
 	if (checkPasswordChange() === true) {
-		newInfo.password = document.getElementById("p_newpassword").value;
+		newInfo.old_password = document.getElementById("p_oldpassword").value;
+		newInfo.new_password = document.getElementById("p_newpassword").value;
 		changes = 2;
 	}
 	if (document.getElementById("p_firstname").value.length > 0) {

@@ -6,22 +6,7 @@ import { getAvatar } from "../backend_operation/profile_picture.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { loadChat } from "../chat/load-chat.js";
 import { to_connectForm } from "../authentication/auth_connect.js"
-import { getAllMyGames, getAllMyScores, getMyInfo } from "../backend_operation/get_user_info.js";
-
-/*
-function	 newLabel()//
-{
-	let label;
-	label = `<tr class="h_scorelabel">
-<th scope="row">username</th>
-<td>level</td>
-<td>nb_games</td>
-<td>avg_score</td>
-</tr>`;
-	document.getElementById("hs_info").insertAdjacentHTML("beforeend", newLabel);
-	return (label);
-}
-*/
+import { getAllMyGames, getAllMyScores, getMyInfo } from "../backend_operation/get_user_info.js";	
 
 export async function	renderMatchHistory(username) {
 	const username_obj = { username };
@@ -29,8 +14,9 @@ export async function	renderMatchHistory(username) {
 	//console.log(myGames);
 	const myGamesSorted = myGames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 	const myScores = await getAllMyScores(username_obj);
+	const recentGames = myGamesSorted.slice(0, 6);
 	//console.log(myScores);
-	const matchTableBody = myGamesSorted.map(game => `
+	const matchTableBody = recentGames.map(game => `
 		<tr class="${game.winner_username === username_obj.username ? 'win' : 'loss'}">
 			<td>${game.mode}</td>
 			<td>${game.player_usernames.join('<br />')}</td>
