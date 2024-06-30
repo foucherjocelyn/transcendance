@@ -80,16 +80,18 @@ function    start_game_ws(match)
 
         // game over
         check_game_over(match);
-        if (match.pongGame.gameOver) {
+        if (match.pongGame.gameOver)
+        {
             clearInterval(intervalId);
             return;
         }
 
         // lost point
         check_position_of_ball(match.pongGame);
-        if (match.pongGame.lostPoint) {
-            countdown(match);
+        if (match.pongGame.lostPoint)
+        {
             clearInterval(intervalId);
+            countdown(match);
             return ;
         }
 
