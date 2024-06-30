@@ -87,7 +87,6 @@ function    start_game_ws(match)
         }
 
         // lost point
-        check_position_of_ball(match.pongGame);
         if (match.pongGame.lostPoint)
         {
             clearInterval(intervalId);
@@ -97,6 +96,7 @@ function    start_game_ws(match)
 
         update_status_objects(match.pongGame);
         movements_ball(match);
+        check_position_of_ball(match.pongGame);
         movement_AI(match.pongGame);
         send_data('movement ball', match.pongGame.ball.position, 'server', match.listUser);
     }, 20);
