@@ -2,8 +2,9 @@
     background-image: url(../../../img/background/card2.png);
     background-size: cover;
     border-radius: 4px;
-    width: 700px;
+    width: auto;
     height: auto;
+    min-width: 700px;
     min-height: 600px;
     padding: 10px;
     margin-top: 3%;
