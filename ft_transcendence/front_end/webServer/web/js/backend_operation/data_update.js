@@ -33,11 +33,11 @@ export async function dataUpdate(newInfo) {
 export async function updateMyInfo(connectFlag = false) {
 	let user_obj = await getMyInfo();
 
-	console.log(user_obj)
 	if (!user_obj) {
 		return (false);
 	}
 	if (connectFlag) {
+		console.log("opening socket client");
 		openSocketClient();
 	}
 	return (true);

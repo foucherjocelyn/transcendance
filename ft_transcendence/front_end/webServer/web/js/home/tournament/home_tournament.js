@@ -103,8 +103,8 @@ async function createTournamentSubmit(event, tour_list_name) {
 		};
 		if (tournamentCreateCheck(tour_list_name, createtour_info) === true) {
 			let newtour_obj = await createTournament(createtour_info);
-			console.log("the returned tour object:");
-			console.log(newtour_obj);
+			//console.log("the returned tour object:");
+			//console.log(newtour_obj);
 			if (newtour_obj) {
 				await addAlias(my_alias);
 				document.getElementById(`htb_create_menu`).outerHTML = ``;

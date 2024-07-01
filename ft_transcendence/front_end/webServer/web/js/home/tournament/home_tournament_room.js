@@ -123,9 +123,12 @@ function loadTournamentOwnerPanel(tour_obj) {
 		});
 		document.getElementById("twr_owner_delete_button").addEventListener("click", async () => {
 			if (tour_obj.status === "registering") {
+				console.log("deleting tournament....");
+				//console.log(tour_obj);
 				const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
 				await deleteTournament(tour_obj.id);
+				console.log("deleting complete.");
 			}
 			else {
 				notice("You cannot delete an ongoing tournament", 2, "#d11706");
@@ -221,6 +224,7 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj, mo
 		console.log("to_tournamentWaitingRoom need an a tour_obj");
 		return;
 	}
+	console.log("waitingroom = " + getCookie("alias"));
 	await drawWaitingRoom((result) => {
 		if (result) {
 			document.getElementById("loadspinner").classList.add("hide");

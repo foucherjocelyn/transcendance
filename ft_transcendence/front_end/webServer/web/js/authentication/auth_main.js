@@ -51,6 +51,22 @@ export async function	authCheck()
 	}
 }
 
+// export async function	authCheck()
+// {
+// 	await updateMyInfo();
+// 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
+// 	{
+// 		await updateMyInfo(true);
+// 		checkAddress();
+// 		return ("true");
+// 	}
+// 	else
+// 	{
+// 		to_connectForm();
+// 		return ("false");
+// 	}
+// }
+
 const urlRoutes = {
 	connect: () => to_connectForm("true"),
 	register: () => to_regisForm("true"),

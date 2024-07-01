@@ -67,6 +67,7 @@ function handle_requirements(socket, title, content, sender, recipient) {
             send_sign_update_tournament_board(sender);
         }
         else if (title === 'delete alias' || title === 'send notif') {
+            console.log("delete alias from websocket");
             send_to_all(content, sender, title);
         }
         else if (title === 'joining tournament') {
@@ -135,10 +136,12 @@ function check_requirements(data, socket) {
     const sender = define_user_by_socket(socket);
     if (sender === undefined) {
         if (data.title === 'connection') {
+            console.table(sender);
             connect(data.content.id, socket);
         }
     }
     else {
+        console.log('-----> send to ' + sender.username);
         let recipient = data.to;
         if (recipient === undefined) {
             return;

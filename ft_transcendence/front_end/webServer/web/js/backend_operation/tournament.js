@@ -52,8 +52,6 @@ export async function createTournament(tour_info) {
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await r.json();
-		console.log("createTournament data:");
-		console.log(data);
 		if (data !== undefined) {
 			return data;
 		}
@@ -202,8 +200,8 @@ export async function deleteTournament(tour_id) {
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await r.json();
-		console.log("deleteTournament data:");
-		console.log(data);
+		//console.log("deleteTournament data:");
+		//console.log(data);
 		if (data !== undefined) {
 			return data;
 		}
@@ -248,7 +246,6 @@ export async function setChampionTournament(tour_username) {
 }
 
 export async function getTournamentInfoById(tour_id) {
-	console.log("-Get tournaments info by id");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "") {
 		console.log("Token is null");
