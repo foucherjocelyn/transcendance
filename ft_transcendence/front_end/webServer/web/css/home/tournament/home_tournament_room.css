@@ -3,7 +3,8 @@
     background-size: cover;
     border-radius: 4px;
     width: 700px;
-    height: 600px;
+    height: auto;
+    min-height: 600px;
     padding: 10px;
     margin-top: 3%;
     margin-left: auto;
