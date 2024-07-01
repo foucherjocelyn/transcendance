@@ -6,6 +6,7 @@ import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
 import { getCookie } from "./auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
+import { openSocketClient } from "../backend_operation/authentication.js";
 
 export function notice(str, time, color)
 {
@@ -42,7 +43,7 @@ export async function	authCheck()
 
 	if (connected)
 	{
-		await updateMyInfo(true);
+		openSocketClient();
 		checkAddress();
 	}
 	else
@@ -50,22 +51,6 @@ export async function	authCheck()
 		to_connectForm();
 	}
 }
-
-// export async function	authCheck()
-// {
-// 	await updateMyInfo();
-// 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
-// 	{
-// 		await updateMyInfo(true);
-// 		checkAddress();
-// 		return ("true");
-// 	}
-// 	else
-// 	{
-// 		to_connectForm();
-// 		return ("false");
-// 	}
-// }
 
 const urlRoutes = {
 	connect: () => to_connectForm("true"),

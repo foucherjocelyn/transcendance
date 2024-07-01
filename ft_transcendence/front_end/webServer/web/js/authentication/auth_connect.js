@@ -1,11 +1,10 @@
 import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
 import { to_otpForm } from "./auth_otp.js";
-import { notice } from "./auth_main.js";
+import { authCheck, notice } from "./auth_main.js";
 import { domain_name, postUser, signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
-import { client, dataToServer } from "../client/client.js";
 
 export async function classy_signOut(sourcename) {
 	let source;
@@ -27,8 +26,6 @@ export async function classy_signOut(sourcename) {
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
 	await signOut();
-	const send_data = new dataToServer('disconnect', "", 'socket server');
-	client.socket.send(JSON.stringify(send_data));
 }
 
 async function checkConnect() {
@@ -110,6 +107,7 @@ function to_debugCreate()
 		};
 		await postUser(new_user);
 		await signIn(new_user);
+		await authCheck();//no need DEBUG
 	});
 }
 

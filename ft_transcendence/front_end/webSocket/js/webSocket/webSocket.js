@@ -134,6 +134,8 @@ function check_requirements(data, socket) {
     }
 
     const sender = define_user_by_socket(socket);
+    console.log(data.title);
+    
     if (sender === undefined) {
         if (data.title === 'connection') {
             console.table(sender);

@@ -30,15 +30,11 @@ export async function dataUpdate(newInfo) {
 }
 
 
-export async function updateMyInfo(connectFlag = false) {
+export async function updateMyInfo() {
 	let user_obj = await getMyInfo();
 
 	if (!user_obj) {
 		return (false);
-	}
-	if (connectFlag) {
-		console.log("opening socket client");
-		openSocketClient();
 	}
 	return (true);
 }
