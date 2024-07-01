@@ -32,6 +32,16 @@ function addLabel(tour_list, index) {
 			to_tournamentWaitingRoom("false", tour_list[index], "spectator");
 		});
 	}
+	if (tour_list[index].status === "progressing") {
+		document.getElementById(`t_tourlabel${index}`).insertAdjacentHTML("beforeend",
+			`
+			<td><input type="button" id="t_joinbutton${index}_disabled" class="button-img_disabled" value="Join"></td>
+			<td><input type="button" id="t_display_tourtree${index}" class="button-img" value="Check"></td>
+			`);
+		document.getElementById(`t_display_tourtree${index}`).addEventListener("click", () => {
+			to_tournamentWaitingRoom("false", tour_list[index], "spectator");
+		});
+	}
 }
 
 /* Sorting tournament  */

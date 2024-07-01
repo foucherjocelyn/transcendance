@@ -1,18 +1,20 @@
 import { getAliasFromUsername } from "../../../backend_operation/alias.js";
-import { getTournamentsGames } from "../../../backend_operation/tournament.js";
+import { getTournamentInfoById, getTournamentsGames } from "../../../backend_operation/tournament.js";
 
-export const renderTournamentTree = async (tournament) => {
+export const renderTournamentTree = async (tournamentId) => {
     document.getElementById("tournament_tree").innerHTML = `
     <div class="bracket" id="bracket">
     </div>`;
 
-    const participantAliasesMap = await Promise.all(tournament.player_usernames.map(async username => {
+    const tournament = await getTournamentInfoById(tournamentId);
+    const participants = tournament.ordered_players_usernames;
+    const participantAliasesMap = await Promise.all(participants.map(async username => {
         const alias = await getAliasFromUsername(username);
         return {username: username, alias: alias};
     }));
-    createBracket(tournament.player_usernames, participantAliasesMap);
-    const numberOfPlayers = tournament.player_usernames.length;
-    const tournamentGames = await getTournamentsGames(tournament.id);
+    createBracket(participants, participantAliasesMap);
+    const numberOfPlayers = participants.length;
+    const tournamentGames = await getTournamentsGames(tournamentId);
     const tournamentGamesEnded = tournamentGames.filter(game => game.status === "end");
     let currentRound = 1;
     let numberOfMatchesInCurrentRound = Math.floor(numberOfPlayers / 2);

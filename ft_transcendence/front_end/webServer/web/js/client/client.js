@@ -15,6 +15,7 @@ import { refresh_tour_waiting_room } from "../home/tournament/home_tournament_ro
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { domain_name } from "../backend_operation/authentication.js";
 import { notice } from "../authentication/auth_main.js";
+import { renderTournamentTree } from "../home/tournament/tournamentTree/tournamentTree.js";
 
 class userNotifications {
     constructor() {
@@ -142,6 +143,7 @@ function get_data_from_server(socket) {
             console.log('update tournament tree');
             console.table(receivedData.content);
             console.log('tournament ID: ' + receivedData.from);
+            renderTournamentTree(receivedData.from);
         }
     };
 }

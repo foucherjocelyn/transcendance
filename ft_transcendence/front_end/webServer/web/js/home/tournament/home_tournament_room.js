@@ -137,7 +137,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 export async function refresh_tour_waiting_room(tour_obj, mode) {
 	if (document.querySelector("#tournament_waiting_room")) {
 		tour_obj = await getTournamentInfoById(tour_obj.id);
-		renderTournamentTree(tour_obj);
+		renderTournamentTree(tour_obj.id);
 		document.getElementById("twr_tour_name").textContent = `Tournament Name : ${tour_obj.name} #${tour_obj.id}`;
 		document.getElementById("twr_tour_description").textContent = `Description : ${tour_obj.description}`;
 		document.getElementById("twr_tour_playernb").textContent = `Registered players : ${tour_obj.player_usernames.length}/${tour_obj.max_players}`;
