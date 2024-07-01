@@ -134,13 +134,6 @@ function check_requirements(data, socket) {
         if (data.title === 'connection') {
             connect(data.content.id, socket);
         }
-        else if (data.title === 'connection_42') {
-            console.log("WebSocket: connection 42 initiating");
-            console.log(data);
-            let newdata = new dataToClient("connection_42", data.content, 'server');
-            newdata = JSON.stringify(newdata);
-            socket.send(newdata);
-        }
     }
     else {
         let recipient = data.to;

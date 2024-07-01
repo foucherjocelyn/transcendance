@@ -11,7 +11,7 @@ import { display_countdown } from "../game/displayCountdown.js";
 import { display_button_game_over, display_game_over_layer } from "../game/gameOverLayer.js";
 import { change_color_border } from "../game/drawBorders.js";
 import { removeAlias } from "../backend_operation/alias.js";
-import { refresh_tour_waiting_room, to_tournamentWaitingRoom } from "../home/tournament/home_tournament_room.js";
+import { refresh_tour_waiting_room } from "../home/tournament/home_tournament_room.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { domain_name } from "../backend_operation/authentication.js";
 
@@ -135,10 +135,6 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'unmute') {
             renderChatInput(receivedData.from.username);
-        }
-        if (receivedData.title === 'connection_42') {
-            console.log("client.js connect 42 data:");
-            console.log(receivedData.content);
         }
         if (receivedData.title === 'update tournament tree') {
             console.log('update tournament tree');
