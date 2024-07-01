@@ -1,6 +1,6 @@
 import { getListFriendInvitationsReceived, updateFriendInviteStatus } from "../backend_operation/friend_invite.js";
 import { getListNotifications, markNotificationAsRead, postNotification } from "../backend_operation/notification.js";
-import { client, userMessages } from "../client/client.js";
+import { client, dataToServer, userMessages } from "../client/client.js";
 import { searchFriendList } from "./friend-list.js";
 import { getListFriends } from "./friend-list.js";
 
@@ -41,22 +41,23 @@ const friendInviteHasBeenDeclined = (sender) => {
     console.log(`${sender.username}${sender.id} declined your friend invite.`);
 };
 
-const acceptFriendInvite = async (id, sender) => {
-    await updateFriendInviteStatus(id, "accepted");
-    // const listFriends = getListFriends();
-    // listFriends.then(list => {
-    //     renderFriendList(list);
-    //     client.inforUser.listFriends = list;
-    // });
+const acceptFriendInvite = async (inviteId, senderUsername) => {
+    await updateFriendInviteStatus(inviteId, "accepted");
     searchFriendList();
-    removeFriendInvite(id);
-    postNotification({ username: sender, content: `${client.inforUser.username} accepted friend invite` });
+    removeFriendInvite(inviteId);
+    await postNotification({ username: senderUsername, content: `${client.inforUser.username} accepted friend invite` });
+    let sendData = new dataToServer('notification', '', client.listUser.find(user => user.username === senderUsername));
+    client.socket.send(JSON.stringify(sendData));
+    sendData = new dataToServer('new friend', '', client.listUser.find(user => user.username === senderUsername));
+    client.socket.send(JSON.stringify(sendData));
 };
 
-const declineFriendInvite = (id, sender) => {
-    updateFriendInviteStatus(id, "rejected");
-    removeFriendInvite(id);
-    postNotification({ username: sender, content: `${client.inforUser.username} declined friend invite` });
+const declineFriendInvite = async (inviteId, senderUsername) => {
+    await updateFriendInviteStatus(inviteId, "rejected");
+    removeFriendInvite(inviteId);
+    await postNotification({ username: senderUsername, content: `${client.inforUser.username} declined friend invite` });
+    const sendData = new dataToServer('notification', '', client.listUser.find(user => user.username === senderUsername));
+    client.socket.send(JSON.stringify(sendData));
 };
 
 const receiveFriendInvite = (id, sender) => {

@@ -16,6 +16,8 @@ import { to_tournament } from "../home/tournament/home_tournament.js";
 import { domain_name } from "../backend_operation/authentication.js";
 import { notice } from "../authentication/auth_main.js";
 import { renderTournamentTree } from "../home/tournament/tournamentTree/tournamentTree.js";
+import { renderNotifications } from "../chat/notifications.js";
+import { searchFriendList } from "../chat/friend-list.js";
 
 class userNotifications {
     constructor() {
@@ -138,6 +140,15 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'unmute') {
             renderChatInput(receivedData.from.username);
+        }
+        if (receivedData.title === 'notification') {
+            renderNotifications();
+        }
+        if (receivedData.title === 'new friend') {
+            searchFriendList();
+        }
+        if (receivedData.title === 'remove friend') {
+            searchFriendList();
         }
         if (receivedData.title === 'update tournament tree') {
             console.log('update tournament tree');
