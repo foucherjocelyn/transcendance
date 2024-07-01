@@ -100,6 +100,8 @@ const renderNotifications = async () => {
                 <div>
             </div>`);
         const notificationElem = document.getElementById(`notification-${notification.id}`);
+        if (!notificationElem)
+            return ;
         notificationElem.querySelector(".close").addEventListener("click", () => {
             const r = markNotificationAsRead(notification.id);
             r.then(() => {
