@@ -14,7 +14,9 @@ export async function	checkInput2FA()
 	{
 		document.getElementById("p_2fa_enable").setAttribute("checked", "");
 		const	qrCode = await getOtpQR();
-		document.getElementById("p_2fa").insertAdjacentHTML("afterend", `<img id="p_qr_code" name="qr_code" src="${qrCode}">`);
+		document.getElementById("p_2fa").insertAdjacentHTML("afterend", `
+			<img id="p_qr_code" name="qr_code" src="${qrCode}">
+			`);
 	}
 	else if (OtpStatus === false)
 		document.getElementById("p_2fa_disable").setAttribute("checked", "");

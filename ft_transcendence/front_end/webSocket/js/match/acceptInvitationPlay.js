@@ -1,3 +1,4 @@
+const { removeAlias } = require("../../../webServer/web/js/backend_operation/alias");
 const { send_data } = require("../webSocket/dataToClient");
 const { inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
@@ -30,6 +31,10 @@ function    leave_match(user)
         if (player.id === user.id)
         {
             // admin leave
+            if (match.mode === 'tournament') {
+                removeAlias();
+            }
+            
             (player.id === match.admin.id && user.status === 'creating match' && match.listUser.length > 1) ?
             change_match_admin(match) :
             match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
