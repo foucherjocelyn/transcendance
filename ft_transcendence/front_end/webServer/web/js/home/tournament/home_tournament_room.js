@@ -125,6 +125,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 		});
 		document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
 			if (tour_obj.status === "registering") {
+				removeAlias();
 				deleteTournament(tour_obj.id);
 				to_tournament("false");
 				const send_data = new dataToServer('update tournament board', "", 'socket server');
