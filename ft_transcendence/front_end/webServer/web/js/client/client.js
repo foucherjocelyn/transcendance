@@ -141,6 +141,7 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'update tournament tree') {
             console.log('update tournament tree');
             console.table(receivedData.content);
+            console.log('tournament ID: ' + receivedData.from);
         }
     };
 }

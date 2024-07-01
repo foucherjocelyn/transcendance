@@ -18,20 +18,22 @@ class MatchMaking {
         }
     }
 
-    async generateMatches(tournamentName) {
+    async generateMatches(tournamentID, tournamentName) {
         let roundNumber = 1;
     
         // Shuffle players before the first round
         if (roundNumber === 1) {
             this.shufflePlayers();
+            const orderedPlayersUsername = this.players.map(player => player.username);
+            const response = await create_request("POST", `/api/v1/tournament/${tournamentID}/players/order/update`, {"players" : orderedPlayersUsername});
         }
-    
+
         let currentRound = this.players;
         while (currentRound.length > 1) {
             const matches = [];
     
             // Send signal to update tournament tree
-            send_data("update tournament tree", currentRound, "server", currentRound);
+            send_data("update tournament tree", currentRound, tournamentID, currentRound);
             await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds
     
             for (let i = 0; i < currentRound.length; i += 2) {
@@ -262,7 +264,7 @@ async function start_tournament(tournamentID, sender)
     // call matchmaking
     const listPlayer = await create_list_player_tournament(tournament.player_usernames);
     const matchMaker = new MatchMaking(listPlayer);
-    const champion = await matchMaker.generateMatches(tournament.name);
+    const champion = await matchMaker.generateMatches(tournament.id, tournament.name);
 
     // sign end tournament
     await create_request("POST", `/api/v1/tournament/${tournament.id}/end`, "");
