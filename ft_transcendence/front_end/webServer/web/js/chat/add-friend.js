@@ -1,4 +1,4 @@
-import { client } from "../client/client.js";
+import { client, dataToServer } from "../client/client.js";
 import { getCookie } from "../authentication/auth_cookie.js";
 import { getListFriends } from "./friend-list.js";
 import { getListUsers } from "../backend_operation/get_user_info.js";
@@ -49,8 +49,11 @@ export const searchFindNewFriendWindow = async () => {
         });
         document.querySelectorAll(".c-send-friend-invite").forEach(user => {
             const userUsername = user.id.substring().slice(21);
-            user.addEventListener("click", (e) => {
-                sendFriendInvite(userUsername);
+            user.addEventListener("click", async (e) => {
+                await sendFriendInvite(userUsername);
+                console.log(listUsers);
+                const sendData = new dataToServer('notification', '', listUsers.find(user => user.username === userUsername));
+                client.socket.send(JSON.stringify(sendData));
                 searchFindNewFriendWindow();
             });
         });

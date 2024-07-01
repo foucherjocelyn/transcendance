@@ -44,12 +44,10 @@ export async function	authCheck()
 	{
 		await updateMyInfo(true);
 		checkAddress();
-		return ("true");
 	}
 	else
 	{
 		to_connectForm();
-		return ("false");
 	}
 }
 

@@ -31,13 +31,11 @@ export async function dataUpdate(newInfo) {
 
 
 export async function updateMyInfo(connectFlag = false) {
-	let user_profile = await getMyInfo();
-	console.log("user_profile here:");
-	console.log(user_profile);
+	let user_obj = await getMyInfo();
 
-	if (!user_profile)
+	if (!user_obj) {
 		return (false);
-	
+	}
 	if (connectFlag) {
 		console.log("opening socket client");
 		openSocketClient();
