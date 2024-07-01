@@ -3,7 +3,7 @@ import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { loadChat } from "../../chat/load-chat.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { deleteTournament, getTournamentInfoById, getTournamentsList, joinTournament, leaveTournament, setChampionTournament, startTournament } from "../../backend_operation/tournament.js";
+import { deleteTournament, getTournamentInfoById, getTournamentsList, joinTournament, leaveTournament } from "../../backend_operation/tournament.js";
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { notice } from "../../authentication/auth_main.js";
@@ -113,8 +113,6 @@ function loadTournamentOwnerPanel(tour_obj) {
 			else if (tour_obj.status === "registering") {
 				const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(sendData));
-
-				notice("The tournament has now started", 2, "#00a33f");
 			}
 			else if (tour_obj.status === "progressing") {
 				notice("This tournament has already started", 2, "#9e7400");
@@ -123,13 +121,11 @@ function loadTournamentOwnerPanel(tour_obj) {
 				notice("This tournament is over", 2, "#bd0606");
 			}
 		});
-		document.getElementById("twr_owner_delete_button").addEventListener("click", () => {
+		document.getElementById("twr_owner_delete_button").addEventListener("click", async () => {
 			if (tour_obj.status === "registering") {
-				removeAlias();
-				deleteTournament(tour_obj.id);
-				to_tournament("false");
-				const send_data = new dataToServer('update tournament board', "", 'socket server');
+				const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
+				await deleteTournament(tour_obj.id);
 			}
 			else {
 				notice("You cannot delete an ongoing tournament", 2, "#d11706");
@@ -177,11 +173,7 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 		</div>
 `;
 	await refresh_tour_waiting_room(tour_obj, mode);
-	/*
-	document.getElementById("twr_refresh_tour").addEventListener("click", async () => {
-		await refresh_tour_waiting_room(tour_obj, mode);
-	});
-	//*/
+
 	if (mode && mode === "spectator") {
 		document.getElementById("twr_board").insertAdjacentHTML("beforeend", `
 			<input type="button" id="twr_back" class="button-img" value="Back">
@@ -206,7 +198,6 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 				to_tournament("false");
 			}
 			else {
-				//send warning and disqualify if continue?
 				notice("You cannot leave a tournament once it has started", 2, "#d11706")
 			}
 		});

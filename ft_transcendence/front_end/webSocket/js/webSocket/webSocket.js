@@ -66,6 +66,9 @@ function handle_requirements(socket, title, content, sender, recipient) {
         else if (title === 'update tournament board') {
             send_sign_update_tournament_board(sender);
         }
+        else if (title === 'delete alias' || title === 'send notif') {
+            send_to_all(content, sender, title);
+        }
         else if (title === 'joining tournament') {
             send_sign_join_tournament(title, content);
         }
@@ -200,7 +203,7 @@ const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
-const { start_tournament, send_sign_join_tournament, send_sign_update_tournament_board } = require("../match/tournament");
+const { start_tournament, send_sign_join_tournament, send_sign_update_tournament_board, send_to_all } = require("../match/tournament");
 const { url } = require("inspector");const { create_request } = require("../dataToDB/createRequest");
 const { userInfo } = require("os");
 

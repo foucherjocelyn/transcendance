@@ -14,6 +14,7 @@ import { removeAlias } from "../backend_operation/alias.js";
 import { refresh_tour_waiting_room } from "../home/tournament/home_tournament_room.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { domain_name } from "../backend_operation/authentication.js";
+import { notice } from "../authentication/auth_main.js";
 
 class userNotifications {
     constructor() {
@@ -123,6 +124,10 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'delete alias') {
             removeAlias();
+            to_tournament("false");
+        }
+        if (receivedData.title === 'send notif') {
+            notice("The tournament is about to start", 2, "#00a33f");
         }
         if (receivedData.title === 'display exit match') {
             display_button_game_over(receivedData.content);

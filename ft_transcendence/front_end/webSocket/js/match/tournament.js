@@ -222,6 +222,22 @@ async function send_sign_join_tournament(title, tournamentID)
     });
 }
 
+async function  send_to_all(tournamentID, sender, title)
+{
+    // check number tournament ID from client
+    if (tournamentID === undefined || !isNumeric(tournamentID)) {
+        return;
+    }
+
+    const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    if (sender.username !== tournament.owner_username) {
+        return ;
+    }
+    
+    const listPlayer = await create_list_player_tournament(tournament.player_usernames);
+    send_data(title, "", "server", listPlayer);
+}
+
 async function start_tournament(tournamentID, sender)
 {
     // check number tournament ID from client
@@ -236,6 +252,9 @@ async function start_tournament(tournamentID, sender)
     if (sender.username !== tournament.owner_username || tournament.player_usernames.length < 2) {
         return;
     }
+
+    // notify all users that the tournament is about to start
+    send_to_all(tournament.id, sender, 'send notif');
 
     // sign start tournament
     await create_request("POST", `/api/v1/tournament/${tournament.id}/start`, "");
@@ -256,10 +275,7 @@ async function start_tournament(tournamentID, sender)
     console.log(`The champion is: ${champion.username}`);
 
     // send sign delete alias
-    for (let i = 0; i < listPlayer.length; i++) {
-        let user = listPlayer[i];
-        send_data("delete alias", "", "server", user);
-    }
+    send_to_all(tournament.id, sender, 'delete alias');
 
     // update status tournament on client
     send_sign_update_tournament_board(champion);
@@ -269,4 +285,5 @@ module.exports = {
     start_tournament,
     send_sign_update_tournament_board,
     send_sign_join_tournament,
+    send_to_all
 };
