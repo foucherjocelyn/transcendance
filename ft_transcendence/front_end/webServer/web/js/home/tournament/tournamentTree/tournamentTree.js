@@ -2,7 +2,10 @@ import { getAliasFromUsername } from "../../../backend_operation/alias.js";
 import { getTournamentInfoById, getTournamentsGames } from "../../../backend_operation/tournament.js";
 
 export const renderTournamentTree = async (tournamentId) => {
-    document.getElementById("tournament_tree").innerHTML = `
+    const tournamentTree = document.getElementById("tournament_tree")
+    if (!tournamentTree)
+        return;
+    tournamentTree.innerHTML = `
     <div class="bracket" id="bracket">
     </div>`;
 
