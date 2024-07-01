@@ -124,8 +124,10 @@ function get_data_from_server(socket) {
             refresh_tour_waiting_room(receivedData.content);
         }
         if (receivedData.title === 'delete alias') {
+            console.log("delete alias from client: starting ");
             removeAlias();
             to_tournament("false");
+            console.log("delete alias from client: complete");
         }
         if (receivedData.title === 'send notif') {
             notice("The tournament is about to start", 2, "#00a33f");

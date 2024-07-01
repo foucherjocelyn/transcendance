@@ -38,8 +38,9 @@ function checkAddress()
 
 export async function	authCheck()
 {
-	await updateMyInfo();
-	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
+	let connected = await updateMyInfo();
+
+	if (connected)
 	{
 		await updateMyInfo(true);
 		checkAddress();
@@ -51,6 +52,22 @@ export async function	authCheck()
 		return ("false");
 	}
 }
+
+// export async function	authCheck()
+// {
+// 	await updateMyInfo();
+// 	if (getCookie("token") != null && getCookie("token") != "" && getCookie("status") === "online")
+// 	{
+// 		await updateMyInfo(true);
+// 		checkAddress();
+// 		return ("true");
+// 	}
+// 	else
+// 	{
+// 		to_connectForm();
+// 		return ("false");
+// 	}
+// }
 
 const urlRoutes = {
 	connect: () => to_connectForm("true"),

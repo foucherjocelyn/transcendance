@@ -227,6 +227,7 @@ async function send_sign_join_tournament(title, tournamentID)
 async function  send_to_all(tournamentID, sender, title)
 {
     // check number tournament ID from client
+    console.log("send_to_all id: " + tournamentID);
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
     }
