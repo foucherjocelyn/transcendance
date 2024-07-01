@@ -53,7 +53,17 @@ function    finding_random_matches(match)
             return true;
         }
 
-        if (match.id !== match2.id && user1.level === user2.level && check_type_player(match, match2))
+        // swap level
+        let bigLevel = user1.level;
+        let smallLevel = user2.level;
+        
+        if (bigLevel < smallLevel) {
+            let tmp = bigLevel;
+            bigLevel = smallLevel;
+            smallLevel = tmp;
+        }
+
+        if (match.id !== match2.id && (bigLevel - smallLevel <= 1) && check_type_player(match, match2))
         {
             listPlayer.push(user2);
             listMatch.push(match2);

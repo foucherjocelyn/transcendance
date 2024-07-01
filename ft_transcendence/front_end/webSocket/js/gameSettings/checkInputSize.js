@@ -11,8 +11,8 @@ function    check_game_settings_size_table(gameSettings)
         return false;
     }
 
-    table.width = Math.min(Math.max(table.width, 30), 100);
-    table.height = Math.min(Math.max(table.height, 30), 100);
+    table.width = Math.min(Math.max(table.width, 30), 50);
+    table.height = Math.min(Math.max(table.height, 30), 50);
 
     if (table.width % 2 === 0) {
         table.width++;

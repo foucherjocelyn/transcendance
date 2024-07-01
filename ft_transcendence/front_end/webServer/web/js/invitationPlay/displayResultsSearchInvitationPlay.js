@@ -36,7 +36,7 @@ function    display_results_search_friends_to_play_on_html(user)
 
     const   idInvitationPlay = document.createElement('span');
     idInvitationPlay.className = 'idInvitationPlay';
-    idInvitationPlay.textContent = user.id;
+    idInvitationPlay.textContent = `ID: ${user.id} - ${user.username}`;
 
     div.appendChild(avatarInvitationPlay);
     div.appendChild(idInvitationPlay);
@@ -53,16 +53,19 @@ function    display_results_search_friends_to_play_on_html(user)
 
 export async function    display_results_search_friends_to_play(results)
 {
-    if (results.length === 0)
+    if (results.length === 0) {
         return ;
+    }
 
     // delete old results
-    if (document.querySelectorAll('#resultsSearchInvitationPlayPanel > div').length !== 0)
+    if (document.querySelectorAll('#resultsSearchInvitationPlayPanel > div').length !== 0) {
         await reset_contents_in_invitation_play_layer();
+    }
 
     results.forEach((result, index) => {
-        if (index < 10)
+        if (index < 10) {
             display_results_search_friends_to_play_on_html(result);
+        }
     })
 
     get_sign_invite_to_play_button(results);
