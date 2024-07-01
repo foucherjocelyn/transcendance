@@ -1,8 +1,8 @@
 import { loadSpinner } from "./spinner.js";
 import { to_regisForm } from "./auth_register.js";
 import { to_otpForm } from "./auth_otp.js";
-import { authCheck, notice } from "./auth_main.js";
-import { domain_name, postUser, signIn, signOut } from "../backend_operation/authentication.js";
+import { notice } from "./auth_main.js";
+import { domain_name, openSocketClient, postUser, signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 
@@ -107,7 +107,7 @@ function to_debugCreate()
 		};
 		await postUser(new_user);
 		await signIn(new_user);
-		await authCheck();//no need DEBUG
+		openSocketClient();
 	});
 }
 
