@@ -92,6 +92,7 @@ export async function getMyInfo() {
 			document.cookie = `status=${data.status}; SameSite=Strict`;
 			document.cookie = `is_staff=${data.is_staff}; SameSite=Strict`;
 			document.cookie = `is_admin=${data.is_superuser}; SameSite=Strict`;
+			return (data);
 		}
 	} catch (error) {
 		console.error("getMyInfo: ", error);

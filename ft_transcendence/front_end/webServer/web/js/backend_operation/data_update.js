@@ -31,13 +31,14 @@ export async function dataUpdate(newInfo) {
 
 
 export async function updateMyInfo(connectFlag = false) {
-	await getMyInfo();
+	let user_obj = await getMyInfo();
 
-	client.inforUser = await getUserById(getCookie('id'));
-	if (client.inforUser !== undefined)
-		client.inforUser.avatarPath = "../img/avatars/default.png";//temp
-
+	console.log(user_obj)
+	if (!user_obj) {
+		return (false);
+	}
 	if (connectFlag) {
 		openSocketClient();
 	}
+	return (true);
 }

@@ -40,10 +40,10 @@ async function    connect(userID, socket)
     webSocket.listUser.push(inforUser);
     
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
-    // await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
+    await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
 }
 
-function    disconnect(socket)
+async function    disconnect(socket)
 {
     for (let i = 0; i < webSocket.listConnection.length; i++)
     {
@@ -58,6 +58,7 @@ function    disconnect(socket)
             webSocket.listConnection.splice(i, 1);
             webSocket.listUser.splice(i, 1);
             send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
+            await create_request('POST', `/api/v1/users/${user.id}/status/update`, { status: 'offline' });
             return ;
         }
     }
