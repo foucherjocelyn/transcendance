@@ -22,7 +22,7 @@ const loadChat = () => {
     chatDiv.innerHTML = `<div id="c-find-new-friend-window" class="hidden">
     <button class="c-close-button">&times;</button>
     <h3>Add New Friend</h3>
-    <input id="c-find-new-friend-input" name="user-name" type="text" placeholder="User name">
+    <input id="c-find-new-friend-input" name="user-name" type="text" placeholder="User name" maxlength="32">
     <div class="user-list"></div>
 </div>
 <div id="c-notifications-window" class="hidden">
@@ -44,7 +44,7 @@ const loadChat = () => {
         <div id="c-friends-list">
         </div>
         <div id="c-search-friend-list">
-            <input id="c-search-friend-list-input" name="friend name" type="text" placeholder="Friend name">
+            <input id="c-search-friend-list-input" name="friend name" type="text" placeholder="Friend name" maxlength="32">
         </div>
     </div>
 </div>
