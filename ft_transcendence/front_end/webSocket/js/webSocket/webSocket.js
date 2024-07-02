@@ -18,6 +18,9 @@ async function    update_informations_user(sender)
             webSocket.listUser[i] = infor;
             webSocket.listConnection[i].user = infor;
             console.table(webSocket.listUser[i]);
+
+            send_data('update infor user', infor, 'server', infor);
+            send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
             return ;
         }
     }
@@ -137,16 +140,13 @@ function check_requirements(data, socket) {
         return;
     }
     const sender = define_user_by_socket(socket);
-    console.log(data.title);
-    
     if (sender === undefined) {
         if (data.title === 'connection') {
-            console.table(sender);
-            connect(data.content.id, socket);
+            connect(data.content, socket);
         }
     }
-    else {
-        console.log('-----> send to ' + sender.username);
+    else
+    {
         let recipient = data.to;
         if (recipient === undefined) {
             return;
