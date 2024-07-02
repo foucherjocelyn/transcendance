@@ -51,7 +51,7 @@
     height: 400px;
 }
 
-#twr_back {
+#twr_back, #twr_back_disabled {
     align-self: flex-start;
     margin-left: 10px;
     margin-bottom: 1em;

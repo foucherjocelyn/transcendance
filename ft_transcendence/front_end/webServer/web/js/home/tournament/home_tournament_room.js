@@ -111,12 +111,6 @@ function loadTournamentOwnerPanel(tour_obj) {
 				notice("A tournament must have more than 1 player to start", 2, "#9e7400");
 			}
 			else if (tour_obj.status === "registering") {
-				document.getElementById("twr_owner_delete_button").setAttribute("class", "button-img_disabled");
-				document.getElementById("twr_owner_delete_button").id = "twr_owner_delete_button_disabled";
-				document.getElementById("twr_back").setAttribute("class", "button-img_disabled");
-				document.getElementById("twr_back").id = "twr_back_disabled";
-				document.getElementById("twr_leave").setAttribute("class", "button-img_disabled");
-				document.getElementById("twr_leave").id = "twr_leave_disabled";
 				const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(sendData));
 			}

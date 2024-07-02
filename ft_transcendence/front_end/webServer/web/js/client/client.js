@@ -137,6 +137,18 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'send notif') {
             notice("The tournament is about to start", 2, "#00a33f");
+            let host_delete = document.getElementById("twr_owner_delete_button");
+            if (host_delete)
+                {
+                    host_delete.outerHTML = `<input type="button" id="twr_owner_delete_button_disabled" class="button-img_disabled" value="Delete Tournament">`;
+                }
+                let leave_button = document.getElementById("twr_leave");
+                let back_button = document.getElementById("twr_back");
+                if (leave_button && back_button)
+                    {
+                        leave_button.outerHTML = `<input type="button" id="twr_leave_disabled" class="button-img_disabled" value="Unregister">`;
+				        back_button.outerHTML = `<input type="button" id="twr_back_disabled" class="button-img_disabled" value="Back">`;
+                    }
         }
         if (receivedData.title === 'display exit match') {
             display_button_game_over(receivedData.content);
