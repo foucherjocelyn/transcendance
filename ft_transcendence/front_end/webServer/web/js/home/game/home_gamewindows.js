@@ -26,6 +26,7 @@ export function    gameOverHTML()
                     <button>
                         <span>Play again</span>
                     </button>
+                     <button style="display: none;">Continue</button>
                 </div>
             </div>
         </div>

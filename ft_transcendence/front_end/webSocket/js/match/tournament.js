@@ -33,13 +33,14 @@ class MatchMaking {
             const matches = [];
     
             // Send signal to update tournament tree
-            send_data("update tournament tree", currentRound, tournamentID, currentRound);
+            // send_data("update tournament tree", currentRound, tournamentID, currentRound);
+            send_data("update tournament tree", tournamentID, 'server', currentRound);
             await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds
     
             for (let i = 0; i < currentRound.length; i += 2) {
                 const player1 = currentRound[i];
                 const player2 = i + 1 < currentRound.length ? currentRound[i + 1] : null;
-                matches.push(this.simulateMatch(player1, player2, tournamentName, currentRound.length));
+                matches.push(this.simulateMatch(player1, player2, tournamentID, tournamentName, currentRound.length));
             }
     
             // Wait for all matches in the current round to complete
@@ -66,7 +67,7 @@ class MatchMaking {
         });
     }
 
-    async simulateMatch(player1, player2, tournamentName, nbrPlayer)
+    async simulateMatch(player1, player2, tournamentID, tournamentName, nbrPlayer)
     {
         if (player1 === null || player2 === null)
         {
@@ -92,6 +93,7 @@ class MatchMaking {
         // create match + run
         await create_match_tournament(player1, player2, nbrPlayer);
         const match = define_match(player1);
+        match.tournamentID = tournamentID,
         match.tournamentName = tournamentName;
         setup_game(match);
 
