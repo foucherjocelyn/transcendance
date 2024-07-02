@@ -98,6 +98,7 @@ function    start_game_ws(match)
         movements_ball(match);
         check_position_of_ball(match.pongGame);
 
+        // update AI after 1 seconde
         setTimeout(function() {
             movement_AI(match.pongGame);
         }, 1000);
