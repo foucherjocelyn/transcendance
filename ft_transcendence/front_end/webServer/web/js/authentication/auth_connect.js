@@ -39,6 +39,7 @@ async function checkConnect() {
 	updateMyInfo();
 	if (otpStatus === false) {
 		await signIn(connect_user);
+		openSocketClient();
 	}
 	else if (otpStatus === true) {
 		await to_otpForm(connect_user);
@@ -102,14 +103,21 @@ function to_debugCreate()
 			username: `Debug_User${d_number}`,
 			password: `qweQWE123`,
 			email: `User${d_number}@dmail.com`,
-			first_name: `Henry${d_number}`,
-			last_name: `Ford${d_number}`
+			first_name: `John${d_number}`,
+			last_name: `Doe${d_number}`
 		};
 		await postUser(new_user);
-		await signIn(new_user);
-		openSocketClient();
+		const otpStatus = await getOtpStatusPw(new_user);
+		if (otpStatus === false) {
+			openSocketClient();
+			await signIn(new_user);
+		}
+		else if (otpStatus === true) {
+			await to_otpForm(new_user);
+		}
 	});
 }
+//     DEBUG FUNCTION
 
 function load_connectForm(callback) {
 	document.querySelector("#frontpage").outerHTML =

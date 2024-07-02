@@ -4,7 +4,6 @@ import { to_profilePage } from "../home/profile/home_changeprofile.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
-import { getCookie } from "./auth_cookie.js";
 import { updateMyInfo } from "../backend_operation/data_update.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
 
@@ -40,7 +39,6 @@ function checkAddress()
 export async function	authCheck()
 {
 	let connected = await updateMyInfo();
-
 	if (connected)
 	{
 		openSocketClient();

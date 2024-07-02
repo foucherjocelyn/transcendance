@@ -73,8 +73,8 @@ export function closeSocketClient() {
 }
 
 export async function signIn(connect_user) {
-	console.log("-Connecting user: ");
-	console.log(connect_user);
+//	console.log("-Connecting user: ");
+//	console.log(connect_user);
 	try {
 		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/login`, {
 			method: "POST",
@@ -84,8 +84,8 @@ export async function signIn(connect_user) {
 				"Content-type": "application/json; charset=UTF-8",
 			}
 		})
-		console.log("response =");
-		console.log(response);
+		// console.log("response =");
+		// console.log(response);
 		if (response.ok) {
 			notice("Connection successful", 1, "#0c9605");
 			document.cookie = `username=${connect_user.username}; SameSite=Strict`;
@@ -93,14 +93,14 @@ export async function signIn(connect_user) {
 		else if (!response.ok) {
 			notice("One of the given information is invalid", 1, "#D20000");
 			console.log("Your password or username is wrong");
-			return;
+			return (response.status);
 		}
 		const data = await response.json();
 		document.cookie = `refresh=${data.refresh}; SameSite=Strict`;
 		document.cookie = `token=${data.access}; SameSite=Strict`;
 
 		updateMyInfo(true);
-		if (getCookie("token") === null || getCookie("token") === "") {//need custom message when wrong OTP
+		if (getCookie("token") === null || getCookie("token") === "") {
 			console.log("Username/Password invalid");
 			notice("The username and/or password is invalid", 2, "#b00009");
 			if (document.getElementById("loadspinner") != null)
@@ -114,7 +114,7 @@ export async function signIn(connect_user) {
 	} catch (error) {
 		console.error("Sign in: ", error);
 	}
-	//	return (response);
+	return (response.status);
 }
 
 export async function signOut() {

@@ -86,7 +86,7 @@ export async function getOtpStatusPw(f_log) {
 			}
 		});
 		if (!response.ok) {
-			console.log("response status = [" + response.status) + "]";
+			//console.log("response status = [" + response.status) + "]";
 			return response.status;
 		}
 		const data = await response.json();

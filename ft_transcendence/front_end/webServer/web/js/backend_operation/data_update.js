@@ -32,7 +32,6 @@ export async function dataUpdate(newInfo) {
 
 export async function updateMyInfo() {
 	let user_obj = await getMyInfo();
-
 	if (!user_obj) {
 		return (false);
 	}

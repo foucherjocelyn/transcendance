@@ -129,10 +129,13 @@ function check_form_data_client(obj) {
 function check_requirements(data, socket) {
     data = JSON.parse(data);
 
+    console.log("check requirement called");
+    console.log(data);
+    console.log("separation");
     if (!check_form_data_client(data) || socket === undefined) {
+        console.log("returning from first condition");
         return;
     }
-
     const sender = define_user_by_socket(socket);
     console.log(data.title);
     
