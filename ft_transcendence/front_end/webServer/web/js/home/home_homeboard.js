@@ -24,7 +24,8 @@ export async function	renderMatchHistory(username) {
 			<td>${game.created_at.slice(0, game.created_at.indexOf('.')).split('T').join('<br />')}
 		</tr>
 	`).join('');
-	document.getElementById("hs_info").innerHTML = matchTableBody;
+	if (document.getElementById("hs_info"))
+		document.getElementById("hs_info").innerHTML = matchTableBody;
 }
 
 function	drawHomePage(callback)

@@ -30,11 +30,11 @@ function    leave_match(user)
         const   player = match.listPlayer[i];
         if (player.id === user.id)
         {
-            // admin leave
             if (match.mode === 'tournament') {
                 send_data('delete alias', "", "server", user);
             }
 
+            // admin leave
             (player.id === match.admin.id && user.status === 'creating match' && match.listUser.length > 1) ?
             change_match_admin(match) :
             match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');

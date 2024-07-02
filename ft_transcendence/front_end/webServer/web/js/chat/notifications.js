@@ -27,19 +27,19 @@ const removeFriendInvite = (id) => {
     renderNotifications();
 };
 
-const friendInviteHasBeenAccepted = (sender) => {
-    client.inforUser.listFriends.push(sender);
-    const newUserMessages = new userMessages();
-    newUserMessages.user = sender;
-    client.inforUser.listChat.push(newUserMessages);
-    //renderFriendList(client.inforUser.listFriends);
-    searchFriendList();
-    console.log(`${sender.username}${sender.id} accepted your friend invite.`);
-};
+// const friendInviteHasBeenAccepted = (sender) => {
+//     //client.inforUser.listFriends.push(sender);
+//     const newUserMessages = new userMessages();
+//     newUserMessages.user = sender;
+//     //client.inforUser.listChat.push(newUserMessages);
+//     //renderFriendList(client.inforUser.listFriends);
+//     searchFriendList();
+//     console.log(`${sender.username}${sender.id} accepted your friend invite.`);
+// };
 
-const friendInviteHasBeenDeclined = (sender) => {
-    console.log(`${sender.username}${sender.id} declined your friend invite.`);
-};
+// const friendInviteHasBeenDeclined = (sender) => {
+//     console.log(`${sender.username}${sender.id} declined your friend invite.`);
+// };
 
 const acceptFriendInvite = async (inviteId, senderUsername) => {
     await updateFriendInviteStatus(inviteId, "accepted");
@@ -122,19 +122,19 @@ const showNotifications = async () => {
     renderNotifications();
 };
 
-const receiveNotification = (receivedData) => {
-    switch (receivedData.content) {
-        case "friend invite received":
-            receiveFriendInvite(receivedData.from);
-            break;
-        case "friend invite accepted":
-            friendInviteHasBeenAccepted(receivedData.from);
-            break;
-        case "friend invite declined":
-            friendInviteHasBeenDeclined(receivedData.from);
-        default:
-            console.log("Error: Invalid notification : ", receivedData.content);
-    }
-};
+// const receiveNotification = (receivedData) => {
+//     switch (receivedData.content) {
+//         case "friend invite received":
+//             receiveFriendInvite(receivedData.from);
+//             break;
+//         // case "friend invite accepted":
+//         //     friendInviteHasBeenAccepted(receivedData.from);
+//         //     break;
+//         // case "friend invite declined":
+//         //     friendInviteHasBeenDeclined(receivedData.from);
+//         default:
+//             console.log("Error: Invalid notification : ", receivedData.content);
+//     }
+// };
 
-export { showNotifications, receiveNotification, renderNotifications };
+export { showNotifications, renderNotifications };
