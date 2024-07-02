@@ -39,6 +39,7 @@ async function    connect(userID, socket)
     webSocket.listConnection.push(user);
     webSocket.listUser.push(inforUser);
     
+    send_data('update infor user', inforUser, 'server', inforUser);
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
     await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
 }

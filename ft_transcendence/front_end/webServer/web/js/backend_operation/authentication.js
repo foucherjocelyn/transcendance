@@ -63,7 +63,8 @@ export async function postUser(new_user) {
 
 export function openSocketClient() {
 	console.log("opening socket client");
-	const sendData = new dataToServer('connection', client.inforUser, 'socket server');
+	const sendData = new dataToServer('connection', getCookie('id'), 'socket server');
+	// const sendData = new dataToServer('connection', client.inforUser, 'socket server');
 	client.socket.send(JSON.stringify(sendData));
 }
 

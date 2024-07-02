@@ -42,8 +42,8 @@ export const client = {
 export class dataToServer {
     constructor(title, content, to) {
         this.title = title,
-            this.content = content,
-            this.to = to
+        this.content = content,
+        this.to = to
     }
 }
 
@@ -56,6 +56,9 @@ function get_data_from_server(socket) {
 
         if (receivedData.title === 'message') {
             receiveMessage(receivedData);
+        }
+        if (receivedData.title === 'update infor user') {
+            client.inforUser = receivedData.content;
         }
         if (receivedData.title === 'update list connection') {
             client.listUser = receivedData.content;
