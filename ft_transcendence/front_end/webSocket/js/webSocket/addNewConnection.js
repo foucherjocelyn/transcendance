@@ -17,6 +17,7 @@ async function    connect(userID, socket)
         return ;
     }
 
+    await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
     const   inforUser = await create_request('GET', `/api/v1/users/${userID}`, '');
     if (inforUser.id === undefined) {
         return ;
@@ -41,7 +42,6 @@ async function    connect(userID, socket)
     
     send_data('update infor user', inforUser, 'server', inforUser);
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
-    await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
 }
 
 async function    disconnect(socket)
