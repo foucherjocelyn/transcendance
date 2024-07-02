@@ -68,7 +68,7 @@ export function openSocketClient() {
 }
 
 export function closeSocketClient() {
-	const sendData = new dataToServer('disconnection', client.inforUser, 'socket server');
+	const sendData = new dataToServer('disconnect', client.inforUser, 'socket server');
 	client.socket.send(JSON.stringify(sendData));
 }
 

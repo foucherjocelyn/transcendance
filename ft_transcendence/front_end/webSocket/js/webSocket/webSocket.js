@@ -64,19 +64,15 @@ function handle_requirements(socket, title, content, sender, recipient) {
             send_data(title, content, sender, recipient);
         }
         else if (title === 'start tournament') {
-            console.log('----> start tournament');
             start_tournament(content, sender);
         }
         else if (title === 'update tournament board') {
-            console.log('----> update tournament board');
             send_sign_update_tournament_board(sender);
         }
         else if (title === 'delete alias' || title === 'send notif') {
-            console.log("delete alias from websocket");
             send_to_all(content, sender, title);
         }
         else if (title === 'joining tournament') {
-            console.log('----> joining tournament');
             send_sign_join_tournament(title, content);
         }
         else if (title === 'update informations user') {
@@ -146,6 +142,7 @@ function check_requirements(data, socket) {
     }
     else
     {
+        console.log('----> status: ' + sender.status);
         let recipient = data.to;
         if (recipient === undefined) {
             return;

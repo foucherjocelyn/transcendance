@@ -68,20 +68,24 @@ class MatchMaking {
 
     async simulateMatch(player1, player2, tournamentName, nbrPlayer)
     {
+        // disconnect befor create match
+        if (define_user_by_ID(player1.id) === undefined) {
+            player1 = null;
+        }
+        if (player2 !== null && define_user_by_ID(player2.id) === undefined) {
+            player2 = null;
+        }
+
+        // 2 user disconnect
+        if (player1 === null && player2 === null) {
+            return null;
+        }
+
         if (player1 === null || player2 === null)
         {
             let player = player1 !== null ? player1 : player2;
             player1 = player;
             player2 = null;
-        }
-
-        // player disconnect
-        if (player2 !== null)
-        {
-            const   user = define_user_by_ID(player2.id);
-            if (user === undefined) {
-                player2 = null;
-            }
         }
 
         if (nbrPlayer === 2 && player2 === null) {
@@ -126,12 +130,6 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
 
     // define final match
     match.finalMatch = (nbrPlayer === 2) ? true : false;
-
-    // get alias
-    player1.avatarPath = `img/${player1.avatarPath}`;
-    if (player2 !== null) {
-        player2.avatarPath = `img/${player2.avatarPath}`;
-    }
 
     for (let i = 0; i < 4; i++)
     {
@@ -182,6 +180,7 @@ async function create_list_player_tournament(listName)
                 if (user !== undefined && user.username === name)
                 {
                     // update_informations_user(user);
+                    user.avatarPath = `img/${user.avatarPath}`;
                     listPlayer.push(user);
                     break;
                 }
@@ -248,6 +247,8 @@ async function start_tournament(tournamentID, sender)
         return;
     }
 
+    console.log('--------------> ' + tournamentID);
+
     // get tournament Obj from DB
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
     
@@ -271,17 +272,21 @@ async function start_tournament(tournamentID, sender)
     await create_request("POST", `/api/v1/tournament/${tournament.id}/end`, "");
 
     // Update the champion of a tournament
-    const postData = {
-        username: `${champion.username}`,
-    };
-    await create_request("POST", `/api/v1/tournament/${tournament.id}/champion/update`, postData);
-    console.log(`The champion is: ${champion.username}`);
+    if (champion !== undefined)
+    {
+        const postData = {
+            username: `${champion.username}`,
+        };
+        await create_request("POST", `/api/v1/tournament/${tournament.id}/champion/update`, postData);
+        console.log(`The champion is: ${champion.username}`);
+        send_data('display exit match', 'flex', 'server', champion);
+    }
 
     // send sign delete alias
-    send_to_all(tournament.id, sender, 'delete alias');
+    send_data('delete alias', "", "server", listPlayer);
 
     // update status tournament on client
-    send_sign_update_tournament_board(champion);
+    send_data('update tournament board', "", "server", webSocket.listUser);
 }
 
 module.exports = {
