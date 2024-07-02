@@ -52,7 +52,7 @@ async function  request_game_DB(path, match, player)
     else if (path === `/api/v1/game/${match.id}/player/add`)
     {
         // add player
-        console.table('------> add player: ' + user.username);
+        // console.table('------> add player: ' + user.username);
         const   postData = createPostData2(user.username);
         await create_request('POST', path, postData);
     }

@@ -131,7 +131,7 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'delete alias') {
             console.log("delete alias from client: starting ");
             removeAlias();
-            to_tournament("false");
+            //to_tournament("false");
             console.log("delete alias from client: complete");
         }
         if (receivedData.title === 'send notif') {

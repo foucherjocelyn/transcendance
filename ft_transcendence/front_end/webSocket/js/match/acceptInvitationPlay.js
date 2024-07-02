@@ -1,5 +1,6 @@
 const { create_request } = require("../dataToDB/createRequest");
 const { send_data } = require("../webSocket/dataToClient");
+const { define_user_by_ID } = require("../webSocket/webSocket");
 const { inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
 
@@ -41,6 +42,7 @@ function    leave_match(user)
             
             // update status user
             user.status = 'online';
+            console.log(define_user_by_ID(user.id).status);
             update_match(user);
             return ;
         }
