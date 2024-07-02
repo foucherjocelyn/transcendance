@@ -53,8 +53,8 @@ function createBracket(participants, participantAliasesMap) {
 
             if (i + 1 < currentRoundParticipants.length) {
                 matchDiv.innerHTML = `
-                        <div class="match-top team"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i])?.alias || ""}</span></div>
-                        <div class="match-bottom team"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i + 1])?.alias || ""}</span></div>
+                        <div class="match-top team"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i])?.alias || currentRoundParticipants[i]}</span></div>
+                        <div class="match-bottom team"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i + 1])?.alias || currentRoundParticipants[i + 1]}</span></div>
                         <div class="match-lines">
                             <div class="line one"></div>
                             <div class="line two"></div>
@@ -68,7 +68,7 @@ function createBracket(participants, participantAliasesMap) {
                 if (round === 1) {
                     matchDiv.classList.add("winner-top");
                     matchDiv.innerHTML = `
-                    <div class="team match-top"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i])?.alias || ""}</span></div>
+                    <div class="team match-top"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i])?.alias || currentRoundParticipants[i]}</span></div>
                     <div class="match-lines">
                         <div class="line one"></div>
                         <div class="line two"></div>
