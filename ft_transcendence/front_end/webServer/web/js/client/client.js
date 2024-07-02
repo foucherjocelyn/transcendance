@@ -42,8 +42,8 @@ export const client = {
 export class dataToServer {
     constructor(title, content, to) {
         this.title = title,
-        this.content = content,
-        this.to = to
+            this.content = content,
+            this.to = to
     }
 }
 
@@ -95,6 +95,7 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'update pongGame') {
             pongGame = receivedData.content;
+            console.log('----------> tournamentID: ' + pongGame.tournamentID);
         }
         if (receivedData.title === 'update borders') {
             pongGame.listBorder = receivedData.content;
@@ -156,10 +157,14 @@ function get_data_from_server(socket) {
             searchFriendList();
         }
         if (receivedData.title === 'update tournament tree') {
-            console.log('update tournament tree');
-            console.table(receivedData.content);
-            console.log('tournament ID: ' + receivedData.from);
-            renderTournamentTree(receivedData.from);
+            console.log('tournament ID: ' + receivedData.content);
+            const tour_html = `<div id="tournament_tree"></div>`;
+            const end_screen = document.getElementById("resultsMatchPanel");
+            if (end_screen) {
+                console.log("end_screen is true------------------");
+                end_screen.insertAdjacentHTML("beforeend", tour_html);
+            }
+            renderTournamentTree(receivedData.content);
         }
     };
 }

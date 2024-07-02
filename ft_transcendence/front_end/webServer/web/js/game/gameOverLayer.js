@@ -1,7 +1,9 @@
-import { client, dataToServer } from "../client/client.js";
+import { client, dataToServer, pongGame } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
 import { to_game } from "../home/game/home_game.js";
 import { gameOverHTML } from "../home/game/home_gamewindows.js";
+import { to_tournament } from "../home/tournament/home_tournament.js";
+import { renderTournamentTree } from "../home/tournament/tournamentTree/tournamentTree.js";
 import { screen } from "../screen/screen.js";
 
 function    create_results_bar_html(player)
@@ -70,15 +72,27 @@ function    get_sign_buttons_game_over_layer()
 {
     const   button = document.querySelectorAll('#buttonsGameOver > div > button');
 
+    console.log("get_sign_buttons_game_over_layer: button = ");
+    console.log(button);
     // exit button
     button[0].onclick = () => {
         const  sendData = new dataToServer('leave match', '', 'socket server');
         client.socket.send(JSON.stringify(sendData));
-        to_game();
+        if (match.mode === 'tournament')
+            to_tournament();
+        else
+            to_game();
     }
     
     if (match.mode === 'tournament') {
         button[1].style.display = 'none';
+        button[2].style.display = 'flex';
+        button[2].onclick = () => {
+            const tour_html = `<div id="tournament_tree"></div>`;
+            document.getElementById("resultsMatchPanel").insertAdjacentHTML("beforeend", tour_html);
+            console.log(pongGame.tournamentID);
+            renderTournamentTree(pongGame.tournamentID);
+        }
         return ;
     }
 
@@ -98,3 +112,5 @@ export function    display_game_over_layer(result)
     display_results_match(result);
     get_sign_buttons_game_over_layer();
 }
+
+

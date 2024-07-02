@@ -125,9 +125,9 @@ function createTournamentInput(tour_list_name) {
 	<form method="post" id="htb_create_menu">
 		<input type="button" id="hcm_create_menu_close">
 		<br>
-		<input id="hcm_alias" type="text" placeholder="Your alias" maxlength="30" required>
+		<input id="hcm_alias" type="text" pattern="[a-zA-Z0-9]{3,30}" placeholder="Your alias" required>
 		<hr>
-		<input id="hcm_name" type="text" placeholder="Tournament name" maxlength="30" required>
+		<input id="hcm_name" type="text" pattern="[a-zA-Z0-9]{3,30}" placeholder="Tournament name" required>
 		<input id="hcm_description" type="text" placeholder="Description (optional)" maxlength="320">
 		<br>
 		<input id="hcm_create_menu_create" type="submit" value="Create" class="button-img">

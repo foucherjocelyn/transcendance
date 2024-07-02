@@ -3,7 +3,7 @@ const { update_match } = require("../match/updateMatch");
 const { send_data } = require("../webSocket/dataToClient");
 const { define_user_by_ID } = require("../webSocket/webSocket");
 
-function    create_result(match)
+async function    create_result(match)
 {
     // Arranged from smallest to largest
     const   listPlayer = match.listPlayer.filter(player => player.type !== 'none');
@@ -19,6 +19,14 @@ function    create_result(match)
     }
 
     request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
+
+    // send sign display tournament tree
+    if (match.mode === 'tournament')
+    {
+        send_data("update tournament tree", match.tournamentID, 'server', match.listUser);
+        await new Promise(resolve => setTimeout(resolve, 10000)); // 5 seconds
+    }
+
     send_data('game over', match.result, 'server', match.listUser);
     send_data('update pongGame', match.pongGame, 'server', match.listUser);
 

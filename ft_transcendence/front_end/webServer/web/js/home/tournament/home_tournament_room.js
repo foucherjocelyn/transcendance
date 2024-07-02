@@ -60,7 +60,7 @@ export async function aliasJoinTournament(tour_obj) {
 		document.getElementById("h_tournament_page").innerHTML = `
 <div id="h_tournament_aliasjoin">
 	<form id="tour_aliasjoiningform">
-	<input type="text" id="tour_inputalias" placeholder="Enter an alias" maxlength="30" required>
+	<input type="text" id="tour_inputalias" pattern="[a-zA-Z0-9]{3,30}" placeholder="Enter an alias" required>
 	<input type="submit" id="tour_inputsend" class="button-img" type="button" value="Confirm">
 	<input type="button" id="tour_inputcancel" class="button-img" value="Back">
 	</form>

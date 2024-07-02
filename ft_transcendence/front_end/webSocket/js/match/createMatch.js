@@ -8,6 +8,7 @@ class formMatch
         this.mode = undefined,
         this.admin = undefined,
         this.winner = undefined,
+        this.tournamentID = undefined,
         this.tournamentName = undefined,
         this.finalMatch = false,
         this.listUser = [],
