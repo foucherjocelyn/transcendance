@@ -63,9 +63,7 @@ function    setup_size_game_over_layer()
 export function    display_button_game_over(status)
 {
     const   button = document.querySelectorAll('#buttonsGameOver > div > button')[0];
-    if (button !== undefined) {
-        button.style.display = status;
-    }
+    (button === undefined) ? to_tournament("false"): button.style.display = status;
 }
 
 function    get_sign_buttons_game_over_layer()
