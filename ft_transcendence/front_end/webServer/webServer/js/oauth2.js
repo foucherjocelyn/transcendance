@@ -28,7 +28,7 @@ async function retrieveCodeCreateAccount(req, res) {
         'Location': req.url,
         'Set-Cookie': cookie.serialize('token', token42_to_client, {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'strict'
         }),

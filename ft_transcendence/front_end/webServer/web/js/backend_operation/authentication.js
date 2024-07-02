@@ -3,7 +3,7 @@ import { deleteAllCookie, getCookie } from "../authentication/auth_cookie.js";
 import { to_connectForm } from "../authentication/auth_connect.js";
 import { to_homePage } from "../home/home_homeboard.js";
 import { client, dataToServer } from "../client/client.js";
-import { updateMyInfo } from "./data_update.js";
+import { getMyInfo } from "./get_user_info.js";
 
 export const domain_name = window.location.hostname;
 
@@ -73,8 +73,8 @@ export function closeSocketClient() {
 }
 
 export async function signIn(connect_user) {
-//	console.log("-Connecting user: ");
-//	console.log(connect_user);
+	console.log("-Connecting user: ");
+	console.log(connect_user);
 	try {
 		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/login`, {
 			method: "POST",
@@ -84,8 +84,8 @@ export async function signIn(connect_user) {
 				"Content-type": "application/json; charset=UTF-8",
 			}
 		})
-		// console.log("response =");
-		// console.log(response);
+		console.log("response =");
+		console.log(response);
 		if (response.ok) {
 			notice("Connection successful", 1, "#0c9605");
 			document.cookie = `username=${connect_user.username}; SameSite=Strict`;
@@ -93,21 +93,14 @@ export async function signIn(connect_user) {
 		else if (!response.ok) {
 			notice("One of the given information is invalid", 1, "#D20000");
 			console.log("Your password or username is wrong");
+			to_connectForm("false");
 			return (response.status);
 		}
 		const data = await response.json();
-		document.cookie = `refresh=${data.refresh}; SameSite=Strict`;
 		document.cookie = `token=${data.access}; SameSite=Strict`;
-
-		updateMyInfo(true);
-		if (getCookie("token") === null || getCookie("token") === "") {
-			console.log("Username/Password invalid");
-			notice("The username and/or password is invalid", 2, "#b00009");
-			if (document.getElementById("loadspinner") != null)
-				document.getElementById("loadspinner").classList.add("hide");
-			return;
-		}
-		if (document.getElementById("loadspinner") != null)
+		await getMyInfo();
+		openSocketClient();
+		 if (document.getElementById("loadspinner") != null)
 			document.getElementById("loadspinner").classList.add("hide");
 		to_homePage();
 		return (data.status);
@@ -138,7 +131,6 @@ export async function signOut() {
 		}
 		console.log("logout status: " + response.status);
 		notice("You are now disconnected", 1, "#0c9605");
-		//updateMyInfo();
 		deleteAllCookie();
 		//			  console.log("Your status [" + getCookie("status") + "]");
 		closeSocketClient();

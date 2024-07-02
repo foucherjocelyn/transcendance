@@ -4,7 +4,7 @@ import { to_otpForm } from "./auth_otp.js";
 import { notice } from "./auth_main.js";
 import { domain_name, openSocketClient, postUser, signIn, signOut } from "../backend_operation/authentication.js";
 import { getOtpStatusPw } from "../backend_operation/one_time_password.js";
-import { updateMyInfo } from "../backend_operation/data_update.js";
+import { getMyInfo } from "../backend_operation/get_user_info.js";
 
 export async function classy_signOut(sourcename) {
 	let source;
@@ -36,10 +36,9 @@ async function checkConnect() {
 		password: document.getElementById("rc_password").value
 	};
 	const otpStatus = await getOtpStatusPw(connect_user);
-	updateMyInfo();
+	await getMyInfo();
 	if (otpStatus === false) {
 		await signIn(connect_user);
-		openSocketClient();
 	}
 	else if (otpStatus === true) {
 		await to_otpForm(connect_user);
@@ -91,7 +90,7 @@ function to_debugCreate()
 {
 	document.getElementById("r_connect_form").innerHTML = `
 	<form method="post" id="r_registration">
-	<input type="text" id="d_number" placeholder="User number" required>
+	<input type="text" id="d_number" placeholder="User suffix" required>
 	<br>
 	<input type="submit" id="debug_cc" value="Create and connect">
 	</form>
@@ -109,7 +108,6 @@ function to_debugCreate()
 		await postUser(new_user);
 		const otpStatus = await getOtpStatusPw(new_user);
 		if (otpStatus === false) {
-			openSocketClient();
 			await signIn(new_user);
 		}
 		else if (otpStatus === true) {
