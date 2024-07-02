@@ -226,7 +226,6 @@ async function send_sign_join_tournament(title, tournamentID)
 async function  send_to_all(tournamentID, sender, title)
 {
     // check number tournament ID from client
-    console.log("send_to_all id: " + tournamentID);
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
     }
@@ -246,8 +245,6 @@ async function start_tournament(tournamentID, sender)
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
     }
-
-    console.log('--------------> ' + tournamentID);
 
     // get tournament Obj from DB
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
