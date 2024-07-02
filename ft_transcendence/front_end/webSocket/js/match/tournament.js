@@ -247,6 +247,8 @@ async function start_tournament(tournamentID, sender)
         return;
     }
 
+    console.log('--------------> ' + tournamentID);
+
     // get tournament Obj from DB
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
     

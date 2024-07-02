@@ -142,6 +142,7 @@ function check_requirements(data, socket) {
     }
     else
     {
+        console.log('----> status: ' + sender.status);
         let recipient = data.to;
         if (recipient === undefined) {
             return;

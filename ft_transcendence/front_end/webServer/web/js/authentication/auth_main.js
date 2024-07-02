@@ -40,14 +40,13 @@ function checkAddress()
 export async function	authCheck()
 {
 	let connected = await getMyInfo();
-	// await removeAlias();
+	await removeAlias();
 	if (connected)
 	{
 		openSocketClient();
 		checkAddress();
 	}
-	else
-	{
+	else {
 		to_connectForm();
 	}
 }
