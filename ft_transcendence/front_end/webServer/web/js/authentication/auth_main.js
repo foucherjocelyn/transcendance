@@ -4,8 +4,8 @@ import { to_profilePage } from "../home/profile/home_changeprofile.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
-import { updateMyInfo } from "../backend_operation/data_update.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
+import { getMyInfo } from "../backend_operation/get_user_info.js";
 
 export function notice(str, time, color)
 {
@@ -38,7 +38,7 @@ function checkAddress()
 
 export async function	authCheck()
 {
-	let connected = await updateMyInfo();
+	let connected = await getMyInfo();
 	if (connected)
 	{
 		openSocketClient();

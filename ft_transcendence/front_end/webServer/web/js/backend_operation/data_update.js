@@ -24,16 +24,7 @@ export async function dataUpdate(newInfo) {
 			//throw new Error("fetch POST op failed");
 		}
 	} catch (error) {
-		console.error("updateMyInfo: ", error);
+		console.error("dataUpdate: ", error);
 	}
 	//	console.log("-");
-}
-
-
-export async function updateMyInfo() {
-	let user_obj = await getMyInfo();
-	if (!user_obj) {
-		return (false);
-	}
-	return (true);
 }

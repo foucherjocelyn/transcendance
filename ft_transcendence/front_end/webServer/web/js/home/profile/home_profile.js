@@ -1,7 +1,6 @@
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { getMyInfo, getUserById, getUserIdByUsername } from "../../backend_operation/get_user_info.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
-import { updateMyInfo } from "../../backend_operation/data_update.js";
 import { loadChat } from "../../chat/load-chat.js";
 import { noticeInvitePlayer } from "../game/home_game.js";
 import { loadSpinner } from "../../authentication/spinner.js";
@@ -107,6 +106,5 @@ export async function to_playerprofile(nohistory = "false", user_info)
 	}
 	if (nohistory === "false")
 		history.pushState( { url: `homepage` }, "", `#homepage`);//{ url: `${user_info.username}` }, "", `#${user_info.username}`);
-	updateMyInfo();
 	drawProfilePage(user_info);
 }

@@ -1,6 +1,5 @@
 import { loadSpinner } from "../../authentication/spinner.js";
 import { upperPanel, upperPanelEventListener } from "../upper_panel.js";
-import { updateMyInfo } from "../../backend_operation/data_update.js";
 import { getMyInfo } from "../../backend_operation/get_user_info.js";
 import { getCookie } from "../../authentication/auth_cookie.js";
 import { to_connectForm } from "../../authentication/auth_connect.js";
@@ -86,7 +85,6 @@ export async function to_game(nohistory = "false") {
 	}
     if (nohistory === "false")
         history.pushState({ url: "game" }, "", "#game");
-    updateMyInfo();
     drawGame((result) => {
         if (result) {
             document.getElementById("loadspinner").classList.add("hide");
