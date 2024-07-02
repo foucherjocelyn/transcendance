@@ -6,6 +6,7 @@ import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
+import { removeAlias } from "../backend_operation/alias.js";
 
 export function notice(str, time, color)
 {
@@ -39,6 +40,7 @@ function checkAddress()
 export async function	authCheck()
 {
 	let connected = await getMyInfo();
+	// await removeAlias();
 	if (connected)
 	{
 		openSocketClient();
