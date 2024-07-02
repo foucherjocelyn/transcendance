@@ -1,4 +1,4 @@
-import { create_match, display_loader, update_match_informations } from "../createMatch/createMatch.js";
+import { display_loader, update_match_informations } from "../createMatch/createMatch.js";
 import { setup_game_layer } from "../game/startGame.js";
 import { notice_invitation_play } from "../noticeInvitationPlay/noticeInvitationPlay.js";
 import { receiveMessage, renderChatInput } from "../chat/chatbox.js";

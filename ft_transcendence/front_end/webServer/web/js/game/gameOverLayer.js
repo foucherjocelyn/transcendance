@@ -2,6 +2,7 @@ import { client, dataToServer } from "../client/client.js";
 import { create_match, match } from "../createMatch/createMatch.js";
 import { to_game } from "../home/game/home_game.js";
 import { gameOverHTML } from "../home/game/home_gamewindows.js";
+import { to_tournament } from "../home/tournament/home_tournament.js";
 import { screen } from "../screen/screen.js";
 
 function    create_results_bar_html(player)
@@ -61,9 +62,7 @@ function    setup_size_game_over_layer()
 export function    display_button_game_over(status)
 {
     const   button = document.querySelectorAll('#buttonsGameOver > div > button')[0];
-    if (button !== undefined) {
-        button.style.display = status;
-    }
+    (button === undefined) ? to_tournament("false"): button.style.display = status;
 }
 
 function    get_sign_buttons_game_over_layer()

@@ -12,6 +12,7 @@ import { addAlias } from "../../backend_operation/alias.js";
 import { client, dataToServer } from "../../client/client.js";
 
 function addLabel(tour_list, index) {
+	console.log("addlabel-");
 	let player_nb = tour_list[index].player_usernames.length;
 	let newLabel = `
 <tr id="t_tourlabel${index}">
@@ -180,6 +181,7 @@ async function drawTournament(callback) {
 		</div>
 `;
 
+console.log("drawing tour----------------------");
 	let tour_list = await getTournamentsList();
 	let tour_list_name = [];
 
@@ -204,6 +206,7 @@ async function drawTournament(callback) {
 }
 
 export async function to_tournament(nohistory = "false") {
+	console.log("to_tournament called");
 	await getMyInfo();
 	if (!getCookie("username")) {
 		to_connectForm();
