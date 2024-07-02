@@ -49,7 +49,7 @@ async function    setup_game(match)
     {
         setTimeout(function() {
             start_game(match);
-        }, 5000); // 5 secondes
+        }, 10000); // 1 minute
     }
 }
 

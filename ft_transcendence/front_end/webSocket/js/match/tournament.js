@@ -127,12 +127,6 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
     // define final match
     match.finalMatch = (nbrPlayer === 2) ? true : false;
 
-    // get alias
-    player1.avatarPath = `img/${player1.avatarPath}`;
-    if (player2 !== null) {
-        player2.avatarPath = `img/${player2.avatarPath}`;
-    }
-
     for (let i = 0; i < 4; i++)
     {
         let player = new inforPlayer("", "", "../../img/button/button_add_player.png", 42, "none");
@@ -182,6 +176,8 @@ async function create_list_player_tournament(listName)
                 if (user !== undefined && user.username === name)
                 {
                     // update_informations_user(user);
+                    user.avatarPath = `img/${user.avatarPath}`;
+                    console.log('------> path avatar: ' + user.avatarPath);
                     listPlayer.push(user);
                     break;
                 }
@@ -278,7 +274,7 @@ async function start_tournament(tournamentID, sender)
     console.log(`The champion is: ${champion.username}`);
 
     // send sign delete alias
-    send_to_all(tournament.id, sender, 'delete alias');
+    send_data('delete alias', "", "server", listPlayer);
 
     // update status tournament on client
     send_sign_update_tournament_board(champion);

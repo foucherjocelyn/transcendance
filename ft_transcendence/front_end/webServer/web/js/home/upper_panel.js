@@ -35,6 +35,8 @@ export function	upperPanelEventListener(source)
 	document.getElementById("h_to_myprofile").addEventListener("click", function() {
 		to_profilePage();
 	});
-	document.getElementById("h_logout").addEventListener("click", () => { classy_signOut(`${source}`); });
+	document.getElementById("h_logout").addEventListener("click", () => {
+		classy_signOut(`${source}`);
+	});
 }
 
