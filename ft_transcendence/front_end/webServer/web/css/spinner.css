@@ -1,3 +1,21 @@
+
+.load_spinner {
+  margin: auto;
+  margin-top: 240px;
+  border: 10px solid #000c36;
+  border-radius: 50%;
+  border-top: 10px solid #f70000;
+  width: 200px;
+  height: 200px;
+  animation: spinner 4s linear infinite;
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/*
 .breeding-rhombus-spinner {
       height: 65px;
       width: 65px;
@@ -132,3 +150,4 @@
         transform: scale(0.5);
       }
     }
+*/

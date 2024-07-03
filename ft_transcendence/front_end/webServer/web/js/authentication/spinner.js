@@ -1,5 +1,6 @@
 export function loadSpinner()
 {
+  /*
 	let	spinner = `<div id="loadspinner" class="breeding-rhombus-spinner">
     <div class="rhombus child-1"></div>
     <div class="rhombus child-2"></div>
@@ -11,5 +12,9 @@ export function loadSpinner()
     <div class="rhombus child-8"></div>
     <div class="rhombus big"></div>
   </div>`
+  */
+ let	spinner = `
+ <div id="loadspinner" class="load_spinner"></div>
+ `;
 	return (spinner);
 }
