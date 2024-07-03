@@ -18,8 +18,9 @@
 }
 
 #tournament_player_details {
+    font-weight: bold;
     z-index: 4;
-    background-image: url(../../../img/background/card.png);
+    background-image: url(../../../img/background/card3_head.png);
     background-size: cover;
 	border-radius: 4px;
 	width: 240px;
@@ -31,6 +32,12 @@
 	top: 25%;
 	color: gray;
     text-align: center;
+}
+
+#tournament_player_details h3 {
+    position: relative;
+    top: -18px;
+    font-weight: bold;
 }
 
 #twr_basic_info {

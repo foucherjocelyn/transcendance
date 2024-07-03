@@ -137,6 +137,24 @@ function loadTournamentOwnerPanel(tour_obj) {
 	}
 }
 
+async function detailsTournamentPlayers(tour_obj, html_id_element) {
+	let player_nb = tour_obj.player_usernames.length;
+	document.getElementById(html_id_element).innerHTML = `
+	<div id="tournament_player_details">
+	<h3>Player List</h3>
+	<button id="tpd_close"></button>
+	</div>
+	`;
+	for (let i = 0; i < player_nb; i++) {
+		let alias = await getAliasFromUsername(tour_obj.player_usernames[i]);
+		document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
+			<p>${alias}</p>
+			<br>
+			`);
+	}
+	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
+}
+
 export async function refresh_tour_waiting_room(tour_obj, mode) {
 	if (document.querySelector("#tournament_waiting_room")) {
 		tour_obj = await getTournamentInfoById(tour_obj.id);
@@ -162,7 +180,7 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
-					<p id="twr_tour_playernb"></p>
+					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
 					</div>
@@ -177,6 +195,7 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 `;
 	await refresh_tour_waiting_room(tour_obj, mode);
 
+	document.getElementById(`tour_details_more`).addEventListener("click", async () => { await detailsTournamentPlayers(tour_obj, "twr_player_details"); });
 	if (mode && mode === "spectator") {
 		document.getElementById("twr_board").insertAdjacentHTML("beforeend", `
 			<input type="button" id="twr_back" class="button-img" value="Back">
