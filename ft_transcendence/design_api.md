@@ -156,12 +156,13 @@ POST /api/v1/auth/login
 	otp: string (optional)
 }
 ```
+
 ### Return
 
 ```typescript
 {
-	message: string
-	access: string
+    message: string;
+    access: string;
 }
 ```
 
@@ -170,9 +171,9 @@ Login with this username, password and an optional TOTP
 ## Login using 42 token
 
 ```typescript
-POST /api/v1/auth/login42
+POST / api / v1 / auth / login42;
 {
-	token42: string
+    token42: string;
 }
 ```
 
@@ -180,12 +181,10 @@ POST /api/v1/auth/login42
 
 ```typescript
 {
-	message: string
-	access: string
+    message: string;
+    access: string;
 }
 ```
-
-
 
 ## Register
 
@@ -472,8 +471,11 @@ authorization Bearer <token>
 
 ```typescript
 
-POST /api/v1/profile/me/alias/remove
+POST /api/v1/profile/alias/remove
 authorization Bearer <token>
+{
+	username: string // if removing an alias from socket
+}
 ```
 
 ### Return
@@ -861,6 +863,9 @@ Return a list of User objects ([User](#user)) where the status field in (Friends
 ```typescript
 GET /api/v1/user/friendship
 authorization Bearer <token>
+{
+	username: string // if requested from socket
+}
 ```
 
 ### Return
@@ -1323,7 +1328,7 @@ authorization Bearer <token>
 
 ### Return
 
-- A updated tournament object ([Tournament](#tournament))
+-   A updated tournament object ([Tournament](#tournament))
 
 # Notifications
 

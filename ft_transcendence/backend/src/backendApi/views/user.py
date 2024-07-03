@@ -271,7 +271,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def removeAliasToUser(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("username", None)
+            if not username:
+                return Response({"error": "Username not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         user.alias = None
         user.save()
         serializer = self.get_serializer(user)
