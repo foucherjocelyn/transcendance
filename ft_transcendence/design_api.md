@@ -210,6 +210,9 @@ Register a user if it doesn't exist
 ```typescript
 POST /api/v1/auth/logout
 authorization Bearer <token>
+{
+	user: string // if requested from socket
+}
 ```
 
 ### Return
@@ -355,17 +358,21 @@ authorization Bearer <token>
 
 ### Return
 
-````typescript
+```typescript
 {
 	user_id: number
 }
+```
 
 ## Get my profile
 
 ```typescript
 GET /api/v1/profile/me
 authorization Bearer <token>
-````
+{
+	user: string // if requested from socket
+}
+```
 
 ### Return
 
@@ -377,6 +384,7 @@ authorization Bearer <token>
 PUT /api/v1/profile/me
 authorization Bearer <token>
 {
+	user: string // if requested from socket
 	username: string, // optional
 	email: string, // optional
 	first_name: string, // optional
@@ -471,10 +479,10 @@ authorization Bearer <token>
 
 ```typescript
 
-POST /api/v1/profile/alias/remove
+POST /api/v1/profile/me/alias/remove
 authorization Bearer <token>
 {
-	username: string // if removing an alias from socket
+	user: string // if requested from socket
 }
 ```
 

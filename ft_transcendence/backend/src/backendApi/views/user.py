@@ -1,3 +1,7 @@
+import requests
+from backend.settings import logger
+from backendApi.models import WebSocketUser
+from backendApi.permissions import IsAuthenticatedOrIsWebSocketServer, IsWebSocketServer
 from django.core.files.storage import default_storage
 from django.http import FileResponse
 from django.utils import timezone
@@ -7,13 +11,9 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from utils.hash import verify_password
 from utils.jwt_token import JwtTokenGenerator
-import requests
 
-from ..models import Otp, User, Token
+from ..models import Otp, Token, User
 from ..serializers.user import UserSerializer
-from backend.settings import logger
-from backendApi.permissions import IsWebSocketServer, IsAuthenticatedOrIsWebSocketServer
-from backendApi.models import WebSocketUser
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -103,7 +103,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def logOut(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         # Update user status to 'offline'
         user.status = "offline"
         user.save()
@@ -119,7 +125,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def getMe(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=200)
 
@@ -127,7 +139,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def updateMe(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         # Update user data
         first_name = request.data.get("first_name", None)
         last_name = request.data.get("last_name", None)
@@ -154,7 +172,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def uploadAvatarPicture(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         avatar = request.FILES.get("avatar")
         if avatar:
             avatarPath = default_storage.save(
@@ -170,7 +194,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def getAvatarPicture(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         avatarPath = user.avatarPath
         if avatarPath:
             return FileResponse(default_storage.open(avatarPath, "rb"))
@@ -204,7 +234,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def isAdmin(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if user.is_superuser:
             return Response({"isAdmin": True}, status=200)
         else:
@@ -214,7 +250,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def updateStatus(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         status = request.data.get("status", None)
         if not status:
             return Response({"error": "Status not provided"}, status=400)
@@ -245,7 +287,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def addAliasToUser(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         alias = request.data.get("alias", None)
         if not alias:
             return Response({"error": "Alias not provided"}, status=400)
@@ -258,7 +306,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def updateAliasToUser(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         alias = request.data.get("alias", None)
         if not alias:
             return Response({"error": "Alias not provided"}, status=400)
@@ -271,9 +325,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def removeAliasToUser(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            username = request.data.get("username", None)
+            username = request.data.get("user", None)
             if not username:
-                return Response({"error": "Username not provided"}, status=400)
+                return Response({"error": "User not provided"}, status=400)
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:

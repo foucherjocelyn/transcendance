@@ -32,7 +32,13 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         if ChannelMutedUser.objects.filter(channel=channel, user=user).exists():
@@ -81,7 +87,13 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         messages = ChannelMessage.objects.filter(receiver=channel, sender=user)
@@ -97,7 +109,13 @@ class ChannelMessageViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         messages = ChannelMessage.objects.filter(receiver=channel).order_by(

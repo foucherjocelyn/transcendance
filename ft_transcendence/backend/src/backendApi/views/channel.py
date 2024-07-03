@@ -43,7 +43,13 @@ class ChannelViewSet(viewsets.ModelViewSet):
     def listMyChannels(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         channelAlls = Channel.objects.all()
         channels = []
         for channel in channelAlls:
@@ -67,7 +73,13 @@ class ChannelViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if not channel.owner == user:
             return Response(
                 {"error": "You are not the owner of this channel"}, status=403
@@ -88,7 +100,13 @@ class ChannelViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if (
             not channel.visibility == "public"
             and not channel.members.filter(id=user.id).exists()
@@ -171,7 +189,13 @@ class ChannelViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if channel.members.filter(id=user.id).exists():
             return Response({"error": "You are already in this channel"}, status=400)
         # Check if the user is banned from the channel
@@ -210,7 +234,13 @@ class ChannelViewSet(viewsets.ModelViewSet):
             return Response({"error": "Channel not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if not channel.members.filter(id=user.id).exists():
             return Response({"error": "You are not in this channel"}, status=400)
         channel.members.remove(user)

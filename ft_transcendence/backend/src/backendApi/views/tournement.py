@@ -73,7 +73,13 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if tournament.players.filter(id=user.id).exists():
             return Response({"error": "User already joined"}, status=400)
         # Check is the tournament status is ongoing
@@ -93,7 +99,13 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return Response({"error": "Tournament not found"}, status=404)
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if not tournament.players.filter(id=user.id).exists():
             return Response({"error": "User not joined"}, status=400)
         # Check is the tournament status is registering
@@ -184,7 +196,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament.save()
         serializer = self.get_serializer(tournament)
         return Response(serializer.data, status=200)
-    
+
     @action(detail=True, methods=["post"])
     def updateOrderdPlayers(self, request, tournament_id):
         try:
@@ -200,7 +212,9 @@ class TournamentViewSet(viewsets.ModelViewSet):
                 user = User.objects.get(username=player)
                 # Check if the user is in the tournament
                 if not tournament.players.filter(id=user.id).exists():
-                    return Response({"error": "Player not in the tournament"}, status=400)
+                    return Response(
+                        {"error": "Player not in the tournament"}, status=400
+                    )
             except User.DoesNotExist:
                 return Response({"error": "Player not found"}, status=404)
             ordered_players.append(user)

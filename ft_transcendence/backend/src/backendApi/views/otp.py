@@ -26,9 +26,13 @@ class OtpViewSet(viewsets.ModelViewSet):
     def getOtpStatus(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({'error': 'WebSocket cannot be retrieved'}, status=403)
-        if user is None:
-            return Response({'error': 'User not found'}, status=404)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         try:
             instance = Otp.objects.get(user=user)
         except Otp.DoesNotExist:
@@ -57,7 +61,13 @@ class OtpViewSet(viewsets.ModelViewSet):
     def switchOtpStatus(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({'error': 'WebSocket cannot be retrieved'}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         instance = Otp.objects.get(user=user)
         instance.otpStatus = not instance.otpStatus
         instance.save()
@@ -67,7 +77,13 @@ class OtpViewSet(viewsets.ModelViewSet):
     def getOtpCode(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({'error': 'WebSocket cannot be retrieved'}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if user is None:
             return Response({'error': 'User not found'}, status=404)
         instance = Otp.objects.get(user=user)
@@ -78,7 +94,13 @@ class OtpViewSet(viewsets.ModelViewSet):
     def checkOtpCode(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({'error': 'WebSocket cannot be retrieved'}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         otp = request.data.get('otp')
         instance = Otp.objects.get(user=user)
         if instance.verifyOtp(otp):
@@ -90,7 +112,13 @@ class OtpViewSet(viewsets.ModelViewSet):
     def getQRcode(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({'error': 'WebSocket cannot be retrieved'}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         if user is None:
             return Response({'error': 'User not found'}, status=404)
         # Generate the OTP QR code

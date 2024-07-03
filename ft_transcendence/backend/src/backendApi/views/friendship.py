@@ -122,9 +122,9 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def listFriends(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            username = request.data.get("username", None)
+            username = request.data.get("user", None)
             if not username:
-                return Response({"error": "Username not provided"}, status=400)
+                return Response({"error": "User not provided"}, status=400)
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
@@ -307,7 +307,13 @@ class FriendshipViewSet(viewsets.ModelViewSet):
     def listMutedUser(self, request):
         user = request.user
         if isinstance(user, WebSocketUser):
-            return Response({"error": "WebSocket cannot be retrieved"}, status=403)
+            username = request.data.get("user", None)
+            if not username:
+                return Response({"error": "User not provided"}, status=400)
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=404)
         muteds = MutedUser.objects.filter(
             Q(sender=user) | Q(receiver=user), until__gte=datetime.now().date()
         )
