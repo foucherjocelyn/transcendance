@@ -17,19 +17,6 @@
     justify-content: space-between; 
 }
 
-#tpd_close {
-	background-image: url(../../../img/icon/close.png);
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-color: transparent;
-	height: 20px;
-	width: 20px;
-	border: none;
-	margin-left: 85%;
-    position: relative;
-    top: -65px;
-}
-
 #tour_details_more {
     background-image: url(../../../img/icon/more2.png);
     background-size: cover;
@@ -39,14 +26,35 @@
     height: 20px;
 }
 
+#tpd_close {
+    z-index: 2;
+	background-image: url(../../../img/icon/close.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-color: transparent;
+	height: 20px;
+	width: 20px;
+	border: none;
+	margin-left: 85%;
+    position: relative;
+}
+
+#tpd_details_header {
+    margin: 3px;
+    background-color: #202121;
+    border-radius: 12px;
+    width: 238px;
+}
+
 #tournament_player_details {
     font-weight: bold;
     z-index: 4;
-    background-image: url(../../../img/background/card3_head.png);
-    background-size: cover;
+    background-image: url(../../../img/background/card3.png);
+    background-size: 100% 100%;
 	border-radius: 4px;
 	width: 240px;
 	height: auto;
+    max-height: 600px;
 	padding: 5px;
     position: absolute;
     left: 50%;
@@ -54,6 +62,7 @@
 	top: 25%;
 	color: gray;
     text-align: center;
+    overflow: scroll;
 }
 
 #tournament_player_details h3 {

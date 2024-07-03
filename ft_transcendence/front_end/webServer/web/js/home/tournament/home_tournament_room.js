@@ -138,18 +138,21 @@ function loadTournamentOwnerPanel(tour_obj) {
 }
 
 async function detailsTournamentPlayers(tour_obj, html_id_element) {
+	tour_obj = await getTournamentInfoById(tour_obj.id);
 	let player_nb = tour_obj.player_usernames.length;
 	document.getElementById(html_id_element).innerHTML = `
-	<div id="tournament_player_details">
-	<h3>Player List</h3>
-	<button id="tpd_close"></button>
+<div id="tournament_player_details">
+	<div id="tpd_details_header">
+		<button id="tpd_close"></button>
+		<h3>Player List</h3>
+		<hr>
 	</div>
+</div>
 	`;
 	for (let i = 0; i < player_nb; i++) {
 		let alias = await getAliasFromUsername(tour_obj.player_usernames[i]);
 		document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
 			<p>${alias}</p>
-			<br>
 			`);
 	}
 	document.getElementById(`tpd_close`).addEventListener("click", () => { document.getElementById("tournament_player_details").outerHTML = ``; });
