@@ -52,19 +52,6 @@
 	color: gray;
 }
 
-#tpd_close, #tour_details_close {
-	background-image: url(../../../img/icon/close.png);
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-color: transparent;
-	height: 20px;
-	width: 20px;
-	border: none;
-	margin-left: 85%;
-    position: relative;
-    top: -60px;
-}
-
 #htb_search {
 	position: relative;
 	left: 2%;

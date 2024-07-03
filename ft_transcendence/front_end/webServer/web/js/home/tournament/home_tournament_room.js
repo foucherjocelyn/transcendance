@@ -180,7 +180,8 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 					<p id="twr_tour_name"></p>
 					<p id="twr_tour_description"></p>
 					<p id="twr_tour_start"></p>
-					<p id="twr_tour_playernb"></p><button id="tour_details_more">...</button>
+					<p id="twr_tour_playernb"></p>
+					<button id="tour_details_more"></button>
 					<div id="twr_player_details"></div>
 					<p id="twr_tour_status"></p>
 					</div>

@@ -17,6 +17,28 @@
     justify-content: space-between; 
 }
 
+#tpd_close {
+	background-image: url(../../../img/icon/close.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-color: transparent;
+	height: 20px;
+	width: 20px;
+	border: none;
+	margin-left: 85%;
+    position: relative;
+    top: -65px;
+}
+
+#tour_details_more {
+    background-image: url(../../../img/icon/more2.png);
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    width: 20px;
+    height: 20px;
+}
+
 #tournament_player_details {
     font-weight: bold;
     z-index: 4;
