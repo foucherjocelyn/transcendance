@@ -1,8 +1,7 @@
 import { getAliasFromUsername } from "../../../backend_operation/alias.js";
 import { getTournamentInfoById, getTournamentsGames } from "../../../backend_operation/tournament.js";
 
-export function update_tournament_tree(tournamentId)
-{
+export function update_tournament_tree(tournamentId) {
     console.log('tournament ID: ' + tournamentId);
     const tour_html = `<div id="tournament_tree"></div>`;
     const end_screen = document.getElementById("resultsMatchPanel");
@@ -22,29 +21,38 @@ export const renderTournamentTree = async (tournamentId) => {
     </div>`;
 
     const tournament = await getTournamentInfoById(tournamentId);
-    const participants = tournament.ordered_players_usernames;
+    const participants = tournament.ordered_players;
     const participantAliasesMap = await Promise.all(participants.map(async username => {
         const alias = await getAliasFromUsername(username);
-        return {username: username, alias: alias};
+        return { username: username, alias: alias };
     }));
     createBracket(participants, participantAliasesMap);
     const numberOfPlayers = participants.length;
     const tournamentGames = await getTournamentsGames(tournamentId);
     const tournamentGamesEnded = tournamentGames.filter(game => game.status === "end");
     let currentRound = 1;
-    let numberOfMatchesInCurrentRound = Math.floor(numberOfPlayers / 2);
+    let numberOfMatchesInCurrentRound = Math.ceil(numberOfPlayers / 2);
     let currentMatch = 1;
+    let currentRoundGames = tournamentGamesEnded.slice(0, numberOfMatchesInCurrentRound);
+    let winners = currentRoundGames.map(game => game.winner_username);
     for (let i = 0; i < tournamentGamesEnded.length; i++) {
-        updateBracket(currentRound, currentMatch, participantAliasesMap.find(participant => participant.username === tournamentGamesEnded[i].winner_username).alias);
+        updateBracket(currentRound, currentMatch, winners);
         currentMatch++;
         if (currentMatch > numberOfMatchesInCurrentRound) {
             currentRound++;
-            numberOfMatchesInCurrentRound = Math.floor(numberOfMatchesInCurrentRound / 2);
+            numberOfMatchesInCurrentRound = Math.ceil(numberOfMatchesInCurrentRound / 2);
             currentMatch = 1;
+            currentRoundGames = tournamentGamesEnded.slice(i, numberOfMatchesInCurrentRound + i);
+            winners = currentRoundGames.map(game => game.winner_username);
         }
     }
+    replaceNamesWithAliases(participantAliasesMap);
 }
 
+function replaceNamesWithAliases(participantAliasesMap) {
+    const nameSpans = document.querySelectorAll("bracket .name");
+    nameSpans.forEach(nameSpan => nameSpan.innerText = participantAliasesMap.find(participant => participant.username === nameSpan.innerText)?.alias || nameSpan.innerText);
+}
 
 function createBracket(participants, participantAliasesMap) {
     const bracketContainer = document.getElementById('bracket');
@@ -65,8 +73,8 @@ function createBracket(participants, participantAliasesMap) {
 
             if (i + 1 < currentRoundParticipants.length) {
                 matchDiv.innerHTML = `
-                        <div class="match-top team"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i])?.alias || currentRoundParticipants[i]}</span></div>
-                        <div class="match-bottom team"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i + 1])?.alias || currentRoundParticipants[i + 1]}</span></div>
+                        <div class="match-top team"><span class="name">${currentRoundParticipants[i]}</span></div>
+                        <div class="match-bottom team"><span class="name">${currentRoundParticipants[i + 1]}</span></div>
                         <div class="match-lines">
                             <div class="line one"></div>
                             <div class="line two"></div>
@@ -80,7 +88,7 @@ function createBracket(participants, participantAliasesMap) {
                 if (round === 1) {
                     matchDiv.classList.add("winner-top");
                     matchDiv.innerHTML = `
-                    <div class="team match-top"><span class="name">${participantAliasesMap.find(participant => participant.username === currentRoundParticipants[i])?.alias || currentRoundParticipants[i]}</span></div>
+                    <div class="team match-top"><span class="name">${currentRoundParticipants[i]}</span></div>
                     <div class="match-lines">
                         <div class="line one"></div>
                         <div class="line two"></div>
@@ -117,10 +125,19 @@ function createBracket(participants, participantAliasesMap) {
 
 }
 
-function updateBracket(round, match, winner) {
+function updateBracket(round, match, winners) {
     const matchDiv = document.getElementById(`match${round}-${match}`);
-    if (matchDiv)
-        matchDiv.classList.add(`${matchDiv.querySelector(".match-top .name").innerText === winner ? "winner-top" : "winner-bottom"}`);
+    let winner = '';
+    if (!matchDiv)
+        return;
+    if (winners.includes(matchDiv.querySelector(".match-top .name").innerText)) {
+        matchDiv.classList.add("winner-top");
+        winner = matchDiv.querySelector(".match-top .name").innerText;
+    } else if (winners.includes(matchDiv.querySelector(".match-bottom .name").innerText)) {
+        matchDiv.classList.add("winner-bottom");
+        winner = matchDiv.querySelector(".match-bottom .name").innerText;
+    } else
+        return ;
     //if there is a next round, put the winner in the match of the next round
     //if the next round is a bye put it in the next round again
     let nextRound = round + 1;
