@@ -85,6 +85,9 @@ class TournamentViewSet(viewsets.ModelViewSet):
         # Check is the tournament status is ongoing
         if tournament.status != "registering":
             return Response({"error": "Tournament is not registering"}, status=400)
+        # Check if the number of players is less than max players
+        if tournament.players.count() >= tournament.max_players:
+            return Response({"error": "Tournament is full"}, status=400)
         tournament.players.add(user)
         tournament.save()
         serializer = self.get_serializer(tournament)
