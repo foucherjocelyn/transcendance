@@ -1,6 +1,18 @@
 import { getAliasFromUsername } from "../../../backend_operation/alias.js";
 import { getTournamentInfoById, getTournamentsGames } from "../../../backend_operation/tournament.js";
 
+export function update_tournament_tree(tournamentId)
+{
+    console.log('tournament ID: ' + tournamentId);
+    const tour_html = `<div id="tournament_tree"></div>`;
+    const end_screen = document.getElementById("resultsMatchPanel");
+    if (end_screen) {
+        console.log("end_screen is true------------------");
+        end_screen.insertAdjacentHTML("beforeend", tour_html);
+    }
+    renderTournamentTree(tournamentId);
+}
+
 export const renderTournamentTree = async (tournamentId) => {
     const tournamentTree = document.getElementById("tournament_tree")
     if (!tournamentTree)

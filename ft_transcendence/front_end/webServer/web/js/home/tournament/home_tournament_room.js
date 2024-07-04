@@ -124,6 +124,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 		document.getElementById("twr_owner_delete_button").addEventListener("click", async () => {
 			if (tour_obj.status === "registering") {
 				console.log("deleting tournament....");
+				
 				//console.log(tour_obj);
 				// const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
 				// client.socket.send(JSON.stringify(send_data));

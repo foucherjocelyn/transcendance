@@ -69,7 +69,7 @@ function handle_requirements(socket, title, content, sender, recipient) {
         else if (title === 'update tournament board') {
             send_sign_update_tournament_board(sender);
         }
-        else if (title === 'delete alias' || title === 'send notif') {
+        else if (title === 'send notif') { // title === 'delete alias' || 
             send_to_all(content, sender, title);
         }
         else if (title === 'joining tournament') {
@@ -77,6 +77,9 @@ function handle_requirements(socket, title, content, sender, recipient) {
         }
         else if (title === 'update informations user') {
             update_informations_user(sender);
+        }
+        else if (title === 'new friend' || title === 'remove friend') {
+            update_list_friends(sender, recipient);
         }
         else {
             send_data(title, content, sender, recipient);
@@ -197,7 +200,7 @@ module.exports = {
     update_informations_user
 };
 
-const { connect, disconnect } = require('./addNewConnection');
+const { connect, disconnect, update_list_friends } = require('./addNewConnection');
 const { send_data, dataToClient } = require('./dataToClient');
 const { accept_invitation_to_play, leave_match, reject_invitation_to_play } = require('../match/acceptInvitationPlay');
 const { sign_start_game } = require('../match/signStartGame');

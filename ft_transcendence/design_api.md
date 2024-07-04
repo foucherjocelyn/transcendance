@@ -872,7 +872,7 @@ Return a list of User objects ([User](#user)) where the status field in (Friends
 GET /api/v1/user/friendship
 authorization Bearer <token>
 {
-	username: string // if requested from socket
+	user: string // if requested from socket
 }
 ```
 
