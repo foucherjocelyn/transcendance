@@ -33,6 +33,7 @@ class MatchMaking {
             const matches = [];
     
             // Send signal to update tournament tree
+            // send_data("update tournament tree", currentRound, tournamentID, currentRound);
             send_data("update tournament tree", tournamentID, 'server', currentRound);
             await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds
     
@@ -75,12 +76,11 @@ class MatchMaking {
         if (player2 !== null && define_user_by_ID(player2.id) === undefined) {
             player2 = null;
         }
-
+        
         // 2 user disconnect
         if (player1 === null && player2 === null) {
             return null;
         }
-
         if (player1 === null || player2 === null)
         {
             let player = player1 !== null ? player1 : player2;
@@ -128,6 +128,7 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
     match.id = await create_match_ID();
     match.id += player1.id;
     match.mode = "tournament";
+    match.winner = player1;
 
     // define final match
     match.finalMatch = (nbrPlayer === 2) ? true : false;
@@ -140,9 +141,7 @@ async function create_match_tournament(player1, player2, nbrPlayer) {
         }
         else if (i === 1)
         {
-            if (player2 === null)
-            {
-                match.winner = player1;
+            if (player2 === null) {
                 player = new inforPlayer("#42", "AI", "../../img/avatar/AI.png", 42, "AI");
             }
             else {

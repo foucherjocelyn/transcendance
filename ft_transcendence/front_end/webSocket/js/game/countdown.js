@@ -4,6 +4,7 @@ const { movements_ball } = require("./movementsBall");
 const { movement_AI } = require("./movementsAI");
 const { create_paddles } = require("./createPaddle");
 const { check_game_over } = require("./gameOver");
+const { define_user_by_ID } = require("../webSocket/webSocket");
 
 function calculate_ball_speed(gameSettings)
 {

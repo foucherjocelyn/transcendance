@@ -78,6 +78,8 @@ export async function aliasJoinTournament(tour_obj) {
 				client.socket.send(JSON.stringify(send_data));
 				to_tournamentWaitingRoom("false", tour_obj);
 			}
+			else if (!tour_obj.status === "registering")
+				notice("The tournament has already started", 3, "#d1060d");
 			else
 				notice("Joined tournament not found", 3, "#d1060d");
 		});
@@ -128,8 +130,8 @@ function loadTournamentOwnerPanel(tour_obj) {
 				console.log("deleting tournament....");
 				
 				//console.log(tour_obj);
-				// const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
-				// client.socket.send(JSON.stringify(send_data));
+				const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
+				client.socket.send(JSON.stringify(send_data));
 
 				await deleteTournament(tour_obj.id);
 				console.log("deleting complete.");
@@ -155,6 +157,8 @@ async function detailsTournamentPlayers(tour_obj, html_id_element) {
 	`;
 	for (let i = 0; i < player_nb; i++) {
 		let alias = await getAliasFromUsername(tour_obj.player_usernames[i]);
+		if (!alias)
+			alias = `<p class="tpd_lost_username">${tour_obj.player_usernames[i]}</p>`;
 		document.getElementById("tournament_player_details").insertAdjacentHTML("beforeend", `
 			<p>${alias}</p>
 			`);
