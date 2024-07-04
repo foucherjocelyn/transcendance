@@ -23,7 +23,7 @@ async function    create_result(match)
     })
     match.result = result;
 
-    request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
+    request_game_DB(`/api/v1/game/${match.id}/end`, match, match.winner);
 
     send_data('game over', match.result, 'server', match.listUser);
     send_data('update pongGame', match.pongGame, 'server', match.listUser);
@@ -35,10 +35,10 @@ async function    create_result(match)
             const   user = define_user_by_ID(player.id);
             if (user !== undefined)
             {
-                let status_exit_button = (match.finalMatch || user.id !== winner.id) ? 'flex' : 'none';
+                let status_exit_button = (match.finalMatch || user.id !== match.winner.id) ? 'flex' : 'none';
                 send_data('display exit match', status_exit_button, 'server', user);
     
-                if (player.id === winner.id && match.finalMatch === false) {
+                if (player.id === match.winner.id && match.finalMatch === false) {
                     Object.assign(match.listPlayer[i], match.listPlayer[3]);
                 }
                 update_match(user);
@@ -55,7 +55,7 @@ function    check_game_over(match)
     if (nbrPaddle < 2 || match.listUser.length === 0) {
         match.pongGame.gameOver = true;
     }
-    else if (match.mode !== 'offline' && match.listUser.length === 1) {
+    else if ((match.mode === 'ranked' || match.mode === 'with friends') && match.listUser.length === 1) {
         match.pongGame.gameOver = true;
     }
     else if (winner !== undefined) {
