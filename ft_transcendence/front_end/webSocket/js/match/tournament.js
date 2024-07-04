@@ -33,7 +33,6 @@ class MatchMaking {
             const matches = [];
     
             // Send signal to update tournament tree
-            // send_data("update tournament tree", currentRound, tournamentID, currentRound);
             send_data("update tournament tree", tournamentID, 'server', currentRound);
             await new Promise(resolve => setTimeout(resolve, 5000)); // 5 seconds
     

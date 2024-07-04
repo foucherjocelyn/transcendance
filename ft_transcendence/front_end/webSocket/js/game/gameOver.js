@@ -14,6 +14,7 @@ async function    create_result(match)
     const   winner = result.filter(player => player.type === 'player')[0];
     if (match.listUser.length > 0) {
         match.winner = define_user_by_ID(winner.id);
+        console.log('---> winner: ' + match.winner.username);
     }
 
     // add the loser on the table result
@@ -54,7 +55,7 @@ function    check_game_over(match)
     if (nbrPaddle < 2 || match.listUser.length === 0) {
         match.pongGame.gameOver = true;
     }
-    else if (match.mode === 'ranked' && match.listUser.length === 1) {
+    else if (match.mode !== 'offline' && match.listUser.length === 1) {
         match.pongGame.gameOver = true;
     }
     else if (winner !== undefined) {

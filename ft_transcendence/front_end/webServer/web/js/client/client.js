@@ -10,12 +10,11 @@ import { draw_paddle } from "../game/drawPaddles.js";
 import { display_countdown } from "../game/displayCountdown.js";
 import { display_button_game_over, display_game_over_layer } from "../game/gameOverLayer.js";
 import { change_color_border } from "../game/drawBorders.js";
-import { removeAlias } from "../backend_operation/alias.js";
 import { refresh_tour_waiting_room } from "../home/tournament/home_tournament_room.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
 import { domain_name } from "../backend_operation/authentication.js";
 import { notice } from "../authentication/auth_main.js";
-import { renderTournamentTree } from "../home/tournament/tournamentTree/tournamentTree.js";
+import { update_tournament_tree } from "../home/tournament/tournamentTree/tournamentTree.js";
 import { renderNotifications } from "../chat/notifications.js";
 import { searchFriendList } from "../chat/friend-list.js";
 import { tournamentReadyDisable } from "../home/tournament/tournamentReadyDisable.js";
@@ -130,12 +129,6 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'joining tournament') {
             refresh_tour_waiting_room(receivedData.content);
         }
-        if (receivedData.title === 'delete alias') {
-            console.log("delete alias from client: starting ");
-            removeAlias();
-            //to_tournament("false");
-            console.log("delete alias from client: complete");
-        }
         if (receivedData.title === 'send notif') {
             notice("The tournament is about to start", 2, "#00a33f");
             tournamentReadyDisable();
@@ -152,22 +145,25 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'notification') {
             renderNotifications();
         }
-        if (receivedData.title === 'new friend') {
-            searchFriendList();
-        }
-        if (receivedData.title === 'remove friend') {
+        if (receivedData.title === 'update list friends') {
+            // console.log('----------> sign update list friends')
             searchFriendList();
         }
         if (receivedData.title === 'update tournament tree') {
-            console.log('tournament ID: ' + receivedData.content);
-            const tour_html = `<div id="tournament_tree"></div>`;
-            const end_screen = document.getElementById("resultsMatchPanel");
-            if (end_screen) {
-                console.log("end_screen is true------------------");
-                end_screen.insertAdjacentHTML("beforeend", tour_html);
-            }
-            renderTournamentTree(receivedData.content);
+            update_tournament_tree(receivedData.content);
         }
+        // if (receivedData.title === 'delete alias') {
+        //     console.log("delete alias from client: starting ");
+        //     removeAlias();
+        //     //to_tournament("false");
+        //     console.log("delete alias from client: complete");
+        // }
+        // if (receivedData.title === 'new friend') {
+        //     searchFriendList();
+        // }
+        // if (receivedData.title === 'remove friend') {
+        //     searchFriendList();
+        // }
     };
 }
 
