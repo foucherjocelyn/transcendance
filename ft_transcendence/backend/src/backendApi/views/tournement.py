@@ -215,10 +215,10 @@ class TournamentViewSet(viewsets.ModelViewSet):
                     return Response(
                         {"error": "Player not in the tournament"}, status=400
                     )
+                ordered_players.append(player)
             except User.DoesNotExist:
                 return Response({"error": "Player not found"}, status=404)
-            ordered_players.append(user)
-        tournament.ordered_players.set(ordered_players)
+        tournament.ordered_players = ordered_players
         tournament.save()
         serializer = self.get_serializer(tournament)
         return Response(serializer.data, status=200)

@@ -171,7 +171,7 @@ Login with this username, password and an optional TOTP
 ## Login using 42 token
 
 ```typescript
-POST / api / v1 / auth / login42;
+POST /api/v1/auth/login42
 {
     token42: string;
 }
@@ -872,7 +872,7 @@ Return a list of User objects ([User](#user)) where the status field in (Friends
 GET /api/v1/user/friendship
 authorization Bearer <token>
 {
-	username: string // if requested from socket
+	user: string // if requested from socket
 }
 ```
 
