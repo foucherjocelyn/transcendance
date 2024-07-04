@@ -96,6 +96,8 @@ export async function aliasJoinTournament(tour_obj) {
 }
 
 function loadTournamentOwnerPanel(tour_obj) {
+	if (document.getElementById("twr_leave"))
+		document.getElementById("twr_leave").outerHTML = ``;
 	let owner_panel = document.querySelector("#twr_owner_panel");
 	if (owner_panel) {
 		owner_panel.innerHTML = `
@@ -207,6 +209,7 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 			`);
 	}
 	else {
+		{
 		document.getElementById("twr_board").insertAdjacentHTML("beforeend", `
 			<div id="twr_owner_panel"></div>
 					<!-- <input type="button" id="twr_refresh_tour" class="button-img" value="Refresh"> -->
@@ -214,20 +217,21 @@ async function drawWaitingRoom(callback, tour_obj, mode) {
 					<input type="button" id="twr_leave" class="button-img" value="Unregister">
 					<input type="button" id="twr_back" class="button-img" value="Back">
 					`);
+					document.querySelector("#twr_leave").addEventListener("click", async () => {
+						if (tour_obj.status === "registering") {
+							await removeAlias();
+							await leaveTournament(tour_obj.id);
+							const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
+							client.socket.send(JSON.stringify(send_data));
+							to_tournament("false");
+						}
+						else {
+							notice("You cannot leave a tournament once it has started", 2, "#d11706")
+						}
+					});
+		}
 		if (tour_obj.owner_username === getCookie("username"))
-			loadTournamentOwnerPanel(tour_obj);
-		document.querySelector("#twr_leave").addEventListener("click", async () => {
-			if (tour_obj.status === "registering") {
-				await removeAlias();
-				await leaveTournament(tour_obj.id);
-				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
-				client.socket.send(JSON.stringify(send_data));
-				to_tournament("false");
-			}
-			else {
-				notice("You cannot leave a tournament once it has started", 2, "#d11706")
-			}
-		});
+				loadTournamentOwnerPanel(tour_obj);
 	}
 
 	document.querySelector("#twr_back").addEventListener("click", () => {
