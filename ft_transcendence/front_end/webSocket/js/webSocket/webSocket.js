@@ -69,7 +69,10 @@ function handle_requirements(socket, title, content, sender, recipient) {
         else if (title === 'update tournament board') {
             send_sign_update_tournament_board(sender);
         }
-        else if (title === 'send notif') { // title === 'delete alias' || 
+        else if (title === 'send notif') {
+            send_to_all(content, sender, title);
+        }
+        else if (title === 'delete alias') {
             send_to_all(content, sender, title);
         }
         else if (title === 'joining tournament') {
@@ -80,6 +83,9 @@ function handle_requirements(socket, title, content, sender, recipient) {
         }
         else if (title === 'new friend' || title === 'remove friend') {
             update_list_friends(sender, recipient);
+        }
+        else if (title === 'invite to play') {
+            request_invitation_to_play(sender, recipient);
         }
         else {
             send_data(title, content, sender, recipient);

@@ -14,7 +14,7 @@ class User(AbstractUser, PermissionsMixin):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     alias = models.CharField(max_length=30, null=True, blank=True, default=None)
-    level = models.DecimalField(max_digits=4, decimal_places=2, default=1)
+    level = models.FloatField(default=1.0)
     statusChoices = [("online", "Online"), ("offline", "Offline")]
     status = models.CharField(max_length=100, choices=statusChoices, default="offline")
     avatarPath = models.CharField(
@@ -111,7 +111,7 @@ class ChannelInvitedUser(models.Model):
 class Tournament(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True, default=None)
-    max_players = models.PositiveIntegerField(default=32)
+    max_players = models.PositiveIntegerField(default=16)
     status_choices = [
         ("registering", "Registering"),
         ("progressing", "Progressing"),

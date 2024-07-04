@@ -36,7 +36,7 @@ const renderFriendList = (list) => {
         friendDiv?.addEventListener("click", (e) => openChatBox(friendUsername));
         friendDiv?.querySelector(".c-invite-match-button").addEventListener("click", (e) => {
             e.stopPropagation();
-
+            console.log("sending invite");
             const receiverUser = client.listUser.filter(user => user.username === friendUsername)[0];
             if (receiverUser === undefined || receiverUser.status === 'playing game')
                 return;

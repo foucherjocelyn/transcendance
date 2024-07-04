@@ -89,7 +89,8 @@ export async function to_game(nohistory = "false") {
         if (result) {
             document.getElementById("loadspinner").classList.add("hide");
             document.getElementById("g_match_html").classList.remove("hide");
-            gameEventListener();
+            //if (!getCookie("alias"))
+                gameEventListener();
         }
     });
 }

@@ -117,3 +117,8 @@
 #twr_leave {
     color:yellow;
 }
+
+.tpd_lost_username {
+    color: red;
+    font-weight: bold;
+}

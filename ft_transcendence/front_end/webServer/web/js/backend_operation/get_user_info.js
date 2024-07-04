@@ -85,7 +85,7 @@ export async function getMyInfo() {
 			document.cookie = `lastname=${data.last_name}; SameSite=Strict`;
 			document.cookie = `email=${data.email}; SameSite=Strict`;
 			document.cookie = `alias=${data.alias}; SameSite=Strict`;
-			document.cookie = `level=${data.level}; SameSite=Strict`;
+			document.cookie = `level=${data.level.toFixed(2)}; SameSite=Strict`;
 			document.cookie = `avatar=${data.avatarPath}; SameSite=Strict`;
 			document.cookie = `id=${data.id}; SameSite=Strict`;
 			document.cookie = `is_active=${data.active}; SameSite=Strict`;
