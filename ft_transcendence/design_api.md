@@ -1119,6 +1119,9 @@ The winner will be updated based on the highest score.
 ```typescript
 POST /api/v1/game/<game_id>/winner
 authorization Bearer <token>
+{
+	winner_username: string
+}
 ```
 
 ### Return

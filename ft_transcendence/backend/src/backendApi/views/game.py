@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from backend.settings import logger
 from decimal import Decimal
 
+
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     queryset = Game.objects.all()
@@ -134,14 +135,15 @@ class GameViewSet(viewsets.ModelViewSet):
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:
             return Response({"error": "Game not found"}, status=404)
-        # Find the winner from game scores
-        scores = GameScore.objects.filter(game=game)
-        if not scores.exists():
-            return Response({"error": "No scores found"}, status=400)
-        max_score = scores.order_by("-score").first()
-        winner = max_score.player
+        winner_username = request.data.get("winner_username", None)
+        if not winner_username:
+            return Response({"error": "Winner not provided"}, status=400)
+        try:
+            winner = User.objects.get(username=winner_username)
+        except User.DoesNotExist:
+            return Response({"error": "Winner not found"}, status=404)
         game.winner = winner
-        game.winnerScore = max_score.score
+        game.winnerScore = GameScore.objects.get(game=game, player=winner).score
         game.save()
         return Response({"message": "Winner updated successfully"}, status=200)
 
@@ -192,7 +194,7 @@ class GameViewSet(viewsets.ModelViewSet):
         scores = GameScore.objects.filter(player=user)
         serializer = GameScoreSerializer(scores, many=True)
         return Response(serializer.data, status=200)
-    
+
     @action(detail=True, methods=["get"])
     def listGamesByTournament(self, request, tournament_id):
         try:
