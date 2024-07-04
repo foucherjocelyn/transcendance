@@ -40,7 +40,7 @@ function	drawHomePage(callback)
 		<div id="h_player_bar">
 			<img id="hpb_player_img" src="../../img/avatars/default.png">
 			<p id="hpb_username"></p>
-			<p id="hpb_level">Level: ${getCookie("level")}</p>
+			<p id="hpb_level"></p>
       </div>
 			<div id="h_scoreboard">
 			<table id="h_score">
@@ -68,6 +68,7 @@ function	drawHomePage(callback)
 
 	renderMatchHistory(getCookie("username"));
 	document.getElementById("hpb_username").textContent = getCookie("username");
+	document.getElementById("hpb_level").textContent =  `Level: ${getCookie("level")}`;
 	//load players scoreboard
 //	console.log("loading player list");
 //	getUserList();

@@ -84,6 +84,9 @@ function handle_requirements(socket, title, content, sender, recipient) {
         else if (title === 'new friend' || title === 'remove friend') {
             update_list_friends(sender, recipient);
         }
+        else if (title === 'invite to play') {
+            request_invitation_to_play(sender, recipient);
+        }
         else {
             send_data(title, content, sender, recipient);
         }

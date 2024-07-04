@@ -1,3 +1,4 @@
+const { create_request } = require("../dataToDB/createRequest");
 const { webSocket } = require("../webSocket/webSocket");
 const { update_match } = require("./updateMatch");
 
@@ -65,6 +66,13 @@ function    define_user(socket)
 async function    create_match(user, mode)
 {
     if (mode !== 'ranked' && mode !== 'tournament' && mode !== 'with friends' && mode !== 'offline') {
+        return ;
+    }
+
+    // check alias
+    const   inforUser = await create_request('GET', `/api/v1/users/${user.id}`, '');
+    if (inforUser.alias !== null && inforUser.alias !== undefined) {
+        console.log('-----> stop create match');
         return ;
     }
 

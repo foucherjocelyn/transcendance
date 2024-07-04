@@ -12,7 +12,7 @@ function    define_match(user)
     for (let i = 0; i < webSocket.listMatch.length; i++)
     {
         const   match = webSocket.listMatch[i];
-        if (match.id === user.matchID) {
+        if (user.matchID !== undefined && match.id === user.matchID) {
             return match;
         }
     }
