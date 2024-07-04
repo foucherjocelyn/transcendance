@@ -262,7 +262,7 @@ async function start_tournament(tournamentID, sender)
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
     
     // check sender is admin + number of player in tournament
-    if (sender.username !== tournament.owner_username || tournament.player_usernames.length < 2) {
+    if (tournament === undefined || sender.username !== tournament.owner_username || tournament.player_usernames.length < 2) {
         return;
     }
 

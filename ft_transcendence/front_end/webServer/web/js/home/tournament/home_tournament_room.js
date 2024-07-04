@@ -68,6 +68,11 @@ export async function aliasJoinTournament(tour_obj) {
 `;
 		document.getElementById("tour_aliasjoiningform").addEventListener("submit", async () => {
 			event.preventDefault();
+			if (!tour_obj)
+				{
+					notice("The tournament has been deleted", 3, "#d1060d");
+					return;
+				}
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value
 			};
@@ -115,6 +120,8 @@ function loadTournamentOwnerPanel(tour_obj) {
 				notice("A tournament must have more than 1 player to start", 2, "#9e7400");
 			}
 			else if (tour_obj.status === "registering") {
+				console.log("tour id = =======");
+				console.log(tour_obj.id);
 				const sendData = new dataToServer('start tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(sendData));
 			}
