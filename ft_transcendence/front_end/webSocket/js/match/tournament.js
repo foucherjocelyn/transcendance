@@ -293,7 +293,7 @@ async function start_tournament(tournamentID, sender)
         send_data('display exit match', 'flex', 'server', champion);
     }
 
-    // send sign delete alias
+    // delete alias
     delete_alias(tournament.player_usernames);
 
     // update status tournament on client
