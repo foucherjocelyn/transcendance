@@ -11,6 +11,12 @@ class   connection {
     }
 };
 
+function  update_list_friends(sender, recipient)
+{
+    send_data('update list friends', '', sender, recipient);
+    // console.log('---> send to: ' + recipient.username);
+}
+
 async function    connect(userID, socket)
 {
     if (userID === undefined || !isNumeric(userID)) {
@@ -43,9 +49,12 @@ async function    connect(userID, socket)
     send_data('update infor user', inforUser, 'server', inforUser);
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
 
-    console.log('-------> get list friends of: ' + inforUser.username);
-    // const   listFriends = await create_request('GET', '/api/v1/user/friendship', { username: inforUser.username });
-    // console.table(listFriends.length);
+    // console.log('-------> get list friends of: ' + inforUser.username);
+    // send sign update status list friends
+    const   listFriends = await create_request('GET', '/api/v1/user/friendship', { user: inforUser.username });
+    listFriends.forEach(friend => {
+        update_list_friends('server', friend);
+    })
 }
 
 async function    disconnect(socket)
@@ -64,6 +73,12 @@ async function    disconnect(socket)
             webSocket.listUser.splice(i, 1);
             send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
             await create_request('POST', `/api/v1/users/${user.id}/status/update`, { status: 'offline' });
+            
+            // send sign update status list friends
+            const   listFriends = await create_request('GET', '/api/v1/user/friendship', { user: user.username });
+            listFriends.forEach(friend => {
+                update_list_friends('server', friend);
+            })
             return ;
         }
     }
@@ -71,5 +86,6 @@ async function    disconnect(socket)
 
 module.exports = {
     connect,
-    disconnect
+    disconnect,
+    update_list_friends
 };
