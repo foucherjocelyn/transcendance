@@ -19,7 +19,7 @@ function    change_match_admin(match)
     }
 }
 
-function    leave_match(user)
+async function    leave_match(user)
 {
     const   match = define_match(user);
     if (match === undefined) {
@@ -31,10 +31,6 @@ function    leave_match(user)
         const   player = match.listPlayer[i];
         if (player.id === user.id)
         {
-            if (match.mode === 'tournament') {
-                send_data('delete alias', "", "server", user);
-            }
-
             // admin leave
             (player.id === match.admin.id && user.status === 'creating match' && match.listUser.length > 1) ?
             change_match_admin(match) :
@@ -42,8 +38,15 @@ function    leave_match(user)
             
             // update status user
             user.status = 'online';
-            console.log(define_user_by_ID(user.id).status);
             update_match(user);
+
+            // delete alais
+            if (match.mode === 'tournament') {
+                const   postData = {
+                    user: user.username
+                }
+                await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+            }
             return ;
         }
     }

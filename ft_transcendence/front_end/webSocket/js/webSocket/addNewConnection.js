@@ -42,6 +42,10 @@ async function    connect(userID, socket)
     
     send_data('update infor user', inforUser, 'server', inforUser);
     send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
+
+    console.log('-------> get list friends of: ' + inforUser.username);
+    // const   listFriends = await create_request('GET', '/api/v1/user/friendship', { username: inforUser.username });
+    // console.table(listFriends.length);
 }
 
 async function    disconnect(socket)

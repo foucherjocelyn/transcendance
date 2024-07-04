@@ -125,8 +125,9 @@ function loadTournamentOwnerPanel(tour_obj) {
 			if (tour_obj.status === "registering") {
 				console.log("deleting tournament....");
 				//console.log(tour_obj);
-				const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
-				client.socket.send(JSON.stringify(send_data));
+				// const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
+				// client.socket.send(JSON.stringify(send_data));
+
 				await deleteTournament(tour_obj.id);
 				console.log("deleting complete.");
 			}

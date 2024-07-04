@@ -241,6 +241,18 @@ async function  send_to_all(tournamentID, sender, title)
     send_data(title, "", "server", listPlayer);
 }
 
+async function  delete_alias(listPlayer)
+{
+    for (let i = 0; i < listPlayer.length; i++)
+    {
+        const   username = listPlayer[i];
+        const   postData = {
+            user: username
+        }
+        await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+    }
+}
+
 async function start_tournament(tournamentID, sender)
 {
     // check number tournament ID from client
@@ -281,8 +293,8 @@ async function start_tournament(tournamentID, sender)
         send_data('display exit match', 'flex', 'server', champion);
     }
 
-    // send sign delete alias
-    send_data('delete alias', "", "server", listPlayer);
+    // delete alias
+    delete_alias(tournament.player_usernames);
 
     // update status tournament on client
     send_data('update tournament board', "", "server", webSocket.listUser);
@@ -292,5 +304,6 @@ module.exports = {
     start_tournament,
     send_sign_update_tournament_board,
     send_sign_join_tournament,
-    send_to_all
+    send_to_all,
+    delete_alias
 };
