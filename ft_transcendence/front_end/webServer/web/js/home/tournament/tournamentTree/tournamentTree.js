@@ -23,6 +23,8 @@ export const renderTournamentTree = async (tournamentId) => {
 
     const tournament = await getTournamentInfoById(tournamentId);
     const participants = tournament.ordered_players_usernames;
+    if (!participants)
+        return;
     const participantAliasesMap = await Promise.all(participants.map(async username => {
         const alias = await getAliasFromUsername(username);
         return {username: username, alias: alias};

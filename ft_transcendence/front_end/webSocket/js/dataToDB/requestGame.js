@@ -33,7 +33,7 @@ function    createPostData3(userName, userScore)
 
 async function  request_game_DB(path, match, player)
 {
-    if (match.mode === 'offline') {
+    if (match.mode === 'offline' || player === undefined) {
         return ;
     }
 

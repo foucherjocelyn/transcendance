@@ -18,6 +18,7 @@ import { update_tournament_tree } from "../home/tournament/tournamentTree/tourna
 import { renderNotifications } from "../chat/notifications.js";
 import { searchFriendList } from "../chat/friend-list.js";
 import { readyUpPlayer } from "../home/tournament/tournamentReadyDisable.js";
+import { removeAlias } from "../backend_operation/alias.js";
 
 class userNotifications {
     constructor() {
@@ -152,12 +153,12 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'update tournament tree') {
             update_tournament_tree(receivedData.content);
         }
-        // if (receivedData.title === 'delete alias') {
-        //     console.log("delete alias from client: starting ");
-        //     removeAlias();
-        //     //to_tournament("false");
-        //     console.log("delete alias from client: complete");
-        // }
+        if (receivedData.title === 'delete alias') {
+            console.log("delete alias from client: starting ");
+            removeAlias();
+            to_tournament("false");
+            console.log("delete alias from client: complete");
+        }
         // if (receivedData.title === 'new friend') {
         //     searchFriendList();
         // }
