@@ -16,10 +16,12 @@ function disableUpperPanel()
 `;
 }
 
-function readyUpPlayer()
+function tournamentReadyDisable()
 {
+    let host_start = document.getElementById("twr_owner_start_button");
     let host_delete = document.getElementById("twr_owner_delete_button");
-    if (host_delete) {
+    if (host_start && host_delete) {
+        host_start.outerHTML = `<input type="button" id="twr_owner_start_button_disabled" class="button-img_disabled" value="Start Tournament">`;
         host_delete.outerHTML = `<input type="button" id="twr_owner_delete_button_disabled" class="button-img_disabled" value="Delete Tournament">`;
     }
     let leave_button = document.getElementById("twr_leave");
@@ -30,7 +32,7 @@ function readyUpPlayer()
     }
 }
 
-export function tournamentReadyDisable() {
-    readyUpPlayer();
+export function readyUpPlayer() {
+    tournamentReadyDisable();
     disableUpperPanel();
 }

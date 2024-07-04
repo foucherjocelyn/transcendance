@@ -76,7 +76,7 @@ export async function aliasJoinTournament(tour_obj) {
 				await addAlias(alias);
 				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
-				to_tournamentWaitingRoom("true", tour_obj);
+				to_tournamentWaitingRoom("false", tour_obj);
 			}
 			else
 				notice("Joined tournament not found", 3, "#d1060d");
@@ -85,7 +85,7 @@ export async function aliasJoinTournament(tour_obj) {
 		return (false);
 	}
 	else if (join_status === "can join") {
-		to_tournamentWaitingRoom("true", tour_obj);
+		to_tournamentWaitingRoom("false", tour_obj);
 	}
 	else if (tour_obj.status === "progressing")
 		notice("You cannot join an ongoing tournament", 2, "#cc7314");
