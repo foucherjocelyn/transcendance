@@ -1,12 +1,15 @@
 
 .load_spinner {
-  margin: auto;
-  margin-top: 240px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
   border: 10px solid #000c36;
   border-radius: 50%;
   border-top: 10px solid #f70000;
   width: 200px;
   height: 200px;
+  margin-left: -100px;
+  margin-top: -100px;
   animation: spinner 4s linear infinite;
 }
 

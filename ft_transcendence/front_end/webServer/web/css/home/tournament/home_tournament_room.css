@@ -43,7 +43,8 @@
     margin: 3px;
     background-color: #202121;
     border-radius: 12px;
-    width: 238px;
+    width: 235px;
+    height: 80px;
 }
 
 #tournament_player_details {
