@@ -6,17 +6,21 @@ const { define_user_by_ID } = require("../webSocket/webSocket");
 async function    create_result(match)
 {
     // Arranged from smallest to largest
-    const   listPlayer = match.listPlayer.filter(player => player.type !== 'none');
-    listPlayer.forEach(player => {
-        match.result.push(player);
-    });
-    match.result.sort((a, b) => a.score - b.score);
-    match.result.reverse();
+    const   result = match.listPlayer.filter(player => player.type !== 'none');
+    result.sort((a, b) => a.score - b.score);
+    result.reverse();
 
-    const   winner = match.result.filter(player => player.type === 'player')[0];
+    // Define the winner
+    const   winner = result.filter(player => player.type === 'player')[0];
     if (match.listUser.length > 0) {
         match.winner = define_user_by_ID(winner.id);
     }
+
+    // add the loser on the table result
+    match.result.forEach(loser => {
+        result.push(loser);
+    })
+    match.result = result;
 
     request_game_DB(`/api/v1/game/${match.id}/end`, match, winner);
 
