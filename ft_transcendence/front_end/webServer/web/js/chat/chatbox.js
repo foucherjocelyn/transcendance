@@ -108,12 +108,13 @@ const sendMessage = async (friendUsername) => {
     renderMessages(friendUsername);
 
     const connectedReceiver = client.listUser.find(user => user.username == friendUsername)
-    if (connectedReceiver)
-    {
+    if (connectedReceiver) {
         const sendData = new dataToServer('message', newMessage.content, connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
     }
     postNotification({ username: friendUsername, content: `New message from ${client.inforUser.username}` });
+    const sendData = new dataToServer('notification', '', client.listUser.find(user => user.username === friendUsername));
+    client.socket.send(JSON.stringify(sendData));
 };
 
 const receiveMessage = (receivedData) => {
@@ -155,11 +156,11 @@ const muteUser = async (username) => {
         client.socket.send(JSON.stringify(sendData));
     }
 }
-    
+
 export const renderChatInput = async (friendUsername) => {
     const chattingWith = getCookie("chatboxOpenedWith");
     if (chattingWith !== friendUsername)
-        return ;
+        return;
     //display mute/unmute button except when muted by the other user
     //when muted or muting don't display input section of the chat box, but display a message instead
     const listMutedUsers = await getListMutedUsers();
@@ -173,10 +174,9 @@ export const renderChatInput = async (friendUsername) => {
         const sendMessageButton = document.querySelector("#c-chat-input button");
         const chatInputContent = document.querySelector("#c-chat-input input");
         sendMessageButton.addEventListener("click", () => {
-            if (document.getElementById("c-sending-message").value.length > 512)
-            {
+            if (document.getElementById("c-sending-message").value.length > 512) {
                 notice("Sent text cannot exceed 512 characters", 2, "#fc2403");
-                return ;
+                return;
             }
             sendMessage(friendUsername);
         });
@@ -187,7 +187,7 @@ export const renderChatInput = async (friendUsername) => {
         });
         renderMuteButton(friendUsername);
     } else {
-        if (!amIMuted) { 
+        if (!amIMuted) {
             renderUnmuteButton(friendUsername);
         }
         document.getElementById("c-chat-input").innerHTML = `<p class="c-chat-mute-text">This conversation is currently muted.</p>`

@@ -6,7 +6,7 @@ import { getListFriendInvitationSent, getListFriendInvitationsReceived, sendFrie
 
 export const searchFindNewFriendWindow = async () => {
     const userListDiv = document.querySelector("#c-find-new-friend-window .user-list");
-    const regex = /([A-Za-z]+)/g;
+    const regex = /([A-Za-z0-9]+)/g;
     const searchInput = document.querySelector("#c-find-new-friend-window input");
     if (!userListDiv || !searchInput)
         return ;
@@ -17,7 +17,9 @@ export const searchFindNewFriendWindow = async () => {
 
     userListDiv.innerHTML = "";
     if (searchInput.value) {
-        const parsedSearchInput = searchInput.value.match(regex).join("");
+        const parsedSearchInput = searchInput.value.match(regex)?.join("");
+        if (!parsedSearchInput)
+            return ;
 
         let listFriendInvitationPending = [{}];
         if (listFriendInvitationSent) {
