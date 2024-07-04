@@ -88,8 +88,10 @@ function    get_sign_buttons_game_over_layer()
         button[1].style.display = 'none';
         button[2].style.display = 'flex';
         button[2].onclick = () => {
-            
-            const tour_html = `<br><div id="tournament_tree"></div>`;
+            const tour_html = `
+            <hr>
+            <div id="tournament_tree"></div>
+            `;
             if (!document.getElementById("tournament_tree"))
                     document.getElementById("resultsMatchPanel").insertAdjacentHTML("beforeend", tour_html);
             console.log(pongGame.tournamentID);

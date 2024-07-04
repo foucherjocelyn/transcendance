@@ -18,7 +18,7 @@ import { notice } from "../authentication/auth_main.js";
 import { renderTournamentTree } from "../home/tournament/tournamentTree/tournamentTree.js";
 import { renderNotifications } from "../chat/notifications.js";
 import { searchFriendList } from "../chat/friend-list.js";
-import { tournamentReadyDisable } from "../home/tournament/tournamentReadyDisable.js";
+import { readyUpPlayer } from "../home/tournament/tournamentReadyDisable.js";
 
 class userNotifications {
     constructor() {
@@ -138,7 +138,7 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'send notif') {
             notice("The tournament is about to start", 2, "#00a33f");
-            tournamentReadyDisable();
+            readyUpPlayer();
         }
         if (receivedData.title === 'display exit match') {
             display_button_game_over(receivedData.content);

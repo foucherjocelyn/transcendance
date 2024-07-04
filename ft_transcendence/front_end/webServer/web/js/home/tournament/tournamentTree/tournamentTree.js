@@ -107,7 +107,8 @@ function createBracket(participants, participantAliasesMap) {
 
 function updateBracket(round, match, winner) {
     const matchDiv = document.getElementById(`match${round}-${match}`);
-    matchDiv.classList.add(`${matchDiv.querySelector(".match-top .name").innerText === winner ? "winner-top" : "winner-bottom"}`);
+    if (matchDiv)
+        matchDiv.classList.add(`${matchDiv.querySelector(".match-top .name").innerText === winner ? "winner-top" : "winner-bottom"}`);
     //if there is a next round, put the winner in the match of the next round
     //if the next round is a bye put it in the next round again
     let nextRound = round + 1;
