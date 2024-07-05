@@ -96,6 +96,10 @@ class MatchMaking {
         // create match + run
         await create_match_tournament(player1, player2, nbrPlayer);
         const match = define_match(player1);
+        if (match === undefined) {
+            return player1;
+        }
+        
         match.tournamentID = tournamentID,
         match.tournamentName = tournamentName;
         setup_game(match);

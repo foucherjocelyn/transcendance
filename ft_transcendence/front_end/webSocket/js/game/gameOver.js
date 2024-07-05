@@ -37,10 +37,7 @@ async function    create_result(match)
             {
                 let status_exit_button = (match.finalMatch || user.id !== match.winner.id) ? 'flex' : 'none';
                 send_data('display exit match', status_exit_button, 'server', user);
-    
-                if (player.id === match.winner.id && match.finalMatch === false) {
-                    Object.assign(match.listPlayer[i], match.listPlayer[3]);
-                }
+                Object.assign(match.listPlayer[i], match.listPlayer[3]);
                 update_match(user);
             }
         }

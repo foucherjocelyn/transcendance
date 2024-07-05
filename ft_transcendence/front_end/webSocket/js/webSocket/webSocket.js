@@ -97,7 +97,8 @@ function handle_requirements(socket, title, content, sender, recipient) {
             send_data(title, content, sender, recipient);
         }
     }
-    else if (sender.status === 'creating match') {
+    else if (sender.status === 'creating match')
+    {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -120,7 +121,8 @@ function handle_requirements(socket, title, content, sender, recipient) {
             sign_start_game(sender);
         }
     }
-    else if (sender.status === 'playing game') {
+    else if (sender.status === 'playing game')
+    {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -136,7 +138,8 @@ function handle_requirements(socket, title, content, sender, recipient) {
     }
 }
 
-function check_form_data_client(obj) {
+function check_form_data_client(obj)
+{
     return obj && typeof obj === 'object' &&
         'title' in obj &&
         'content' in obj &&

@@ -96,7 +96,6 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'update pongGame') {
             pongGame = receivedData.content;
-            console.log('----------> tournamentID: ' + pongGame.tournamentID);
         }
         if (receivedData.title === 'update borders') {
             pongGame.listBorder = receivedData.content;
@@ -147,7 +146,6 @@ function get_data_from_server(socket) {
             renderNotifications();
         }
         if (receivedData.title === 'update list friends') {
-            // console.log('----------> sign update list friends')
             searchFriendList();
         }
         if (receivedData.title === 'update tournament tree') {
