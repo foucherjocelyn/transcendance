@@ -79,8 +79,8 @@
 #c-find-new-friend-window {
     z-index: 10;
     position: absolute;
-    top: 20%;
-    right: 20%;
+    top: 0%;
+    right: 8%;
     margin: 12%;
     width: 30%;
     height: 50%;
