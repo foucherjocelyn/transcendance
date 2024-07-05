@@ -85,38 +85,6 @@ async function request42Login() {
 	});
 }
 
-//					DEBUG FUNCTION
-function to_debugCreate()
-{
-	document.getElementById("r_connect_form").innerHTML = `
-	<form method="post" id="r_registration">
-	<input type="text" id="d_number" placeholder="User suffix" required>
-	<br>
-	<input type="submit" id="debug_cc" value="Create and connect">
-	</form>
-	`;
-	document.getElementById("r_registration").addEventListener("submit", async () => {
-		event.preventDefault();
-		let d_number = document.getElementById("d_number").value;
-		let new_user = {
-			username: `Debug_User${d_number}`,
-			password: `qweQWE123`,
-			email: `User${d_number}@dmail.com`,
-			first_name: `John${d_number}`,
-			last_name: `Doe${d_number}`
-		};
-		await postUser(new_user);
-		const otpStatus = await getOtpStatusPw(new_user);
-		if (otpStatus === false) {
-			await signIn(new_user);
-		}
-		else if (otpStatus === true) {
-			await to_otpForm(new_user);
-		}
-	});
-}
-//     DEBUG FUNCTION
-
 function load_connectForm(callback) {
 	document.querySelector("#frontpage").outerHTML =
 		`<div id="frontpage">
@@ -135,22 +103,13 @@ function load_connectForm(callback) {
         <hr id="r_line2">
         <p id="rb_signup" name="rb_signup" class="textlink">Create new account</p>
 		<p id="rb_signup42" name="rb_signup42" class="textlink">Login with 42</p>
-		<input type="button" value="(Debug) EzCreate" id="rb_ezsubmit" name="rb_ezsubmit" class="button-img">
 	</div>
 </div>
 <div class="r_successinfo hide"></div>
 `;
 
-	///*			DEBUG       REGISTER
-	document.getElementById("rb_ezsubmit").addEventListener("click", () => {
-			to_debugCreate();
-	});
-	//*/             DEBUG /     REMOVE THIS BEFORE PUSH
-
-
 	document.getElementById("rb_signup").addEventListener("click", to_regisForm);
 	document.getElementById("rb_signup42").addEventListener("click", async () => {
-		console.log("login42 clicked");
 		await request42Login();
 	});
 	document.getElementById("r_registration").addEventListener("submit", function (event) { event.preventDefault(); checkConnect(); });
