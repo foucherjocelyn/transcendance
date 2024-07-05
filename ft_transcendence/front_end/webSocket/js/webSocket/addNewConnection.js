@@ -25,7 +25,7 @@ async function    connect(userID, socket)
 
     await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
     const   inforUser = await create_request('GET', `/api/v1/users/${userID}`, '');
-    if (inforUser.id === undefined) {
+    if (inforUser === null || inforUser === undefined || inforUser.id === undefined) {
         return ;
     }
 
@@ -52,6 +52,10 @@ async function    connect(userID, socket)
     // console.log('-------> get list friends of: ' + inforUser.username);
     // send sign update status list friends
     const   listFriends = await create_request('GET', '/api/v1/user/friendship', { user: inforUser.username });
+    if (listFriends === null || listFriends === undefined) {
+        return ;
+    }
+
     listFriends.forEach(friend => {
         update_list_friends('server', friend);
     })
@@ -76,6 +80,10 @@ async function    disconnect(socket)
             
             // send sign update status list friends
             const   listFriends = await create_request('GET', '/api/v1/user/friendship', { user: user.username });
+            if (listFriends === null || listFriends === undefined) {
+                return ;
+            }
+            
             listFriends.forEach(friend => {
                 update_list_friends('server', friend);
             })

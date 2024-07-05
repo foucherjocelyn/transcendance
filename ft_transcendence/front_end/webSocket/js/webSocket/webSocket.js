@@ -16,8 +16,11 @@ async function    update_informations_user(sender)
         if (user.id === sender.id)
         {
             const   infor = await create_request('GET', `/api/v1/users/${sender.id}`, '');
-            infor.avatarPath = `img/${infor.avatarPath}`;
+            if (infor === null || infor === undefined) {
+                return ;
+            }
 
+            infor.avatarPath = `img/${infor.avatarPath}`;
             webSocket.listUser[i] = infor;
             webSocket.listConnection[i].user = infor;
 
