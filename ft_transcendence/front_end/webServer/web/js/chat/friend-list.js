@@ -1,5 +1,4 @@
 import { getListFriends } from "../backend_operation/get_user_info.js";
-import { getAvatar } from "../backend_operation/profile_picture.js";
 import { client } from "../client/client.js";
 import { create_match } from "../createMatch/createMatch.js";
 import { inspectProfile } from "../home/profile/home_profile.js";
