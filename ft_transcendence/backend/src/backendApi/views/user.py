@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from utils.hash import verify_password
 from utils.jwt_token import JwtTokenGenerator
+from io import BytesIO
 
 from ..models import Otp, Token, User
 from ..serializers.user import UserSerializer
@@ -81,13 +82,14 @@ class UserViewSet(viewsets.ModelViewSet):
         last_name = user_data.get("last_name")
         image_url = user_data.get("image").get("link")
         logger.info(
-            f"User {username} login, id42: {id42}, email42: {email42}, image_url: {image_url}, first_name: {first_name}, last_name: {last_name}, image_url: {image_url}"
+            f"User {username} login, id42: {id42}, email42: {email42}, image_url: {image_url}, first_name: {first_name}, last_name: {last_name}"
         )
         # Save avatar picture to /avatars/username/
         avatar = requests.get(image_url)
         if avatar.status_code == 200:
+            avatar_file = BytesIO(avatar.content)
             avatarPath = default_storage.save(
-                f"avatars/{username}/{username}.png", avatar.content
+                f"avatars/{username}/{username}.png", avatar_file
             )
         else:
             avatarPath = "avatars/default.png"
