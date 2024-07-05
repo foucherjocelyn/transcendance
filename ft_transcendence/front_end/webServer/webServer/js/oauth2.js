@@ -8,7 +8,7 @@ async function retrieveCodeCreateAccount(req, res) {
     const connect_ip = process.env.WEBSERVER_IP + ":5500";
     const config_42 = {
         "grant_type": "authorization_code",
-        "client_id": "u-s4t2ud-5a9d7a791c31267b140be75dcb88368fd21ecc552a388ba8a2a2e5320d82015d",
+        "client_id": process.env.FOURTWO_CLIENT_ID,
         "client_secret": process.env.FOURTWO_CLIENT_SECRET,
         "code": query.code,
         "redirect_uri": `https://${connect_ip}/`
