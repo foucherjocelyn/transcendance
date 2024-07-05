@@ -112,7 +112,7 @@ const sendMessage = async (friendUsername) => {
         const sendData = new dataToServer('message', newMessage.content, connectedReceiver);
         client.socket.send(JSON.stringify(sendData));
     }
-    postNotification({ username: friendUsername, content: `New message from ${client.inforUser.username}` });
+    await postNotification({ username: friendUsername, content: `New message from ${client.inforUser.username}` });
     const sendData = new dataToServer('notification', '', client.listUser.find(user => user.username === friendUsername));
     client.socket.send(JSON.stringify(sendData));
 };
