@@ -85,14 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
             f"User {username} login, id42: {id42}, email42: {email42}, image_url: {image_url}, first_name: {first_name}, last_name: {last_name}"
         )
         # Save avatar picture to /avatars/username/
-        avatar = requests.get(image_url)
-        if avatar.status_code == 200:
-            avatar_file = BytesIO(avatar.content)
-            avatarPath = default_storage.save(
-                f"avatars/{username}/{username}.png", avatar_file
-            )
-        else:
-            avatarPath = "avatars/default.png"
+        # Check if avatars/username/username.png already exists
         # Create user or update user data
         user, created = User.objects.get_or_create(
             id42=id42,
@@ -100,8 +93,17 @@ class UserViewSet(viewsets.ModelViewSet):
             email=email42,
             first_name=first_name,
             last_name=last_name,
-            avatarPath=avatarPath,
         )
+        if created:
+            avatar = requests.get(image_url)
+            if avatar.status_code == 200:
+                avatar_file = BytesIO(avatar.content)
+                avatarPath = default_storage.save(
+                    f"avatars/{username}/{username}.png", avatar_file
+                )
+            else:
+                avatarPath = "avatars/default.png"
+            user.avatarPath = avatarPath
         user.status = "online"
         user.last_login = timezone.now()
         user.save()
