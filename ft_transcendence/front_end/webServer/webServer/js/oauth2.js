@@ -30,7 +30,7 @@ async function retrieveCodeCreateAccount(req, res) {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             httpOnly: false,
             secure: true,
-            sameSite: 'strict'
+            sameSite: 'Lax'
         }),
         'Content-Type': "application/json"
     });

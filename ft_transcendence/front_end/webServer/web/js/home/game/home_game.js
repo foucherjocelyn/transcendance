@@ -85,16 +85,18 @@ export async function to_game(nohistory = "false") {
 	}
     if (nohistory === "false")
         history.pushState({ url: "game" }, "", "#game");
+    const myInfo = await getMyInfo()
+    let alias = myInfo.alias;
     drawGame((result) => {
         if (result) {
             document.getElementById("loadspinner").classList.add("hide");
             document.getElementById("g_match_html").classList.remove("hide");
-            if (getCookie("alias"))
-                {
-                    document.getElementById("g_rankedmatch").className = "button-img_disabled";
-                    document.getElementById("g_creatematch").className = "button-img_disabled";
-                    document.getElementById("g_localmatch").className = "button-img_disabled";
-                }
+                if (alias)
+                    {
+                        document.getElementById("g_rankedmatch").className = "button-img_disabled";
+                        document.getElementById("g_creatematch").className = "button-img_disabled";
+                        document.getElementById("g_localmatch").className = "button-img_disabled";
+                    }
                 else
                     gameEventListener();
         }

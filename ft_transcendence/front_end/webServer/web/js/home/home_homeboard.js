@@ -70,8 +70,8 @@ function	drawHomePage(callback)
 	document.getElementById("hpb_username").textContent = getCookie("username");
 	document.getElementById("hpb_level").textContent =  `Level: ${getCookie("level")}`;
 	//load players scoreboard
-//	console.log("loading player list");
-//	getUserList();
+	//	console.log("loading player list");
+	//	getUserList();
 	//
 	upperPanelEventListener("home");
 	if (document.getElementById("loadspinner") !== undefined
