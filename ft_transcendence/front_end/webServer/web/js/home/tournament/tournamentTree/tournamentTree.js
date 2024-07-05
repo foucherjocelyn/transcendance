@@ -31,7 +31,8 @@ export const renderTournamentTree = async (tournamentId) => {
     createBracket(participants, participantAliasesMap);
     const numberOfPlayers = participants.length;
     const tournamentGames = await getTournamentsGames(tournamentId);
-    const tournamentGamesEnded = tournamentGames.filter(game => game.status === "end");
+    const tournamentGamesSorted = tournamentGames.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    const tournamentGamesEnded = tournamentGamesSorted.filter(game => game.status === "end");
     let currentRound = 1;
     let numberOfMatchesInCurrentRound = Math.ceil(numberOfPlayers / 2);
     let currentMatch = 1;
@@ -44,7 +45,7 @@ export const renderTournamentTree = async (tournamentId) => {
             currentRound++;
             numberOfMatchesInCurrentRound = Math.ceil(numberOfMatchesInCurrentRound / 2);
             currentMatch = 1;
-            currentRoundGames = tournamentGamesEnded.slice(i, numberOfMatchesInCurrentRound + i);
+            currentRoundGames = tournamentGamesEnded.slice(i + 1, numberOfMatchesInCurrentRound + i + 1);
             winners = currentRoundGames.map(game => game.winner_username);
         }
     }
@@ -52,7 +53,7 @@ export const renderTournamentTree = async (tournamentId) => {
 }
 
 function replaceNamesWithAliases(participantAliasesMap) {
-    const nameSpans = document.querySelectorAll("bracket .name");
+    const nameSpans = document.querySelectorAll("#bracket .name");
     nameSpans.forEach(nameSpan => nameSpan.innerText = participantAliasesMap.find(participant => participant.username === nameSpan.innerText)?.alias || nameSpan.innerText);
 }
 
@@ -135,9 +136,13 @@ function updateBracket(round, match, winners) {
     if (winners.includes(matchDiv.querySelector(".match-top .name").innerText)) {
         matchDiv.classList.add("winner-top");
         winner = matchDiv.querySelector(".match-top .name").innerText;
+        //loser css
+        matchDiv.querySelector(".match-bottom .name").classList.add("tpd_lost_username");
     } else if (winners.includes(matchDiv.querySelector(".match-bottom .name").innerText)) {
         matchDiv.classList.add("winner-bottom");
         winner = matchDiv.querySelector(".match-bottom .name").innerText;
+        //loser css
+        matchDiv.querySelector(".match-top .name").classList.add("tpd_lost_username");
     } else
         return ;
     //if there is a next round, put the winner in the match of the next round
