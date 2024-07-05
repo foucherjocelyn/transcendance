@@ -153,18 +153,9 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'update tournament tree') {
             update_tournament_tree(receivedData.content);
         }
-        if (receivedData.title === 'delete alias') {
-            console.log("delete alias from client: starting ");
-            removeAlias();
+        if (receivedData.title === 'delete tournament') {
             to_tournament("false");
-            console.log("delete alias from client: complete");
         }
-        // if (receivedData.title === 'new friend') {
-        //     searchFriendList();
-        // }
-        // if (receivedData.title === 'remove friend') {
-        //     searchFriendList();
-        // }
     };
 }
 

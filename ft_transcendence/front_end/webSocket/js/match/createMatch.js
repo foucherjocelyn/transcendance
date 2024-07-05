@@ -70,9 +70,7 @@ async function    create_match(user, mode)
     }
 
     // check alias
-    const   inforUser = await create_request('GET', `/api/v1/users/${user.id}`, '');
-    if (inforUser.alias !== null && inforUser.alias !== undefined) {
-        console.log('-----> stop create match');
+    if (user.alias !== null && user.alias !== undefined) {
         return ;
     }
 
