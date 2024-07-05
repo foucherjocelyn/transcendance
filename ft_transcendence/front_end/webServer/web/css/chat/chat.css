@@ -235,12 +235,12 @@
     z-index: 2;
     position: fixed;   
     top: 0;
-    right: 0;
+    right: 10px;
     background-color: #333;
     padding: 15px 40px 0 30px;
     color: #DDD;
     height: 65px;
-    min-width: var(--chat-list-width);
+    min-width: 310px;
     overflow: hidden;
     box-sizing: border-box;
     border-radius: 0 0 20px 20px;
