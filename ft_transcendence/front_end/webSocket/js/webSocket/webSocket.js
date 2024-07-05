@@ -13,11 +13,16 @@ async function    update_informations_user(sender)
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
         const   user = webSocket.listUser[i];
-        if (user.id === sender.id) {
+        if (user.id === sender.id)
+        {
             const   infor = await create_request('GET', `/api/v1/users/${sender.id}`, '');
+            if (infor === null || infor === undefined) {
+                return ;
+            }
+
+            infor.avatarPath = `img/${infor.avatarPath}`;
             webSocket.listUser[i] = infor;
             webSocket.listConnection[i].user = infor;
-            console.table(webSocket.listUser[i]);
 
             send_data('update infor user', infor, 'server', infor);
             send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
@@ -47,7 +52,8 @@ function define_user_by_ID(userID) {
 }
 
 function handle_requirements(socket, title, content, sender, recipient) {
-    if (sender.status === 'online') {
+    if (sender.status === 'online')
+    {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -72,11 +78,11 @@ function handle_requirements(socket, title, content, sender, recipient) {
         else if (title === 'send notif') {
             send_to_all(content, sender, title);
         }
-        else if (title === 'delete alias') {
-            send_to_all(content, sender, title);
+        else if (title === 'delete tournament') {
+            delete_tournament(title, content, sender);
         }
         else if (title === 'joining tournament') {
-            send_sign_join_tournament(title, content);
+            send_sign_join_tournament(title, content, sender);
         }
         else if (title === 'update informations user') {
             update_informations_user(sender);
@@ -91,7 +97,8 @@ function handle_requirements(socket, title, content, sender, recipient) {
             send_data(title, content, sender, recipient);
         }
     }
-    else if (sender.status === 'creating match') {
+    else if (sender.status === 'creating match')
+    {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -114,7 +121,8 @@ function handle_requirements(socket, title, content, sender, recipient) {
             sign_start_game(sender);
         }
     }
-    else if (sender.status === 'playing game') {
+    else if (sender.status === 'playing game')
+    {
         if (title === 'disconnect') {
             disconnect(socket);
         }
@@ -130,7 +138,8 @@ function handle_requirements(socket, title, content, sender, recipient) {
     }
 }
 
-function check_form_data_client(obj) {
+function check_form_data_client(obj)
+{
     return obj && typeof obj === 'object' &&
         'title' in obj &&
         'content' in obj &&
@@ -207,7 +216,7 @@ module.exports = {
 };
 
 const { connect, disconnect, update_list_friends } = require('./addNewConnection');
-const { send_data, dataToClient } = require('./dataToClient');
+const { send_data } = require('./dataToClient');
 const { accept_invitation_to_play, leave_match, reject_invitation_to_play } = require('../match/acceptInvitationPlay');
 const { sign_start_game } = require('../match/signStartGame');
 const { request_invitation_to_play } = require('../match/invitationToPlay');
@@ -215,7 +224,8 @@ const { update_game_settings } = require("../gameSettings/gameSettings");
 const { get_sign_movement_paddle } = require("../game/movementsPaddle");
 const { create_match } = require("../match/createMatch");
 const { add_player } = require("../match/addPlayer");
-const { start_tournament, send_sign_join_tournament, send_sign_update_tournament_board, send_to_all } = require("../match/tournament");
-const { url } = require("inspector");const { create_request } = require("../dataToDB/createRequest");
+const { start_tournament, send_sign_join_tournament, send_sign_update_tournament_board, send_to_all, delete_tournament } = require("../match/tournament");
+const { create_request } = require("../dataToDB/createRequest");
+const { url } = require("inspector");
 const { userInfo } = require("os");
 

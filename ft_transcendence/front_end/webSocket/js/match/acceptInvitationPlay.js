@@ -1,6 +1,6 @@
 const { create_request } = require("../dataToDB/createRequest");
 const { send_data } = require("../webSocket/dataToClient");
-const { define_user_by_ID } = require("../webSocket/webSocket");
+const { define_user_by_ID, update_informations_user } = require("../webSocket/webSocket");
 const { inforPlayer } = require("./createMatch");
 const { define_match, update_match } = require("./updateMatch");
 
@@ -41,11 +41,13 @@ async function    leave_match(user)
             update_match(user);
 
             // delete alais
-            if (match.mode === 'tournament') {
+            if (match.mode === 'tournament')
+            {
                 const   postData = {
                     user: user.username
                 }
                 await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+                update_informations_user(user);
             }
             return ;
         }

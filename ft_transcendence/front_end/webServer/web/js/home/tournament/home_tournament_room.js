@@ -136,7 +136,7 @@ function loadTournamentOwnerPanel(tour_obj) {
 				console.log("deleting tournament....");
 				
 				//console.log(tour_obj);
-				const send_data = new dataToServer('delete alias', tour_obj.id, 'socket server');
+				const send_data = new dataToServer('delete tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
 
 				await deleteTournament(tour_obj.id);

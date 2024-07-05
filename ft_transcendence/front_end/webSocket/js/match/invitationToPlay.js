@@ -1,19 +1,15 @@
-const { webSocket } = require("../webSocket/webSocket");
 const { send_data } = require("../webSocket/dataToClient");
 const { define_match } = require("./updateMatch");
-const { create_request } = require("../dataToDB/createRequest");
 
 async function    request_invitation_to_play(sender, recipient)
 {
     // check alias sender
-    const   inforUser1 = await create_request('GET', `/api/v1/users/${sender.id}`, '');
-    if (inforUser1.alias !== null && inforUser1.alias !== undefined) {
+    if (sender.alias !== null && sender.alias !== undefined) {
         return ;
     }
 
     // check alias recipient
-    const   inforUser2 = await create_request('GET', `/api/v1/users/${recipient.id}`, '');
-    if (inforUser2.alias !== null && inforUser2.alias !== undefined) {
+    if (recipient.alias !== null && recipient.alias !== undefined) {
         return ;
     }
 

@@ -96,6 +96,10 @@ class MatchMaking {
         // create match + run
         await create_match_tournament(player1, player2, nbrPlayer);
         const match = define_match(player1);
+        if (match === undefined) {
+            return player1;
+        }
+        
         match.tournamentID = tournamentID,
         match.tournamentName = tournamentName;
         setup_game(match);
@@ -107,7 +111,7 @@ class MatchMaking {
         const list_match_in_tournament = webSocket.listMatch.filter((match) => match.tournamentName === tournamentName);
         if (list_match_in_tournament.length > 0)
         {
-            const list_match_AI = list_match_in_tournament.filter((match) => match.listUser.length === 1);
+            const list_match_AI = list_match_in_tournament.filter((match) => match.listPlayer[1].type === 'AI');
             if (list_match_AI.length > 0)
             {
                 const matchAI = list_match_AI[0];
@@ -179,7 +183,6 @@ async function create_list_player_tournament(listName)
                 const user = await create_request("GET", `/api/v1/users/${webSocket.listUser[i].id}`, "");
                 if (user !== undefined && user.username === name)
                 {
-                    // update_informations_user(user);
                     user.avatarPath = `img/${user.avatarPath}`;
                     listPlayer.push(user);
                     break;
@@ -194,6 +197,9 @@ async function create_list_player_tournament(listName)
 
 function send_sign_update_tournament_board(sender)
 {
+    // update alias on socket server
+    update_informations_user(sender);
+
     for (let i = 0; i < webSocket.listUser.length; i++)
     {
         const user = webSocket.listUser[i];
@@ -203,11 +209,14 @@ function send_sign_update_tournament_board(sender)
     }
 }
 
-async function send_sign_join_tournament(title, tournamentID)
+async function send_sign_join_tournament(title, tournamentID, sender)
 {
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
     }
+
+    // update alias on socket server
+    update_informations_user(sender);
 
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
     tournament.player_usernames.forEach((userName) => {
@@ -243,12 +252,35 @@ async function  delete_alias(listPlayer)
 {
     for (let i = 0; i < listPlayer.length; i++)
     {
-        const   username = listPlayer[i];
+        const   user = listPlayer[i];
         const   postData = {
-            user: username
+            user: user.username
         }
         await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+
+        // update alias on socket server
+        update_informations_user(user);
     }
+}
+
+async function  delete_tournament(title, tournamentID, sender)
+{
+    // check number tournament ID from client
+    if (tournamentID === undefined || !isNumeric(tournamentID)) {
+        return;
+    }
+
+    // get tournament Obj from DB
+    const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    
+    // check sender is admin + number of player in tournament
+    if (tournament === undefined || sender.username !== tournament.owner_username) {
+        return;
+    }
+
+    const   listPlayer = await create_list_player_tournament(tournament.player_usernames);
+    delete_alias(listPlayer);
+    send_data(title, '', sender, listPlayer);
 }
 
 async function start_tournament(tournamentID, sender)
@@ -292,7 +324,7 @@ async function start_tournament(tournamentID, sender)
     }
 
     // delete alias
-    delete_alias(tournament.player_usernames);
+    delete_alias(listPlayer);
 
     // update status tournament on client
     send_data('update tournament board', "", "server", webSocket.listUser);
@@ -303,5 +335,6 @@ module.exports = {
     send_sign_update_tournament_board,
     send_sign_join_tournament,
     send_to_all,
-    delete_alias
+    delete_alias,
+    delete_tournament
 };

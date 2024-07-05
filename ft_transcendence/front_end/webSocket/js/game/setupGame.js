@@ -50,7 +50,7 @@ async function    setup_game(match)
     {
         setTimeout(function() {
             start_game(match);
-        }, 10000); // 1 minute
+        }, 5000);
     }
 }
 

@@ -96,7 +96,6 @@ function get_data_from_server(socket) {
         }
         if (receivedData.title === 'update pongGame') {
             pongGame = receivedData.content;
-            console.log('----------> tournamentID: ' + pongGame.tournamentID);
         }
         if (receivedData.title === 'update borders') {
             pongGame.listBorder = receivedData.content;
@@ -147,24 +146,14 @@ function get_data_from_server(socket) {
             renderNotifications();
         }
         if (receivedData.title === 'update list friends') {
-            // console.log('----------> sign update list friends')
             searchFriendList();
         }
         if (receivedData.title === 'update tournament tree') {
             update_tournament_tree(receivedData.content);
         }
-        if (receivedData.title === 'delete alias') {
-            console.log("delete alias from client: starting ");
-            removeAlias();
+        if (receivedData.title === 'delete tournament') {
             to_tournament("false");
-            console.log("delete alias from client: complete");
         }
-        // if (receivedData.title === 'new friend') {
-        //     searchFriendList();
-        // }
-        // if (receivedData.title === 'remove friend') {
-        //     searchFriendList();
-        // }
     };
 }
 
