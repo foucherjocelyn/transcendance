@@ -40,7 +40,7 @@ async function load_regisForm(callback)
         <div id="r_connect_info">
           <form method="post" id="r_registration">
             <div id="r_regis_form">
-              <input type="text" id="r_username" name="r_username" placeholder="Username" pattern="[a-zA-Z0-9]{3,20}" title="Alpha numeric only" required>
+              <input type="text" id="r_username" name="r_username" placeholder="Username" pattern="[a-zA-Z0-9]{3,20}" title="Alphanumeric only" required>
               <br>
               <input type="password" maxlength="30" id="r_password" name="r_password" placeholder="Password (a-z A-Z 0-9)" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,30}$" title="Must contains at least one number, one uppercase and one lowercase letter, and 6 to 30 characters" required>
               <br>
