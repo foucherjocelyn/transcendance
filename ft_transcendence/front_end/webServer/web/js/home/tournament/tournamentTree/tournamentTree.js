@@ -133,16 +133,16 @@ function updateBracket(round, match, winners) {
     let winner = '';
     if (!matchDiv)
         return;
-    if (winners.includes(matchDiv.querySelector(".match-top .name").innerText)) {
+    if (winners.includes(matchDiv.querySelector(".match-top .name")?.innerText)) {
         matchDiv.classList.add("winner-top");
-        winner = matchDiv.querySelector(".match-top .name").innerText;
+        winner = matchDiv.querySelector(".match-top .name")?.innerText;
         //loser css
-        matchDiv.querySelector(".match-bottom .name").classList.add("tpd_lost_username");
-    } else if (winners.includes(matchDiv.querySelector(".match-bottom .name").innerText)) {
+        matchDiv.querySelector(".match-bottom .name")?.classList.add("tpd_lost_username");
+    } else if (winners.includes(matchDiv.querySelector(".match-bottom .name")?.innerText)) {
         matchDiv.classList.add("winner-bottom");
-        winner = matchDiv.querySelector(".match-bottom .name").innerText;
+        winner = matchDiv.querySelector(".match-bottom .name")?.innerText;
         //loser css
-        matchDiv.querySelector(".match-top .name").classList.add("tpd_lost_username");
+        matchDiv.querySelector(".match-top .name")?.classList.add("tpd_lost_username");
     } else
         return ;
     //if there is a next round, put the winner in the match of the next round
