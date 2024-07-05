@@ -57,7 +57,7 @@ function drawGame(callback) {
 
         ${noticeInvitePlayer()}
         
-    </div>
+    </div>  
     `;
 	upperPanelEventListener("game");
     callback(true);
@@ -89,8 +89,14 @@ export async function to_game(nohistory = "false") {
         if (result) {
             document.getElementById("loadspinner").classList.add("hide");
             document.getElementById("g_match_html").classList.remove("hide");
-            //if (!getCookie("alias"))
-                gameEventListener();
+            if (getCookie("alias"))
+                {
+                    document.getElementById("g_rankedmatch").className = "button-img_disabled";
+                    document.getElementById("g_creatematch").className = "button-img_disabled";
+                    document.getElementById("g_localmatch").className = "button-img_disabled";
+                }
+                else
+                    gameEventListener();
         }
     });
 }

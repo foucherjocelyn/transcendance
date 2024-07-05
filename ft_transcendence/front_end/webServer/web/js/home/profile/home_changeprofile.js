@@ -57,7 +57,7 @@ export async function to_changeInfo() {
 	document.getElementById("h_current_parameters").innerHTML =
 		`<br>
 		<form id="p_update_info">
-<input type="text" id="p_username" placeholder="${getCookie('username')}" title="Alpha numeric only" pattern="[a-zA-Z0-9]{3,20}" class="text_area">
+<input type="text" id="p_username" placeholder="${getCookie('username')}" title="Alphanumeric only" pattern="[a-zA-Z0-9]{3,20}" class="text_area">
 <br>
 <input type="password" id="p_oldpassword" placeholder="Old password" title="Enter your old password here" class="text_area">
 <br>

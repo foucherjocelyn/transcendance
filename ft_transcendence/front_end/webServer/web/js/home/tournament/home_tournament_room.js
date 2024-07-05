@@ -29,7 +29,6 @@ export async function checkClearMyAlias(my_username) {
 	const alias = await getAliasFromUsername(my_username)
 	if (alias) {
 		if (isRegisteredToFinishedTournament(my_username) && !isRegisteredToUnfinishedTournament(my_username)) {
-			console.log("user has been found in finished tournament and not in unfinished => removing alias")
 			removeAlias();
 		}
 	}
