@@ -71,7 +71,7 @@ class UserViewSet(viewsets.ModelViewSet):
         url = "https://api.intra.42.fr/v2/me"
         headers = {"Authorization": f"Bearer {token42}"}
         response = requests.request("GET", url, headers=headers)
-        user_data = response.json().get("cursus_users")[0].get("user")
+        user_data = response.json()
         if not user_data:
             return Response({"error": "Failed to get user data"}, status=400)
         id42 = user_data.get("id")
@@ -79,6 +79,18 @@ class UserViewSet(viewsets.ModelViewSet):
         username = user_data.get("login") + "_42"
         first_name = user_data.get("first_name")
         last_name = user_data.get("last_name")
+        image_url = user_data.get("image").get("link")
+        logger.info(
+            f"User {username} login, id42: {id42}, email42: {email42}, image_url: {image_url}, first_name: {first_name}, last_name: {last_name}, image_url: {image_url}"
+        )
+        # Save avatar picture to /avatars/username/
+        avatar = requests.get(image_url)
+        if avatar.status_code == 200:
+            avatarPath = default_storage.save(
+                f"avatars/{username}/{username}.png", avatar.content
+            )
+        else:
+            avatarPath = "avatars/default.png"
         # Create user or update user data
         user, created = User.objects.get_or_create(
             id42=id42,
@@ -86,6 +98,7 @@ class UserViewSet(viewsets.ModelViewSet):
             email=email42,
             first_name=first_name,
             last_name=last_name,
+            avatarPath=avatarPath,
         )
         user.status = "online"
         user.last_login = timezone.now()
