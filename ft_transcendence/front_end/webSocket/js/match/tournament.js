@@ -107,7 +107,7 @@ class MatchMaking {
         const list_match_in_tournament = webSocket.listMatch.filter((match) => match.tournamentName === tournamentName);
         if (list_match_in_tournament.length > 0)
         {
-            const list_match_AI = list_match_in_tournament.filter((match) => match.listUser.length === 1);
+            const list_match_AI = list_match_in_tournament.filter((match) => match.listPlayer[1].type === 'AI');
             if (list_match_AI.length > 0)
             {
                 const matchAI = list_match_AI[0];
