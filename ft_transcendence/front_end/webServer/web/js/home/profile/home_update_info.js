@@ -34,9 +34,9 @@ export async function updateMyAvatar() {
 	if (avatar.files.length > 0 && avatarCheckType("p_avatar") && avatar.files[0].size < max_size) {
 		let avatarForm = new FormData();
 		avatarForm.append("avatar", document.getElementById("p_avatar").files[0]);
+		await uploadAvatar(avatarForm);
 		const send_data = new dataToServer('update informations user', "", 'socket server');
 		client.socket.send(JSON.stringify(send_data));
-		await uploadAvatar(avatarForm);
 		to_changeAvatar();
 	}
 	else

@@ -73,7 +73,7 @@ export function closeSocketClient() {
 
 export async function signIn(connect_user) {
 	//console.log("-Connecting user: ");
-	console.log(connect_user);
+	//console.log(connect_user);
 	try {
 		const response = await fetch(`https://${domain_name}:8000/api/v1/auth/login`, {
 			method: "POST",
