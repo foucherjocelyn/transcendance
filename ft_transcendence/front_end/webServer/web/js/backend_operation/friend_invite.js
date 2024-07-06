@@ -80,7 +80,6 @@ export const updateFriendInviteStatus = async (id, newStatus) => {
 }
 
 export const sendFriendInvite = async (username) => {
-    console.log(username);
     let f_token = getCookie("token");
     await fetch(`https://${domain_name}:8000/api/v1/user/friendship/invite`, {
         method: "POST",

@@ -40,10 +40,22 @@ function getCircularReplacer() {
 function    send_data(title, content, from, to)
 {
     let   sendData = new dataToClient(title, content, from);
-    sendData = (title === 'update paddles') ?
-    JSON.stringify(sendData, getCircularReplacer()) :
-    JSON.stringify(sendData);
+    //console.log("PROBLEM HERE--------------------------------------------------------");
+    //console.log("title =" + title);
+    //console.log(sendData);
+    // sendData = (title === 'update paddles') ?
+    // JSON.stringify(sendData, getCircularReplacer()) :
+    // JSON.stringify(sendData);
 
+    if (title === "update paddles" || title === "draw score")
+        sendData = JSON.stringify(sendData, getCircularReplacer());
+    else
+        sendData = JSON.stringify(sendData);
+
+    // flatted.stringify(sendData, getCircularReplacer()) :
+    // flatted.stringify(sendData);
+
+    
     let destinations = Array.isArray(to) ? to : [to];
     destinations.forEach(user => {
         const socket = define_socket_by_user(user);
@@ -57,6 +69,39 @@ function    send_data(title, content, from, to)
         }
     });
 }
+
+// function getCircularReplacer() {
+//     const seen = new WeakSet();
+//     return (key, value) => {
+//         if (typeof value === "object" && value !== null) {
+//             if (seen.has(value)) {
+//                 return undefined; // Handle circular reference
+//             }
+//             seen.add(value);
+//         }
+//         return value;
+//     };
+// }
+
+// function send_data(title, content, from, to) {
+//     let sendData = new dataToClient(title, content, from);
+
+//     // Serialize sendData with circular reference handling
+//     let serializedData = JSON.stringify(sendData, getCircularReplacer());
+
+//     let destinations = Array.isArray(to) ? to : [to];
+//     destinations.forEach(user => {
+//         const socket = define_socket_by_user(user);
+//         if (socket !== undefined) {
+//             socket.send(serializedData);
+//         } else {
+//             // Handle case when socket is undefined if needed
+//             // For example, connect with a database for notifications/messages
+//             // console.log('connect with database');
+//         }
+//     });
+// }
+
 
 module.exports = {
     send_data,

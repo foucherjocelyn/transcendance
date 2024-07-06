@@ -75,9 +75,13 @@ export async function to_changeInfo() {
 </form>
 `;
 
+	let username = document.getElementById("p_username");
+	let firstname = document.getElementById("p_firstname");
+	let lastname = document.getElementById("p_lastname");
 	let old_password = document.getElementById("p_oldpassword");
 	let new_password = document.getElementById("p_newpassword");
 	let new_password_confirm = document.getElementById("p_newpasswordconfirm");
+
 	if (getCookie("email").endsWith("@student.42.fr")) {
 		old_password.setAttribute("disabled", "");
 		old_password.setAttribute("title", "42 Account cannot set password");
@@ -85,9 +89,20 @@ export async function to_changeInfo() {
 
 		new_password.setAttribute("title", "42 Account cannot set password");
 		new_password.setAttribute("class", "text_area_disabled");
-		
+
 		new_password_confirm.setAttribute("title", "42 Account cannot set password");
 		new_password_confirm.setAttribute("class", "text_area_disabled");
+
+		username.setAttribute("disabled", "");
+		username.setAttribute("title", "42 Account cannot change username");
+		username.setAttribute("class", "text_area_disabled");
+
+		firstname.setAttribute("disabled", "");
+		firstname.setAttribute("title", "42 Account cannot change firstname");
+		firstname.setAttribute("class", "text_area_disabled");
+		lastname.setAttribute("disabled", "");
+		lastname.setAttribute("title", "42 Account cannot change lastname");
+		lastname.setAttribute("class", "text_area_disabled");
 	}
 	else {
 		old_password.addEventListener("input", () => { enableInputReq(event, 'p_newpassword'); });
@@ -123,15 +138,18 @@ ${noticeInvitePlayer()}
 </div>
 `;
 	upperPanelEventListener("h_myprofile");
-	document.getElementById("h_changeinfo").addEventListener("click", async () => { await to_changeInfo(); });
 	document.getElementById("h_changeavatar").addEventListener("click", async () => {
 		await to_changeAvatar();
 	});
 	if (getCookie("email").endsWith("@student.42.fr")) {
+		document.getElementById("h_changeinfo").setAttribute("class", "button-img_disabled");
 		document.getElementById("h_change2fa").setAttribute("class", "button-img_disabled");
 	}
 	else
+	{
+		document.getElementById("h_changeinfo").addEventListener("click", async () => { await to_changeInfo(); });
 		document.getElementById("h_change2fa").addEventListener("click", () => { to_change2fa(); });
+	}
 	callback(true);
 }
 

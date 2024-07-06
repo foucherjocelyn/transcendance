@@ -30,8 +30,14 @@ function    get_sign_add_player_button()
     for (let i = 1; i < buttons.length; i++)
     {
         buttons[i].onclick = () => {
-            if (match.mode === 'tournament')
+            if (match.mode === 'tournament') {
                 return ;
+            }
+
+            const   loaderLayer = document.getElementById('loaderMatchmakingLayer');
+            if (loaderLayer.style.display === 'flex') {
+                return ;
+            }
 
             const sendData = new dataToServer('add player', i, 'socket server');
             client.socket.send(JSON.stringify(sendData));

@@ -1,6 +1,6 @@
 const { send_data } = require("../webSocket/dataToClient");
 const { update_status_objects } = require("./collisionsPoint");
-const { movements_ball } = require("./movementsBall");
+const { movements_ball, check_lost_point } = require("./movementsBall");
 const { movement_AI } = require("./movementsAI");
 const { create_paddles } = require("./createPaddle");
 const { check_game_over } = require("./gameOver");
@@ -53,20 +53,24 @@ function    handle_player_leave_match(match)
     send_data('draw paddles', '', 'server', match.listUser);
 }
 
-function    check_position_of_ball(pongGame)
+function    check_position_of_ball(match)
 {
-    const   ball = pongGame.ball;
-    if (ball.collisionPoint.bottom < pongGame.limit.top) {
-        pongGame.lostPoint = true;
+    const   ball = match.pongGame.ball;
+    if (ball.collisionPoint.bottom < match.pongGame.limit.top) {
+        match.pongGame.lostPoint = true;
+        check_lost_point(match);
     }
-    else if (ball.collisionPoint.top > pongGame.limit.bottom) {
-        pongGame.lostPoint = true;
+    else if (ball.collisionPoint.top > match.pongGame.limit.bottom) {
+        match.pongGame.lostPoint = true;
+        check_lost_point(match);
     }
-    else if (ball.collisionPoint.right < pongGame.limit.left) {
-        pongGame.lostPoint = true;
+    else if (ball.collisionPoint.right < match.pongGame.limit.left) {
+        match.pongGame.lostPoint = true;
+        check_lost_point(match);
     }
-    else if (ball.collisionPoint.left > pongGame.limit.right) {
-        pongGame.lostPoint = true;
+    else if (ball.collisionPoint.left > match.pongGame.limit.right) {
+        match.pongGame.lostPoint = true;
+        check_lost_point(match);
     }
 }
 
@@ -97,7 +101,7 @@ function    start_game_ws(match)
 
         update_status_objects(match.pongGame);
         movements_ball(match);
-        check_position_of_ball(match.pongGame);
+        check_position_of_ball(match);
 
         // update AI after 1 seconde
         setTimeout(function() {

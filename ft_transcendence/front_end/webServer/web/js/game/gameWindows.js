@@ -42,7 +42,7 @@ function    stop_movements_paddle() {
 function    animation(renderer, scene, camera)
 {
     const   ball = pongGame.ball;
-    if (pongGame.gameOver || ball === undefined)
+    if (pongGame.gameOver || ball === undefined || displayPongGame.ball === undefined)
     {
         stop_movements_paddle();
         renderer.setAnimationLoop(null);

@@ -45,6 +45,7 @@ function    check_number_player(match)
 function    call_matchmaking(user, match)
 {
     send_data('display loader', 'flex', 'server', user);
+    send_data('display button start', 'none', 'server', user);
     matchmaking(user, match, (result) => {
         if (result)
         {

@@ -178,4 +178,5 @@ function    movements_ball(match)
 module.exports = {
     movements_ball,
     check_collisions,
+    check_lost_point
 };

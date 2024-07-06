@@ -62,7 +62,7 @@ export async function createTournament(tour_info) {
 }
 
 export async function joinTournament(tour_id) {
-	console.log("-Joining a tournament");
+	//console.log("-Joining a tournament");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "") {
 		console.log("Token is null");
@@ -85,7 +85,6 @@ export async function joinTournament(tour_id) {
 		if (data) {
 			return data;
 		}
-		console.log("-");
 	} catch (error) {
 		console.error("joinTournament: ", error);
 	}
@@ -152,7 +151,7 @@ export async function startTournament(tour_id) {
 }
 
 export async function leaveTournament(tour_id) {
-	console.log("-Leaving a tournament");
+	//console.log("-Leaving a tournament");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "") {
 		console.log("Token is null");
@@ -170,12 +169,11 @@ export async function leaveTournament(tour_id) {
 			return;
 		}
 		const data = await r.json();
-		console.log("leaveTournament data:");
-		console.log(data);
+		//console.log("leaveTournament data:");
+		//console.log(data);
 		if (data !== undefined) {
 			return data;
 		}
-		console.log("-");
 	} catch (error) {
 		console.error("leaveTournament: ", error);
 	}
@@ -269,14 +267,13 @@ export async function getTournamentInfoById(tour_id) {
 		if (data !== undefined) {
 			return (data);
 		}
-		console.log("-");
 	} catch (error) {
 		console.error("getTournamentsList: ", error);
 	};
 }
 
 export async function updateTournamentsById(tour_id, tour_info) {
-	console.log("-Updating tournaments by id");
+	//console.log("-Updating tournaments by id");
 	let f_token = getCookie("token");
 	if (f_token === null || f_token === "") {
 		console.log("Token is null");
@@ -296,12 +293,11 @@ export async function updateTournamentsById(tour_id, tour_info) {
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await r.json();
-		console.log("getTournamentsList data:");
-		console.log(data);
+		//console.log("getTournamentsList data:");
+		//console.log(data);
 		if (data !== undefined) {
 			return (data);
 		}
-		console.log("-");
 	} catch (error) {
 		console.error("getTournamentsList: ", error);
 	};
@@ -330,7 +326,6 @@ export async function getTournamentsGames(tournamentId) {
 		const data = await r.json();
 		if (data !== undefined)
 			return (data);
-		//		console.log("-");
 	} catch (error) {
 		console.error(`error caught: ${error}`);
 	}

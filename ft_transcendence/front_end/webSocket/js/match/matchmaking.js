@@ -98,6 +98,7 @@ function    start_finding_random_matches(user, match, callback)
         else {
             stop_finding_random_matches(user, match);
             send_data('warning', 'Sorry guy, no matches found right now !!!', '../../img/avatar/avatar1.png', match.listUser);
+            send_data('display button start', 'flex', 'server', user);
         }
 
         callback(false);

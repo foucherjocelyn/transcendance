@@ -30,7 +30,6 @@ export async function	renderMatchHistory(username) {
 
 function	drawHomePage(callback)
 {
-	console.log("drawHomepage called");
 	document.getElementById("frontpage").outerHTML =
 		`
 <div id="frontpage">

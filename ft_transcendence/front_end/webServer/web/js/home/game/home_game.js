@@ -64,7 +64,6 @@ function drawGame(callback) {
 }
 
 export function gameEventListener() {
-    console.log("gameEventListener called-----");
     document.getElementById("g_rankedmatch").addEventListener("click", () => {
         create_match('ranked');
     });

@@ -46,10 +46,10 @@ class formGameSetting {
             },
             player2: {
                 left: 'p',
-                right: 'm'
+                right: 'l'
             },
             player3: {
-                left: 'z',
+                left: 'w',
                 right: 'e'
             },
             player4: {

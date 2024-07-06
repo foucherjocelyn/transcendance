@@ -5,8 +5,10 @@ const { define_match } = require("../match/updateMatch");
 
 function vertical_movement(paddle, direction, pongGame)
 {
-    if ((paddle.collisionPoint.top === pongGame.limit.top && direction < 0)
-    || (paddle.collisionPoint.bottom === pongGame.limit.bottom && direction > 0)) {
+    console.log("Inside");
+    console.log(pongGame.limit.top);
+    if ((paddle.collisionPoint.top <= pongGame.limit.top && direction < 0)
+    || (paddle.collisionPoint.bottom >= pongGame.limit.bottom && direction > 0)) {
         return ;
     }
 
@@ -31,8 +33,8 @@ function vertical_movement(paddle, direction, pongGame)
 
 function horizontal_movement(paddle, direction, pongGame)
 {
-    if ((paddle.collisionPoint.left === pongGame.limit.left && direction < 0)
-    || (paddle.collisionPoint.right === pongGame.limit.right && direction > 0)) {
+    if ((paddle.collisionPoint.left <= pongGame.limit.left && direction < 0)
+    || (paddle.collisionPoint.right >= pongGame.limit.right && direction > 0)) {
         return ;
     }
 

@@ -13,7 +13,7 @@ async function    create_result(match)
     // Define the winner
     const   winner = result.filter(player => player.type === 'player')[0];
     if (match.listUser.length > 0) {
-        match.winner = define_user_by_ID(winner.id);
+        match.winner = (match.mode === 'offline') ? define_user_by_ID(match.listUser[0].id) : define_user_by_ID(winner.id);
         console.log('---> winner: ' + match.winner.username);
     }
 

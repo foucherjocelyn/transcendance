@@ -97,7 +97,6 @@ export async function getMyInfo() {
 	} catch (error) {
 		console.error("getMyInfo: ", error);
 	}
-	//	console.log("-");
 }
 
 export async function getListUsers() {

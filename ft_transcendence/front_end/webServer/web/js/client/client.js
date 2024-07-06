@@ -82,6 +82,9 @@ function get_data_from_server(socket) {
         if (receivedData.title === 'display invitation play layer') {
             display_invitation_play_layer(receivedData.content);
         }
+        if (receivedData.title === 'display button start') {
+            document.getElementById('startCreateMatchButton').style.display = receivedData.content;
+        }
         if (receivedData.title === 'display loader') {
             display_loader(receivedData.content);
         }

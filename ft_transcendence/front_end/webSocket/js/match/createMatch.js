@@ -1,6 +1,6 @@
 const { create_request } = require("../dataToDB/createRequest");
 const { webSocket } = require("../webSocket/webSocket");
-const { update_match } = require("./updateMatch");
+const { update_match, define_match } = require("./updateMatch");
 
 class formMatch
 {
@@ -74,9 +74,16 @@ async function    create_match(user, mode)
         return ;
     }
 
+    //
+    const   oldMatch = define_match(user);
+    if (oldMatch !== undefined) {
+        return ;
+    }
+
     const   match = new formMatch();
     match.id = await create_match_ID();
     match.mode = mode;
+    match.winner = user;
 
     for (let i = 0; i < 4; i++)
     {
