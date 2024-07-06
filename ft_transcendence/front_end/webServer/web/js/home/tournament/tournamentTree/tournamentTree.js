@@ -28,8 +28,6 @@ export const renderTournamentTree = async (tournamentId) => {
         return;
     const participantAliasesMap = await Promise.all(participants.map(async username => {
         const alias = await getAliasFromUsername(username);
-        if (!alias)
-            return ;
         return { username: username, alias: alias };
     }));
     createBracket(participants, participantAliasesMap);
