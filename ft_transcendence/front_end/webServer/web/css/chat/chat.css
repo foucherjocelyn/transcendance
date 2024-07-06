@@ -235,7 +235,7 @@
     z-index: 2;
     position: fixed;   
     top: 0;
-    right: 10px;
+    right: 0;
     background-color: #333;
     padding: 15px 40px 0 30px;
     color: #DDD;
