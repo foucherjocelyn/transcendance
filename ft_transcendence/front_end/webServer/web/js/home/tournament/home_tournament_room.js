@@ -25,7 +25,6 @@ const isRegisteredToFinishedTournament = async (username) => {
 }
 
 export async function checkClearMyAlias(my_username) {
-	console.log("checkClearMyAlias started");
 	const alias = await getAliasFromUsername(my_username)
 	if (alias) {
 		if (isRegisteredToFinishedTournament(my_username) && !isRegisteredToUnfinishedTournament(my_username)) {
@@ -52,6 +51,19 @@ async function checkTournamentAvailability(tour_obj) {
 	return (false);
 }
 
+async function checkAliasUniqueness(tour_obj, alias_obj)
+{
+	let tmp;
+	for (let i = 0; i < tour_obj.player_usernames.length; i++)
+		{
+			tmp = await getAliasFromUsername(tour_obj.player_usernames[i]);
+			console.log("comparing " + alias_obj.alias + " to " + tmp);
+			if (alias_obj.alias === tmp)
+				return (false);
+		}
+	return (true);
+}
+
 export async function aliasJoinTournament(tour_obj) {
 	let join_status = await checkTournamentAvailability(tour_obj);
 	tour_obj = await getTournamentInfoById(tour_obj.id);
@@ -75,6 +87,12 @@ export async function aliasJoinTournament(tour_obj) {
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value
 			};
+			const check_alias = await checkAliasUniqueness(tour_obj, alias);
+			if (!check_alias)
+				{
+					notice("Alias already in use", 3, "#d1060d");
+					return ;
+				}
 			const joined_tour_obj = await joinTournament(tour_obj.id);
 			if (joined_tour_obj) {
 				await addAlias(alias);
@@ -263,7 +281,6 @@ export async function to_tournamentWaitingRoom(nohistory = "false", tour_obj, mo
 		console.log("to_tournamentWaitingRoom need an a tour_obj");
 		return;
 	}
-	console.log("waitingroom = " + getCookie("alias"));
 	await drawWaitingRoom((result) => {
 		if (result) {
 			document.getElementById("loadspinner").classList.add("hide");
