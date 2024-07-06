@@ -23,7 +23,9 @@ async function    connect(userID, socket)
         return ;
     }
 
-    await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
+    let responseDB = await create_request('POST', `/api/v1/users/${userID}/status/update`, { status: 'online' });
+    if (!responseDB)
+        return ;
     const   inforUser = await create_request('GET', `/api/v1/users/${userID}`, '');
     if (inforUser === null || inforUser === undefined || inforUser.id === undefined) {
         return ;
@@ -76,7 +78,9 @@ async function    disconnect(socket)
             webSocket.listConnection.splice(i, 1);
             webSocket.listUser.splice(i, 1);
             send_data('update list connection', webSocket.listUser, 'server', webSocket.listUser);
-            await create_request('POST', `/api/v1/users/${user.id}/status/update`, { status: 'offline' });
+            let responseDB = await create_request('POST', `/api/v1/users/${user.id}/status/update`, { status: 'offline' });
+            if (!responseDB)
+                return ;
             
             // send sign update status list friends
             const   listFriends = await create_request('GET', '/api/v1/user/friendship', { user: user.username });

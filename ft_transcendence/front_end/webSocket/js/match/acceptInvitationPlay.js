@@ -46,7 +46,9 @@ async function    leave_match(user)
                 const   postData = {
                     user: user.username
                 }
-                await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+                let responseDB = await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+                if (!responseDB)
+                    return ;
                 update_informations_user(user);
             }
             return ;

@@ -42,13 +42,13 @@ export async function toggleOtpStatus() {
 			return;
 			//throw new Error("fetch POST op failed");
 		}
+		return true;
 	} catch (error) {
 		console.error("toggleOtp: ", error);
 	}
 }
 
 export async function sendOtp(connect_user) {
-	console.log("-OTP request received");
 	try {
 		const response = await requestToken(connect_user);
 		if (getCookie("token") === null || getCookie("token") === "")
@@ -66,9 +66,9 @@ export async function sendOtp(connect_user) {
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await response.json();
-		notice("(debug)Your otp is displayed in the console", 3, "#37e6e6");
-		console.log(`Your otp is: ${data.otp}`);
-		console.log("-");
+		// notice("(debug)Your otp is displayed in the console", 3, "#37e6e6");
+		// console.log(`Your otp is: ${data.otp}`);
+		return true;
 	} catch (error) {
 		console.error("sendOtp: ", error);
 	};

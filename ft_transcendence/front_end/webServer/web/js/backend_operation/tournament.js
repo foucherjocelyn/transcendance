@@ -24,6 +24,7 @@ export async function getTournamentsList() {
 		if (data !== undefined)
 			return (data);
 		//		console.log("-");
+		return true;
 	} catch (error) {
 		console.error(`error caught: ${error}`);
 	}
@@ -55,6 +56,7 @@ export async function createTournament(tour_info) {
 		if (data !== undefined) {
 			return data;
 		}
+		return true;
 		//		console.log("-");
 	} catch (error) {
 		console.error("createTournament: ", error);
@@ -85,6 +87,7 @@ export async function joinTournament(tour_id) {
 		if (data) {
 			return data;
 		}
+		return true;
 	} catch (error) {
 		console.error("joinTournament: ", error);
 	}
@@ -114,7 +117,7 @@ export async function endTournament(tour_id) {
 		//if (data) {
 			//return data;
 		//}
-		//		console.log("-");
+		return true;
 	} catch (error) {
 		console.error("deleteTournament: ", error);
 	}
@@ -144,7 +147,7 @@ export async function startTournament(tour_id) {
 		if (data !== undefined) {
 			return data;
 		}
-		//		console.log("-");
+		return true;
 	} catch (error) {
 		console.error("startTournament: ", error);
 	}
@@ -174,6 +177,7 @@ export async function leaveTournament(tour_id) {
 		if (data !== undefined) {
 			return data;
 		}
+		return true;
 	} catch (error) {
 		console.error("leaveTournament: ", error);
 	}
@@ -203,7 +207,7 @@ export async function deleteTournament(tour_id) {
 		if (data !== undefined) {
 			return data;
 		}
-		//		console.log("-");
+		return true;
 	} catch (error) {
 		console.error("deleteTournament: ", error);
 	}
@@ -237,7 +241,7 @@ export async function setChampionTournament(tour_username) {
 		if (data !== undefined) {
 			return data;
 		}
-		//		console.log("-");
+		return true;
 	} catch (error) {
 		console.error("setChampionTournament: ", error);
 	}
@@ -267,6 +271,7 @@ export async function getTournamentInfoById(tour_id) {
 		if (data !== undefined) {
 			return (data);
 		}
+		return true;
 	} catch (error) {
 		console.error("getTournamentsList: ", error);
 	};
@@ -298,6 +303,7 @@ export async function updateTournamentsById(tour_id, tour_info) {
 		if (data !== undefined) {
 			return (data);
 		}
+		return true;
 	} catch (error) {
 		console.error("getTournamentsList: ", error);
 	};
@@ -326,6 +332,7 @@ export async function getTournamentsGames(tournamentId) {
 		const data = await r.json();
 		if (data !== undefined)
 			return (data);
+		return true;
 	} catch (error) {
 		console.error(`error caught: ${error}`);
 	}

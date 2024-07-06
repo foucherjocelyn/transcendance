@@ -45,7 +45,6 @@ export async function getUserIdByUsername(username) {
 		if (!response.ok) {
 			console.log("getUserIdByUsername: Client/Server error");
 			return;
-			//throw new Error("fetch POST op failed");
 		}
 		const data = await response.json();
 		//console.log("getUserIdByUsername:");
@@ -53,6 +52,7 @@ export async function getUserIdByUsername(username) {
 		return data;
 	} catch (error) {
 		console.error("getUserIdByUsername: ", error);
+		throw new Error("fetch POST op failed");
 	}
 }
 

@@ -26,6 +26,8 @@ class MatchMaking {
             this.shufflePlayers();
             const orderedPlayersUsername = this.players.map(player => player.username);
             const response = await create_request("POST", `/api/v1/tournament/${tournamentID}/players/order/update`, {"players" : orderedPlayersUsername});
+            if (!response)
+                return ;
         }
 
         let currentRound = this.players;
@@ -219,6 +221,8 @@ async function send_sign_join_tournament(title, tournamentID, sender)
     update_informations_user(sender);
 
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    if (!tournament)
+        return ;
     tournament.player_usernames.forEach((userName) => {
         for (let i = 0; i < webSocket.listUser.length; i++)
         {
@@ -240,6 +244,8 @@ async function  send_to_all(tournamentID, sender, title)
     }
 
     const tournament = await create_request("GET", `/api/v1/tournament/${tournamentID}`, "");
+    if (!tournament)
+        return ;
     if (sender.username !== tournament.owner_username) {
         return ;
     }
@@ -256,7 +262,9 @@ async function  delete_alias(listPlayer)
         const   postData = {
             user: user.username
         }
-        await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+        let responseDB = await create_request('POST', '/api/v1/profile/me/alias/remove', postData);
+        if (!responseDB)
+            return ;
 
         // update alias on socket server
         update_informations_user(user);
@@ -285,6 +293,7 @@ async function  delete_tournament(title, tournamentID, sender)
 
 async function start_tournament(tournamentID, sender)
 {
+    let responseDB;
     // check number tournament ID from client
     if (tournamentID === undefined || !isNumeric(tournamentID)) {
         return;
@@ -302,7 +311,9 @@ async function start_tournament(tournamentID, sender)
     send_to_all(tournament.id, sender, 'send notif');
 
     // sign start tournament
-    await create_request("POST", `/api/v1/tournament/${tournament.id}/start`, "");
+    responseDB = await create_request("POST", `/api/v1/tournament/${tournament.id}/start`, "");
+    if (!responseDB)
+        return ;
 
     // call matchmaking
     const listPlayer = await create_list_player_tournament(tournament.player_usernames);
@@ -310,7 +321,9 @@ async function start_tournament(tournamentID, sender)
     const champion = await matchMaker.generateMatches(tournament.id, tournament.name);
 
     // sign end tournament
-    await create_request("POST", `/api/v1/tournament/${tournament.id}/end`, "");
+    responseDB = await create_request("POST", `/api/v1/tournament/${tournament.id}/end`, "");
+    if (!responseDB)
+        return ;
 
     // Update the champion of a tournament
     if (champion !== undefined)
@@ -318,7 +331,9 @@ async function start_tournament(tournamentID, sender)
         const postData = {
             username: `${champion.username}`,
         };
-        await create_request("POST", `/api/v1/tournament/${tournament.id}/champion/update`, postData);
+        responseDB = await create_request("POST", `/api/v1/tournament/${tournament.id}/champion/update`, postData);
+        if (!responseDB)
+            return ;
         console.log(`The champion is: ${champion.username}`);
         send_data('display exit match', 'flex', 'server', champion);
     }

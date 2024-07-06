@@ -1,8 +1,6 @@
 import { getCookie } from "../authentication/auth_cookie.js";
 import { notice } from "../authentication/auth_main.js";
-import { client } from "../client/client.js";
-import { domain_name, openSocketClient } from "./authentication.js";
-import { getMyInfo, getUserById } from "./get_user_info.js";
+import { domain_name } from "./authentication.js";
 
 export async function dataUpdate(newInfo) {
 	//console.log("-dataUpdate starting");
@@ -21,9 +19,10 @@ export async function dataUpdate(newInfo) {
 			//console.log("dataUpdate: Client/Server error");
 			notice("The old password is incorrect", 1, "#D20000");
 			return;
-			//throw new Error("fetch POST op failed");
 		}
+		return true;
 	} catch (error) {
 		console.error("dataUpdate: ", error);
+		throw new Error("fetch POST op failed");
 	}
 }

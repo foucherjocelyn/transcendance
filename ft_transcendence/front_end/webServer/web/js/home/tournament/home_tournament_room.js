@@ -14,12 +14,16 @@ import { addAlias, getAliasFromUsername, removeAlias } from "../../backend_opera
 
 const isRegisteredToUnfinishedTournament = async (username) => {
 	let tournaments = await getTournamentsList();
+	if (!tournaments)
+		return ;
 	const unfinishedTournaments = tournaments.filter(tournament => tournament.status !== "finished");
 	return (unfinishedTournaments.some(tournament => tournament.player_usernames.find(currentUsername => currentUsername === username)));
 }
 
 const isRegisteredToFinishedTournament = async (username) => {
 	let tournaments = await getTournamentsList();
+	if (!tournaments)
+		return ;
 	const finishedTournaments = tournaments.filter(tournament => tournament.status === "finished");
 	return (finishedTournaments.some(tournament => tournament.player_usernames.find(currentUsername => currentUsername === username)));
 }
@@ -42,6 +46,7 @@ async function checkTournamentAvailability(tour_obj) {
 		return (false);
 	}
 	let my_alias = await checkClearMyAlias(my_username);
+
 	if (my_alias && tour_obj.player_usernames.includes(my_username)) {
 		return ("can join");
 	}
@@ -72,6 +77,7 @@ async function checkTournamentAvailability(tour_obj) {
 
 export async function aliasJoinTournament(tour_obj) {
 	let join_status = await checkTournamentAvailability(tour_obj);
+	if (!join_status)
 	tour_obj = await getTournamentInfoById(tour_obj.id);
 	if (join_status === true) {
 		document.getElementById("h_tournament_page").innerHTML = `
@@ -110,11 +116,13 @@ export async function aliasJoinTournament(tour_obj) {
 				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
 				to_tournamentWaitingRoom("false", tour_obj);
+				return ;
 			}
-			else if (!tour_obj.status === "registering")
+			else if (tour_obj.status === "progressing" || tour_obj.status === "finished")
 				notice("The tournament has already started", 3, "#d1060d");
 			else
 				notice("Joined tournament not found", 3, "#d1060d");
+			removeAlias();
 		});
 		document.getElementById("tour_inputcancel").addEventListener("click", () => { to_tournament("false"); });
 		return (false);

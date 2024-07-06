@@ -10,9 +10,13 @@ import { getAllMyGames, getAllMyScores, getMyInfo } from "../backend_operation/g
 export async function	renderMatchHistory(username) {
 	const username_obj = { username };
 	const myGames = await getAllMyGames(username_obj);
+	if (!myGames)
+		return ;
 	//console.log(myGames);
 	const myGamesSorted = myGames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 	const myScores = await getAllMyScores(username_obj);
+	if (!myScores)
+		return ;
 	const recentGames = myGamesSorted.slice(0, 6);
 	//console.log(myScores);
 	const matchTableBody = recentGames.map(game => `

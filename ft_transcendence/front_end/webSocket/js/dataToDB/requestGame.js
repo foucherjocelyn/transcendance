@@ -39,6 +39,7 @@ async function  request_game_DB(path, match, player)
 
     const   user = define_user_by_ID(player.id);
     const   modeMatch = (match.mode === 'with friends') ? 'classic' : match.mode;
+    let responseDB;
 
     if (path === '/api/v1/game')
     {
@@ -46,7 +47,9 @@ async function  request_game_DB(path, match, player)
         // console.table('------> create match: ' + match.admin.name);
         const   admin = define_user_by_ID(match.listUser[0].id);
         const   postData = createPostData(admin.username, modeMatch, match.tournamentName);
-        const   responseDB = await create_request('POST', path, postData);
+        responseDB = await create_request('POST', path, postData);
+        if (!responseDB)
+            return ;
         match.id = responseDB.id;
     }
     else if (path === `/api/v1/game/${match.id}/player/add`)
@@ -54,22 +57,32 @@ async function  request_game_DB(path, match, player)
         // add player
         // console.table('------> add player: ' + user.username);
         const   postData = createPostData2(user.username);
-        await create_request('POST', path, postData);
+        responseDB = await create_request('POST', path, postData);
+        if (!responseDB)
+            return ;
     }
     else if (path === `/api/v1/game/${match.id}/score`)
     {
         // add score
         // console.table('------> add score: ' + user.username + ' score: ' + player.score);
         const postData = createPostData3(user.username, player.score);
-        await create_request('POST', path, postData);
+        let responseDB = await create_request('POST', path, postData);
+        if (!responseDB)
+            return ;
     }
     else
     {
         // end game
         // console.table('------> winner: ' + user.username);
-        await create_request('POST', path, '');
-        await create_request('POST', `/api/v1/game/${match.id}/winner`, { winner_username: match.winner.username });
-        await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
+        responseDB = await create_request('POST', path, '');
+        if (!responseDB)
+            return ;
+        responseDB = await create_request('POST', `/api/v1/game/${match.id}/winner`, { winner_username: match.winner.username });
+        if (!responseDB)
+            return ;
+        responseDB = await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
+        if (!responseDB)
+            return ;
     }
 }
 

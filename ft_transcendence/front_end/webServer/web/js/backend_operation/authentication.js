@@ -21,14 +21,15 @@ export async function requestToken(f_log) {
 		if (!response.ok) {
 			document.cookie = `token=; SameSite=Strict`;
 			console.log("requestToken: Client or Server error");
-			throw new Error("fetch POST requestToken");
 		}
 		const data = await response.json();
 		//console.log("New token generated:\n" + data.access);
 		document.cookie = `token=; SameSite=Strict`;
 		document.cookie = `token=${data.access}; SameSite=Strict`;
+		return true;
 	} catch (error) {
 		console.error("requestToken: ", error);
+		throw new Error("fetch POST requestToken");
 	}
 }
 

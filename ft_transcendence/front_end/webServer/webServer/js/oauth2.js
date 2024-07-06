@@ -18,6 +18,8 @@ async function retrieveCodeCreateAccount(req, res) {
         "token42": token42
     };
     let info = await create_request("POST", "/api/v1/auth/login42", token42_obj);
+    if (!info)
+        return ;
     let token42_to_client = info.access;
     const params = new URLSearchParams(req.url.slice(1));
     params.delete("code");

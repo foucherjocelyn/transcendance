@@ -50,6 +50,7 @@ export async function updateAlias(alias)
 			console.log("Error when adding alias");
 			return ;
 		}
+		return true;
 	}
 	catch (error) {
 		console.error("Error: ", error);
@@ -73,6 +74,7 @@ export async function removeAlias()
 			console.log("Error when adding alias");
 			return ;
 		}
+		return true;
 	}
 	catch (error) {
 		console.error("Error: ", error);

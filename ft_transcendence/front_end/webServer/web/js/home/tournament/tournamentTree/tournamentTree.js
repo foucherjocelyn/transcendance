@@ -21,16 +21,22 @@ export const renderTournamentTree = async (tournamentId) => {
     </div>`;
 
     const tournament = await getTournamentInfoById(tournamentId);
+    if (!tournament)
+        return ;
     const participants = tournament.ordered_players;
     if (!participants)
         return;
     const participantAliasesMap = await Promise.all(participants.map(async username => {
         const alias = await getAliasFromUsername(username);
+        if (!alias)
+            return ;
         return { username: username, alias: alias };
     }));
     createBracket(participants, participantAliasesMap);
     const numberOfPlayers = participants.length;
     const tournamentGames = await getTournamentsGames(tournamentId);
+    if (!tournamentGames)
+        return ;
     const tournamentGamesSorted = tournamentGames.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
     const tournamentGamesEnded = tournamentGamesSorted.filter(game => game.status === "end");
     let currentRound = 1;

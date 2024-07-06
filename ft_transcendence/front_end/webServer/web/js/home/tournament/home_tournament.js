@@ -204,7 +204,6 @@ async function drawTournament(callback) {
 }
 
 export async function to_tournament(nohistory = "false") {
-	console.log("to_tournament called");
 	await getMyInfo();
 	if (!getCookie("username")) {
 		to_connectForm();
