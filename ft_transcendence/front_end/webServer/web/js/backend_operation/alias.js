@@ -22,6 +22,8 @@ export async function addAlias(alias)
 			console.log("Error when adding alias");
 			return ;
 		}
+		else
+			return true;
 	}
 	catch (error) {
 		console.error("Error: ", error);
