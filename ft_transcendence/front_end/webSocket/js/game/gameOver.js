@@ -23,7 +23,9 @@ async function    create_result(match)
     })
     match.result = result;
 
-    request_game_DB(`/api/v1/game/${match.id}/end`, match, match.winner);
+    let responseDB = await request_game_DB(`/api/v1/game/${match.id}/end`, match, match.winner);
+    if (!responseDB)
+        return ;
 
     send_data('game over', match.result, 'server', match.listUser);
     send_data('update pongGame', match.pongGame, 'server', match.listUser);

@@ -4,7 +4,7 @@ const { check_collision } = require("./collision");
 const { define_paddle } = require("./createPaddle");
 const { create_score } = require("./createScore");
 
-function    last_touch(lostPaddle, match)
+async function    last_touch(lostPaddle, match)
 {
     const   pongGame = match.pongGame;
 
@@ -19,7 +19,9 @@ function    last_touch(lostPaddle, match)
             create_score(paddle, match);
 
             if (player.type === 'player') {
-                request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
+                let responseDB = await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
+                if (!responseDB)
+                    return ;
             }
             return ;
         }
