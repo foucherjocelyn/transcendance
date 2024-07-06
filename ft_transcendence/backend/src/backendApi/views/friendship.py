@@ -102,8 +102,7 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             or Friendship.objects.filter(
                 sender=receiver, receiver=sender, status="accepted"
             ).exists()
-            and status == "accepted"
-        ):
+        ) and status == "accepted":
             return Response({"error": "Users are already friend"}, status=400)
         friendship.status = status
         friendship.save()
