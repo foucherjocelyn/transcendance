@@ -50,7 +50,7 @@ async function checkTournamentAvailability(tour_obj) {
 	}
 	return (false);
 }
-
+/*
 async function checkAliasUniqueness(tour_obj, alias_obj)
 {
 	let tmp;
@@ -63,7 +63,7 @@ async function checkAliasUniqueness(tour_obj, alias_obj)
 		}
 	return (true);
 }
-
+//*/
 export async function aliasJoinTournament(tour_obj) {
 	let join_status = await checkTournamentAvailability(tour_obj);
 	tour_obj = await getTournamentInfoById(tour_obj.id);
@@ -87,12 +87,14 @@ export async function aliasJoinTournament(tour_obj) {
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value
 			};
+			/*
 			const check_alias = await checkAliasUniqueness(tour_obj, alias);
 			if (!check_alias)
 				{
 					notice("Alias already in use", 3, "#d1060d");
 					return ;
 				}
+			//*/
 			const joined_tour_obj = await joinTournament(tour_obj.id);
 			if (joined_tour_obj) {
 				await addAlias(alias);
