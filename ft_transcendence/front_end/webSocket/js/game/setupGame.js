@@ -24,19 +24,22 @@ function    update_status_user(match, status)
 
 async function    setup_game(match)
 {
-    let responseDB = await request_game_DB('/api/v1/game', match, '');
-    if (!responseDB)
-        return ;
-    for (let i = 0; i < match.listPlayer.length; i++)
+    if (match.mode !== 'offline')
     {
-        const   player = match.listPlayer[i];
-        if (player.type === 'player') {
-            responseDB = await request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
-            if (!responseDB)
-                return ;
-            responseDB = await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
-            if (!responseDB)
-                return ;
+        let responseDB = await request_game_DB('/api/v1/game', match, match.listUser[0]);
+        // if (!responseDB)
+        //     return ;
+        for (let i = 0; i < match.listPlayer.length; i++)
+        {
+            const   player = match.listPlayer[i];
+            if (player.type === 'player') {
+                responseDB = await request_game_DB(`/api/v1/game/${match.id}/player/add`, match, player);
+                // if (!responseDB)
+                //     return ;
+                responseDB = await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
+                // if (!responseDB)
+                //     return ;
+            }
         }
     }
 

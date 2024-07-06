@@ -18,7 +18,6 @@ import { update_tournament_tree } from "../home/tournament/tournamentTree/tourna
 import { renderNotifications } from "../chat/notifications.js";
 import { searchFriendList } from "../chat/friend-list.js";
 import { readyUpPlayer } from "../home/tournament/tournamentReadyDisable.js";
-import { removeAlias } from "../backend_operation/alias.js";
 
 class userNotifications {
     constructor() {
@@ -101,16 +100,20 @@ function get_data_from_server(socket) {
             pongGame = receivedData.content;
         }
         if (receivedData.title === 'update borders') {
-            pongGame.listBorder = receivedData.content;
+            if (pongGame)
+                pongGame.listBorder = receivedData.content;
         }
         if (receivedData.title === 'update paddles') {
-            pongGame.listPaddle = receivedData.content;
+            if (pongGame)
+                pongGame.listPaddle = receivedData.content;
         }
         if (receivedData.title === 'update ball') {
-            pongGame.ball = receivedData.content;
+            if (pongGame)
+                pongGame.ball = receivedData.content;
         }
         if (receivedData.title === 'movement ball') {
-            pongGame.ball.position = receivedData.content;
+            if (pongGame)
+                pongGame.ball.position = receivedData.content;
         }
         if (receivedData.title === 'draw score') {
             draw_score(receivedData.content);

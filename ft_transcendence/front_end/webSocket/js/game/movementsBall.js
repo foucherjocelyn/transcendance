@@ -18,10 +18,10 @@ async function    last_touch(lostPaddle, match)
             player.score++;
             create_score(paddle, match);
 
-            if (player.type === 'player') {
+            if (player.type === 'player' && match.mode !== 'offline') {
                 let responseDB = await request_game_DB(`/api/v1/game/${match.id}/score`, match, player);
-                if (!responseDB)
-                    return ;
+                // if (!responseDB)
+                //     return ;
             }
             return ;
         }

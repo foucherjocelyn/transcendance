@@ -48,8 +48,9 @@ async function  request_game_DB(path, match, player)
         const   admin = define_user_by_ID(match.listUser[0].id);
         const   postData = createPostData(admin.username, modeMatch, match.tournamentName);
         responseDB = await create_request('POST', path, postData);
-        if (!responseDB)
-            return ;
+        // if (!responseDB) {
+        //     return ;
+        //}
         match.id = responseDB.id;
     }
     else if (path === `/api/v1/game/${match.id}/player/add`)
@@ -58,8 +59,8 @@ async function  request_game_DB(path, match, player)
         // console.table('------> add player: ' + user.username);
         const   postData = createPostData2(user.username);
         responseDB = await create_request('POST', path, postData);
-        if (!responseDB)
-            return ;
+        // if (!responseDB)
+        //     return ;
     }
     else if (path === `/api/v1/game/${match.id}/score`)
     {
@@ -67,22 +68,22 @@ async function  request_game_DB(path, match, player)
         // console.table('------> add score: ' + user.username + ' score: ' + player.score);
         const postData = createPostData3(user.username, player.score);
         let responseDB = await create_request('POST', path, postData);
-        if (!responseDB)
-            return ;
+        // if (!responseDB)
+        //     return ;
     }
     else
     {
         // end game
         // console.table('------> winner: ' + user.username);
         responseDB = await create_request('POST', path, '');
-        if (!responseDB)
-            return ;
+        // if (!responseDB)
+        //     return ;
         responseDB = await create_request('POST', `/api/v1/game/${match.id}/winner`, { winner_username: match.winner.username });
-        if (!responseDB)
-            return ;
+        // if (!responseDB)
+        //     return ;
         responseDB = await create_request('POST', `/api/v1/game/${match.id}/winner/levelup`, '');
-        if (!responseDB)
-            return ;
+        // if (!responseDB)
+        //     return ;
     }
 }
 
