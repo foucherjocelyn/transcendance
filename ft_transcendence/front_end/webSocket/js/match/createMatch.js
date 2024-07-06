@@ -74,9 +74,8 @@ async function    create_match(user, mode)
         return ;
     }
 
-    //
-    const   oldMatch = define_match(user);
-    if (oldMatch !== undefined) {
+    // check in other match
+    if (user.matchID !== undefined) {
         return ;
     }
 

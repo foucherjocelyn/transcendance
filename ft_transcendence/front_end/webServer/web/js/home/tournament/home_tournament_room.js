@@ -51,18 +51,24 @@ async function checkTournamentAvailability(tour_obj) {
 	return (false);
 }
 
-async function checkAliasUniqueness(tour_obj, alias_obj)
-{
-	let tmp;
-	for (let i = 0; i < tour_obj.player_usernames.length; i++)
-		{
-			tmp = await getAliasFromUsername(tour_obj.player_usernames[i]);
-			console.log("comparing " + alias_obj.alias + " to " + tmp);
-			if (alias_obj.alias === tmp)
-				return (false);
-		}
-	return (true);
-}
+// export async function checkAliasUniqueness(tour_obj, alias_obj)
+// {
+// 	let tmp;
+// 	for (let i = 0; i < tour_obj.player_usernames.length; i++)
+// 		{
+// 			tmp = await getAliasFromUsername(tour_obj.player_usernames[i]);
+// 			console.log("comparing " + alias_obj.alias + " to " + tmp);
+// 			if (alias_obj.alias === tmp)
+// 				return (false);
+// 		}
+// 	const checkalias = await addAlias(alias);
+// 	if (!checkalias)
+// 		{
+// 			notice("You joined a tournament with an existing alias", 3, "#d1060d");
+// 			return ;
+// 		}
+// 	return (true);
+// }
 
 export async function aliasJoinTournament(tour_obj) {
 	let join_status = await checkTournamentAvailability(tour_obj);
@@ -87,15 +93,20 @@ export async function aliasJoinTournament(tour_obj) {
 			let alias = {
 				"alias": document.getElementById("tour_inputalias").value
 			};
-			const check_alias = await checkAliasUniqueness(tour_obj, alias);
-			if (!check_alias)
+			// const check_alias = await checkAliasUniqueness(tour_obj, alias);
+			// if (!check_alias)
+			// 	{
+			// 		notice("Alias already in use", 3, "#d1060d");
+			// 		return ;
+			// 	}
+			const checkalias = await addAlias(alias);
+			if (!checkalias)
 				{
 					notice("Alias already in use", 3, "#d1060d");
 					return ;
 				}
 			const joined_tour_obj = await joinTournament(tour_obj.id);
 			if (joined_tour_obj) {
-				await addAlias(alias);
 				const send_data = new dataToServer('joining tournament', tour_obj.id, 'socket server');
 				client.socket.send(JSON.stringify(send_data));
 				to_tournamentWaitingRoom("false", tour_obj);

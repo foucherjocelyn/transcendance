@@ -57,7 +57,9 @@ export async function classy_signOut(sourcename) {
 		document.getElementById(source).classList.add("hide");
 		document.getElementById("loadspinner").classList.remove("hide");
 	}
-	await signOut();
+	const status = await signOut();
+	if (!status)
+		to_connectForm();
 }
 
 async function checkConnect() {

@@ -1,5 +1,5 @@
 import { client, dataToServer, pongGame } from "../client/client.js";
-import { create_match, match } from "../createMatch/createMatch.js";
+import { match } from "../createMatch/createMatch.js";
 import { to_game } from "../home/game/home_game.js";
 import { gameOverHTML } from "../home/game/home_gamewindows.js";
 import { to_tournament } from "../home/tournament/home_tournament.js";
@@ -79,10 +79,10 @@ function    get_sign_buttons_game_over_layer()
         (match.mode === 'tournament') ? to_tournament() : to_game();
     }
     
+    // show tournament tree button
     if (match.mode === 'tournament') {
-        button[1].style.display = 'none';
-        button[2].style.display = 'flex';
-        button[2].onclick = () => {
+        button[1].style.display = 'flex';
+        button[1].onclick = () => {
             const tour_html = `
             <hr>
             <div id="tournament_tree"></div>
@@ -92,15 +92,6 @@ function    get_sign_buttons_game_over_layer()
             }
             renderTournamentTree(pongGame.tournamentID);
         }
-        return ;
-    }
-
-    // play again button
-    button[1].onclick = () => {
-        const   mode = match.mode;
-        const  sendData = new dataToServer('leave match', '', 'socket server');
-        client.socket.send(JSON.stringify(sendData));
-        create_match(mode);
     }
 }
 
