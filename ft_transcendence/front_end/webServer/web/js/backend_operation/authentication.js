@@ -133,6 +133,7 @@ export async function signOut() {
 		//			  console.log("Your status [" + getCookie("status") + "]");
 		closeSocketClient();
 		to_connectForm();
+		return true;
 	}
 	catch (error) {
 		console.error("Error: ", error);
