@@ -171,8 +171,15 @@ function    movements_ball(match)
         }
     })
 
-    ball.position.x += speedX;
-    ball.position.z += speedY;
+    // change position of ball
+    if ((speedX < 0 && ball.collisionPoint.left > match.pongGame.limit.left) ||
+    (speedX >= 0 && ball.collisionPoint.right < match.pongGame.limit.right)) {
+        ball.position.x += speedX;
+    }
+    if ((speedY < 0 && ball.collisionPoint.top > match.pongGame.limit.top) ||
+    (speedY >= 0 && ball.collisionPoint.bottom < match.pongGame.limit.bottom)) {
+        ball.position.z += speedY;
+    }
 }
 
 module.exports = {

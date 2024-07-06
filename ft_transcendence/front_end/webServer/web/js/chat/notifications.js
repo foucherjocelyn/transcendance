@@ -45,6 +45,8 @@ const acceptFriendInvite = async (inviteId, senderUsername) => {
     await updateFriendInviteStatus(inviteId, "accepted");
     searchFriendList();
     removeFriendInvite(inviteId);
+    //if (!client.inforUser)
+      //  return ;
     await postNotification({ username: senderUsername, content: `${client.inforUser.username} accepted friend invite` });
     let sendData = new dataToServer('notification', '', client.listUser.find(user => user.username === senderUsername));
     client.socket.send(JSON.stringify(sendData));

@@ -6,7 +6,6 @@ import { to_connectForm } from "./auth_connect.js";
 import { to_regisForm } from "./auth_register.js";
 import { openSocketClient } from "../backend_operation/authentication.js";
 import { getMyInfo } from "../backend_operation/get_user_info.js";
-import { removeAlias } from "../backend_operation/alias.js";
 import { client, dataToServer } from "../client/client.js";
 
 export function notice(str, time, color) {
@@ -42,15 +41,15 @@ export async function authCheck() {
 		checkAddress();
 	}
 	else {
-		to_connectForm();
+		to_connectForm("true");
 	}
 }
 
 const urlRoutes = {
-	connect: () => to_connectForm("true"),
+	connection: () => to_connectForm("true"),
 	register: () => to_regisForm("true"),
 	homepage: () => to_homePage("true"),
-	configprofile: () => to_profilePage("true"),
+	config_profile: () => to_profilePage("true"),
 	game: () => to_game("true"),
 	tournament: () => to_tournament("true")
 };

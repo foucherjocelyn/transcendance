@@ -9,7 +9,7 @@ function    check_game_settings_speed_ball(gameSettings)
         return false;
     }
 
-    gameSettings.speed.ball = Math.min(Math.max(ball, 0.001), 0.008);
+    gameSettings.speed.ball = Math.min(Math.max(ball, 0.001), 0.005);
     return true;
 }
 

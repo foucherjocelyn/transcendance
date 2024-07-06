@@ -160,7 +160,7 @@ export async function to_profilePage(nohistory = "false") {
 		return;
 	}
 	if (nohistory === "false")
-		history.pushState({ url: "configprofile" }, "", "#config_profile");
+		history.pushState({ url: "config_profile" }, "", "#config_profile");
 	drawEditProfilePage((result) => {
 		if (result) {
 			document.getElementById("loadspinner").classList.add("hide");

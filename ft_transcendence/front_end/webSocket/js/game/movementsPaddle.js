@@ -5,8 +5,6 @@ const { define_match } = require("../match/updateMatch");
 
 function vertical_movement(paddle, direction, pongGame)
 {
-    console.log("Inside");
-    console.log(pongGame.limit.top);
     if ((paddle.collisionPoint.top <= pongGame.limit.top && direction < 0)
     || (paddle.collisionPoint.bottom >= pongGame.limit.bottom && direction > 0)) {
         return ;
