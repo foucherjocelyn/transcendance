@@ -37,7 +37,7 @@ async function    leave_match(user)
             match.listPlayer[i] = new inforPlayer('', '', "../../img/button/button_add_player.png", 42, 'none');
             
             // update status user
-            user.status = 'online';
+            // user.status = 'online';
             update_match(user);
 
             // delete alais

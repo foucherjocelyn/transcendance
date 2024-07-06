@@ -48,8 +48,15 @@ function    update_match(user)
         const   indexMatch = webSocket.listMatch.findIndex(check => check.id === match.id);
         webSocket.listMatch.splice(indexMatch, 1);
     }
-    else if (user.status !== 'playing game' && match.pongGame === undefined) {
+    else if (user.status === 'creating match') { //user.status !== 'playing game' && match.pongGame === undefined
         send_data('update match', match, user, match.listUser);
+    }
+
+    // delete matchID if leave match
+    let foundPlayer = match.listUser.find(player => player.id === user.id);
+    if (foundPlayer === undefined) {
+        user.status = 'online';
+        user.matchID = undefined;
     }
 
     console.log('length list match: ' + webSocket.listMatch.length);

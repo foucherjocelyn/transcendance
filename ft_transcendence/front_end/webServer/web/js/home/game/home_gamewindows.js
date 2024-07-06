@@ -23,12 +23,9 @@ export function    gameOverHTML()
                     <button>
                         <span>Exit</span>
                     </button>
-                    <button>
-                        <span>Play again</span>
+                    <button style="display: none;">
+                        <span>Show Tree<span>
                     </button>
-                     <button style="display: none;">
-                     <span>Show Tree<span>
-                     </button>
                 </div>
             </div>
         </div>
