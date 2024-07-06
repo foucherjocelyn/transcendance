@@ -92,6 +92,19 @@ class FriendshipViewSet(viewsets.ModelViewSet):
             return Response({"error": "Status not provided"}, status=400)
         if status not in ["pending", "accepted", "rejected"]:
             return Response({"error": "Invalid status"}, status=400)
+        sender = friendship.sender
+        receiver = friendship.receiver
+        # Check if the sender and receiver are aleady friend and status is accepted
+        if (
+            Friendship.objects.filter(
+                sender=sender, receiver=receiver, status="accepted"
+            ).exists()
+            or Friendship.objects.filter(
+                sender=receiver, receiver=sender, status="accepted"
+            ).exists()
+            and status == "accepted"
+        ):
+            return Response({"error": "Users are already friend"}, status=400)
         friendship.status = status
         friendship.save()
         serializer = self.get_serializer(friendship)
@@ -134,9 +147,9 @@ class FriendshipViewSet(viewsets.ModelViewSet):
         )
         friends = []
         for friendship in friendships:
-            if friendship.sender == user:
+            if friendship.sender == user and friendship.receiver not in friends:
                 friends.append(friendship.receiver)
-            else:
+            elif friendship.receiver == user and friendship.sender not in friends:
                 friends.append(friendship.sender)
         serializer = UserSerializer(friends, many=True)
         return Response(serializer.data, status=200)

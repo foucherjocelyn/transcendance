@@ -314,6 +314,9 @@ class UserViewSet(viewsets.ModelViewSet):
         alias = request.data.get("alias", None)
         if not alias:
             return Response({"error": "Alias not provided"}, status=400)
+        # Check if alias already exists
+        if User.objects.filter(alias=alias).exists():
+            return Response({"error": "Alias already exists"}, status=400)
         user.alias = alias
         user.save()
         serializer = self.get_serializer(user)
@@ -333,6 +336,9 @@ class UserViewSet(viewsets.ModelViewSet):
         alias = request.data.get("alias", None)
         if not alias:
             return Response({"error": "Alias not provided"}, status=400)
+        # Check if alias already exists
+        if User.objects.filter(alias=alias).exists():
+            return Response({"error": "Alias already exists"}, status=400)
         user.alias = alias
         user.save()
         serializer = self.get_serializer(user)

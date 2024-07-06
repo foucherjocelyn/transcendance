@@ -7,13 +7,13 @@ from django.db import models
 
 
 class User(AbstractUser, PermissionsMixin):
-    id42 = models.IntegerField(null=True, blank=True)
+    id42 = models.IntegerField(null=True, blank=True, unique=True)
     username = models.CharField(max_length=20, unique=True)
     email = models.EmailField(max_length=320, unique=True)
     password = models.CharField(max_length=100)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    alias = models.CharField(max_length=30, null=True, blank=True, default=None)
+    alias = models.CharField(max_length=30, null=True, blank=True, default=None, unique=True)
     level = models.FloatField(default=1.0)
     statusChoices = [("online", "Online"), ("offline", "Offline")]
     status = models.CharField(max_length=100, choices=statusChoices, default="offline")
