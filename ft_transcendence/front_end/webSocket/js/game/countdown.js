@@ -76,7 +76,6 @@ function    check_position_of_ball(match)
 
 function    start_game_ws(match)
 {
-    let count = 0;
     const intervalId = setInterval(function()
     {
         // The number of players has changed
@@ -103,23 +102,8 @@ function    start_game_ws(match)
         update_status_objects(match.pongGame);
         movements_ball(match);
         check_position_of_ball(match);
-
-        // console.log('----> count: ' + count);
-        // if (count === 0) {
-        //     console.log('--------> start AI');
-        //     movement_AI(match.pongGame);
-        // }
-        // else {
-        //     // update AI after 1 seconde
-        //     setTimeout(function() {
-        //         movement_AI(match.pongGame);
-        //     }, 1000);
-        // }
         movement_AI(match.pongGame);
-
-        
         send_data('movement ball', match.pongGame.ball.position, 'server', match.listUser);
-        count++;
     }, 20);
 }
 

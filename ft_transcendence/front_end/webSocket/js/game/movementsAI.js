@@ -40,11 +40,11 @@ function    movement_AI(pongGame)
         {
             if (paddle.name === 'left paddle' || paddle.name === 'right paddle') {
                 vertical_movement_AI(paddle, pongGame);
-                setTimeout(function() {}, 1000);
+                setTimeout(function() {}, 1000); // wait 1 seconde
             }
             else {
                 horizontal_movement_AI(paddle, pongGame);
-                setTimeout(function() {}, 1000);
+                setTimeout(function() {}, 1000); // wait 1 seconde
             }
         }
     }
