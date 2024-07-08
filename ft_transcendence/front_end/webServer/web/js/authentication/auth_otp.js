@@ -29,14 +29,14 @@ async function load_otpForm(connect_user)
 			<divclass="r_connect_form">
 			<form method="post"  id="r_registration">
 				<input type="text" id="rc_otp" name="rc_otp" placeholder="2FA" required>
-				<button type="button" id="rc_otp_send" name="rc_otp_send">Send</button>
+				<!--   <button type="button" id="rc_otp_send" name="rc_otp_send">Send</button>  -->
 				<br>
 				<input type="submit" value="Connection" id="rb_connect" name="rb_connect">
 			</form>
 			</div>
 		</div>
 	</div>`;
-	document.getElementById("rc_otp_send").addEventListener("click", () => { sendOtp(connect_user); });
+	//document.getElementById("rc_otp_send").addEventListener("click", () => { sendOtp(connect_user); });
 	document.getElementById("r_registration").addEventListener("submit", async function(event) {
 		event.preventDefault();
  		if (document.getElementById("rc_otp").value.length > 0)

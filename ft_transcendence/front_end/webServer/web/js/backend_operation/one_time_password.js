@@ -66,8 +66,8 @@ export async function sendOtp(connect_user) {
 			//throw new Error("fetch POST op failed");
 		}
 		const data = await response.json();
-		// notice("(debug)Your otp is displayed in the console", 3, "#37e6e6");
-		// console.log(`Your otp is: ${data.otp}`);
+		notice("(debug)Your otp is displayed in the console", 3, "#37e6e6");
+		console.log(`Your otp is: ${data.otp}`);
 		return true;
 	} catch (error) {
 		console.error("sendOtp: ", error);
